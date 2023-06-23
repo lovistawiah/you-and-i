@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/public/css/register.css">
+    <title>You and I</title>
+</head>
+
+<body>
+    <section class="container">
+        <!-- image section -->
+        <section class="img-container">
+            <div class="img">
+                <img src="../img/loginsignup.png" alt="">
+            </div>
+        </section>
+
+        <!-- login page -->
+        <section class="user-account">
+            <p class="register">Already a member?<span>
+                    <a href="../html/login.html">Login</a>
+                </span>
+            </p>
+            <div class="form-handler">
+                <div class="error" id="error">error</div>
+                <form id="form">
+                    <div class="icon">
+                        <input type="text" name="firstName" required id="firstName" placeholder="First name">
+                    </div>
+                    <div class="icon">
+                        <input type="text" name="lastName" required id="lastName" placeholder="Last name">
+                    </div>
+                    <div class="icon">
+                        <input type="email" name="email" id="email" required placeholder="Email">
+                    </div>
+                    <div class="icon">
+                        <input type="text" name="username" required id="username" placeholder="username">
+                    </div>
+                    <div class="icon">
+                        <input type="password" name="password" required id="password" placeholder="Password">
+                    </div>
+                    <div class="icon">
+                        <input type="password" name="confirmPassword" required id="confirmPassword"
+                            placeholder="Confirm password">
+                    </div>
+                    <button id="submit">Sign up</button>
+                </form>
+                <h5 class="slogan">made with <span class="love">♥</span></>
+            </div>
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+            <script src="../js/signup.js"></script>
+        </section>
+</body>
+
+</html>

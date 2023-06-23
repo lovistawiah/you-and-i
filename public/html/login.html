@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="public/img/favicon.png" type="image/x-icon">
+    <link rel="stylesheet" href="/public/css/login.css">
+    <title>You and I</title>
+</head>
+
+<body>
+    <section class="container">
+        <!-- image section -->
+        <section class="img-container">
+            <div class="img">
+                <img src="../img/loginsignup.png" alt="">
+            </div>
+        </section>
+
+        <!-- login page -->
+        <section class="user-account">
+            <p class="register">Not a member?<span>
+                    <a href="../html/signup.html">Register now</a>
+                </span>
+            </p>
+            <div class="form-handler">
+                <h1> Hello Again,</h1>
+                <p>You've been missed!</p>
+                <div class="error" id="error">error</div>
+                <form id="form">
+                    <div class="username">
+                        <input type="text" name="usernameEmail" required id="usernameEmail"
+                            placeholder="username or email">
+                    </div>
+                    <div class="password">
+                        <input type="password" name="password" required id="password" placeholder="password">
+                    </div>
+                    <button>Sign in</button>
+                </form>
+                <h5 class="slogan">made with <span class="love">♥</span></>
+            </div>
+
+        </section>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="../js/login.js"></script>
+</body>
+
+</html>
