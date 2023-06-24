@@ -81,44 +81,44 @@ const createChannel = async (req, res) => {
         const userId = req.user.userId
         const members = [userId, member]
         console.log(members)
-        
-        //for private channels
-        // if (members.length == 2) {
-        //     const channels = await Channel.find({}).populate({
-        //         path: 'privateChannel'
-        //     })
-        //     for (let i = 0; i < channels.length; i++) {
 
-        //         const MembersArray = channels[i].privateChannel.members
-        //         ChannelExists = members.toString() == MembersArray.toString()
-        //     }
-        // }
+        // for private channels
+        if (members.length == 2) {
+            const channels = await Channel.find({}).populate({
+                path: 'privateChannel'
+            })
+            for (let i = 0; i < channels.length; i++) {
 
-        // if (ChannelExists) {
-        //     message = "Channel already exists"
-        //     res.status(400).json({ message })
-        //     return
-        // }
-        // if (members.length != 2 & !channelName) {
-        //     message = "group name not provided"
-        //     res.status(400).send(message)
-        //     return
-        // } else {
-        //     // creates private channel
-        //     channelCreated = await Channel.create({
-        //         privateChannel: {
-        //             members
-        //         }
-        //     })
-        // }
-        // for (let i = 0; i < members.length; i++) {
-        //     const id = members[i]
-        //     const updateUserChannel = await User.findByIdAndUpdate({ _id: id }, { $push: { channels: channelCreated._id } }, { new: true }).lean()
-        //     if (!updateUserChannel) {
-        //         res.status(400).send("user not found")
-        //         return
-        //     }
-        // }
+                const MembersArray = channels[i].privateChannel.members
+                ChannelExists = members.toString() == MembersArray.toString()
+            }
+        }
+
+        if (ChannelExists) {
+            message = "Channel already exists"
+            res.status(400).json({ message })
+            return
+        }
+        if (members.length != 2 & !channelName) {
+            message = "group name not provided"
+            res.status(400).send(message)
+            return
+        } else {
+            // creates private channel
+            channelCreated = await Channel.create({
+                privateChannel: {
+                    members
+                }
+            })
+        }
+        for (let i = 0; i < members.length; i++) {
+            const id = members[i]
+            const updateUserChannel = await User.findByIdAndUpdate({ _id: id }, { $push: { channels: channelCreated._id } }, { new: true }).lean()
+            if (!updateUserChannel) {
+                res.status(400).send("user not found")
+                return
+            }
+        }
 
         message = "channel add successfully"
         res.status(200).json({ message })

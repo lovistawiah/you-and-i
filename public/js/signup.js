@@ -24,27 +24,16 @@ form.addEventListener("submit", async (e) => {
             confirmPassword: confirmPassword.value
         })
 
-        if (res.data.message === "ok" && res.status === 200) {
+        const { data } = res
+        if (data.message === "ok" && res.status === 200) {
             password.innerText = ""
             confirmPassword.innerText = ""
             window.location.href = '../html/login.html'
-
-        } else if (res.data.message.includes("username:")) {
-
-            message = "username already exist"
-            showError(message)
-        } else if (res.data.message.includes("email:")) {
-
-            message = "email already exist"
-            showError(message)
+            return
         }
-        else {
-            message = "Application Error: Try again later!"
-            showError(message)
-        }
+        return
     } catch (err) {
-        message = err.message
-        showError(message)
+        httpErrorLogger(err,showError)
     }
 })
 

@@ -88,4 +88,7 @@ async function getChannels(token) {
     }
 }
 
+async function getAllUsers(){
+
+}
 

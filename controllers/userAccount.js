@@ -22,14 +22,22 @@ const signup = async (req, res) => {
 
         password = await bcrypt.hash(password, 10)
         const account = { firstName, lastName, username, email, password }
-        await User.create(account)
+        const user = await User.create(account)
+        console.log(user)
         message = "ok"
         res.status(200).json({ message })
 
         return
     } catch (err) {
+        let StatusCode = 500
         message = "Internal Server Error"
-        res.json({ message })
+
+        if (err.code == 11000) {
+            const errValue = Object.values(err.keyValue)
+            message = `${errValue} already exists`
+            StatusCode = 400
+        }
+        res.status(StatusCode).json({ message })
     }
 }
 
@@ -63,7 +71,7 @@ const login = async (req, res) => {
         const token = jwt.sign({ Id: user._id, username: user.username }, process.env.JWT_SECRET, {
             expiresIn: "30d"
         })
-        
+
         res.status(200).json({ message: "ok", userInfo: { userId: user._id, username: user.username }, token })
         return
     } catch (err) {
@@ -75,10 +83,9 @@ const login = async (req, res) => {
 const getAllUsers = async (req, res) => {
     try {
         const users = await User.find({})
-        .populate({
-            path: 'channels',
-            // populate: { path: 'messages' }
-        })
+            .populate({
+                path: 'channels',
+            })
         res.status(200).json(users)
     } catch (err) {
         res.status(500).send(err.message)

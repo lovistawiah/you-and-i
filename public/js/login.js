@@ -13,7 +13,7 @@ form.addEventListener("submit", async (e) => {
             showError(message)
             return
         }
-        
+
         const res = await axios.post('/api/login', {
             usernameEmail: usernameEmail.value,
             password: password.value
@@ -29,11 +29,7 @@ form.addEventListener("submit", async (e) => {
         localStorage.setItem("youAndItoken", token)
         window.location.href = '../html/messages.html'
     } catch (err) {
-        console.log(err)
-        if (err.message.includes("400")) {
-            message = "invalid credentials"
-            showError(message)
-        }
+        httpErrorLogger(err, showError)
     }
 
 })
