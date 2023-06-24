@@ -96,8 +96,14 @@ img {
     border: 2px solid rgb(117, 117, 117);
 }
 
-.chat-panel {
+.channel-panel {
     height: calc(100vh - 120px);
+    display: none;
+}
+
+.no-chats {
+    display: none;
+    text-align: center;
 }
 
 .user-chat {

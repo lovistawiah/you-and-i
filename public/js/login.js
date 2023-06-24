@@ -13,10 +13,12 @@ form.addEventListener("submit", async (e) => {
             showError(message)
             return
         }
+        
         const res = await axios.post('/api/login', {
             usernameEmail: usernameEmail.value,
             password: password.value
         })
+
         const { data } = res
         if (!res.status == 200 && !data.message == "ok") {
             message = "Unknown error"
