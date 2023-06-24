@@ -4,7 +4,9 @@
     --border-color: rgb(211, 211, 211);
     --bg-color: rgb(255, 255, 255);
     --text-color: rgb(128, 128, 128);
-    --chat-color: #f6f8fc
+    --chat-color: #f6f8fc;
+    --chat-hover-color: rgb(231, 230, 237);
+    --chat-bg-color: rgb(154, 153, 158);
 }
 
 img {
@@ -98,18 +100,27 @@ img {
 
 .channel-panel {
     height: calc(100vh - 120px);
-    display: none;
 }
 
 .no-chats {
-    display: none;
     text-align: center;
 }
 
 .user-chat {
+    width: 95%;
     background-color: var(--bg-color);
     display: flex;
-    border-bottom: 1px solid var(--border-color);
+    cursor: default;
+    margin: 0 auto;
+
+}
+
+.user-chat:hover {
+    background-color: var(--chat-hover-color);
+}
+
+.user-chat:active {
+    background-color: var(--chat-bg-color);
 }
 
 .user-profile {
@@ -117,6 +128,10 @@ img {
     display: grid;
     grid-template-columns: 0.5fr 2fr;
     height: 60px;
+}
+
+.user-profile img {
+    cursor: default;
 }
 
 .user-img {
@@ -134,7 +149,7 @@ img {
     display: none;
     width: 100%;
     height: 50px;
-    border-bottom: 1px solid var(--border-color);
+
 }
 
 .to-user-img {
@@ -256,7 +271,7 @@ img {
     padding-right: 20px;
     height: calc(100vh - 180px);
     overflow: auto;
-    /* background-color: #1152f7; */
+    /* visibility: hidden; */
 }
 
 
@@ -266,7 +281,7 @@ img {
     display: flex;
     flex-direction: column;
     text-align: start;
-
+    font-size: 1.065rem;
 }
 
 .date {
@@ -275,7 +290,6 @@ img {
     border-radius: 5px;
     text-align: center;
     font-weight: normal;
-    font-size: 1.065rem;
     background-color: white;
     margin: 10px auto;
 }
@@ -297,7 +311,7 @@ img {
 
 .sender {
     align-self: flex-end;
-    background-color: #2662fc;
+    background-color: rgb(178, 83, 247);
     color: #fdfbfb;
 }
 
@@ -341,11 +355,11 @@ button {
 button {
     width: 120px;
     color: white;
-    background-color: #2662fc;
+    background-color: rgb(178, 83, 247);
     font-size: 1.125rem;
     font-weight: normal;
 }
 
 button:hover {
-    background-color: #1152f7;
+    background-color: rgb(178, 71, 247);
 }
