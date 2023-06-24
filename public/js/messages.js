@@ -38,6 +38,7 @@ TODO:
 5. send message to specific channel. 
 6. make set userId as nickname 
 7. create rooms 
+8. make all the html documents not highlighted
 
 */
 
