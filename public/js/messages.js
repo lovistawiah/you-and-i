@@ -3,18 +3,12 @@ var socket = io()
 const token = checkToken()
 
 
+
 const addNewFriendBtn = document.getElementById("add-friend")
 const chatAndLastMessagePanel = document.querySelector(".channel-panel")
 
 //for appending user and last message to the channel panel
-const user = document.querySelector(".user-chat")
-const channel = document.querySelector(".channel-Id")
-const userProfiles = document.querySelector(".user-profile")
-const userImg = document.querySelector(".user-img img")
-const userNameAndTime = document.querySelector(".username-time")
-const lastMessage = document.querySelector(".last-message")
-const username = document.querySelector(".username")
-const time = document.querySelector(".time")
+
 
 
 window.addEventListener("DOMContentLoaded", (e) => {
@@ -55,15 +49,55 @@ query all messages for the user and the channel
 
 
 function appendUserChannelData(userName, messageTime, message, channelId) {
+
+    /*
+    within the div with className = user-chat,
+
+    has one grid div with className = user-profile
+    within the user-profile div 
+
+    has three divs with classNames =user-img, username-time, last-message,
+    the user-img div has img
+
+    And the username-time has h4 tag with username as className, and div with time as className
+    
+    */
+    const channel = document.createElement("div")
+    channel.className = "channel-Id"
+
+    const user = document.createElement("div")
+    user.className = "user-chat"
+
+    const userProfile = document.createElement("div")
+    userProfile.className = "user-profile"
+
+    const userImg = document.createElement("div")
+    userImg.className = "user-img"
+
+    const img = document.createElement("img")
+
+    const userNameAndTime = document.createElement("div")
+    userNameAndTime.className = "username-time"
+
+    const username = document.createElement("h4")
+    username.className = "username"
+
+    const time = document.createElement("div")
+    time.className = "time"
+
+    const lastMessage = document.createElement("div")
+    lastMessage.className = "last-message"
+
+
     channel.innerText = channelId
-    userImg.setAttribute('src', '../img/loginsignup.png')
+    img.setAttribute('src', '../img/loginsignup.png')
+    userImg.append(img)
     username.innerText = userName
     time.innerText = messageTime
     userNameAndTime.append(username, time)
     lastMessage.innerText = message
-    userProfiles.append(userNameAndTime, lastMessage)
-    console.log(userProfiles)
-    user.append(userProfiles)
+    userProfile.append(userNameAndTime, userImg, lastMessage)
+    user.append(userProfile)
     chatAndLastMessagePanel.append(user)
 }
 

@@ -6,7 +6,13 @@
     --text-color: rgb(128, 128, 128);
     --chat-color: #f6f8fc;
     --chat-hover-color: rgb(231, 230, 237);
-    --chat-bg-color: rgb(154, 153, 158);
+    --chat-bg-color: rgb(202, 202, 202);
+}
+
+body {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
 }
 
 img {

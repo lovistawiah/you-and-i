@@ -29,8 +29,9 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 app.use('/api', router)
-app.use('/messages',authenticUser, require("./routes/message"))
-app.use('/channels',authenticUser, require("./routes/channel"))
+app.use('/messages', authenticUser, require("./routes/message"))
+app.use('/channels', authenticUser, require("./routes/channel"))
+app.use('/new-friends', authenticUser, require("./routes/newFriends"))
 app.post('/deleteData', require("./controllers/allData"))
 // ? attaching the server to the messages sockets.
 messages.attach(server)

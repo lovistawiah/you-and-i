@@ -79,16 +79,21 @@ const createChannel = async (req, res) => {
         let { member, channelName } = req.body
         //using the userId stored in the 
         const userId = req.user.userId
-        const members = [userId, member]
-        console.log(members)
+        let members = [userId, member]
 
+        const users = await User.find({ _id: { $in: members } }).select("_id").lean()
+        members = []
+        users.filter((user) => {
+            members.push(user._id)
+        })
         // for private channels
+
         if (members.length == 2) {
             const channels = await Channel.find({}).populate({
                 path: 'privateChannel'
             })
-            for (let i = 0; i < channels.length; i++) {
 
+            for (let i = 0; i < channels.length; i++) {
                 const MembersArray = channels[i].privateChannel.members
                 ChannelExists = members.toString() == MembersArray.toString()
             }
@@ -99,7 +104,9 @@ const createChannel = async (req, res) => {
             res.status(400).json({ message })
             return
         }
+
         if (members.length != 2 & !channelName) {
+            //future use
             message = "group name not provided"
             res.status(400).send(message)
             return
@@ -111,6 +118,7 @@ const createChannel = async (req, res) => {
                 }
             })
         }
+
         for (let i = 0; i < members.length; i++) {
             const id = members[i]
             const updateUserChannel = await User.findByIdAndUpdate({ _id: id }, { $push: { channels: channelCreated._id } }, { new: true }).lean()

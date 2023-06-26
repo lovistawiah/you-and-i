@@ -1,3 +1,6 @@
 node_modules/
 .env
 package-lock.json
+frag.css
+frag.html
+frag.js

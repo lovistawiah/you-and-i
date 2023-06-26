@@ -79,18 +79,16 @@ const login = async (req, res) => {
         res.status(400).json({ message })
     }
 }
-
 const getAllUsers = async (req, res) => {
     try {
-        const users = await User.find({})
-            .populate({
-                path: 'channels',
-            })
-        res.status(200).json(users)
-    } catch (err) {
-        res.status(500).send(err.message)
+        const users = await User.find({}).select("username")
+        res.status(200).json({ users })
+    } catch (e) {
+        console.log(e)
     }
+    
 }
+
 
 module.exports = {
     login,

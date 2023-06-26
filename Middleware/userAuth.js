@@ -1,11 +1,21 @@
 const jwt = require("jsonwebtoken")
+const User = require("../models/Users")
 
 //helper function
-function decodeToken(authHeader, message) {
+async function decodeToken(authHeader, message) {
     const token = authHeader.split(" ")[1]
     const decoded = jwt.verify(token, process.env.JWT_SECRET)
+
     if (!decoded) {
         message = "invalid token"
+        return message
+    }
+    
+    const userId = decoded.Id
+    const user = await User.findById(userId)
+    
+    if(user == null){
+        message = "user does not exist"
         return message
     }
 
@@ -28,16 +38,17 @@ const checkToken = (req, message) => {
         message = "token not available"
         return message
     }
-    // returns object or string
     return decodeToken(authHeader, message)
+   
+    // returns object or string
 
 }
 
 
-const authenticUser = (req, res, next) => {
+const authenticUser = async(req, res, next) => {
     let message = ""
     try {
-        const tokenData = checkToken(req, message)
+        const tokenData =  await checkToken(req, message)
         if (typeof (tokenData) == 'string') {
             message = tokenData
             res.status(401).json({ message })
@@ -52,6 +63,7 @@ const authenticUser = (req, res, next) => {
         res.status(500).send(message)
     }
 }
+
 const checkUserToken = (req, res) => {
     let message = ""
     try {
