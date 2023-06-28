@@ -3,9 +3,9 @@ var socket = io()
 const token = checkToken()
 
 
-
 const addNewFriendBtn = document.getElementById("add-friend")
-const chatAndLastMessagePanel = document.querySelector(".channel-panel")
+const chats = document.querySelector(".chats")
+const closeFriendPanel = document.querySelector(".close-friend-panel")
 
 //for appending user and last message to the channel panel
 
@@ -13,15 +13,38 @@ const chatAndLastMessagePanel = document.querySelector(".channel-panel")
 
 window.addEventListener("DOMContentLoaded", (e) => {
     getChannels(token)
+    newFriends(token)
 })
 
-// addNewFriendBtn.addEventListener("click", (e) => {
-//     console.log("click")
-//     chatAndLastMessagePanel.style.display = 'none'
+addNewFriendBtn.addEventListener("click", (e) => {
+    const imgAttr = addNewFriendBtn.attributes.getNamedItem('src').value
+    if (imgAttr.includes("add")) {
+        console.log("in here")
+        addNewFriendBtn.setAttribute("src", "../svg/close-button.svg")
+        chats.style.display = 'none'
+        // newFriendsPage.style.display = "flex"
+        //make addFriendsPanel visible 
 
-// })
+    } else {
+        addNewFriendBtn.setAttribute("src", "../svg/add-button.svg")
+        chats.style.display = 'block'
+        // newFriendsPage.style.display = "none"
+    }
+})
 
+/*
+TODO:
+selecting a specific channel (active channel)
+send and receive message
+offline and online indicator 
+the person online before going offline, save the document
+search messages, sort by latest date in the api 
+use multiple io 
+*/
 
+/*
+add button should change close button 
+*/
 
 /*
 TODO:
@@ -41,10 +64,6 @@ FIXME: only querySelectorAll when want to select a particular channel
 learn how to use document.createDocumentFragment()
 query all messages for the user and the channel
 */
-
-
-
-
 
 
 
@@ -98,9 +117,71 @@ function appendUserChannelData(userName, messageTime, message, channelId) {
     lastMessage.innerText = message
     userProfile.append(userNameAndTime, userImg, lastMessage)
     user.append(userProfile)
-    chatAndLastMessagePanel.append(user)
+    chats.append(user)
 }
 
+function addMessages() {
+    const messagesBox = document.createElement("div")
+    messagesBox.className = "messages-box"
+
+    const date = document.createElement("div")
+    date.className = "date"
+
+    const messages = document.createElement("div")
+    messages.className = "messages"
+
+    // add sender class to classList if sender Id == req.user.userId
+    const message = document.createElement("div")
+    message.classList.add(["message"])
+
+    const messageId = document.createElement("div")
+    messageId.className = "message-id"
+
+    const groupUsername = document.createElement("div")
+    groupUsername.className = "group-username"
+
+    const messageContent = document.createElement("div")
+    messageContent.className = "message-content"
+
+    const messageTime = document.createElement("div")
+    messageTime.className = "message-time"
+
+    const timeP = document.createElement("p")
+    timeP
+
+
+}
+
+
+function newFriendsPanel(id, newFriendName) {
+    const addFriend = document.createElement("div")
+    addFriend.className = "users-add"
+    //making it visible
+    addFriend.style.display = "flex"
+
+    const friendId = document.createElement("div")
+    friendId.className = "id"
+
+    const friendUserImg = document.createElement("div")
+    friendUserImg.className = "to-user-img"
+
+    const img = document.createElement("img")
+    img.setAttribute("src", "../img/loginsignup.png")
+
+    friendUserImg.append(img)
+
+    const toBeFriendName = document.createElement("div")
+
+    toBeFriendName.className = "to-be-added-user"
+
+    toBeFriendName.innerText = newFriendName
+    friendId.innerText = id
+    addFriend.append(friendId, friendUserImg, toBeFriendName)
+
+}
+
+
+// todo: query and append messages.
 async function getChannels(token) {
     try {
         const res = await axios.get('/channels', {
@@ -108,14 +189,15 @@ async function getChannels(token) {
                 Authorization: `Bearer ${token}`
             }
         })
+
         const { data } = res
         if (res.status == 200 && data.message == 'ok') {
             const { userNameAndLastMessage } = data
-            if (userNameAndLastMessage.length == 0) {
 
-                chatAndLastMessagePanel.innerText = "No Chats"
-                chatAndLastMessagePanel.style.textAlign = "center"
-                chatAndLastMessagePanel.style.display = "block"
+            if (userNameAndLastMessage.length == 0) {
+                chats.innerText = "No Chats"
+                chats.style.textAlign = "center"
+                chats.style.display = "block"
                 return
             }
 
@@ -135,7 +217,7 @@ async function getChannels(token) {
 
                 const messageTime = `${hours}:${minutes} ${amOrPm}`
                 appendUserChannelData(userName, messageTime, lastMessage.message, lastMessage.channelId)
-                chatAndLastMessagePanel.style.display = "block"
+                chats.style.display = "block"
             }
         }
     } catch (err) {
@@ -144,6 +226,16 @@ async function getChannels(token) {
 
 }
 
-// async function getAllUsers() {
-
-// }
+async function newFriends(token) {
+    const res = await axios.get('/new-friends', {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    })
+    const { data } = res
+    const newFriends = data.newFriendsList
+    for (let newFriend of newFriends) {
+        console.log(newFriend._id, newFriend.username)
+        newFriendsPanel(newFriend._id, newFriend.username)
+    }
+}
