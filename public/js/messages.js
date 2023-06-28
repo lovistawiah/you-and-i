@@ -34,6 +34,8 @@ addNewFriendBtn.addEventListener("click", (e) => {
 
 /*
 TODO:
+
+? using the on change method of the search box to achieve the chats and new chats page.
 selecting a specific channel (active channel)
 send and receive message
 offline and online indicator 
