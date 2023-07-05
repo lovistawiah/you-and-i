@@ -101,3 +101,12 @@ sendMessageBtn.addEventListener("click", (e) => {
 
 
 
+/*
+TODO:
+1. make the chat panel load from the api
+2. search messages and new contacts
+3. click on a channel, display name, return last fifty messages 
+4. send message to a specific channel.
+5. make window load, if localStorage (youandItoken) is not empty or invalid, display text, sign up  and login button
+
+*/
