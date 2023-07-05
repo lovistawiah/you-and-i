@@ -63,6 +63,8 @@ function displayClickedChannelData() {
     })
 
 }
+// in the css, make the rest add the .user-active class when clicked
+
 function displayNewContacts() {
     if (searchTextBox.value != "" && newContactsSection.innerHTML != "") {
         newContactsSection.addEventListener("click", (e) => {
