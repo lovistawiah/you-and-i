@@ -26,6 +26,9 @@ const userSchema = new mongoose.Schema({
     bio: {
         type: String
     },
+    lastSeen:{
+        type: String
+    },
     channels: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "channel"

@@ -20,19 +20,22 @@ const getMessages = async (req, res) => {
     }
 }
 
-const getMessage = (req, res) => {
-    res.status(200).send("get message")
+// const getMessage = (req, res) => {
+//     res.status(200).send("get message")
 
-}
+// }
 
 const createMessage = async (req, res) => {
     let message = ""
     try {
-        const { channelId } = req.params
+        let { channelId } = req.params
+        //returning the actual text
+        channelId = channelId.split(":")[1]
         //UserId from the userAuth.js
         const { userId } = req.user
         const { message } = req.body
         //check if channel Id exist
+       
         const channelData = await Channel.findById(channelId)
         if (!channelData) {
             res.status(200).send("channel does not exist")
@@ -60,9 +63,26 @@ const deleteMessage = (req, res) => {
     res.status(200).send("delete messages")
 
 }
+const searchMessages = async (req, res) => {
+    // ? search for messages that only belongs to the user logged in or member of a channel
+    try {
+        let { searchValue } = req.params
+        //removing `:` attached to the searchValue text
+        searchValue = searchValue.split(":")[1]
+        console.log("messages", searchValue)
+
+        const searchResult = await Messages.find({ message: { $regex: searchValue, $options: 'i' } }).sort({ dateCreated: 1 })
+        res.status(200).json({ searchResult })
+
+    } catch (err) {
+        console.log(err)
+    }
+
+}
 module.exports = {
-    getMessage,
+    // getMessage,
     getMessages,
     createMessage,
-    deleteMessage
+    deleteMessage,
+    searchMessages
 }

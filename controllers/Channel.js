@@ -128,8 +128,10 @@ const createChannel = async (req, res) => {
             }
         }
 
-        message = "channel add successfully"
-        res.status(200).json({ message })
+        message = "ok"
+        const channel = channelCreated._id.toString()
+        console.log(channel)
+        res.status(200).json({ message, channel })
         return
     } catch (err) {
         message = err.message

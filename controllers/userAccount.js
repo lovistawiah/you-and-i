@@ -1,6 +1,7 @@
-const User = require("../models/Users")
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
+
+const User = require("../models/Users")
 
 // ? signup controller
 const signup = async (req, res) => {
@@ -23,7 +24,11 @@ const signup = async (req, res) => {
         password = await bcrypt.hash(password, 10)
         const account = { firstName, lastName, username, email, password }
         const user = await User.create(account)
-        console.log(user)
+        if (!user) {
+            message = "account cannot be created"
+            res.status(400).json({ message })
+            return
+        }
         message = "ok"
         res.status(200).json({ message })
 
@@ -68,30 +73,46 @@ const login = async (req, res) => {
             res.status(400).json({ message })
             return
         }
-        const token = jwt.sign({ Id: user._id, username: user.username }, process.env.JWT_SECRET, {
+        const token = jwt.sign({ userInfo: { userId: user._id, username: user.username } }
+            , process.env.JWT_SECRET, {
             expiresIn: "30d"
         })
 
         res.status(200).json({ message: "ok", userInfo: { userId: user._id, username: user.username }, token })
         return
+        
     } catch (err) {
+        console.log(err)
         message = "Internal Server Error"
-        res.status(400).json({ message })
+        res.status(500).json({ message })
     }
 }
 const getAllUsers = async (req, res) => {
     try {
-        const users = await User.find({}).select("username")
+        const users = await User.find({})
         res.status(200).json({ users })
     } catch (e) {
         console.log(e)
     }
-    
+
+}
+
+const userInfo = async (req, res) => {
+    try {
+        let message = ""
+        const userId = req.user.userId
+        const userDetails = await User.findById(userId).select("username,bio")
+        message = "ok"
+        res.status(200).json({ userDetails, message })
+    } catch (err) {
+        console.log(err)
+    }
 }
 
 
 module.exports = {
     login,
     signup,
+    userInfo,
     getAllUsers
 }

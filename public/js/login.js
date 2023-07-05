@@ -25,9 +25,11 @@ form.addEventListener("submit", async (e) => {
             showError(message)
             return
         }
-        const token = data.token
+        const { token } = data
+        
+
         localStorage.setItem("youAndItoken", token)
-        window.location.href = '../html/messages.html'
+        window.location.href = '/'
     } catch (err) {
         httpErrorLogger(err, showError)
     }

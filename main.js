@@ -6,11 +6,11 @@ const http = require('http');
 const path = require("path")
 
 //local files
-const messages = require("./messages/index");
+const ioInstance = require("./ioInstance/index");
 const router = require("./routes/routes");
 const connection = require("./db/connection");
 const { authenticUser } = require("./Middleware/userAuth");
-// const { authenticUser } = require("./Middleware/userAuth");
+const { userInfo } = require("./controllers/userAccount");
 
 
 const app = express();
@@ -29,12 +29,9 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 app.use('/api', router)
-app.use('/messages', authenticUser, require("./routes/message"))
-app.use('/channels', authenticUser, require("./routes/channel"))
-app.use('/new-friends', authenticUser, require("./routes/newFriends"))
 app.post('/deleteData', require("./controllers/allData"))
 // ? attaching the server to the messages sockets.
-messages.attach(server)
+ioInstance.attach(server)
 
 
 const PORT = process.env.PORT || 5000

@@ -4,16 +4,239 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="./public/css/style.css">
+    <title>Messages</title>
 </head>
 
 <body>
-    <h1>Homepage</h1>
-    <a href="/public/html/login.html">login</a>
-    <a href="/public/html/signup.html">signup</a>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="./public/js/checkToken.js"></script>
-    <script src="./public/js/index.js"></script>
+    <section class="main-container">
+        <!-- user info panel -->
+        <section class="user-info-panel">
+
+            <!-- chat icon -->
+            <section class="chat-icon icon" id="chat-icon">
+                <img src="./public/svg/messages.svg" alt="">
+            </section>
+            <!-- end of chat icon -->
+
+            <!--settings and user profile -->
+            <section class="settings-user-profile">
+                <section class="settings icon">
+                    <img src="./public/svg/settings.svg" alt="for setting user page appearance">
+                </section>
+
+                <section class="user-profile icon">
+                    <img src="./public/svg/user.svg" alt="">
+                </section>
+
+            </section>
+            <!-- end of settings and user profile -->
+        </section>
+        <!-- end of user info panel -->
+
+        <!-- chats panel -->
+        <section class="chats-panel">
+            <section class="chat-logo-name">
+                Chats
+            </section>
+            <section class="searchbox">
+                <input type="text" id="search-textbox" placeholder="search message or new contact...">
+            </section>
+            <section class="chats">
+                <!-- chats sub panel -->
+                <section class="chats-sub-panel">
+                    <!-- this holds messages,new contacts and groups div -->
+                    <!-- appends all existing chats -->
+                    <section class="chat-messages">
+
+                        <a class="chat" href="#">
+                            <!-- always hide the chat-id -->
+                            <section class="chat-id"></section>
+                            <!-- user-chat-pic -->
+                            <section class="user-chat-pic">
+                                <!-- add image here -->
+                                <img src="./public/img/loginsignup.png" alt="">
+                            </section>
+                            <!-- chat username -->
+                            <section class="chat-username">
+                                <!-- add chat username -->
+                                Lovis
+                            </section>
+                            <!-- chat message -->
+                            <section class="chat-last-message">
+                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident culpa cupiditate
+                                beatae corrupti. Delectus nemo et deserunt iste doloribus possimus, reprehenderit
+                                itaque, eaque accusamus nulla dolor ut molestias rem alias.
+                            </section>
+                            <!-- chat time -->
+                            <section class="chat-time">
+                                <!-- add chat time -->
+                                4:55 pm
+                            </section>
+                        </a>
+                        <a class="chat" href="#">
+                            <!-- always hide the chat-id -->
+                            <section class="chat-id"></section>
+                            <!-- user-chat-pic -->
+                            <section class="user-chat-pic">
+                                <!-- add image here -->
+                                <img src="./public/img/loginsignup.png" alt="">
+                            </section>
+                            <!-- chat username -->
+                            <section class="chat-username">
+                                <!-- add chat username -->
+                                Lovis
+                            </section>
+                            <!-- chat message -->
+                            <section class="chat-last-message">
+                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Provident culpa cupiditate
+                                beatae corrupti. Delectus nemo et deserunt iste doloribus possimus, reprehenderit
+                                itaque, eaque accusamus nulla dolor ut molestias rem alias.
+                            </section>
+                            <!-- chat time -->
+                            <section class="chat-time">
+                                <!-- add chat time -->
+                                4:55 pm
+                            </section>
+                        </a>
+                    </section>
+                    <!-- end of existing chats -->
+
+                    <!-- appending all new contacts -->
+                    <section class="new-contacts">
+                        <h3 class="new-chat-text">New Contacts</h3>
+                        <a class="new-chat" href="#">
+                            <!-- always hide new chat id -->
+                            <section class="new-chat-id">
+                                <!--add id -->
+                            </section>
+                            <section class="new-chat-profile-pic">
+                                <!-- new chat profile pic -->
+                                <img src="./public/img/favicon.png" alt="">
+                            </section>
+                            <section class="new-chat-name">
+                                <!-- new chat username -->
+                                Beatrice
+                            </section>
+                        </a>
+                        <a class="new-chat" href="#">
+                            <!-- always hide new chat id -->
+                            <section class="new-chat-id">
+                                <!--add id -->
+                            </section>
+                            <section class="new-chat-profile-pic">
+                                <!-- new chat profile pic -->
+                                <img src="./public/img/favicon.png" alt="">
+                            </section>
+                            <section class="new-chat-name">
+                                <!-- new chat username -->
+                                Beatrice
+                            </section>
+                        </a>
+
+                    </section>
+                    <!-- end of new contacts -->
+
+                    <!-- appending all groups -->
+                    <section class="groups">
+                        <!-- example group structure -->
+                        <h3 class="group-chat-text">Groups</h3>
+                        <a class="group" href="#">
+                            <!-- always hide group id -->
+                            <section class="group-id">
+                                <!-- add group id -->
+                            </section>
+                            <section class="group-profile-pic">
+                                <img src="./public/img/favicon.png" alt="">
+                            </section>
+                            <section class="group-name">
+                                House3 -dbee
+                            </section>
+                            <section class="group-last-message">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem nesciunt quam rem
+                                officia adipisci corporis obcaecati, nam hic dicta enim cupiditate magni blanditiis,
+                                unde
+                                quos.
+                            </section>
+                            <section class="group-last-message-time">
+                                4:55 pm
+                            </section>
+                        </a>
+                    </section>
+                    <!-- end of groups -->
+                </section>
+
+            </section>
+            <!-- end of chats sub panel -->
+        </section>
+        <!-- end of chats panel -->
+
+        <!-- messages panel -->
+        <section class="messages-panel">
+            <!-- selected channel info -->
+            <section class="selected-channel">
+
+                <section class="username-status">
+                    <section class="selected-channel-name">
+                        Lovis
+                    </section>
+                    <section class="selected-channel-status">
+                        Online
+                    </section>
+                </section>
+                <section class="selected-channel-info icon">
+                    <img src="./public/svg/info.svg" alt="">
+                </section>
+            </section>
+            <!-- messages box -->
+            <section class="messages">
+                <section class="date">Today</section>
+                <!-- a typical example -->
+                <section class="message">
+                    <!-- show sender name if it is group chat -->
+                    <section class="group-message-sender-name">
+                        -Lovis
+                    </section>
+                    <section class="message-content">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius blanditiis itaque tempore neque
+                        provident repudiandae, impedit, molestiae modi maiores obcaecati ipsa? Perferendis distinctio
+                        temporibus officiis est mollitia, deserunt nemo corporis.
+                    </section>
+                    <section class="message-time">
+                        4:50 pm
+                    </section>
+                </section>
+                <section class="message sender">
+                    <!-- show sender name if it is group chat -->
+                    <section class="group-message-sender-name">
+                        -Lovis
+                    </section>
+                    <section class="message-content">
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eius blanditiis itaque tempore neque
+                        provident repudiandae, impedit, molestiae modi maiores obcaecati ipsa? Perferendis distinctio
+                        temporibus officiis est mollitia, deserunt nemo corporis.
+                    </section>
+                    <section class="message-time">
+                        4:50 pm
+                    </section>
+                </section>
+            </section>
+            <section class="send-message">
+                <form class="send-message-form">
+                    <input type="text" id="textbox" class="textbox" placeholder="enter message">
+                    <button class="submit" id="submit">Send</button>
+                </form>
+            </section>
+        </section>
+        <!-- end of messages panel -->
+
+    </section>
+    <!-- add all scripts belonging to the messages client folder -->
+    <script src="./public/js/checkToken.js"></scripts>
+
+<script src="./public/js//messages/index.js"></script>
+    <script src="./public/js//messages/compareDate.js"></script>
+    <script src="./public/js//messages/controller.js"></script>
 </body>
 
 </html>
