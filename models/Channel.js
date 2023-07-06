@@ -1,19 +1,35 @@
 const mongoose = require('mongoose');
-const privateChannelSchema = require('./PrivateChannel');
-const groupChannelSchema = require('./groupChannel');
 
 
 const channelSchema = new mongoose.Schema({
-    privateChannel: {
-        type: privateChannelSchema
+    channelType: {
+        type: String,
+        enum: ["private", "group"],
+        required: true,
+        default: "private",
     },
-    groupChannel: {
-        type: groupChannelSchema
-    },
-    messages: [{
+    members: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: "message"
-    }]
+        required: true,
+        ref: "user"
+    }],
+    Admin: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "user"
+    }],
+    groupName: {
+        type: String
+    },
+    avatar: {
+        type: String
+    },
+    bio: {
+        type: String
+    },
+    isBlocked: {
+        type: Boolean,
+        default: false,
+    }
 }, { timestamps: true });
 const Channel = mongoose.model('channel', channelSchema);
 

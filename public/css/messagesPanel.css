@@ -1,0 +1,123 @@
+/* messages panel */
+.messages-panel {
+    grid-column: 3/4;
+    display: grid;
+    grid-template-rows: 0.45fr auto 2fr;
+    grid-template-areas:
+        "info"
+        "messages"
+        "form";
+}
+
+.selected-channel {
+    grid-area: info;
+    display: flex;
+    height: 120px;
+    justify-content: space-between;
+    padding: 0 20px;
+    border-bottom: var(--main-border);
+}
+
+.username-status,
+.selected-channel-info {
+    margin-top: auto;
+    padding-bottom: 5px;
+}
+
+.selected-channel-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1b1a1a;
+}
+
+.selected-channel-status {
+    color: #444242;
+    font-size: 0.75rem;
+    padding-left: 3px;
+}
+
+.date {
+    margin: 10px auto;
+    font-size: 0.85rem;
+    color: rgb(119, 118, 118);
+    font-weight: bold;
+    height: 24px;
+    text-align: center;
+}
+
+.new-app {
+    text-align: center;
+    margin: auto;
+}
+
+.new-app h4,
+.new-app h3 {
+    font-weight: normal;
+}
+
+.new-app button {
+    margin-top: 10px;
+    width: 100px;
+}
+
+.new-app  a {
+    text-decoration: none;
+    color: white;
+    cursor: default;
+}
+
+.messages {
+    grid-area: messages;
+    padding-left: 20px;
+    padding-right: 20px;
+    /* making the section scrollable when overflows */
+    height: calc(100vh - 200px);
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+
+.message {
+    min-width: 6rem;
+    max-width: 30rem;
+    background-color: #faf5f5;
+    color: #111111;
+    border-radius: 7px;
+    align-self: flex-start;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.group-message-sender-name,
+.message-time {
+    text-align: right;
+}
+
+.sender {
+    align-self: flex-end;
+    background-color: var(--sender-color);
+    color: rgb(241, 235, 235);
+}
+
+
+.send-message {
+    grid-area: form;
+    visibility: hidden;
+    position: fixed;
+    bottom: 0;
+    height: 80px;
+    width: 100%;
+}
+
+.send-message-form {
+    margin: 20px;
+    width: 70%;
+    height: 50px;
+    background-color: rgb(247, 246, 246);
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* end of messages panel */

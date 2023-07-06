@@ -1,6 +1,12 @@
 const Channel = require("../models/Channel")
 const User = require("../models/Users")
 
+const channelEvents = {
+    displayMessages: "displayMessages",
+    addNewChat: "addNewChat",
+    search: "search"
+}
+
 //TODO:
 // GET CHANNEL AND LAST MESSAGE
 //GET SINGLE CHANNEL
@@ -9,16 +15,16 @@ const User = require("../models/Users")
 
 
 
-const getChannels = async (req, res) => {
+const getChannels = async (socket) => {
     let message = ""
     //?userId fetches all channels (private && public) belonging to the logged user
     try {
         //userId comes the middleware userAuth.js
-        const { userId } = req.user
+        const { userId } = socket.decoded
         const userInfo = await User.findOne({ _id: userId }).populate([{
             path: 'channels',
             populate: {
-                path: 'privateChannel.members',
+                path: 'members',
                 model: 'user'
             }
         }, {
@@ -28,15 +34,12 @@ const getChannels = async (req, res) => {
                 model: 'message'
             }
         }]).select(["channels"]).lean()
-        //channel's last message 
-        // const channelName = userInfo
-
         const userNameAndLastMessage = []
         const channels = userInfo.channels
         channels.forEach(channel => {
             let userName
             // ? future: check for members length or check group channel name
-            const memberArr = channel.privateChannel.members.filter(member => {
+            const memberArr = channel.members.filter(member => {
                 // return the other user if a particular user is logged in
                 return member._id != req.user.userId
             })
@@ -51,11 +54,8 @@ const getChannels = async (req, res) => {
                 userName,
                 lastMessage
             }
-
             userNameAndLastMessage.push(channelsInfo)
         })
-        message = "ok"
-        res.status(200).json({ message, userNameAndLastMessage })
     } catch (err) {
         message = err.message
         console.log(message)
@@ -89,12 +89,10 @@ const createChannel = async (req, res) => {
         // for private channels
 
         if (members.length == 2) {
-            const channels = await Channel.find({}).populate({
-                path: 'privateChannel'
-            })
+            const channels = await Channel.find({})
 
             for (let i = 0; i < channels.length; i++) {
-                const MembersArray = channels[i].privateChannel.members
+                const MembersArray = channels[i].members
                 ChannelExists = members.toString() == MembersArray.toString()
             }
         }
@@ -111,12 +109,8 @@ const createChannel = async (req, res) => {
             res.status(400).send(message)
             return
         } else {
-            // creates private channel
-            channelCreated = await Channel.create({
-                privateChannel: {
-                    members
-                }
-            })
+            
+            channelCreated = await Channel.create({ members })
         }
 
         for (let i = 0; i < members.length; i++) {
