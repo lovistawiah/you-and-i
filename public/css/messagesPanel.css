@@ -23,6 +23,9 @@
     margin-top: auto;
     padding-bottom: 5px;
 }
+.selected-channel-info img{
+    cursor: pointer;
+}
 
 .selected-channel-name {
     font-size: 1.2rem;

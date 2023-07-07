@@ -10,12 +10,12 @@ function compareDate(lastSeen) {
         const lastSeenDate = new Date(lastSeen)
         const date = new Date()
 
-        console.log(lastSeenDate)
+
         const monthNumber = lastSeenDate.getDate()
         const dayNumber = lastSeenDate.getDay()
 
         let hours = lastSeenDate.getHours()
-        const minutes = lastSeenDate.getMinutes()
+        let minutes = lastSeenDate.getUTCMinutes()
         const yearNumber = lastSeenDate.getFullYear()
 
         amPm = hours >= 12 ? 'pm' : 'am'
@@ -30,8 +30,7 @@ function compareDate(lastSeen) {
             lastSeenDate.getDay() == date.getDay() &&
             lastSeenDate.getFullYear() == date.getFullYear()
         ) {
-            dateText = "today"
-            lastSeenDateMessage = `${dateText} at ${timeText}`
+            lastSeenDateMessage = `${dateText} a ${timeText}`
         } else {
             lastSeenDateMessage = `last seen: ${dayNumber}/${monthNumber}/${yearNumber} at ${timeText}`
         }
@@ -39,5 +38,23 @@ function compareDate(lastSeen) {
         return lastSeenDateMessage
 
     }
+
+}
+
+function selectedChannelDate(createdAt) {
+    let amPm = ""
+    const date = new Date(createdAt)
+    let hours = date.getHours()
+    let minutes = date.getMinutes()
+
+    amPm = hours >= 12 ? 'pm' : 'am'
+    if (hours >= 12) {
+        hours = Math.floor(hours - 12)
+    }
+    minutes = minutes.toString()
+    if (minutes.length == 1) {
+        minutes = "0" + minutes
+    }
+    return `${hours}:${minutes} ${amPm}`
 
 }

@@ -9,8 +9,6 @@ const path = require("path")
 const ioInstance = require("./ioInstance/index");
 const router = require("./routes/routes");
 const connection = require("./db/connection");
-const { authenticUser } = require("./Middleware/userAuth");
-const { userInfo } = require("./controllers/userAccount");
 
 
 const app = express();

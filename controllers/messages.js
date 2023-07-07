@@ -1,12 +1,22 @@
 const Channel = require("../models/Channel")
 const Messages = require("../models/Messages")
+const { createChannel } = require("./Channel")
+
+const messageEvents = {
+    displaySelectedChannelMessages: "displaySelectedChannelMessages",
+    sendMessage: "sendMessage",
+    deleteMessage: "deleteMessage",
+    offlineOnlineIndicator: "offlineOnlineIndicator",
+    receiveMessage: "receiveMessage"
+}
+
 //TODO: 
 // GET ALL MESSAGES USING SENDER ID OR LOGGED IN USER ID
 // GET SINGLE MESSAGE
 // DELETE MESSAGE 
 // POST MESSAGE 
 
-const getMessages = async (req, res) => {
+const getMessages = async () => {
 
     //using the channelId to retrieve the all the messages in a particular channel
     try {
@@ -25,37 +35,35 @@ const getMessages = async (req, res) => {
 
 // }
 
-const createMessage = async (req, res) => {
-    let message = ""
-    try {
-        let { channelId } = req.params
-        //returning the actual text
-        channelId = channelId.split(":")[1]
-        //UserId from the userAuth.js
-        const { userId } = req.user
-        const { message } = req.body
-        //check if channel Id exist
-       
-        const channelData = await Channel.findById(channelId)
-        if (!channelData) {
-            res.status(200).send("channel does not exist")
+const createMessage = (socket) => {
+    socket.on(messageEvents.sendMessage, async ({ chatId, message }) => {
+
+        try {
+            const { userId } = socket.decoded
+            // chatId is the other user's Id
+            let members = [userId, chatId]
+            const channelId = await createChannel(members)
+            console.log(channelId)
+
+            if (typeof channelId == "string") {
+                console.log(channelId)
+                return
+            }
+            const messageCreated = await Messages.create({
+                channelId,
+                sender: userId,
+                message
+            })
+
+            if (messageCreated) {
+                console.log(messageCreated)
+            }
+            await Channel.findByIdAndUpdate(channelId, { $push: { messages: messageCreated._id } })
             return
+        } catch (err) {
+            console.log(err)
         }
-        console.log(channelData)
-        const messageCreated = await Messages.create({
-            sender: userId,
-            channelId,
-            message,
-        })
-        const id = channelId
-        const updateChannelData = await Channel.findByIdAndUpdate(id, { $push: { messages: messageCreated._id } }, { new: true })
-        console.log(updateChannelData, messageCreated)
-        res.status(200).send(messageCreated)
-        return
-    } catch (err) {
-        message = err.message
-        res.status(500).send(message)
-    }
+    })
 
 }
 

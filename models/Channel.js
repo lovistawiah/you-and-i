@@ -13,13 +13,6 @@ const channelSchema = new mongoose.Schema({
         required: true,
         ref: "user"
     }],
-    Admin: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "user"
-    }],
-    groupName: {
-        type: String
-    },
     avatar: {
         type: String
     },
@@ -29,7 +22,11 @@ const channelSchema = new mongoose.Schema({
     isBlocked: {
         type: Boolean,
         default: false,
-    }
+    },
+    messages: [{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'message'
+    }]
 }, { timestamps: true });
 const Channel = mongoose.model('channel', channelSchema);
 

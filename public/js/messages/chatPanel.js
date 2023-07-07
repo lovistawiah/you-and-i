@@ -3,18 +3,18 @@ const chatMessages = document.querySelector(".chat-messages")
 const newContactsSection = document.querySelector(".new-contacts")
 const groupsSection = document.querySelector(".groups")
 
+const sendMessageArea = document.querySelector(".send-message")
+
 const channelEvents = {
-    displayMessages: "displayMessages",
+    channelAndLastMessage: "channelAndLastMessage",
     addNewChat: "addNewChat",
     search: "search",
     displayNewChats: "displayNewChats"
 }
 
-const displayNewChats = (socket) => {
-    socket.on(channelEvents.displayNewChats, (data) => {
-        console.log(data)
-    })
-}
+displayClickedChannelData()
+
+
 // ? not appearing on the web page.
 const searchMessageOrNewContact = (socket) => {
     searchTextBox.addEventListener("keyup", (e) => {
@@ -51,9 +51,9 @@ function displayClickedChannelData() {
         const chatName = chat.children[2].innerText
 
         //when a channel is selected, emitted and received from the api
-        selectedChannelName.textContent = chatName
-        selectedChannelStatus.textContent = "online"
-        selectedChannelInfo.style.visibility = "visible"
+        selectedChannel(chatName, "online")
+
+
     })
 
 }
@@ -61,19 +61,19 @@ function displayClickedChannelData() {
 // in the css, make the rest add the .user-active class when clicked
 function displayNewContacts(socket) {
     socket.on(channelEvents.displayNewChats, (data) => {
-        console.log(data)
         addNewChats(data)
         if (searchTextBox.value != "" && newContactsSection.children.length > 1) {
             newContactsSection.addEventListener("click", (e) => {
                 const newContact = e.target
-                console.log(newContact)
+                newContact.classList.add("chat-active")
+                const newChatName = newContact.children[2].innerText
+                selectedChannel(newChatName, "online")
             })
         }
     })
 }
 
 function displayGroups() {
-
     if (searchTextBox.value != "" && groupsSection.innerHTML != "") {
         groupsSection.addEventListener("click", (e) => {
             const group = e.target
@@ -85,48 +85,69 @@ function displayGroups() {
 
 
 
-const oldChats = () => {
-    const newChat = document.createElement("a")
-    newChat.href = "#"
-    newChat.className = "chat"
-    const cloneNewChat = newChat.cloneNode()
-
-    const newChatId = document.createElement("section")
-    newChatId.className = "new-chat-id"
-    const cloneNewChatId = newChatId.cloneNode()
-
+const oldChats = (socket) => {
+    const chat = document.createElement("a")
+    const chatId = document.createElement("section")
     const userChatPic = document.createElement("section")
-    userChatPic.className = "user-chat-pic"
-    const cloneUserChatPic = userChatPic.cloneNode()
-
     const userImg = document.createElement("img")
-    userImg.src = ""
-    const cloneUserImg = userImg.cloneNode()
-    cloneUserChatPic.appendChild(userImg)
-
-
     const userName = document.createElement("section")
-    userName.className = "chat-username"
-    const cloneUserName = userName.cloneNode()
-
     const chatLastMessage = document.createElement("section")
-    chatLastMessage.className = "chat-last-message"
-    const cloneChatLastMessage = chatLastMessage.cloneNode()
-
-
     const chatTime = document.createElement("section")
+
+
+    chat.href = "#"
+    chat.className = "chat"
+    chatId.className = "new-chat-id"
+    chatId.hidden = true
+    userChatPic.className = "user-chat-pic"
+    userImg.src = "../public/img/signup-image.jpeg"
+    userChatPic.appendChild(userImg)
+    userName.className = "chat-username"
+    chatLastMessage.className = "chat-last-message"
     chatTime.className = "chat-time"
-    const cloneChatTime = chatTime
 
-    newChat.appendChild(cloneNewChatId, cloneUserChatPic, cloneUserName, cloneChatLastMessage, cloneChatTime)
 
-    return newChat
+    socket.on(channelEvents.channelAndLastMessage, (data) => {
+        chatMessages.innerHTML = ""
+        if (data && data.length > 0) {
+            for (let channelAndLastMessage of data) {
+                const { username, lastMessage } = channelAndLastMessage
+
+                const cloneChat = chat.cloneNode()
+                const cloneChatId = chatId.cloneNode()
+                cloneChatId.textContent = lastMessage.channelId
+
+                const cloneUserChatPic = userChatPic.cloneNode()
+                cloneUserChatPic.appendChild(userImg)
+
+                const cloneUserName = userName.cloneNode()
+                cloneUserName.textContent = username
+
+                const cloneChatLastMessage = chatLastMessage.cloneNode()
+                cloneChatLastMessage.textContent = lastMessage.message
+
+                const cloneChatTime = chatTime.cloneNode()
+                cloneChatTime.textContent = selectedChannelDate(lastMessage.createdAt)
+
+                cloneChat.append(cloneChatId, cloneUserChatPic, cloneUserName, cloneChatLastMessage, cloneChatTime)
+                chatMessages.appendChild(cloneChat)
+
+            }
+
+        }
+
+    })
 }
 
 
 const addNewChats = (newChats) => {
+    const newChatText = document.createElement("section")
+    newChatText.className = "new-chat-text"
+    newChatText.textContent = "New Contacts"
+
     const newChat = document.createElement("a")
-    newChat.href = "#"
+    // newChat.href = "#"
+    newChat.className = "new-chat"
 
     const newChatId = document.createElement("section")
     newChatId.className = "new-chat-id"
@@ -139,26 +160,40 @@ const addNewChats = (newChats) => {
 
     const newChatName = document.createElement("section")
     newChatName.className = "new-chat-name"
+    console.log(newChats)
+    if (newChats.length > 0) {
+        newContactsSection.innerHTML = ""
+        newContactsSection.appendChild(newChatText)
 
-    for (let newUser of newChats) {
-        const cloneNewChat = newChat.cloneNode()
-        const cloneNewChatId = newChatId.cloneNode()
-        cloneNewChatId.textContent = newUser._id
+        for (let newUser of newChats) {
+            const cloneNewChat = newChat.cloneNode()
+            const cloneNewChatId = newChatId.cloneNode()
+            cloneNewChatId.textContent = newUser.userId
 
-        const cloneNewChatProfilePic = newChatProfilePic.cloneNode()
-        const cloneNewUserImg = newUserImg.cloneNode()
-        cloneNewUserImg.src = "../public/img/loginsignup.png"
-        cloneNewChatProfilePic.appendChild(cloneNewUserImg)
+            const cloneNewChatProfilePic = newChatProfilePic.cloneNode()
+            const cloneNewUserImg = newUserImg.cloneNode()
+            cloneNewUserImg.src = "../public/img/loginsignup.png"
+            cloneNewChatProfilePic.appendChild(cloneNewUserImg)
 
-        const cloneNewChatName = newChatName.cloneNode()
-        cloneNewChat.appendChild(cloneNewChatId, cloneNewChatProfilePic, cloneNewChatProfilePic, cloneNewChatName)
+            const cloneNewChatName = newChatName.cloneNode()
+            cloneNewChatName.textContent = newUser.username
+            cloneNewChat.append(cloneNewChatId, cloneNewChatProfilePic, cloneNewChatProfilePic, cloneNewChatName)
+            newContactsSection.append(cloneNewChat)
+            console.log(newContactsSection)
+        }
 
-        newContactsSection.appendChild(cloneNewChat)
+        newContactsSection.style.display = "block"
+    } else {
+        newContactsSection.style.display = "none"
     }
 
 }
 
 const groups = () => {
+    const groupChatText = document.createElement("section")
+    groupChatText.className = "group-chat-text"
+    groupChatText.textContent = "Groups"
+    groupsSection.appendChild(groupChatText)
     const group = document.createElement("a")
     group.className = "group"
     const cloneGroup = group.cloneNode()
@@ -196,3 +231,20 @@ const groups = () => {
 
     return group
 }
+
+
+function selectedChannel(chatName, onlineStatus) {
+    if (chatName && onlineStatus) {
+        selectedChannelName.textContent = chatName
+        selectedChannelStatus.textContent = onlineStatus
+        selectedChannelInfo.style.visibility = "visible"
+        //make the send button and input visible
+        sendMessageArea.style.visibility = "visible"
+        //removes it the messages class element ! from the index.js
+        channelSelect.remove()
+    }
+
+}
+
+
+// FIXME: when you query from the database and the value is not in the database do not return the appended element before clearing.

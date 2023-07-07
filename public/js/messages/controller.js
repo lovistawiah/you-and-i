@@ -1,11 +1,6 @@
 
 const chatsPanel = document.querySelector(".chats")
 
-const sendMessageTextBox = document.getElementById("textbox")
-const sendMessageBtn = document.getElementById("submit")
-
-
-
 const selectedChannelName = document.querySelector(".selected-channel-name")
 const selectedChannelStatus = document.querySelector(".selected-channel-status")
 const selectedChannelInfo = document.querySelector(".selected-channel-info")
@@ -18,23 +13,13 @@ window.addEventListener("DOMContentLoaded", (e) => {
 
 
 window.addEventListener("load", (e) => {
-    chatsPanel.innerHTML = "No Chats"
     selectedChannelName.textContent = "Select a message"
     selectedChannelStatus.textContent = ""
     selectedChannelInfo.style.visibility = "hidden"
 })
 
 
-sendMessageBtn.addEventListener("click", (e) => {
-    e.preventDefault()
-    let message = sendMessageTextBox
 
-    if (message.value != "") {
-        // emit message,channel, sender
-    }
-    message.value = ""
-
-})
 
 
 

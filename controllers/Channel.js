@@ -2,10 +2,12 @@ const Channel = require("../models/Channel")
 const User = require("../models/Users")
 
 const channelEvents = {
-    displayMessages: "displayMessages",
+    channelAndLastMessage: "channelAndLastMessage",
     addNewChat: "addNewChat",
-    search: "search"
+    search: "search",
+    displayNewChats: "displayNewChats"
 }
+
 
 //TODO:
 // GET CHANNEL AND LAST MESSAGE
@@ -17,7 +19,6 @@ const channelEvents = {
 
 const getChannels = async (socket) => {
     let message = ""
-    //?userId fetches all channels (private && public) belonging to the logged user
     try {
         //userId comes the middleware userAuth.js
         const { userId } = socket.decoded
@@ -34,135 +35,141 @@ const getChannels = async (socket) => {
                 model: 'message'
             }
         }]).select(["channels"]).lean()
+        console.log(userInfo)
         const userNameAndLastMessage = []
+
         const channels = userInfo.channels
         channels.forEach(channel => {
-            let userName
+
+            if (channel.length == 0) {
+                console.log("no channel")
+                return
+            }
+
+            let username
             // ? future: check for members length or check group channel name
             const memberArr = channel.members.filter(member => {
                 // return the other user if a particular user is logged in
-                return member._id != req.user.userId
+                return member._id.toString() != userId
             })
             //getting the last message of the channel whether private or public
             // check for undefined in client
             const lastMessage = channel.messages.pop()
             const usernames = memberArr.map(member => member.username)
 
-            userName = usernames[0]
+            username = usernames[0]
 
             const channelsInfo = {
-                userName,
+                username,
                 lastMessage
             }
             userNameAndLastMessage.push(channelsInfo)
+            socket.emit(channelEvents.channelAndLastMessage, userNameAndLastMessage)
         })
+
+
     } catch (err) {
         message = err.message
         console.log(message)
-        res.status(500).send(message)
     }
 }
 
 const getChannel = async (req, res) => {
-    // const { Id } = req.params
-    // const oneChannel = await Channel.findById(Id)
     res.status(200).send("oneChannel")
 }
 
 
-const createChannel = async (req, res) => {
-    let message = ""
-    //pass created channel info this var 👇
-    let channelCreated
-    let ChannelExists
+const createChannel = async (members) => {
     try {
-        let { member, channelName } = req.body
-        //using the userId stored in the 
-        const userId = req.user.userId
-        let members = [userId, member]
-
-        const users = await User.find({ _id: { $in: members } }).select("_id").lean()
-        members = []
-        users.filter((user) => {
-            members.push(user._id)
-        })
-        // for private channels
-
         if (members.length == 2) {
-            const channels = await Channel.find({})
+            const channel = await Channel.findOne({ members: { $in: members } })
+            if (channel) {
+                return channel._id
+            } else {
+                const channel = await Channel.create({ members })
+                members.forEach(async memberId => {
+                    await User.findByIdAndUpdate(memberId, { $push: { channels: channel._id } })
 
-            for (let i = 0; i < channels.length; i++) {
-                const MembersArray = channels[i].members
-                ChannelExists = members.toString() == MembersArray.toString()
+                })
+                return channel._id
             }
         }
-
-        if (ChannelExists) {
-            message = "Channel already exists"
-            res.status(400).json({ message })
-            return
-        }
-
-        if (members.length != 2 & !channelName) {
-            //future use
-            message = "group name not provided"
-            res.status(400).send(message)
-            return
-        } else {
-            
-            channelCreated = await Channel.create({ members })
-        }
-
-        for (let i = 0; i < members.length; i++) {
-            const id = members[i]
-            const updateUserChannel = await User.findByIdAndUpdate({ _id: id }, { $push: { channels: channelCreated._id } }, { new: true }).lean()
-            if (!updateUserChannel) {
-                res.status(400).send("user not found")
-                return
-            }
-        }
-
-        message = "ok"
-        const channel = channelCreated._id.toString()
-        console.log(channel)
-        res.status(200).json({ message, channel })
-        return
     } catch (err) {
-        message = err.message
-        res.status(500).json({ message })
+        console.log(err)
     }
 }
-const updateChannel = (req, res) => {
-    res.status(200).send("update a channel")
-    //only update group chat  --future use--
-    //change anything about the user should be done on the user.
+
+// return a list of new users who are not added to a channel for the user logged in
+const newChannel = (socket) => {
+    socket.on(channelEvents.search, async (searchValue) => {
+        const { userId } = socket.decoded
+        const newFriends = []
+        let newFriend
+        try {
+            let users = await User.find({ username: { $regex: searchValue, $options: 'i' } }).populate([{
+                path: 'channels'
+            }]).select(["username", "channels"])
+            users.forEach(user => {
+                if (user.channels.length == 0 && user._id != userId) {
+                    let newFriend = {
+                        userId: user._id,
+                        username: user.username
+                    }
+                    newFriends.push(newFriend)
+
+                } else if (user.channels.length > 0) {
+                    user.channels.forEach(channel => {
+                        const members = channel.members
+                        if (!members.includes(userId) && user._id != userId) {
+                            newFriend = {
+                                userId: user._id,
+                                username: user.username
+                            }
+                            newFriends.push(newFriend)
+                        }
+                    })
+                }
+
+            })
+            // console.log(newFriends)
+            socket.emit(channelEvents.displayNewChats, newFriends)
+        } catch (err) {
+            console.log(err)
+        }
+    })
 
 }
 
-const deleteChannel = async (req, res) => {
+// const updateChannel = (req, res) => {
+//     res.status(200).send("update a channel")
+//     //only update group chat  --future use--
+//     //change anything about the user should be done on the user.
 
-    let message = ""
-    //when a user request to delete a group channel, remove the user's Id and modify the user's account to also remove the channel Id from the user's channel list
-    try {
+// }
 
-        // const { Id } = req.params
-        // const deletedChannel = await Channel.findByIdAndDelete(Id)
-        // res.status(200).send(deletedChannel)
-        message = "delete not aba"
-        res.status(200).send()
-    } catch (err) {
-        message = err.message
-        res.status(500).send(message)
-    }
+// const deleteChannel = async (req, res) => {
 
-}
+//     let message = ""
+//     //when a user request to delete a group channel, remove the user's Id and modify the user's account to also remove the channel Id from the user's channel list
+//     try {
+
+//         // const { Id } = req.params
+//         // const deletedChannel = await Channel.findByIdAndDelete(Id)
+//         // res.status(200).send(deletedChannel)
+//         message = "delete not aba"
+//         res.status(200).send()
+//     } catch (err) {
+//         message = err.message
+//         res.status(500).send(message)
+//     }
+
+// }
 
 
 
 module.exports = {
     getChannel,
+    newChannel,
     getChannels,
     createChannel,
-    updateChannel,
-    deleteChannel
 }

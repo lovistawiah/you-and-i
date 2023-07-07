@@ -17,6 +17,7 @@ const authenticateSocket = async (socket, next) => {
         const userId = payload.userInfo.userId
         const findUser = await User.findById(userId)
         if (!findUser) {
+            console.log(findUser)
             return new Error("user does not exist")
         }
         
