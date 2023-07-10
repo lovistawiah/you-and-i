@@ -16,9 +16,6 @@ const channelSchema = new mongoose.Schema({
     avatar: {
         type: String
     },
-    bio: {
-        type: String
-    },
     isBlocked: {
         type: Boolean,
         default: false,

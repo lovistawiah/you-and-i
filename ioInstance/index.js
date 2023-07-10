@@ -1,28 +1,29 @@
 const io = require("socket.io")()
 const { authenticateSocket } = require("../Middleware/userAuth")
-const { getChannels, newChannel } = require("../controllers/Channel")
-const { createMessage } = require("../controllers/messages")
+const { getChannels, newChannel, onlineIndicator, offlineIndicator } = require("../controllers/Channel")
+const { createMessage, getMessages } = require("../controllers/messages")
+
 
 
 io.use(authenticateSocket)
 io.on("connection", (socket) => {
-    console.log(socket.decoded.userId, "connected")
-    console.log(socket.decoded.username)
-
-    socket.on("disconnecting", () => {
-        console.log(socket.decoded.username, "disconnecting")
-    })
+    socket.join(socket.decoded.userId)
+    onlineIndicator(socket, io)
+    offlineIndicator(io, socket)
 })
 
 
 io.on("connection", (socket) => {
+
     //from controller/messages.js
-    createMessage(socket)
+    createMessage(io, socket)
+    getMessages(socket)
 })
 io.on("connection", (socket) => {
     //from controller/channel.js
     getChannels(socket)
     newChannel(socket)
+
 })
 
 

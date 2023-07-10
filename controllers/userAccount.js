@@ -1,7 +1,8 @@
 const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
-
 const User = require("../models/Users")
+
+
 
 // ? signup controller
 const signup = async (req, res) => {
@@ -9,7 +10,6 @@ const signup = async (req, res) => {
     try {
         let { firstName, lastName, username, email, password, confirmPassword } = req.body
         if (!firstName || !lastName || !username || !email || !password || !confirmPassword) {
-            console.log(req.body)
             message = "all fields are required"
             res.status(400).json({ message })
             return
@@ -80,9 +80,8 @@ const login = async (req, res) => {
 
         res.status(200).json({ message: "ok", userInfo: { userId: user._id, username: user.username }, token })
         return
-        
+
     } catch (err) {
-        console.log(err)
         message = "Internal Server Error"
         res.status(500).json({ message })
     }
@@ -110,9 +109,10 @@ const userInfo = async (req, res) => {
 }
 
 
+
 module.exports = {
     login,
     signup,
     userInfo,
-    getAllUsers
+    getAllUsers,
 }

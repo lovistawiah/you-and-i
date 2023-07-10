@@ -7,7 +7,10 @@ const channelEvents = {
     search: "search",
     displayNewChats: "displayNewChats"
 }
-
+const userEvents = {
+    offline: "offline",
+    online: "online"
+}
 
 //TODO:
 // GET CHANNEL AND LAST MESSAGE
@@ -35,18 +38,18 @@ const getChannels = async (socket) => {
                 model: 'message'
             }
         }]).select(["channels"]).lean()
-        console.log(userInfo)
+
         const userNameAndLastMessage = []
 
         const channels = userInfo.channels
         channels.forEach(channel => {
 
             if (channel.length == 0) {
-                console.log("no channel")
+
                 return
             }
 
-            let username
+
             // ? future: check for members length or check group channel name
             const memberArr = channel.members.filter(member => {
                 // return the other user if a particular user is logged in
@@ -54,13 +57,25 @@ const getChannels = async (socket) => {
             })
             //getting the last message of the channel whether private or public
             // check for undefined in client
-            const lastMessage = channel.messages.pop()
-            const usernames = memberArr.map(member => member.username)
+            let lastMessage = channel.messages.pop()
+            //modifying the last message
+            lastMessage = {
+                channelId: lastMessage.channelId,
+                message: lastMessage.message,
+                createdAt: lastMessage.createdAt,
+                isDeleted: lastMessage.isDeleted,
+                sender: lastMessage.sender
+            }
 
-            username = usernames[0]
-
+            const userInfoArr = memberArr.map(member => {
+                return {
+                    userId: member._id,
+                    username: member.username
+                }
+            })
+            const userInfo = userInfoArr[0]
             const channelsInfo = {
-                username,
+                userInfo,
                 lastMessage
             }
             userNameAndLastMessage.push(channelsInfo)
@@ -84,20 +99,27 @@ const createChannel = async (members) => {
         if (members.length == 2) {
             const channel = await Channel.findOne({ members: { $in: members } })
             if (channel) {
-                return channel._id
+                return {
+                    channelId: channel._id,
+                    channelMembers: channel.members
+                }
             } else {
                 const channel = await Channel.create({ members })
                 members.forEach(async memberId => {
                     await User.findByIdAndUpdate(memberId, { $push: { channels: channel._id } })
 
                 })
-                return channel._id
+                return {
+                    channelId: channel._id,
+                    channelMembers: channel.members
+                }
             }
         }
     } catch (err) {
         console.log(err)
     }
 }
+// DEBUG: 
 
 // return a list of new users who are not added to a channel for the user logged in
 const newChannel = (socket) => {
@@ -131,7 +153,6 @@ const newChannel = (socket) => {
                 }
 
             })
-            // console.log(newFriends)
             socket.emit(channelEvents.displayNewChats, newFriends)
         } catch (err) {
             console.log(err)
@@ -140,36 +161,52 @@ const newChannel = (socket) => {
 
 }
 
-// const updateChannel = (req, res) => {
-//     res.status(200).send("update a channel")
-//     //only update group chat  --future use--
-//     //change anything about the user should be done on the user.
+async function offlineIndicator(io, socket) {
+    const otherMembers = []
+    // FIXME: fix the offline indicator function
+    socket.on("disconnect", async () => {
+        const { userId } = socket.decoded
+        console.log(userId, "disconnect")
 
-// }
+        const allChannels = await Channel.find({ members: { $in: userId } })
+        allChannels.forEach(channel => {
+            channel.members.forEach(member => {
+                if (member._id.toString() != userId) otherMembers.push(member._id)
+            })
+        })
+// TODO: add any avatar api to make users have dp.
+        socket.leave(userId)
 
-// const deleteChannel = async (req, res) => {
+        otherMembers.forEach(member => {
+            io.to(member).emit(userEvents.offline, `${userId} is offline`)
+        })
+    })
 
-//     let message = ""
-//     //when a user request to delete a group channel, remove the user's Id and modify the user's account to also remove the channel Id from the user's channel list
-//     try {
+}
 
-//         // const { Id } = req.params
-//         // const deletedChannel = await Channel.findByIdAndDelete(Id)
-//         // res.status(200).send(deletedChannel)
-//         message = "delete not aba"
-//         res.status(200).send()
-//     } catch (err) {
-//         message = err.message
-//         res.status(500).send(message)
-//     }
-
-// }
-
-
+async function onlineIndicator(socket, io) {
+    const otherMembers = []
+    if (socket.connected) {
+        const { userId,username } = socket.decoded
+        const allChannels = await Channel.find({ members: { $in: userId } })
+        allChannels.forEach(channel => {
+            channel.members.forEach(member => {
+                console.log(member._id.toString())
+                if (member._id.toString() != userId) otherMembers.push(member._id.toString())
+            })
+        })
+        console.log(otherMembers)
+        otherMembers.forEach(member => {
+            io.to(member).emit(userEvents.online, `${username} is online`)
+        })
+    }
+}
 
 module.exports = {
     getChannel,
     newChannel,
     getChannels,
     createChannel,
+    onlineIndicator,
+    offlineIndicator
 }

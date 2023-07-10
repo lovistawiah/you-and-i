@@ -13,10 +13,10 @@ function compareDate(lastSeen) {
 
         const monthNumber = lastSeenDate.getDate()
         const dayNumber = lastSeenDate.getDay()
+        const yearNumber = lastSeenDate.getFullYear()
 
         let hours = lastSeenDate.getHours()
         let minutes = lastSeenDate.getUTCMinutes()
-        const yearNumber = lastSeenDate.getFullYear()
 
         amPm = hours >= 12 ? 'pm' : 'am'
         if (hours >= 12) {
@@ -30,7 +30,8 @@ function compareDate(lastSeen) {
             lastSeenDate.getDay() == date.getDay() &&
             lastSeenDate.getFullYear() == date.getFullYear()
         ) {
-            lastSeenDateMessage = `${dateText} a ${timeText}`
+            dateText = "today"
+            lastSeenDateMessage = `${dateText} at ${timeText}`
         } else {
             lastSeenDateMessage = `last seen: ${dayNumber}/${monthNumber}/${yearNumber} at ${timeText}`
         }
@@ -41,14 +42,14 @@ function compareDate(lastSeen) {
 
 }
 
-function selectedChannelDate(createdAt) {
+function chatOrMessageTime(createdAt) {
     let amPm = ""
     const date = new Date(createdAt)
     let hours = date.getHours()
     let minutes = date.getMinutes()
 
     amPm = hours >= 12 ? 'pm' : 'am'
-    if (hours >= 12) {
+    if (hours > 12) {
         hours = Math.floor(hours - 12)
     }
     minutes = minutes.toString()
@@ -56,5 +57,30 @@ function selectedChannelDate(createdAt) {
         minutes = "0" + minutes
     }
     return `${hours}:${minutes} ${amPm}`
+}
 
+function messageHeaderDate(messageDate) {
+    const date = new Date()
+    messageDate = new Date(messageDate)
+
+    const monthNumber = date.getDate()
+    const dayNumber = date.getDay()
+    const yearNumber = date.getFullYear()
+    if (
+        dayNumber == messageDate.getDay() &&
+        monthNumber == messageDate.getDate() &&
+        yearNumber == messageDate.getFullYear()
+    ) {
+        return "Today"
+    } else if (
+        dayNumber > messageDate.getDay() &&
+        monthNumber == messageDate.getDate() &&
+        yearNumber == messageDate.getFullYear()
+    ) {
+        console.log("here")
+        return "Yesterday"
+    }
+    else {
+        return `${messageDate.getDay()}/${messageDate.getDate()}/${messageDate.getFullYear()}`
+    }
 }
