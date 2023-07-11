@@ -10,28 +10,27 @@ if (token) {
         }
     })
 
-    socket.on("connect_error", () => {
-        console.log("here")
+    socket.io.on("reconnect", () => {
+        //from chatPanel.js
+        emptyMessagePanel()
+
     })
-    socket.on("offline", (data) => {
+
+    socket.on("status", (data) => {
         console.log(data)
     })
-    socket.on("online", (data) => {
-        console.log(data)
-    })
+
 
     socket.on("connect", () => {
         console.log(socket.id)
         if (socket.connected) {
-
+            newApp.style.display = "none"
+            socket.emit("status", "online")
         } else {
             window.location.href = "../../public/html/login.html"
         }
     })
 
-    // socket.on("channelAndLastMessage", (data) => {
-    //     console.log(data)
-    // })
 
     //? in chatPanel.js
     searchMessageOrNewContact(socket)
@@ -41,16 +40,7 @@ if (token) {
     // ? in messagePanel.js
     sendMessage(socket)
     appendMessages(socket)
-
-    socket.on("SingleMessage", (data) => {
-        console.log(data)
-    })
-
-    offlineUser(socket)
-    newApp.style.display = "none"
-
-
-
+    appendSingleMessage(socket)
 
 } else {
     console.log("token not available")

@@ -8,8 +8,7 @@ const channelEvents = {
     displayNewChats: "displayNewChats"
 }
 const userEvents = {
-    offline: "offline",
-    online: "online"
+    status: "status"
 }
 
 //TODO:
@@ -119,7 +118,6 @@ const createChannel = async (members) => {
         console.log(err)
     }
 }
-// DEBUG: 
 
 // return a list of new users who are not added to a channel for the user logged in
 const newChannel = (socket) => {
@@ -128,6 +126,11 @@ const newChannel = (socket) => {
         const newFriends = []
         let newFriend
         try {
+        
+            if (searchValue.includes("+") || searchValue.includes("-") || searchValue.includes("|") || searchValue.includes("\\") || searchValue.includes("=")){
+                console.log(searchValue)
+                return
+            }
             let users = await User.find({ username: { $regex: searchValue, $options: 'i' } }).populate([{
                 path: 'channels'
             }]).select(["username", "channels"])
@@ -163,50 +166,50 @@ const newChannel = (socket) => {
 
 async function offlineIndicator(io, socket) {
     const otherMembers = []
-    // FIXME: fix the offline indicator function
-    socket.on("disconnect", async () => {
-        const { userId } = socket.decoded
-        console.log(userId, "disconnect")
+    let status
 
+    try {
+        const { userId } = socket.decoded
         const allChannels = await Channel.find({ members: { $in: userId } })
         allChannels.forEach(channel => {
             channel.members.forEach(member => {
                 if (member._id.toString() != userId) otherMembers.push(member._id)
             })
         })
-// TODO: add any avatar api to make users have dp.
-        socket.leave(userId)
+        // TODO: add any avatar api to make users have dp.
+        // handling offline
+        socket.on("disconnect", async () => {
+            console.log(userId, "disconnect")
+            socket.leave(userId)
+            status = new Date()
 
-        otherMembers.forEach(member => {
-            io.to(member).emit(userEvents.offline, `${userId} is offline`)
-        })
-    })
-
-}
-
-async function onlineIndicator(socket, io) {
-    const otherMembers = []
-    if (socket.connected) {
-        const { userId,username } = socket.decoded
-        const allChannels = await Channel.find({ members: { $in: userId } })
-        allChannels.forEach(channel => {
-            channel.members.forEach(member => {
-                console.log(member._id.toString())
-                if (member._id.toString() != userId) otherMembers.push(member._id.toString())
+            otherMembers.forEach(member => {
+                io.volatile.to(member).emit(userEvents.status, { status, userId })
             })
+            await User.findByIdAndUpdate(userId, { lastSeen: status })
         })
-        console.log(otherMembers)
-        otherMembers.forEach(member => {
-            io.to(member).emit(userEvents.online, `${username} is online`)
+        //handling online 
+        socket.on(userEvents.status, async (data) => {
+            status = data
+
+            otherMembers.forEach(member => {
+                io.volatile.to(member).emit(userEvents.status, { status, userId })
+            })
+            await User.findByIdAndUpdate(userId, { lastSeen: status })
+
         })
+
+    } catch (err) {
+        console.log(err)
     }
 }
+
+
 
 module.exports = {
     getChannel,
     newChannel,
     getChannels,
     createChannel,
-    onlineIndicator,
     offlineIndicator
 }

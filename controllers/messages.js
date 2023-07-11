@@ -29,17 +29,10 @@ const getMessages = (socket) => {
             const messages = []
             channelMessages.messages.forEach(messageData => {
                 let { isDeleted, message, sender, createdAt } = messageData
+                
                 if (isDeleted) {
                     message = "this message was deleted"
                 }
-
-                if (sender.toString() == userId) {
-                    sender = true
-
-                } else {
-                    sender = false
-                }
-                
                 messages.push({
                     message,
                     sender,
@@ -59,7 +52,7 @@ const getMessages = (socket) => {
 
 // }
 
-const createMessage = (io,socket) => {
+const createMessage = (io, socket) => {
     socket.on(messageEvents.sendMessage, async ({ chatId, message }) => {
 
         try {
@@ -79,11 +72,23 @@ const createMessage = (io,socket) => {
                 message
             })
 
-            messageArr.push(messageCreated)
+            let { isDeleted, sender, createdAt } = messageCreated
+
+            if (isDeleted) {
+                messageCreated.message = "this message was deleted"
+            }
+
+            const messageEdited = {
+                message: messageCreated.message,
+                sender,
+                createdAt
+            }
+            console.log(messageEdited)
+            messageArr.push(messageEdited)
             channelMembers.forEach(channelMember => {
                 channelMember = channelMember.toString()
                 console.log(channelMember)
-                io.to(channelMember).emit(messageEvents.SingleMessage, messageArr)
+                // io.to(channelMember).emit(messageEvents.SingleMessage, messageArr)
             })
             await Channel.findByIdAndUpdate(channelId, { $push: { messages: messageCreated._id } })
             return

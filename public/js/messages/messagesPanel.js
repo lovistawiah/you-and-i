@@ -1,13 +1,16 @@
 const sendMessageTextBox = document.getElementById("textbox")
 const sendMessageBtn = document.getElementById("submit")
 const messagesSection = document.querySelector(".messages")
+const loggedInUserId = document.querySelector(".user-id")
+
 
 const messageEvents = {
     displaySelectedChannelMessages: "displaySelectedChannelMessages",
     sendMessage: "sendMessage",
     deleteMessage: "deleteMessage",
     offlineOnlineIndicator: "offlineOnlineIndicator",
-    displayChannelAllMessages: "displayChannelAllMessages"
+    displayChannelAllMessages: "displayChannelAllMessages",
+    SingleMessage: "SingleMessage"
 }
 
 
@@ -32,6 +35,11 @@ function sendMessage(socket) {
         message.value = ""
     })
 
+}
+const appendSingleMessage = (socket) => {
+    socket.on(messageEvents.SingleMessage, (messages) => {
+        cloneMessageContainer(messages)
+    })
 }
 
 
@@ -70,7 +78,7 @@ function cloneMessageContainer(messages) {
             messagesSection.appendChild(cloneDate)
         }
 
-        if (sender) {
+        if (loggedInUserId.innerText != "" && loggedInUserId.innerText == sender) {
             cloneMessageContainer.classList.add("sender")
         }
 
@@ -82,7 +90,12 @@ function cloneMessageContainer(messages) {
     }
 }
 
-
+function emptyMessagePanel() {
+    messagesSection.innerHTML = ""
+    selectedChannelName.textContent = "Select a message"
+    selectedChannelStatus.textContent = ""
+    sendMessageArea.style.visibility = "visible"
+}
 
 function createMessageContainer() {
     const date = document.createElement("section")
@@ -108,6 +121,8 @@ function createMessageContainer() {
     }
 }
 
-function scrollMessagesToBottom(){
-    messagesSection.scrollTo(0,messagesSection.scrollHeight)
+function scrollMessagesToBottom() {
+    messagesSection.scrollTo(0, messagesSection.scrollHeight)
 }
+
+// TODO: typing functionality, hide the send message area and avatar api.

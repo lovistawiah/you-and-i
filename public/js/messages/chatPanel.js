@@ -19,7 +19,7 @@ const channelEvents = {
 }
 
 const userEvents = {
-    offline: "offline",
+    status: "status",
     online: "online"
 }
 
@@ -68,12 +68,15 @@ function displayClickedChannelData() {
             activeUser = chat
 
             const channelId = chat.children[0].innerText
-            //getting the second child element. thus, the select channel name
-            const chatName = chat.children[2].innerText
+            const userId = chat.children[1].innerText
+            //getting the third child element. thus, the select channel name
+            const chatName = chat.children[3].innerText
             //when a channel is selected, emitted and received from the 
-            selectedChannel(chatName, "online")
+
+            selectedChannel(chatName, "online",userId)
             socket.emit(messageEvents.displayChannelAllMessages, channelId)
         }
+        console.log(chat)
 
     })
 
@@ -111,19 +114,23 @@ function displayGroups() {
 
 
 const oldChats = (socket) => {
+    HideSelectedChannel()
     const fragment = document.createDocumentFragment()
-    const { chat, chatId, userImg, userChatPic, chatLastMessage, userName, chatTime } = createOldChatContainer()
+    const { chat,userIdText ,chatId, userImg, userChatPic, chatLastMessage, userName, chatTime } = createOldChatContainer()
     socket.on(channelEvents.channelAndLastMessage, (data) => {
         chatMessages.innerHTML = ""
         if (data && data.length > 0) {
             for (let channelAndLastMessage of data) {
                 const { userInfo, lastMessage } = channelAndLastMessage
-                const { username } = userInfo
+                const {userId, username } = userInfo
                 const { channelId, createdAt, message } = lastMessage
 
                 const cloneChat = chat.cloneNode()
                 const cloneChatId = chatId.cloneNode()
                 cloneChatId.textContent = channelId
+
+                const cloneUserIdText  = userIdText.cloneNode()
+                cloneUserIdText.textContent = userId
 
                 const cloneUserChatPic = userChatPic.cloneNode()
                 cloneUserChatPic.appendChild(userImg)
@@ -138,7 +145,7 @@ const oldChats = (socket) => {
                 //function from compareDate.js
                 cloneChatTime.textContent = chatOrMessageTime(createdAt)
 
-                cloneChat.append(cloneChatId, cloneUserChatPic, cloneUserName, cloneChatLastMessage, cloneChatTime)
+                cloneChat.append(cloneChatId,cloneUserIdText, cloneUserChatPic, cloneUserName, cloneChatLastMessage, cloneChatTime)
                 fragment.appendChild(cloneChat)
             }
 
@@ -223,10 +230,10 @@ const groups = () => {
 }
 
 
-function selectedChannel(chatName, onlineStatus) {
-    if (chatName && onlineStatus ) {
+function selectedChannel(chatName, onlineStatus,userId) {
+    if (chatName && onlineStatus && userId) {
         //? from the controller.js
-
+        selectedChannelUserId.textContent = userId
         selectedChannelName.textContent = chatName
         selectedChannelStatus.textContent = onlineStatus
         selectedChannelInfo.style.visibility = "visible"
@@ -245,6 +252,8 @@ function createOldChatContainer() {
     const chat = document.createElement("a")
     // for the channel-id class
     const chatId = document.createElement("section")
+    //for userId
+    const userIdText = document.createElement("section")
     const userChatPic = document.createElement("section")
     const userImg = document.createElement("img")
     const userName = document.createElement("section")
@@ -256,6 +265,8 @@ function createOldChatContainer() {
     chat.className = "chat"
     chatId.className = "channel-Id"
     chatId.hidden = true
+    userIdText.className = "user-id"
+    userIdText.hidden = true
     userChatPic.className = "user-chat-pic"
     userImg.src = "../public/img/signup-image.jpeg"
     userChatPic.appendChild(userImg)
@@ -265,6 +276,7 @@ function createOldChatContainer() {
     return {
         chat,
         chatId,
+        userIdText,
         userChatPic,
         userImg,
         userName,
@@ -306,20 +318,10 @@ function createNewChatContainer() {
     }
 }
 
-function offlineUser(socket) {
-    // if(activeUser){
-    //     const channelId = activeUser.children[0].innerText
-    socket.on(userEvents.offline, (data) => {
+function userStatus(socket) {
+    socket.on(userEvents.status, (data) => {
         console.log(data)
     })
-    // }
-
-}
-function onlineUser(socket) {
-    
-socket.on(userEvents.online,(data)=>{
-
-})
 }
 
 

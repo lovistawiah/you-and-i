@@ -11,8 +11,8 @@ function compareDate(lastSeen) {
         const date = new Date()
 
 
-        const monthNumber = lastSeenDate.getDate()
-        const dayNumber = lastSeenDate.getDay()
+        const monthNumber = lastSeenDate.getMonth()
+        const dayNumber = lastSeenDate.getDate()
         const yearNumber = lastSeenDate.getFullYear()
 
         let hours = lastSeenDate.getHours()
@@ -26,8 +26,8 @@ function compareDate(lastSeen) {
         timeText = `${hours}:${minutes} ${amPm}`
 
         if (
+            lastSeenDate.getMonth() == date.getMonth() &&
             lastSeenDate.getDate() == date.getDate() &&
-            lastSeenDate.getDay() == date.getDay() &&
             lastSeenDate.getFullYear() == date.getFullYear()
         ) {
             dateText = "today"
@@ -63,24 +63,23 @@ function messageHeaderDate(messageDate) {
     const date = new Date()
     messageDate = new Date(messageDate)
 
-    const monthNumber = date.getDate()
-    const dayNumber = date.getDay()
+    const monthNumber = date.getMonth()
+    const dayNumber = date.getDate()
     const yearNumber = date.getFullYear()
     if (
-        dayNumber == messageDate.getDay() &&
-        monthNumber == messageDate.getDate() &&
+        dayNumber == messageDate.getDate() &&
+        monthNumber == messageDate.getMonth() &&
         yearNumber == messageDate.getFullYear()
     ) {
         return "Today"
     } else if (
-        dayNumber > messageDate.getDay() &&
-        monthNumber == messageDate.getDate() &&
+        dayNumber > messageDate.getDate() &&
+        monthNumber == messageDate.getMonth() &&
         yearNumber == messageDate.getFullYear()
     ) {
-        console.log("here")
         return "Yesterday"
     }
     else {
-        return `${messageDate.getDay()}/${messageDate.getDate()}/${messageDate.getFullYear()}`
+        return `${messageDate.getDate()}/${messageDate.getMonth()}/${messageDate.getFullYear()}`
     }
 }

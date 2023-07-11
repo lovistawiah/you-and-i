@@ -1,9 +1,9 @@
-
 const chatsPanel = document.querySelector(".chats")
 
 const selectedChannelName = document.querySelector(".selected-channel-name")
 const selectedChannelStatus = document.querySelector(".selected-channel-status")
 const selectedChannelInfo = document.querySelector(".selected-channel-info")
+const selectedChannelUserId = document.querySelector(".user-id")
 
 window.addEventListener("DOMContentLoaded", (e) => {
     searchTextBox.focus()
@@ -13,10 +13,15 @@ window.addEventListener("DOMContentLoaded", (e) => {
 
 
 window.addEventListener("load", (e) => {
+    HideSelectedChannel()
+})
+
+function HideSelectedChannel(){
     selectedChannelName.textContent = "Select a message"
     selectedChannelStatus.textContent = ""
     selectedChannelInfo.style.visibility = "hidden"
-})
+    sendMessageArea.style.visibility = "visible"
+}
 
 
 
