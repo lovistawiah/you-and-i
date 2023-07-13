@@ -2,12 +2,9 @@ const searchTextBox = document.getElementById("search-textbox")
 const chatsSubPanel = document.querySelector(".chats-sub-panel")
 const chatMessages = document.querySelector(".chat-messages")
 const groupsSection = document.querySelector(".groups")
-//copy the active user info
-let activeUser
+const newContacts = document.querySelector(".new-contacts")
 
-//the new contacts 
-const newContacts = document.createElement("section")
-newContacts.className = "new-contacts"
+
 
 const sendMessageArea = document.querySelector(".send-message")
 
@@ -30,23 +27,13 @@ displayClickedChannelData()
 // ? not appearing on the web page.
 const searchMessageOrNewContact = (socket) => {
     searchTextBox.addEventListener("keyup", (e) => {
-        // clear the neContacts page first before appending
-        const textboxValue = searchTextBox.value
-        newContacts.innerHTML = ""
-
-        if (textboxValue == "") {
+        const textBoxValue = searchTextBox.value
+        if (textBoxValue != "") {
+            socket.emit(channelEvents.search, textBoxValue)
+        }
+        if (textBoxValue == "") {
+            newContacts.style.display = "none"
             newContacts.innerHTML = ""
-            groupsSection.innerHTML = ""
-        } else {
-            socket.emit(channelEvents.search, textboxValue)
-
-            if (newContacts.children.length > 1) {
-                newContacts.style.display = "block"
-            }
-
-            if (groupsSection.children.length > 1) {
-                groupsSection.style.display = "block"
-            }
         }
     })
 
@@ -56,46 +43,71 @@ const searchMessageOrNewContact = (socket) => {
 
 function displayClickedChannelData() {
     chatMessages.addEventListener("click", (e) => {
-        const allChats = document.querySelectorAll(".chat")
-        allChats.forEach(chatItem => {
-            chatItem.classList.remove("chat-active")
-        })
+
         const chat = e.target
         const parentElement = chat.parentElement
         if (parentElement.className == "chat-messages") {
-            chat.classList.add("chat-active")
+            searchTextBox.innerHTML = ""
+            const allChats = document.querySelectorAll(".chat-active")
+            allChats.forEach(chatItem => {
+                chatItem.classList.remove("chat-active")
+            })
 
+            chat.classList.add("chat-active")
             activeUser = chat
 
             const channelId = chat.children[0].innerText
             const userId = chat.children[1].innerText
             //getting the third child element. thus, the select channel name
             const chatName = chat.children[3].innerText
-            //when a channel is selected, emitted and received from the 
-
-            selectedChannel(chatName, "online",userId)
+            selectedChannel(chatName, "online", userId, channelId)
+            clearMessages()
             socket.emit(messageEvents.displayChannelAllMessages, channelId)
         }
-        console.log(chat)
-
     })
 
 }
 
 // in the css, make the rest add the .user-active class when clicked
 function displayNewContacts(socket) {
-    socket.on(channelEvents.displayNewChats, (data) => {
+    socket.on(channelEvents.displayNewChats, (newFriends) => {
+        //clear the newContacts contents before appending new users
+        newContacts.innerHTML = ""
+        if (newFriends.length > 0) {
+            newContacts.style.display = "block"
+            // create the new contact text if newFriends.length > 1
+            const newContactText = document.createElement("section")
+            newContactText.className = ".new-contacts"
 
-        if (data.length >= 1) {
-            addNewChats(data)
-            if (searchTextBox.value != "" && newContacts.children.length > 1) {
-                newContacts.addEventListener("click", (e) => {
-                    const newContact = e.target
-                    newContact.classList.add("chat-active")
-                    const newChatName = newContact.children[2].innerText
-                    selectedChannel(newChatName, "online")
-                })
+            if (newFriends.length == 1) {
+                newContactText.textContent = "New Contact"
+            } else {
+                newContactText.textContent = "New Contacts"
             }
+            newContacts.appendChild(newContactText)
+            for (let newFriend of newFriends) {
+                const { userId, username } = newFriend
+                const newChat = addNewChats(userId, username)
+                newContacts.appendChild(newChat)
+            }
+
+            newContacts.addEventListener("click", (e) => {
+                //removing the user
+                messagesSection.innerHTML = ""
+                const activeChats = document.querySelectorAll(".chat-active")
+                if (activeChats.length > 0) {
+                    activeChats.forEach(activeChat => {
+                        activeChat.classList.remove("chat-active")
+                    })
+                }
+
+                const newContact = e.target
+                newContact.classList.add("chat-active")
+                const newUserId = newContact.children[0].innerText
+                const newChatName = newContact.children[2].innerText
+                //the last parameter is channelId for old chats
+                selectedChannel(newChatName, "online", newUserId, "")
+            })
         }
 
     })
@@ -111,80 +123,142 @@ function displayGroups() {
 
 }
 
-
-
 const oldChats = (socket) => {
     HideSelectedChannel()
-    const fragment = document.createDocumentFragment()
-    const { chat,userIdText ,chatId, userImg, userChatPic, chatLastMessage, userName, chatTime } = createOldChatContainer()
-    socket.on(channelEvents.channelAndLastMessage, (data) => {
+    socket.on(channelEvents.channelAndLastMessage, (channelAndLastMessage) => {
+        //clears the chat panel 
         chatMessages.innerHTML = ""
-        if (data && data.length > 0) {
-            for (let channelAndLastMessage of data) {
-                const { userInfo, lastMessage } = channelAndLastMessage
-                const {userId, username } = userInfo
-                const { channelId, createdAt, message } = lastMessage
+        if (channelAndLastMessage && channelAndLastMessage.length > 0) {
+            for (let channel of channelAndLastMessage) {
+                const { channelInfo, messageInfo, userInfo } = channel
+                const { channelId } = channelInfo
+                const { userId, username, } = userInfo
+                const { lastMessage, createdAt } = messageInfo
 
-                const cloneChat = chat.cloneNode()
-                const cloneChatId = chatId.cloneNode()
-                cloneChatId.textContent = channelId
-
-                const cloneUserIdText  = userIdText.cloneNode()
-                cloneUserIdText.textContent = userId
-
-                const cloneUserChatPic = userChatPic.cloneNode()
-                cloneUserChatPic.appendChild(userImg)
-
-                const cloneUserName = userName.cloneNode()
-                cloneUserName.textContent = username
-
-                const cloneChatLastMessage = chatLastMessage.cloneNode()
-                cloneChatLastMessage.textContent = message
-
-                const cloneChatTime = chatTime.cloneNode()
-                //function from compareDate.js
-                cloneChatTime.textContent = chatOrMessageTime(createdAt)
-
-                cloneChat.append(cloneChatId,cloneUserIdText, cloneUserChatPic, cloneUserName, cloneChatLastMessage, cloneChatTime)
-                fragment.appendChild(cloneChat)
+                const fragmentedDoc = cloneOldChatContainer(channelId, userId, username, lastMessage, createdAt)
+                chatMessages.appendChild(fragmentedDoc)
             }
 
         }
-        chatMessages.appendChild(fragment)
     })
 }
 
-
-const addNewChats = (newChats) => {
+const cloneOldChatContainer = (channelId, userId, username, lastMessage, createdAt) => {
     const fragment = document.createDocumentFragment()
-    const { newChatText, newChat, newChatId, newChatProfilePic, newUserImg, newChatName } = createNewChatContainer()
+    const { cloneChat } = createOldChatContainer()
 
-    if (newChats.length > 0) {
-        newContacts.innerHTML = ""
-        newContacts.appendChild(newChatText)
+    const chat = cloneChat
+    // chat id is used, to find the match of the channel Id that received the message.
+    // if found get the lastMessage node and modify it with the message and the time received.
+    chat.id = channelId
 
-        for (let newUser of newChats) {
-            const cloneNewChat = newChat.cloneNode()
-            const cloneNewChatId = newChatId.cloneNode()
-            cloneNewChatId.textContent = newUser.userId
+    const children = chat.children
 
-            const cloneNewChatProfilePic = newChatProfilePic.cloneNode()
-            const cloneNewUserImg = newUserImg.cloneNode()
-            cloneNewUserImg.src = "../public/img/loginsignup.png"
-            cloneNewChatProfilePic.appendChild(cloneNewUserImg)
+    const chatId = children[0]
+    chatId.innerText = channelId
 
-            const cloneNewChatName = newChatName.cloneNode()
-            cloneNewChatName.textContent = newUser.username
-            cloneNewChat.append(cloneNewChatId, cloneNewChatProfilePic, cloneNewChatProfilePic, cloneNewChatName)
-            fragment.appendChild(cloneNewChat)
-        }
-        newContacts.style.display = "block"
-    } else {
-        newContacts.style.display = "none"
-    }
-    newContacts.appendChild(fragment)
-    chatsSubPanel.appendChild(newContacts)
+    const userIdText = children[1]
+    userIdText.innerText = userId
+
+    const userChatPic = children[2]
+    const userImg = userChatPic.children[0]
+    userImg.src = "../public/img/loginsignup.png"
+    userImg.alt = "user chat pic"
+
+    const userName = children[3]
+    userName.innerText = username
+
+    const chatLastMessage = children[4]
+    chatLastMessage.innerText = lastMessage
+
+    const chatTime = children[5]
+    chatTime.innerText = chatOrMessageTime(createdAt)
+
+    return fragment.appendChild(chat)
 }
+
+
+function createOldChatContainer() {
+    const chat = document.createElement("a")
+    // for the channel-id class
+    const chatId = document.createElement("section")
+    //for userId
+    const userIdText = document.createElement("section")
+    const userChatPic = document.createElement("section")
+    const userImg = document.createElement("img")
+    const userName = document.createElement("section")
+    const chatLastMessage = document.createElement("section")
+    const chatTime = document.createElement("section")
+
+    chat.href = "#"
+    chat.className = "chat"
+    chatId.className = "channel-Id"
+    chatId.hidden = true
+    userIdText.className = "user-id"
+    userIdText.hidden = true
+    userChatPic.className = "user-chat-pic"
+    userName.className = "chat-username"
+    chatLastMessage.className = "chat-last-message"
+    chatTime.className = "chat-time"
+
+    userChatPic.appendChild(userImg)
+    chat.append(chatId, userIdText, userChatPic, userName, chatLastMessage, chatTime)
+
+    const cloneChat = chat.cloneNode(true)
+
+    return { cloneChat }
+}
+
+const addNewChats = (userId, username) => {
+    const fragment = document.createDocumentFragment()
+    const { cloneNewChat } = createNewChatContainer()
+    const newChat = cloneNewChat
+    newChat.id = userId
+
+    const newChatChildren = newChat.children
+
+    const newChatId = newChatChildren[0]
+    newChatId.innerText = userId
+
+    const newChatProfilePic = newChatChildren[1]
+
+    const newUserImg = newChatProfilePic.children[0]
+    newUserImg.src = "../public/img/loginsignup.png"
+
+    const newChatName = newChatChildren[2]
+    newChatName.innerText = username
+
+    return fragment.appendChild(newChat)
+
+
+}
+
+function createNewChatContainer() {
+    const newChat = document.createElement("a")
+    newChat.href = "#"
+    newChat.className = "new-chat"
+
+    const newChatId = document.createElement("section")
+    newChatId.className = "new-chat-id"
+    newChatId.hidden = true
+
+    const newChatProfilePic = document.createElement("section")
+    newChatProfilePic.className = "new-chat-profile-pic"
+
+    const newUserImg = document.createElement("img")
+    newChatProfilePic.appendChild(newUserImg)
+
+    const newChatName = document.createElement("section")
+    newChatName.className = "new-chat-name"
+
+    newChat.append(newChatId, newChatProfilePic, newChatName)
+    const cloneNewChat = newChat.cloneNode(true)
+
+    return {
+        cloneNewChat
+    }
+}
+
 
 const groups = () => {
     const groupChatText = document.createElement("section")
@@ -230,93 +304,27 @@ const groups = () => {
 }
 
 
-function selectedChannel(chatName, onlineStatus,userId) {
-    if (chatName && onlineStatus && userId) {
-        //? from the controller.js
+function selectedChannel(chatName, onlineStatus, userId, channelId) {
+    if (channelId) {
+        selectedChannelChannelId.textContent = channelId
+    }
+
+    if (userId) {
         selectedChannelUserId.textContent = userId
-        selectedChannelName.textContent = chatName
-        selectedChannelStatus.textContent = onlineStatus
-        selectedChannelInfo.style.visibility = "visible"
-        //make the send button and input visible
-        sendMessageArea.style.visibility = "visible"
-
-        //removes it the messages class element ! from the index.js
-        channelSelect.remove()
     }
+    //? from the controller.js
+    selectedChannelName.textContent = chatName
+    selectedChannelStatus.textContent = onlineStatus
+    selectedChannelInfo.style.visibility = "visible"
 
+    //make the send button and input visible
+    sendMessageArea.style.visibility = "visible"
+
+    //removes it the messages class element ! from the index.js
+    channelSelect.remove()
 }
 
 
-
-function createOldChatContainer() {
-    const chat = document.createElement("a")
-    // for the channel-id class
-    const chatId = document.createElement("section")
-    //for userId
-    const userIdText = document.createElement("section")
-    const userChatPic = document.createElement("section")
-    const userImg = document.createElement("img")
-    const userName = document.createElement("section")
-    const chatLastMessage = document.createElement("section")
-    const chatTime = document.createElement("section")
-
-
-    chat.href = "#"
-    chat.className = "chat"
-    chatId.className = "channel-Id"
-    chatId.hidden = true
-    userIdText.className = "user-id"
-    userIdText.hidden = true
-    userChatPic.className = "user-chat-pic"
-    userImg.src = "../public/img/signup-image.jpeg"
-    userChatPic.appendChild(userImg)
-    userName.className = "chat-username"
-    chatLastMessage.className = "chat-last-message"
-    chatTime.className = "chat-time"
-    return {
-        chat,
-        chatId,
-        userIdText,
-        userChatPic,
-        userImg,
-        userName,
-        chatLastMessage,
-        chatTime
-    }
-}
-
-
-
-function createNewChatContainer() {
-    const newChatText = document.createElement("section")
-    newChatText.className = "new-chat-text"
-    newChatText.textContent = "New Contacts"
-
-    const newChat = document.createElement("a")
-    // newChat.href = "#"
-    newChat.className = "new-chat"
-
-    const newChatId = document.createElement("section")
-    newChatId.className = "new-chat-id"
-    newChatId.hidden = true
-
-    const newChatProfilePic = document.createElement("section")
-    newChatProfilePic.className = "new-chat-profile-pic"
-
-    const newUserImg = document.createElement("img")
-
-    const newChatName = document.createElement("section")
-    newChatName.className = "new-chat-name"
-
-    return {
-        newChatText,
-        newChat,
-        newChatId,
-        newChatProfilePic,
-        newUserImg,
-        newChatName
-    }
-}
 
 function userStatus(socket) {
     socket.on(userEvents.status, (data) => {
@@ -325,4 +333,3 @@ function userStatus(socket) {
 }
 
 
-// FIXME: when you query from the database and the value is not in the database do not return the appended element before clearing.

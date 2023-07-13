@@ -1,6 +1,6 @@
 const Channel = require("../models/Channel")
 const Messages = require("../models/Messages")
-const { createChannel } = require("./Channel")
+const { createChannel, findChannel, } = require("./Channel")
 
 const messageEvents = {
     displaySelectedChannelMessages: "displaySelectedChannelMessages",
@@ -8,7 +8,8 @@ const messageEvents = {
     deleteMessage: "deleteMessage",
     offlineOnlineIndicator: "offlineOnlineIndicator",
     displayChannelAllMessages: "displayChannelAllMessages",
-    SingleMessage: "SingleMessage"
+    SingleMessage: "SingleMessage",
+    newChannelMessage: "newChannelMessage"
 }
 
 //TODO: 
@@ -29,7 +30,7 @@ const getMessages = (socket) => {
             const messages = []
             channelMessages.messages.forEach(messageData => {
                 let { isDeleted, message, sender, createdAt } = messageData
-                
+
                 if (isDeleted) {
                     message = "this message was deleted"
                 }
@@ -52,50 +53,61 @@ const getMessages = (socket) => {
 
 // }
 
-const createMessage = (io, socket) => {
-    socket.on(messageEvents.sendMessage, async ({ chatId, message }) => {
+const createMessage = async (io, socket) => {
+    const loggedUserId = socket.decoded.userId
+    let messageObj
+    let messageReceivers = []
+    // channel is the channelId to create the message
+    let channel
 
+    socket.on(messageEvents.sendMessage, async ({ message, channelId }) => {
         try {
-            const { userId } = socket.decoded
-            // chatId is the other user's Id
-            let members = [userId, chatId]
-            const { channelId, channelMembers } = await createChannel(members)
-
-            if (typeof channelId == "string") {
-                return
+            console.log("old channel", { message, channelId })
+            const channelMembers = await findChannel(channelId)
+            if (channelMembers) {
+                messageReceivers = addMembers(channelMembers)
             }
-
-            const messageArr = []
-            const messageCreated = await Messages.create({
-                channelId,
-                sender: userId,
-                message
-            })
-
-            let { isDeleted, sender, createdAt } = messageCreated
-
-            if (isDeleted) {
-                messageCreated.message = "this message was deleted"
-            }
-
-            const messageEdited = {
-                message: messageCreated.message,
-                sender,
-                createdAt
-            }
-            console.log(messageEdited)
-            messageArr.push(messageEdited)
-            channelMembers.forEach(channelMember => {
-                channelMember = channelMember.toString()
-                console.log(channelMember)
-                // io.to(channelMember).emit(messageEvents.SingleMessage, messageArr)
-            })
-            await Channel.findByIdAndUpdate(channelId, { $push: { messages: messageCreated._id } })
+            channel = channelId
+            messageObj = message
             return
         } catch (err) {
             console.log(err)
         }
     })
+
+    socket.on(messageEvents.newChannelMessage, async ({ userId, message }) => {
+        messageObj = message
+        //userId is the other user's Id that appears on the page.
+        const members = [loggedUserId, userId]
+        const { channelId, channelMembers } = await createChannel(members)
+
+        if (channelId && channelMembers) {
+            channel = channelId
+            messageReceivers = addMembers(channelMembers)
+        }
+    })
+    const messageArr = []
+    // const messageCreated = await Messages.create({
+    //     channelId: channel,
+    //     sender: loggedUserId,
+    //     message: messageObj
+    // })
+
+    // let { sender, createdAt } = messageCreated
+
+    // const messageEdited = {
+    //     message: messageCreated.message,
+    //     sender,
+    //     createdAt
+    // }
+    messageReceivers.forEach(receiver => {
+        if (socket.userId == receiver) {
+            io.to(receiver).volatile.emit(messageEvents.SingleMessage,)
+        }
+    })
+
+    // await Channel.findByIdAndUpdate(channelId, { $push: { messages: messageCreated._id } })
+    // return
 
 }
 
@@ -117,6 +129,13 @@ const searchMessages = async (req, res) => {
         console.log(err)
     }
 
+}
+
+function addMembers(channelMembers) {
+    channelMembers.map(channelMember => {
+        const memberId = channelMember._id.toString()
+        return memberId
+    })
 }
 module.exports = {
     // getMessage,

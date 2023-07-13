@@ -1,12 +1,14 @@
 const sendMessageTextBox = document.getElementById("textbox")
 const sendMessageBtn = document.getElementById("submit")
 const messagesSection = document.querySelector(".messages")
-const loggedInUserId = document.querySelector(".user-id")
+const selectedChannelContainer = document.querySelector(".selected-channel")
+
 
 
 const messageEvents = {
     displaySelectedChannelMessages: "displaySelectedChannelMessages",
     sendMessage: "sendMessage",
+    newChannelMessage: "newChannelMessage",
     deleteMessage: "deleteMessage",
     offlineOnlineIndicator: "offlineOnlineIndicator",
     displayChannelAllMessages: "displayChannelAllMessages",
@@ -17,22 +19,33 @@ const messageEvents = {
 function sendMessage(socket) {
     sendMessageBtn.addEventListener("click", (e) => {
         e.preventDefault()
-        const chatClicked = document.querySelector(".chat-active")
-        //chatId is the clicked user's Id
-        const chatId = chatClicked.children[0].innerText
-        let message = sendMessageTextBox
+        const messageValue = sendMessageTextBox
+        let messageObj
+        const selectedChannelChildren = selectedChannelContainer.children
 
-        if (message.value != "") {
-            let newChannelMessage = {
-                chatId,
-                message: message.value
+        const userId = selectedChannelChildren[0].innerText
+        const channelId = selectedChannelChildren[1].innerText
+
+        if (messageValue.value != "") {
+            if (channelId && userId) {
+                //emitting to old channel
+                messageObj = {
+                    channelId,
+                    message: messageValue.value
+                }
+                socket.emit(messageEvents.sendMessage, messageObj)
+            } else if (userId && channelId == "") {
+                //emitting new channel
+                messageObj = {
+                    userId,
+                    message: messageValue.value
+                }
+                socket.emit(messageEvents.newChannelMessage, messageObj)
+            } else {
+                return
             }
-            // emit message,channel, sender is automatically the user logged in
-            socket.emit(messageEvents.sendMessage, newChannelMessage)
-
         }
-
-        message.value = ""
+        messageValue.value = ""
     })
 
 }
@@ -45,62 +58,65 @@ const appendSingleMessage = (socket) => {
 
 const appendMessages = (socket) => {
     socket.on(messageEvents.displayChannelAllMessages, (messages) => {
-        cloneMessageContainer(messages)
+        for (let messageData of messages) {
+            let { message, sender, createdAt } = messageData
+            checkAndCreateDateSection(createdAt)
+            const fragmentedDoc = cloneMessageContainer({ message, sender, createdAt })
+            messagesSection.appendChild(fragmentedDoc)
+        }
     })
 }
+function checkAndCreateDateSection(createdAt) {
+    const date = document.createElement("section")
+    date.className = "date"
+    const cloneDate = date.cloneNode()
+    if (!document.querySelector(".date")) {
+        const dateText = messageHeaderDate(createdAt)
+        cloneDate.innerText = dateText
+        messagesSection.appendChild(cloneDate)
+    }
 
-
-//cloned message section and append to 
-function cloneMessageContainer(messages) {
-    const { date, messageContainer, groupMessageSenderName, messageContent, messageTime } = createMessageContainer()
-
-    for (let messageData of messages) {
-        const { sender, message, createdAt } = messageData
-        const cloneDate = date.cloneNode()
-        const cloneMessageContainer = messageContainer.cloneNode()
-        const cloneGroupMessageSenderName = groupMessageSenderName.cloneNode()
-        cloneGroupMessageSenderName.style.visibility = "hidden" //? future use on groups
-        const cloneMessageContent = messageContent.cloneNode()
-        const cloneMessageTime = messageTime.cloneNode()
-
-        //checking if the date section exist or if exist compare the section text to the returned string from the messageHeaderDate function
-        if (!document.querySelector(".date")) {
-            cloneDate.textContent = messageHeaderDate(createdAt)
+    const datesList = document.querySelectorAll(".date")
+    if (datesList) {
+        const datesListLength = datesList.length
+        const lastItem = datesList[datesListLength - 1]
+        if (lastItem.innerText != messageHeaderDate(createdAt)) {
+            cloneDate = messageHeaderDate(createdAt)
             messagesSection.appendChild(cloneDate)
         }
-
-        const dateCheckList = document.querySelectorAll(".date")
-        const dateCheckListLength = dateCheckList.length
-        const lastItem = dateCheckList[dateCheckListLength - 1]
-        //get the last node of the date class and compare it with the message Date.
-        if (lastItem.textContent != messageHeaderDate(createdAt)) {
-            cloneDate.textContent = messageHeaderDate(createdAt)
-            messagesSection.appendChild(cloneDate)
-        }
-
-        if (loggedInUserId.innerText != "" && loggedInUserId.innerText == sender) {
-            cloneMessageContainer.classList.add("sender")
-        }
-
-        cloneMessageContent.textContent = message
-        cloneMessageTime.textContent = chatOrMessageTime(createdAt)
-        cloneMessageContainer.append(cloneGroupMessageSenderName, cloneMessageContent, cloneMessageTime)
-        messagesSection.appendChild(cloneMessageContainer)
-        scrollMessagesToBottom()
     }
 }
 
-function emptyMessagePanel() {
-    messagesSection.innerHTML = ""
-    selectedChannelName.textContent = "Select a message"
-    selectedChannelStatus.textContent = ""
-    sendMessageArea.style.visibility = "visible"
+//cloned message section and append to 
+function cloneMessageContainer({ message, sender, createdAt }) {
+    const fragment = document.createDocumentFragment()
+    const { cloneMessage } = createMessageContainer()
+
+    const messageContainer = cloneMessage
+    const messageContainerChildren = messageContainer.children
+
+    const groupMessageSenderName = messageContainerChildren[0]
+
+    if (groupMessageSenderName.innerText == "") {
+        groupMessageSenderName.hidden = true
+    }
+    const otherUserId = selectedChannelUserId.innerText
+    if (sender != otherUserId) {
+        messageContent.classList.add("sender")
+    }
+    const messageContent = messageContainerChildren[1]
+    messageContent.innerText = message
+
+    const messageTime = messageContainerChildren[2]
+    messageTime.innerText = messageHeaderDate(createdAt)
+    return fragment.appendChild(messageContainer)
+
 }
 
-function createMessageContainer() {
-    const date = document.createElement("section")
-    date.className = "date"
 
+
+
+function createMessageContainer() {
     const messageContainer = document.createElement("section")
     messageContainer.className = "message"
 
@@ -112,12 +128,13 @@ function createMessageContainer() {
 
     const messageTime = document.createElement("section")
     messageTime.className = "message-time"
+
+    messageContainer.append(groupMessageSenderName, messageContent, messageTime)
+
+    const cloneMessage = messageContainer.cloneNode(true)
+
     return {
-        date,
-        messageContainer,
-        groupMessageSenderName,
-        messageContent,
-        messageTime
+        cloneMessage
     }
 }
 
@@ -125,4 +142,15 @@ function scrollMessagesToBottom() {
     messagesSection.scrollTo(0, messagesSection.scrollHeight)
 }
 
+
+function emptyMessagePanel() {
+    messagesSection.innerHTML = ""
+    selectedChannelName.textContent = "Select a channel to see messages"
+    selectedChannelStatus.textContent = ""
+    sendMessageArea.style.visibility = "visible"
+}
+
+function clearMessages() {
+    messagesSection.innerHTML = ""
+}
 // TODO: typing functionality, hide the send message area and avatar api.

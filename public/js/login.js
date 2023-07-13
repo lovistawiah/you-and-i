@@ -20,13 +20,13 @@ form.addEventListener("submit", async (e) => {
         })
 
         const { data } = res
-        if (!res.status == 200 && !data.message == "ok") {
+        if (res.status != 200 && data.message != "ok") {
             message = "Unknown error"
             showError(message)
             return
         }
         const { token } = data
-        
+
 
         localStorage.setItem("youAndItoken", token)
         window.location.href = '/'

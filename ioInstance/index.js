@@ -1,13 +1,15 @@
 const io = require("socket.io")()
 const { authenticateSocket } = require("../Middleware/userAuth")
-const { getChannels, newChannel, onlineIndicator, offlineIndicator } = require("../controllers/Channel")
+const { getChannels, newChannel, offlineIndicator } = require("../controllers/Channel")
 const { createMessage, getMessages } = require("../controllers/messages")
 
 
 
 io.use(authenticateSocket)
 io.on("connection", (socket) => {
-    socket.join(socket.decoded.userId)
+    // console.log(socket.decoded.username)
+    // socket.join(socket.decoded.userId)
+    socket.userId = socket.decoded.userId
     offlineIndicator(io, socket)
 })
 
