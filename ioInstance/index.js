@@ -1,7 +1,7 @@
 const io = require("socket.io")()
 const { authenticateSocket } = require("../Middleware/userAuth")
 const { getChannels, newChannel, offlineIndicator } = require("../controllers/Channel")
-const { createMessage, getMessages } = require("../controllers/messages")
+const { createMessage, getMessages, createNewChannelMessage } = require("../controllers/messages")
 
 
 
@@ -18,6 +18,7 @@ io.on("connection", (socket) => {
     //from controller/messages.js
     createMessage(io, socket)
     getMessages(socket)
+    createNewChannelMessage(socket, io)
 })
 io.on("connection", (socket) => {
     //from controller/channel.js

@@ -12,18 +12,11 @@ const messageEvents = {
     newChannelMessage: "newChannelMessage"
 }
 
-//TODO: 
-// GET ALL MESSAGES USING SENDER ID OR LOGGED IN USER ID
-// GET SINGLE MESSAGE
-// DELETE MESSAGE 
-// POST MESSAGE 
-
 const getMessages = (socket) => {
     socket.on(messageEvents.displayChannelAllMessages, async (data) => {
         //using the channelId to retrieve the all the messages in a particular channel
         try {
             const channelId = data
-            const { userId } = socket.decoded
             const channelMessages = await Channel.findOne({ _id: channelId }).populate({
                 path: 'messages'
             })
@@ -48,66 +41,40 @@ const getMessages = (socket) => {
     })
 }
 
-// const getMessage = (req, res) => {
-//     res.status(200).send("get message")
-
-// }
 
 const createMessage = async (io, socket) => {
     const loggedUserId = socket.decoded.userId
-    let messageObj
     let messageReceivers = []
-    // channel is the channelId to create the message
-    let channel
-
     socket.on(messageEvents.sendMessage, async ({ message, channelId }) => {
         try {
             console.log("old channel", { message, channelId })
             const channelMembers = await findChannel(channelId)
-            if (channelMembers) {
-                messageReceivers = addMembers(channelMembers)
-            }
-            channel = channelId
-            messageObj = message
+            if (!channelMembers) return
+            messageReceivers = addMembers(channelMembers)
+            addMessage(channelId, loggedUserId, message, messageReceivers, socket, io)
             return
         } catch (err) {
             console.log(err)
         }
     })
 
+}
+
+function createNewChannelMessage(socket, io) {
+    const loggedUserId = socket.decoded.userId
+    let messageReceivers = []
     socket.on(messageEvents.newChannelMessage, async ({ userId, message }) => {
-        messageObj = message
-        //userId is the other user's Id that appears on the page.
+        // userId is the other user's Id that appears on the page.
         const members = [loggedUserId, userId]
+
         const { channelId, channelMembers } = await createChannel(members)
-
-        if (channelId && channelMembers) {
-            channel = channelId
-            messageReceivers = addMembers(channelMembers)
+        if (!channelId || !channelMembers) {
+            return
         }
+        messageReceivers = addMembers(channelMembers)
+        addNewMessage(channelId, loggedUserId, message, messageReceivers, socket, io)
+        return
     })
-    const messageArr = []
-    // const messageCreated = await Messages.create({
-    //     channelId: channel,
-    //     sender: loggedUserId,
-    //     message: messageObj
-    // })
-
-    // let { sender, createdAt } = messageCreated
-
-    // const messageEdited = {
-    //     message: messageCreated.message,
-    //     sender,
-    //     createdAt
-    // }
-    messageReceivers.forEach(receiver => {
-        if (socket.userId == receiver) {
-            io.to(receiver).volatile.emit(messageEvents.SingleMessage,)
-        }
-    })
-
-    // await Channel.findByIdAndUpdate(channelId, { $push: { messages: messageCreated._id } })
-    // return
 
 }
 
@@ -132,15 +99,76 @@ const searchMessages = async (req, res) => {
 }
 
 function addMembers(channelMembers) {
-    channelMembers.map(channelMember => {
+    const members = channelMembers.map(channelMember => {
         const memberId = channelMember._id.toString()
         return memberId
     })
+    return members
+}
+
+
+async function addMessage(channelId, loggedUserId, message, messageReceivers, socket, io) {
+
+    const messageCreated = await Messages.create({
+        channelId,
+        sender: loggedUserId,
+        message
+    })
+
+    let { sender, createdAt } = messageCreated
+
+    const messageEdited = {
+        message: messageCreated.message,
+        sender,
+        createdAt,
+        channelId
+    }
+
+    messageReceivers.forEach(receiver => {
+        if (socket.userId == receiver) {
+            io.to(receiver).volatile.emit(messageEvents.SingleMessage, messageEdited)
+        }
+    })
+    await Channel.findByIdAndUpdate(channelId, { $push: { messages: messageCreated._id } })
+}
+
+async function addNewMessage(channelId, loggedUserId, message, messageReceivers, socket, io) {
+    let receiver
+
+    messageReceivers.forEach(msgReceiver => {
+        if (msgReceiver != loggedUserId) {
+            receiver = msgReceiver
+        }
+    })
+
+    const messageCreated = await Messages.create({
+        channelId,
+        sender: loggedUserId,
+        message
+    })
+
+    let { sender, createdAt } = messageCreated
+
+    const messageEdited = {
+        message: messageCreated.message,
+        sender,
+        createdAt,
+        channelId,
+        receiver
+    }
+
+    messageReceivers.forEach(receiver => {
+        if (socket.userId == receiver) {
+            io.to(receiver).volatile.emit(messageEvents.newChannelMessage, messageEdited)
+        }
+    })
+    await Channel.findByIdAndUpdate(channelId, { $push: { messages: messageCreated._id } })
 }
 module.exports = {
     // getMessage,
     getMessages,
     createMessage,
     deleteMessage,
-    searchMessages
+    searchMessages,
+    createNewChannelMessage
 }

@@ -85,21 +85,28 @@ const getChannel = async (req, res) => {
 
 const createChannel = async (members) => {
     try {
-        const createdChannel = await Channel.find({ members: members })
+        
+        const createdChannel = await Channel.findOne({ members: members })
         if (createdChannel) {
             return {
                 channelId: createdChannel._id,
                 channelMembers: createdChannel.members
             }
-        } else {
-            const newChannelCreated = await Channel.create(members)
-            if (newChannelCreated) {
-                return {
-                    channelId: newChannelCreated._id,
-                    channelMembers: newChannelCreated.members
-                }
-            }
         }
+
+        const newChannelCreated = await Channel.create({ members })
+        if (!newChannelCreated) return
+
+        newChannelCreated.members.forEach(async member => {
+            await User.findByIdAndUpdate(member._id, { $push: { channels: newChannelCreated._id } })
+        })
+
+        return {
+            channelId: newChannelCreated._id,
+            channelMembers: newChannelCreated.members
+        }
+
+
     } catch (err) {
         console.log(err)
     }

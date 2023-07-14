@@ -34,6 +34,7 @@ function sendMessage(socket) {
                     message: messageValue.value
                 }
                 socket.emit(messageEvents.sendMessage, messageObj)
+
             } else if (userId && channelId == "") {
                 //emitting new channel
                 messageObj = {
@@ -50,8 +51,40 @@ function sendMessage(socket) {
 
 }
 const appendSingleMessage = (socket) => {
-    socket.on(messageEvents.SingleMessage, (messages) => {
-        cloneMessageContainer(messages)
+    socket.on(messageEvents.SingleMessage, (messageData) => {
+        const { message, sender, createdAt, channelId } = messageData
+
+        if (selectedChannelChannelId.innerText == channelId) {
+            checkAndCreateDateSection(createdAt)
+            const fragmentedDoc = cloneMessageContainer({ message, sender, message, createdAt })
+            messagesSection.appendChild(fragmentedDoc)
+
+        }
+
+    })
+}
+
+const addNewChannelMessage = (socket) => {
+    socket.on(messageEvents.newChannelMessage, (messageData) => {
+        const { message, sender, createdAt, channelId, receiver } = messageData
+
+        if (selectedChannelChannelId.innerText == "" && selectedChannelUserId.innerText == receiver) {
+            const userId = selectedChannelUserId.innerText
+            const username = selectedChannelName.innerText
+            selectedChannelChannelId.innerText == channelId
+            checkAndCreateDateSection(createdAt)
+
+            const newFragmentedDoc = cloneMessageContainer({ message, sender, message, createdAt })
+            messagesSection.appendChild(newFragmentedDoc)
+
+            const fragmentedDoc = cloneOldChatContainer(channelId, userId, username, message, createdAt)
+            chatMessages.prepend(fragmentedDoc)
+
+            //clear the new contacts and hide the section
+            newContacts.style.display = "none"
+            newContacts.innerHTML = ""
+
+        }
     })
 }
 
@@ -80,6 +113,7 @@ function checkAndCreateDateSection(createdAt) {
     if (datesList) {
         const datesListLength = datesList.length
         const lastItem = datesList[datesListLength - 1]
+
         if (lastItem.innerText != messageHeaderDate(createdAt)) {
             cloneDate = messageHeaderDate(createdAt)
             messagesSection.appendChild(cloneDate)

@@ -12,7 +12,7 @@ if (token) {
 
     socket.io.on("reconnect", () => {
         //from chatPanel.js
-        emptyMessagePanel()
+        // emptyMessagePanel()
 
     })
 
@@ -41,6 +41,7 @@ if (token) {
     sendMessage(socket)
     appendMessages(socket)
     appendSingleMessage(socket)
+    addNewChannelMessage(socket)
 
 } else {
     console.log("token not available")
