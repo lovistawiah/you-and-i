@@ -47,7 +47,6 @@ const createMessage = async (io, socket) => {
     let messageReceivers = []
     socket.on(messageEvents.sendMessage, async ({ message, channelId }) => {
         try {
-            console.log("old channel", { message, channelId })
             const channelMembers = await findChannel(channelId)
             if (!channelMembers) return
             messageReceivers = addMembers(channelMembers)
@@ -123,11 +122,9 @@ async function addMessage(channelId, loggedUserId, message, messageReceivers, so
         createdAt,
         channelId
     }
-
     messageReceivers.forEach(receiver => {
-        if (socket.userId == receiver) {
-            io.to(receiver).volatile.emit(messageEvents.SingleMessage, messageEdited)
-        }
+        io.to(receiver).emit(messageEvents.SingleMessage, messageEdited)
+
     })
     await Channel.findByIdAndUpdate(channelId, { $push: { messages: messageCreated._id } })
 }
@@ -158,9 +155,7 @@ async function addNewMessage(channelId, loggedUserId, message, messageReceivers,
     }
 
     messageReceivers.forEach(receiver => {
-        if (socket.userId == receiver) {
-            io.to(receiver).volatile.emit(messageEvents.newChannelMessage, messageEdited)
-        }
+        io.to(receiver).emit(messageEvents.newChannelMessage, messageEdited)
     })
     await Channel.findByIdAndUpdate(channelId, { $push: { messages: messageCreated._id } })
 }

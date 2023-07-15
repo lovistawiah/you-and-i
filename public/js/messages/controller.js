@@ -18,3 +18,10 @@ function HideSelectedChannel(){
     selectedChannelInfo.style.visibility = "hidden"
     sendMessageArea.style.visibility = "visible"
 }
+
+function clearSelectedChannel() {
+    selectedChannelName.textContent = ""
+    selectedChannelStatus.textContent = ""
+    selectedChannelUserId.textContent = ""
+    selectedChannelChannelId.textContent = ""
+}

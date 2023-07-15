@@ -5,6 +5,7 @@ const selectedChannelContainer = document.querySelector(".selected-channel")
 
 
 
+
 const messageEvents = {
     displaySelectedChannelMessages: "displaySelectedChannelMessages",
     sendMessage: "sendMessage",
@@ -12,7 +13,8 @@ const messageEvents = {
     deleteMessage: "deleteMessage",
     offlineOnlineIndicator: "offlineOnlineIndicator",
     displayChannelAllMessages: "displayChannelAllMessages",
-    SingleMessage: "SingleMessage"
+    SingleMessage: "SingleMessage",
+    typing: "typing"
 }
 
 
@@ -35,32 +37,43 @@ function sendMessage(socket) {
                 }
                 socket.emit(messageEvents.sendMessage, messageObj)
 
-            } else if (userId && channelId == "") {
+            }
+            if (userId && channelId == "") {
                 //emitting new channel
+                console.log("here")
                 messageObj = {
                     userId,
                     message: messageValue.value
                 }
                 socket.emit(messageEvents.newChannelMessage, messageObj)
-            } else {
-                return
             }
         }
         messageValue.value = ""
+        return
     })
 
 }
 const appendSingleMessage = (socket) => {
     socket.on(messageEvents.SingleMessage, (messageData) => {
+        console.log(messageData)
         const { message, sender, createdAt, channelId } = messageData
-
         if (selectedChannelChannelId.innerText == channelId) {
             checkAndCreateDateSection(createdAt)
             const fragmentedDoc = cloneMessageContainer({ message, sender, message, createdAt })
             messagesSection.appendChild(fragmentedDoc)
-
+            scrollMessagesToBottom()
         }
 
+        const chat = document.getElementById(channelId)
+        if (chat) {
+            const chatChildren = chat.children
+            const chatLastMessage = chatChildren[4]
+            const chatTime = chatChildren[5]
+
+            chatLastMessage.innerText = message
+            chatTime.innerText = chatOrMessageTime(createdAt)
+            prependToChatPanel(channelId)
+        }
     })
 }
 
@@ -69,12 +82,14 @@ const addNewChannelMessage = (socket) => {
         const { message, sender, createdAt, channelId, receiver } = messageData
 
         if (selectedChannelChannelId.innerText == "" && selectedChannelUserId.innerText == receiver) {
+            selectedChannelChannelId.innerText == channelId
+
             const userId = selectedChannelUserId.innerText
             const username = selectedChannelName.innerText
-            selectedChannelChannelId.innerText == channelId
             checkAndCreateDateSection(createdAt)
 
             const newFragmentedDoc = cloneMessageContainer({ message, sender, message, createdAt })
+
             messagesSection.appendChild(newFragmentedDoc)
 
             const fragmentedDoc = cloneOldChatContainer(channelId, userId, username, message, createdAt)
@@ -97,6 +112,7 @@ const appendMessages = (socket) => {
             const fragmentedDoc = cloneMessageContainer({ message, sender, createdAt })
             messagesSection.appendChild(fragmentedDoc)
         }
+        scrollMessagesToBottom()
     })
 }
 function checkAndCreateDateSection(createdAt) {
@@ -135,14 +151,16 @@ function cloneMessageContainer({ message, sender, createdAt }) {
         groupMessageSenderName.hidden = true
     }
     const otherUserId = selectedChannelUserId.innerText
-    if (sender != otherUserId) {
-        messageContent.classList.add("sender")
-    }
     const messageContent = messageContainerChildren[1]
+
+    if (sender != otherUserId) {
+        messageContainer.classList.add("sender")
+    }
+
     messageContent.innerText = message
 
     const messageTime = messageContainerChildren[2]
-    messageTime.innerText = messageHeaderDate(createdAt)
+    messageTime.innerText = chatOrMessageTime(createdAt)
     return fragment.appendChild(messageContainer)
 
 }
@@ -186,5 +204,34 @@ function emptyMessagePanel() {
 
 function clearMessages() {
     messagesSection.innerHTML = ""
+}
+
+
+function typing(socket) {
+    sendMessageTextBox.addEventListener("keydown", (e) => {
+        if (selectedChannelChannelId.innerText != "") {
+            const channelId = selectedChannelChannelId.innerText
+            socket.emit(messageEvents.typing, channelId)
+        }
+    })
+}
+function receiveTyping(socket) {
+    socket.once(messageEvents.typing, (data) => {
+        console.log(data)
+    })
+}
+
+function onlineStatus(socket) {
+    socket.on(userEvents.status, (data) => {
+
+        const { status, userId } = data
+        // if(selectedChannelUserId.innerText == userId){
+
+        // }
+        console.log(typeof status)
+        const isDate = Date.parse(status)
+       console.log(isDate)
+        // console.log(status)
+    })
 }
 // TODO: typing functionality, hide the send message area and avatar api.

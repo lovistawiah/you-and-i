@@ -5,10 +5,11 @@ const channelEvents = {
     channelAndLastMessage: "channelAndLastMessage",
     addNewChat: "addNewChat",
     search: "search",
-    displayNewChats: "displayNewChats"
+    displayNewChats: "displayNewChats",
 }
 const userEvents = {
-    status: "status"
+    status: "status",
+    typing: "typing"
 }
 
 //TODO:
@@ -33,7 +34,6 @@ const getChannels = async (socket) => {
         }]).select(["members", "messages"])
 
         if (userChannels.length == 0) return
-
         const channelAndLastMessage = []
         userChannels.forEach(channel => {
             const { members, messages } = channel
@@ -50,9 +50,9 @@ const getChannels = async (socket) => {
                     }
 
                     const lastMessageDetails = messages.pop()
-                    if (lastMessageDetails.isDeleted) {
-                        lastMessageDetails.message = "this message was deleted"
-                    }
+                    // if (lastMessageDetails.isDeleted) {
+                    //     lastMessageDetails.message = "this message was deleted"
+                    // }
 
                     const messageInfo = {
                         // the content of the last message of the channel
@@ -85,7 +85,6 @@ const getChannel = async (req, res) => {
 
 const createChannel = async (members) => {
     try {
-        
         const createdChannel = await Channel.findOne({ members: members })
         if (createdChannel) {
             return {
@@ -106,7 +105,6 @@ const createChannel = async (members) => {
             channelMembers: newChannelCreated.members
         }
 
-
     } catch (err) {
         console.log(err)
     }
@@ -115,11 +113,9 @@ const createChannel = async (members) => {
 const findChannel = async (channelId) => {
     try {
         const findChannel = await Channel.findById(channelId)
-        if (findChannel) {
-            return findChannel.members
-        } else {
-            return null
-        }
+        if (!findChannel) return
+
+        return findChannel.members
     } catch (err) {
         console.log(err)
     }
@@ -142,8 +138,9 @@ const newChannel = (socket) => {
             let users = await User.find({ username: { $regex: searchValue, $options: 'i' } }).populate([{
                 path: 'channels'
             }]).select(["username", "channels"])
+
             users.forEach(user => {
-                if (user.channels.length == 0 && user._id != userId) {
+                if (user.channels.length == 0 && user._id.toString() != userId) {
                     let newFriend = {
                         userId: user._id,
                         username: user.username
@@ -153,7 +150,8 @@ const newChannel = (socket) => {
                 } else if (user.channels.length > 0) {
                     user.channels.forEach(channel => {
                         const members = channel.members
-                        if (!members.includes(userId) && user._id != userId) {
+                        if (!members.includes(userId) && user._id.toString() != userId) {
+                            console.log("herer")
                             newFriend = {
                                 userId: user._id,
                                 username: user.username
@@ -174,16 +172,24 @@ const newChannel = (socket) => {
 
 async function offlineIndicator(io, socket) {
     const otherMembers = []
-    let status
+    let status = "online"
 
     try {
         const { userId } = socket.decoded
-        const allChannels = await Channel.find({ members: { $in: userId } })
+        await User.findByIdAndUpdate(userId, { lastSeen: status })
+        const allChannels = await Channel.find({ members: { $in: userId } }).select("members")
         allChannels.forEach(channel => {
             channel.members.forEach(member => {
-                if (member._id.toString() != userId) otherMembers.push(member._id)
+                const memberId = member._id.toString()
+                if (memberId != userId) {
+                socket.volatile.to(memberId).emit(userEvents.status, { status, userId })
+
+                    otherMembers.push(memberId)
+
+                }
             })
         })
+
         // TODO: add any avatar api to make users have dp.
         // handling offline
         socket.on("disconnect", async () => {
@@ -192,19 +198,9 @@ async function offlineIndicator(io, socket) {
             status = new Date()
 
             otherMembers.forEach(member => {
-                io.volatile.to(member).emit(userEvents.status, { status, userId })
+                socket.volatile.to(member).emit(userEvents.status, { status, userId })
             })
             await User.findByIdAndUpdate(userId, { lastSeen: status })
-        })
-        //handling online 
-        socket.on(userEvents.status, async (data) => {
-            status = data
-
-            otherMembers.forEach(member => {
-                io.volatile.to(member).emit(userEvents.status, { status, userId })
-            })
-            await User.findByIdAndUpdate(userId, { lastSeen: status })
-
         })
 
     } catch (err) {
@@ -212,7 +208,27 @@ async function offlineIndicator(io, socket) {
     }
 }
 
+const typing = (socket) => {
+    socket.on(userEvents.typing, async (data) => {
+        try {
+            let receiver
+            const channelId = data
+            const channelMembers = await findChannel(channelId)
+            if (!channelMembers) return
 
+            channelMembers.forEach(member => {
+                if (member._id.toString() != socket.userId) {
+                    receiver = member._id.toString()
+                }
+            })
+            const message = "typing..."
+            socket.to(receiver).emit(userEvents.typing, { message, channelId })
+        } catch (err) {
+            console.log(err)
+        }
+    })
+
+}
 
 module.exports = {
     getChannel,
@@ -220,5 +236,6 @@ module.exports = {
     getChannels,
     createChannel,
     findChannel,
-    offlineIndicator
+    offlineIndicator,
+    typing
 }

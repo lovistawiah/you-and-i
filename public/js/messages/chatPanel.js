@@ -93,6 +93,7 @@ function displayNewContacts(socket) {
 
             newContacts.addEventListener("click", (e) => {
                 //removing the user
+                clearSelectedChannel()
                 messagesSection.innerHTML = ""
                 const activeChats = document.querySelectorAll(".chat-active")
                 if (activeChats.length > 0) {
@@ -333,3 +334,10 @@ function userStatus(socket) {
 }
 
 
+function prependToChatPanel(channelId) {
+    const chat = document.getElementById(channelId)
+    const chatParent = chat.parentElement
+    if (chatParent.firstChild.id != channelId) {
+        chatParent.insertBefore(chat, chatParent.firstChild)
+    }
+}

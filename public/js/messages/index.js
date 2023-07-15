@@ -10,22 +10,10 @@ if (token) {
         }
     })
 
-    socket.io.on("reconnect", () => {
-        //from chatPanel.js
-        // emptyMessagePanel()
-
-    })
-
-    socket.on("status", (data) => {
-        console.log(data)
-    })
-
-
     socket.on("connect", () => {
         console.log(socket.id)
         if (socket.connected) {
             newApp.style.display = "none"
-            socket.emit("status", "online")
         } else {
             window.location.href = "../../public/html/login.html"
         }
@@ -42,6 +30,9 @@ if (token) {
     appendMessages(socket)
     appendSingleMessage(socket)
     addNewChannelMessage(socket)
+    typing(socket)
+    receiveTyping(socket)
+    onlineStatus(socket)
 
 } else {
     console.log("token not available")
