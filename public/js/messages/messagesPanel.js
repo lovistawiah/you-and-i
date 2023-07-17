@@ -55,7 +55,6 @@ function sendMessage(socket) {
 }
 const appendSingleMessage = (socket) => {
     socket.on(messageEvents.SingleMessage, (messageData) => {
-        console.log(messageData)
         const { message, sender, createdAt, channelId } = messageData
         if (selectedChannelChannelId.innerText == channelId) {
             checkAndCreateDateSection(createdAt)
@@ -116,7 +115,7 @@ const appendMessages = (socket) => {
     })
 }
 function checkAndCreateDateSection(createdAt) {
-    const date = document.createElement("section")
+    let date = document.createElement("section")
     date.className = "date"
     const cloneDate = date.cloneNode()
     if (!document.querySelector(".date")) {
@@ -131,7 +130,7 @@ function checkAndCreateDateSection(createdAt) {
         const lastItem = datesList[datesListLength - 1]
 
         if (lastItem.innerText != messageHeaderDate(createdAt)) {
-            cloneDate = messageHeaderDate(createdAt)
+            cloneDate.innerText = messageHeaderDate(createdAt)
             messagesSection.appendChild(cloneDate)
         }
     }
@@ -221,17 +220,7 @@ function receiveTyping(socket) {
     })
 }
 
-function onlineStatus(socket) {
-    socket.on(userEvents.status, (data) => {
 
-        const { status, userId } = data
-        // if(selectedChannelUserId.innerText == userId){
 
-        // }
-        console.log(typeof status)
-        const isDate = Date.parse(status)
-       console.log(isDate)
-        // console.log(status)
-    })
-}
 // TODO: typing functionality, hide the send message area and avatar api.
+// TODO: the scroll bars , buy battery

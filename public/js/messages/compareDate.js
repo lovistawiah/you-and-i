@@ -1,46 +1,38 @@
 function compareDate(lastSeen) {
-    if (lastSeen == "online") {
-        return "online"
+    const lastSeenDate = new Date(lastSeen)
+    const date = new Date()
+    const monthNumber = lastSeenDate.getMonth()
+    const dayNumber = lastSeenDate.getDate()
+    const yearNumber = lastSeenDate.getFullYear()
+
+    let hours = lastSeenDate.getHours()
+    let minutes = lastSeenDate.getMinutes()
+
+    amPm = hours >= 12 ? 'pm' : 'am'
+    if (hours > 12) {
+        hours = Math.floor(hours - 12)
     }
-    if (lastSeen != "online" && lastSeen != undefined) {
-        let lastSeenDateMessage = ""
-        let amPm = ""
-        let dateText = ""
-        let timeText = ""
-        const lastSeenDate = new Date(lastSeen)
-        const date = new Date()
-
-
-        const monthNumber = lastSeenDate.getMonth()
-        const dayNumber = lastSeenDate.getDate()
-        const yearNumber = lastSeenDate.getFullYear()
-
-        let hours = lastSeenDate.getHours()
-        let minutes = lastSeenDate.getUTCMinutes()
-
-        amPm = hours >= 12 ? 'pm' : 'am'
-        if (hours >= 12) {
-            hours = Math.floor(hours - 12)
-        }
-
-        timeText = `${hours}:${minutes} ${amPm}`
-
-        if (
-            lastSeenDate.getMonth() == date.getMonth() &&
-            lastSeenDate.getDate() == date.getDate() &&
-            lastSeenDate.getFullYear() == date.getFullYear()
-        ) {
-            dateText = "today"
-            lastSeenDateMessage = `${dateText} at ${timeText}`
-        } else {
-            lastSeenDateMessage = `last seen: ${dayNumber}/${monthNumber}/${yearNumber} at ${timeText}`
-        }
-
-        return lastSeenDateMessage
-
+    minutes = minutes.toString()
+    if (minutes.length == 1) {
+        minutes = "0" + minutes
     }
+    timeText = `${hours}:${minutes} ${amPm}`
+
+    if (
+        lastSeenDate.getMonth() == date.getMonth() &&
+        lastSeenDate.getDate() == date.getDate() &&
+        lastSeenDate.getFullYear() == date.getFullYear()
+    ) {
+        dateText = "today"
+        lastSeenDateMessage = `${dateText} at ${timeText}`
+    } else {
+        lastSeenDateMessage = `last seen: ${dayNumber}/${monthNumber}/${yearNumber} at ${timeText}`
+    }
+
+    return lastSeenDateMessage
 
 }
+
 
 function chatOrMessageTime(createdAt) {
     let amPm = ""

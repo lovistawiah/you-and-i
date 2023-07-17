@@ -171,41 +171,46 @@ const newChannel = (socket) => {
 }
 
 async function offlineIndicator(io, socket) {
-    const otherMembers = []
-    let status = "online"
-
     try {
         const { userId } = socket.decoded
-        await User.findByIdAndUpdate(userId, { lastSeen: status })
-        const allChannels = await Channel.find({ members: { $in: userId } }).select("members")
-        allChannels.forEach(channel => {
-            channel.members.forEach(member => {
-                const memberId = member._id.toString()
-                if (memberId != userId) {
-                socket.volatile.to(memberId).emit(userEvents.status, { status, userId })
-
-                    otherMembers.push(memberId)
-
-                }
-            })
-        })
-
-        // TODO: add any avatar api to make users have dp.
-        // handling offline
         socket.on("disconnect", async () => {
-            console.log(userId, "disconnect")
-            socket.leave(userId)
-            status = new Date()
-
-            otherMembers.forEach(member => {
-                socket.volatile.to(member).emit(userEvents.status, { status, userId })
-            })
+            const status = new Date()
             await User.findByIdAndUpdate(userId, { lastSeen: status })
+            const channels = await Channel.find({ members: { $in: userId } })
+            channels.forEach(channel => {
+                const members = channel.members
+                members.forEach(member => {
+                    const memberId = member._id.toString()
+                    if (memberId != userId) {
+                        io.to(memberId).emit(userEvents.status, { userId, status })
+                    }
+                })
+            })
         })
-
     } catch (err) {
         console.log(err)
     }
+}
+
+const onlineIndicator = async (socket, io) => {
+    try {
+        const status = "online"
+        const { userId } = socket.decoded
+        await User.findByIdAndUpdate(userId, { lastSeen: status })
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+const askUserStatus = (socket) => {
+    socket.on(userEvents.status, async (data) => {
+        const userId = data
+        const userFound = await User.findById(userId)
+        if (!userFound) return
+
+        const status = userFound.lastSeen
+        socket.emit(userEvents.status, { status, userId })
+    })
 }
 
 const typing = (socket) => {
@@ -230,6 +235,8 @@ const typing = (socket) => {
 
 }
 
+
+
 module.exports = {
     getChannel,
     newChannel,
@@ -237,5 +244,7 @@ module.exports = {
     createChannel,
     findChannel,
     offlineIndicator,
+    onlineIndicator,
+    askUserStatus,
     typing
 }

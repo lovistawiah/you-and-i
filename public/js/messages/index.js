@@ -21,6 +21,7 @@ if (token) {
 
 
     //? in chatPanel.js
+    displayClickedChannelData(socket)
     searchMessageOrNewContact(socket)
     displayNewContacts(socket)
     oldChats(socket)
@@ -32,7 +33,7 @@ if (token) {
     addNewChannelMessage(socket)
     typing(socket)
     receiveTyping(socket)
-    onlineStatus(socket)
+    userOnlineStatus(socket)
 
 } else {
     console.log("token not available")

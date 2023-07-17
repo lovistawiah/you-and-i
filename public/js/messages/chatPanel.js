@@ -21,7 +21,7 @@ const userEvents = {
 }
 
 
-displayClickedChannelData()
+
 
 
 // ? not appearing on the web page.
@@ -41,9 +41,8 @@ const searchMessageOrNewContact = (socket) => {
 
 
 
-function displayClickedChannelData() {
+function displayClickedChannelData(socket) {
     chatMessages.addEventListener("click", (e) => {
-
         const chat = e.target
         const parentElement = chat.parentElement
         if (parentElement.className == "chat-messages") {
@@ -60,7 +59,8 @@ function displayClickedChannelData() {
             const userId = chat.children[1].innerText
             //getting the third child element. thus, the select channel name
             const chatName = chat.children[3].innerText
-            selectedChannel(chatName, "online", userId, channelId)
+            selectedChannel(chatName, userId, channelId, socket)
+            askUserStatus(socket, userId)
             clearMessages()
             socket.emit(messageEvents.displayChannelAllMessages, channelId)
         }
@@ -106,8 +106,9 @@ function displayNewContacts(socket) {
                 newContact.classList.add("chat-active")
                 const newUserId = newContact.children[0].innerText
                 const newChatName = newContact.children[2].innerText
+                askUserStatus(socket, newUserId)
                 //the last parameter is channelId for old chats
-                selectedChannel(newChatName, "online", newUserId, "")
+                selectedChannel(newChatName, newUserId, "", socket)
             })
         }
 
@@ -305,17 +306,15 @@ const groups = () => {
 }
 
 
-function selectedChannel(chatName, onlineStatus, userId, channelId) {
+function selectedChannel(chatName, userId, channelId) {
     if (channelId) {
         selectedChannelChannelId.textContent = channelId
     }
-
     if (userId) {
         selectedChannelUserId.textContent = userId
     }
     //? from the controller.js
     selectedChannelName.textContent = chatName
-    selectedChannelStatus.textContent = onlineStatus
     selectedChannelInfo.style.visibility = "visible"
 
     //make the send button and input visible
@@ -325,15 +324,27 @@ function selectedChannel(chatName, onlineStatus, userId, channelId) {
     channelSelect.remove()
 }
 
+function userOnlineStatus(socket) {
 
-
-function userStatus(socket) {
     socket.on(userEvents.status, (data) => {
-        console.log(data)
+        selectedChannelStatus.innerText = ""
+        const { userId, status } = data
+        const lastSeen = Date.parse(status)
+        if (selectedChannelUserId.innerText == userId) {
+
+            if (isNaN(lastSeen)) {
+                selectedChannelStatus.innerText = status
+            } else {
+                const lastSeenDate = compareDate(status)
+                selectedChannelStatus.innerText = "last seen: " + lastSeenDate
+            }
+        }
     })
 }
 
-
+function askUserStatus(socket, userId) {
+    socket.emit(userEvents.status, userId)
+}
 function prependToChatPanel(channelId) {
     const chat = document.getElementById(channelId)
     const chatParent = chat.parentElement
