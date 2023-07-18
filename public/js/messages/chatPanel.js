@@ -336,7 +336,7 @@ function userOnlineStatus(socket) {
                 selectedChannelStatus.innerText = status
             } else {
                 const lastSeenDate = compareDate(status)
-                selectedChannelStatus.innerText = "last seen: " + lastSeenDate
+                selectedChannelStatus.innerText = lastSeenDate
             }
         }
     })

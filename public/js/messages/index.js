@@ -23,7 +23,7 @@ if (token) {
     //? in chatPanel.js
     displayClickedChannelData(socket)
     searchMessageOrNewContact(socket)
-    displayNewContacts(socket)
+    // displayNewContacts(socket)
     oldChats(socket)
 
     // ? in messagePanel.js

@@ -134,33 +134,16 @@ const newChannel = (socket) => {
             if (searchValue.includes("+") || searchValue.includes("-") || searchValue.includes("|") || searchValue.includes("\\") || searchValue.includes("=")) {
                 return
             }
+            const loggedUser = await User.findById(userId).populate({ path: 'channels' })
+            const loggedUserChannels = loggedUser.channels
 
             let users = await User.find({ username: { $regex: searchValue, $options: 'i' } }).populate([{
-                path: 'channels'
+                path: 'channels',
+
             }]).select(["username", "channels"])
 
-            users.forEach(user => {
-                if (user.channels.length == 0 && user._id.toString() != userId) {
-                    let newFriend = {
-                        userId: user._id,
-                        username: user.username
-                    }
-                    newFriends.push(newFriend)
-
-                } else if (user.channels.length > 0) {
-                    user.channels.forEach(channel => {
-                        const members = channel.members
-                        if (!members.includes(userId) && user._id.toString() != userId) {
-                            console.log("herer")
-                            newFriend = {
-                                userId: user._id,
-                                username: user.username
-                            }
-                            newFriends.push(newFriend)
-                        }
-                    })
-                }
-
+            const otherUsers = users.filter(user=>{
+               
             })
             socket.emit(channelEvents.displayNewChats, newFriends)
         } catch (err) {
