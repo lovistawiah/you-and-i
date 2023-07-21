@@ -24,7 +24,7 @@ function compareDate(lastSeen) {
         lastSeenDate.getFullYear() == date.getFullYear()
     ) {
         dateText = "today"
-        lastSeenDateMessage = `${dateText} at ${timeText}`
+        lastSeenDateMessage = `last seen: ${dateText} at ${timeText}`
     } else {
         lastSeenDateMessage = `last seen: ${dayNumber}/${monthNumber}/${yearNumber} at ${timeText}`
     }
@@ -64,12 +64,6 @@ function messageHeaderDate(messageDate) {
         yearNumber == messageDate.getFullYear()
     ) {
         return "Today"
-    } else if (
-        dayNumber > messageDate.getDate() &&
-        monthNumber == messageDate.getMonth() &&
-        yearNumber == messageDate.getFullYear()
-    ) {
-        return "Yesterday"
     }
     else {
         return `${messageDate.getDate()}/${messageDate.getMonth()}/${messageDate.getFullYear()}`

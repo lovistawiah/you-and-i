@@ -86,8 +86,8 @@ function displayNewContacts(socket) {
             }
             newContacts.appendChild(newContactText)
             for (let newFriend of newFriends) {
-                const { userId, username } = newFriend
-                const newChat = addNewChats(userId, username)
+                const { _id, username } = newFriend
+                const newChat = addNewChats(_id, username)
                 newContacts.appendChild(newChat)
             }
 

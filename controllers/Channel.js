@@ -127,8 +127,6 @@ const findChannel = async (channelId) => {
 const newChannel = (socket) => {
     socket.on(channelEvents.search, async (searchValue) => {
         const { userId } = socket.decoded
-        const newFriends = []
-        let newFriend
         try {
 
             if (searchValue.includes("+") || searchValue.includes("-") || searchValue.includes("|") || searchValue.includes("\\") || searchValue.includes("=")) {
@@ -144,12 +142,13 @@ const newChannel = (socket) => {
                 channel.members.forEach(member => loggedInUserMembers.add(member._id.toString()))
             })
             // query the user searched for 
-            const userNotMembersInChannels = await User.find({
-                // username:{$regex:{}}
+            const newFriends = await User.find({
+                username: { $regex: searchValue, $options: 'i' },
                 _id: { $ne: userId },
                 _id: { $nin: Array.from(loggedInUserMembers) }
-            })
-            console.log(userNotMembersInChannels)
+            }).select("username")
+
+            console.log(newFriends)
             socket.emit(channelEvents.displayNewChats, newFriends)
         } catch (err) {
             console.log(err)
@@ -163,14 +162,15 @@ async function offlineIndicator(io, socket) {
         const { userId } = socket.decoded
         socket.on("disconnect", async () => {
             const status = new Date()
-            await User.findByIdAndUpdate(userId, { lastSeen: status })
+            const user = await User.findByIdAndUpdate(userId, { lastSeen: status }, { new: true })
             const channels = await Channel.find({ members: { $in: userId } })
             channels.forEach(channel => {
                 const members = channel.members
                 members.forEach(member => {
                     const memberId = member._id.toString()
                     if (memberId != userId) {
-                        io.to(memberId).emit(userEvents.status, { userId, status })
+                        io.to(memberId).emit(userEvents.status, { userId, status: user.lastSeen })
+                        console.log(user.lastSeen)
                     }
                 })
             })
@@ -184,7 +184,17 @@ const onlineIndicator = async (socket, io) => {
     try {
         const status = "online"
         const { userId } = socket.decoded
-        await User.findByIdAndUpdate(userId, { lastSeen: status })
+        const user = await User.findByIdAndUpdate(userId, { lastSeen: status }, { new: true })
+        const channels = await Channel.find({ members: { $in: userId } })
+        channels.forEach(channel => {
+            const members = channel.members
+            members.forEach(member => {
+                const memberId = member._id.toString()
+                if (memberId != userId) {
+                    io.to(memberId).emit(userEvents.status, { userId, status: user.lastSeen })
+                }
+            })
+        })
     } catch (err) {
         console.log(err)
     }
@@ -205,7 +215,7 @@ const typing = (socket) => {
     socket.on(userEvents.typing, async (data) => {
         try {
             let receiver
-            const channelId = data
+            const { channelId, userId } = data
             const channelMembers = await findChannel(channelId)
             if (!channelMembers) return
 
@@ -215,7 +225,7 @@ const typing = (socket) => {
                 }
             })
             const message = "typing..."
-            socket.to(receiver).emit(userEvents.typing, { message, channelId })
+            socket.to(receiver).emit(userEvents.typing, { message, channelId, userId })
         } catch (err) {
             console.log(err)
         }

@@ -1,0 +1,110 @@
+The online offline indicator: 
+When a socket connects query all channels a member exists in. Then emit to the online listener 
+Client side, when connect emit to server 
+Server side, emit status to all members as sockets. Excluding the sender in the room. 
+When sender leaves, emit to the room members
+
+Make the chat div a href 
+
+Errors to fixed 
+Do not load previous appended new chats to the DOM. 
+when search, return messages and new chats  that match the search value, 
+j
+Check for conditions like if the chat parent element is this, then do this.
+Else if the new chat parent is this, then do that. 
+Selected channel should return the messages of that channel 
+
+Selected channel: when clicked should return all messages in chunks with the status of the user in the socket room if online and last seen from database
+ 
+Saving last seen in database using the socket on 
+disconnecting and save using the socket. decoded. UserId find and update.
+
+Offline indicator: query all channels that a user is a member and return and emit.volatile to the channel Id, the last seen, thus the date. 
+
+Send button:
+Add two hidden divs for the selected channel. 
+ChatId or User Id, ChannelId 
+If channel Id use different emit and if newChatId Or User Id use
+
+o	Offline indicator 
+o	Avatar api
+o	Typing
+o	Mobile responsive 
+
+Check using oi.sockets.connected on the start
+
+Emitting to specific sockets
+Add userId directly to socket. 
+So when emitting to specific socket in a room 
+I use if socket[member._id]
+
+Chats panel
+Make every chat has an id using the channel id
+Query select all chat using the id 
+If chat I’d matches the message sent 
+Get the message content and the message time.
+Prepend it to the node list, thus the parent element nodeList
+
+If typing 
+Make every chat has an id using the channel id
+Query select all chat using the id 
+If chat I’d matches the message sent 
+Get the message content and the message time
+Make the message time empty string 
+Change the message content to typing..
+
+
+New chats 
+Should use the id as the userId 
+When clicked, empty the section but keep the message send area 
+If message sent, using the messageEvents.newChannelMessage
+
+The socket should receive, 
+An object of channelId, message, time, and other userDetails
+Create a new chat by prepending it to the chat-messages nodeList
+
+
+
+The chat container approach
+Approach 1:
+Create all the element and clone them once using deep:true option. 
+Access each child element and modify them.
+Append to a document fragment.
+And append to the chat messages 
+
+Approach 2: 
+Create a document fragment. 
+Create the elements on the fly and append it to the fragment before appending to chat messages
+
+Approach 3:
+Create all tags on the html page and clone 
+Modify the cloneNodes and display none the first node. 
+
+
+The new chat approach 
+Approach 1:
+Create all element in a function and append them as necessary and return them 
+Clone the element returned.
+Modify the elements and append it to the fragment before appending to the new contacts 
+
+Approach 2: create all the documents on the fly and to fragment before appending to the new contacts
+
+
+
+If element is chat-active and parent element className
+Emit newChannelMessage
+
+Modify the conditional statement in the send message vyb
+
+Maintain the otherUserId at the selected channel. It will be used for checking who sent the message.
+
+If parent element is new contacts,
+Emit new otherUserId, Message 
+
+Before appending check if nodeList isEmpty or children element is empty using length property.
+
+o	Offline and online status
+o	Chats panel 
+o	Messages panel
+o	Typing 
+o	Avatar api

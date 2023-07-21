@@ -210,12 +210,15 @@ function typing(socket) {
     sendMessageTextBox.addEventListener("keydown", (e) => {
         if (selectedChannelChannelId.innerText != "") {
             const channelId = selectedChannelChannelId.innerText
-            socket.emit(messageEvents.typing, channelId)
+            const userId = selectedChannelUserId.innerText
+            if(userId || channelId){
+                socket.emit(messageEvents.typing, { channelId, userId })
+            }
         }
     })
 }
 function receiveTyping(socket) {
-    socket.once(messageEvents.typing, (data) => {
+    socket.on(messageEvents.typing, (data) => {
         console.log(data)
     })
 }
