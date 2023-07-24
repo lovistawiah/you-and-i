@@ -162,15 +162,14 @@ async function offlineIndicator(io, socket) {
         const { userId } = socket.decoded
         socket.on("disconnect", async () => {
             const status = new Date()
-            const user = await User.findByIdAndUpdate(userId, { lastSeen: status }, { new: true })
+            await User.findByIdAndUpdate(userId, { lastSeen: status }, { new: true })
             const channels = await Channel.find({ members: { $in: userId } })
             channels.forEach(channel => {
                 const members = channel.members
                 members.forEach(member => {
                     const memberId = member._id.toString()
                     if (memberId != userId) {
-                        io.to(memberId).emit(userEvents.status, { userId, status: user.lastSeen })
-                        console.log(user.lastSeen)
+                        io.to(memberId).emit(userEvents.status, { userId, status })
                     }
                 })
             })
@@ -184,14 +183,14 @@ const onlineIndicator = async (socket, io) => {
     try {
         const status = "online"
         const { userId } = socket.decoded
-        const user = await User.findByIdAndUpdate(userId, { lastSeen: status }, { new: true })
+        await User.findByIdAndUpdate(userId, { lastSeen: status }, { new: true })
         const channels = await Channel.find({ members: { $in: userId } })
         channels.forEach(channel => {
             const members = channel.members
             members.forEach(member => {
                 const memberId = member._id.toString()
                 if (memberId != userId) {
-                    io.to(memberId).emit(userEvents.status, { userId, status: user.lastSeen })
+                    io.to(memberId).emit(userEvents.status, { userId, status })
                 }
             })
         })
@@ -205,7 +204,6 @@ const askUserStatus = (socket) => {
         const userId = data
         const userFound = await User.findById(userId)
         if (!userFound) return
-
         const status = userFound.lastSeen
         socket.emit(userEvents.status, { status, userId })
     })

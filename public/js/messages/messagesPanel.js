@@ -53,9 +53,11 @@ function sendMessage(socket) {
     })
 
 }
+
 const appendSingleMessage = (socket) => {
     socket.on(messageEvents.SingleMessage, (messageData) => {
         const { message, sender, createdAt, channelId } = messageData
+
         if (selectedChannelChannelId.innerText == channelId) {
             checkAndCreateDateSection(createdAt)
             const fragmentedDoc = cloneMessageContainer({ message, sender, message, createdAt })
@@ -164,6 +166,18 @@ function cloneMessageContainer({ message, sender, createdAt }) {
 
 }
 
+function appendTypingMessage(message) {
+    const fragment = document.createDocumentFragment()
+    const { cloneMessage } = createMessageContainer()
+
+    const messageContainer = cloneMessage
+    const messageContainerChildren = messageContainer.children
+
+    const messageContent = messageContainerChildren[1]
+    messageContent.innerText = message
+    return fragment.appendChild(messageContainer)
+}
+
 
 
 
@@ -208,22 +222,35 @@ function clearMessages() {
 
 function typing(socket) {
     sendMessageTextBox.addEventListener("keydown", (e) => {
-        if (selectedChannelChannelId.innerText != "") {
-            const channelId = selectedChannelChannelId.innerText
-            const userId = selectedChannelUserId.innerText
-            if(userId || channelId){
-                socket.emit(messageEvents.typing, { channelId, userId })
-            }
-        }
+        sendTyping(socket)
     })
 }
 function receiveTyping(socket) {
     socket.on(messageEvents.typing, (data) => {
-        console.log(data)
+        const { message, channelId, userId } = data
+        const channel = document.getElementById(channelId)
+        if (!channel) return
+        // getting the last message and time of a channel
+        const channelChildren = channel.children
+        const channelLastMessage = channelChildren[4].innerText
+        const channelLastTime = channelChildren[5].innerText
+        
+        if (selectedChannelChannelId.innerText == channelId) {
+            const messageApp = appendTypingMessage(message)
+            console.log(messageApp)
+        }
     })
 }
 
 
-
+function sendTyping(socket) {
+    if (selectedChannelChannelId.innerText != "") {
+        const channelId = selectedChannelChannelId.innerText
+        const userId = selectedChannelUserId.innerText
+        if (userId || channelId) {
+            socket.emit(messageEvents.typing, { channelId, userId })
+        }
+    }
+}
 // TODO: typing functionality, hide the send message area and avatar api.
 // TODO: the scroll bars , buy battery

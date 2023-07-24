@@ -3,10 +3,9 @@ const { authenticateSocket } = require("../Middleware/userAuth")
 const { getChannels, newChannel, offlineIndicator, typing, askUserStatus, onlineIndicator } = require("../controllers/Channel")
 const { createMessage, getMessages, createNewChannelMessage } = require("../controllers/messages")
 
-
-
 io.use(authenticateSocket)
 io.on("connection", (socket) => {
+    console.log(socket.decoded.username)
     socket.join(socket.decoded.userId)
     socket.userId = socket.decoded.userId
 
@@ -18,7 +17,6 @@ io.on("connection", (socket) => {
     })
 
 })
-
 
 io.on("connection", (socket) => {
     //from controller/messages.js
@@ -33,7 +31,5 @@ io.on("connection", (socket) => {
     typing(socket)
     askUserStatus(socket)
 })
-
-
 
 module.exports = io

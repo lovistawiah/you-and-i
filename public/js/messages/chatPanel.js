@@ -3,9 +3,6 @@ const chatsSubPanel = document.querySelector(".chats-sub-panel")
 const chatMessages = document.querySelector(".chat-messages")
 const groupsSection = document.querySelector(".groups")
 const newContacts = document.querySelector(".new-contacts")
-
-
-
 const sendMessageArea = document.querySelector(".send-message")
 
 const channelEvents = {
@@ -19,10 +16,6 @@ const userEvents = {
     status: "status",
     online: "online"
 }
-
-
-
-
 
 // ? not appearing on the web page.
 const searchMessageOrNewContact = (socket) => {
@@ -43,6 +36,8 @@ const searchMessageOrNewContact = (socket) => {
 
 function displayClickedChannelData(socket) {
     chatMessages.addEventListener("click", (e) => {
+        searchTextBox.innerText = ""
+        sendMessageTextBox.innerText = ""
         const chat = e.target
         const parentElement = chat.parentElement
         if (parentElement.className == "chat-messages") {
@@ -127,7 +122,7 @@ function displayGroups() {
 
 const oldChats = (socket) => {
     HideSelectedChannel()
-    socket.on(channelEvents.channelAndLastMessage, (channelAndLastMessage) => {
+    socket.once(channelEvents.channelAndLastMessage, (channelAndLastMessage) => {
         //clears the chat panel 
         chatMessages.innerHTML = ""
         if (channelAndLastMessage && channelAndLastMessage.length > 0) {
