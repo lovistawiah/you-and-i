@@ -234,10 +234,10 @@ function receiveTyping(socket) {
         const channelChildren = channel.children
         const channelLastMessage = channelChildren[4].innerText
         const channelLastTime = channelChildren[5].innerText
-        
+        //TODO 
         if (selectedChannelChannelId.innerText == channelId) {
             const messageApp = appendTypingMessage(message)
-            console.log(messageApp)
+          
         }
     })
 }

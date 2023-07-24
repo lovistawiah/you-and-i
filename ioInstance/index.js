@@ -5,7 +5,6 @@ const { createMessage, getMessages, createNewChannelMessage } = require("../cont
 
 io.use(authenticateSocket)
 io.on("connection", (socket) => {
-    console.log(socket.decoded.username)
     socket.join(socket.decoded.userId)
     socket.userId = socket.decoded.userId
 

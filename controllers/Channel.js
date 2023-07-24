@@ -148,7 +148,6 @@ const newChannel = (socket) => {
                 _id: { $nin: Array.from(loggedInUserMembers) }
             }).select("username")
 
-            console.log(newFriends)
             socket.emit(channelEvents.displayNewChats, newFriends)
         } catch (err) {
             console.log(err)

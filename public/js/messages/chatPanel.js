@@ -114,7 +114,6 @@ function displayGroups() {
     if (searchTextBox.value != "" && groupsSection.innerHTML != "") {
         groupsSection.addEventListener("click", (e) => {
             const group = e.target
-            console.log(group)
         })
     }
 

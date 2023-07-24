@@ -11,7 +11,6 @@ if (token) {
     })
 
     socket.on("connect", () => {
-        console.log(socket.id)
         if (socket.connected) {
             newApp.style.display = "none"
         } else {
@@ -36,8 +35,6 @@ if (token) {
     userOnlineStatus(socket)
 
 } else {
-    console.log("token not available")
     channelSelect.style.display = "none"
-
 }
 
