@@ -31,9 +31,16 @@ const getChannels = async (socket) => {
         }, {
             path: 'messages',
             model: 'message'
-        }]).select(["members", "messages"])
+        }]).select(["username", "messages"])
 
         if (userChannels.length == 0) return
+
+        userChannels.sort((channelA, channelB) => {
+            const lastMessageA = channelA.messages[channelA.messages.length - 1];
+            const lastMessageB = channelB.messages[channelB.messages.length - 1];
+
+            return new Date(lastMessageB.createdAt) - new Date(lastMessageA.createdAt);
+        });
         const channelAndLastMessage = []
         userChannels.forEach(channel => {
             const { members, messages } = channel
@@ -50,23 +57,17 @@ const getChannels = async (socket) => {
                     }
 
                     const lastMessageDetails = messages.pop()
-                    // if (lastMessageDetails.isDeleted) {
-                    //     lastMessageDetails.message = "this message was deleted"
-                    // }
-
                     const messageInfo = {
                         // the content of the last message of the channel
                         lastMessage: lastMessageDetails.message,
                         sender: lastMessageDetails.sender,
                         createdAt: lastMessageDetails.createdAt
                     }
-
                     channelAndLastMessage.push({
                         channelInfo,
                         userInfo,
                         messageInfo
                     })
-
                 }
             })
         })
@@ -128,7 +129,6 @@ const newChannel = (socket) => {
     socket.on(channelEvents.search, async (searchValue) => {
         const { userId } = socket.decoded
         try {
-
             if (searchValue.includes("+") || searchValue.includes("-") || searchValue.includes("|") || searchValue.includes("\\") || searchValue.includes("=")) {
                 return
             }
@@ -136,18 +136,19 @@ const newChannel = (socket) => {
                 path: 'channels',
                 populate: { path: 'members', model: 'user' }
             }).select("channels")
-
-            const loggedInUserMembers = new Set()
+            const loggedInUserMembers = []
             loggedUser.channels.forEach(channel => {
-                channel.members.forEach(member => loggedInUserMembers.add(member._id.toString()))
+                channel.members.forEach(member => loggedInUserMembers.push(member._id.toString()))
             })
-            // query the user searched for 
-            const newFriends = await User.find({
-                username: { $regex: searchValue, $options: 'i' },
-                _id: { $ne: userId },
-                _id: { $nin: Array.from(loggedInUserMembers) }
-            }).select("username")
 
+            const newFriends = await User.find({
+                //the $and operator query multiple expressions together
+                $and: [
+                    { _id: { $ne: userId } }, //$ne - not equal
+                    { username: { $regex: searchValue, $options: 'i' } },
+                    { _id: { $nin: loggedInUserMembers } } // $nin - not in specified array
+                ]
+            }).select("username")
             socket.emit(channelEvents.displayNewChats, newFriends)
         } catch (err) {
             console.log(err)

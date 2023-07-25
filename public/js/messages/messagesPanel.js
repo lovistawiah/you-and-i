@@ -221,8 +221,9 @@ function clearMessages() {
 
 
 function typing(socket) {
-    sendMessageTextBox.addEventListener("keydown", (e) => {
+    sendMessageTextBox.addEventListener("keyup", (e) => {
         sendTyping(socket)
+
     })
 }
 function receiveTyping(socket) {
@@ -230,15 +231,21 @@ function receiveTyping(socket) {
         const { message, channelId, userId } = data
         const channel = document.getElementById(channelId)
         if (!channel) return
+
         // getting the last message and time of a channel
-        const channelChildren = channel.children
-        const channelLastMessage = channelChildren[4].innerText
-        const channelLastTime = channelChildren[5].innerText
-        //TODO 
-        if (selectedChannelChannelId.innerText == channelId) {
-            const messageApp = appendTypingMessage(message)
-          
-        }
+        // const channelChildren = channel.children
+        // const channelLastMessage = channelChildren[4].innerText
+        // const channelLastTime = channelChildren[5].innerText
+
+        // if (selectedChannelChannelId.innerText == channelId) {
+        //     const messageApp = appendTypingMessage(message)
+            
+        // }
+
+        // setTimeout(() => {
+        //     channelChildren[4].innerText = channelLastMessage
+        //     channelChildren[5].innerText = channelLastTime
+        // }, 1000)
     })
 }
 

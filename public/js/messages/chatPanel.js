@@ -110,14 +110,14 @@ function displayNewContacts(socket) {
     })
 }
 
-function displayGroups() {
-    if (searchTextBox.value != "" && groupsSection.innerHTML != "") {
-        groupsSection.addEventListener("click", (e) => {
-            const group = e.target
-        })
-    }
+// function displayGroups() {
+//     if (searchTextBox.value != "" && groupsSection.innerHTML != "") {
+//         groupsSection.addEventListener("click", (e) => {
+//             const group = e.target
+//         })
+//     }
 
-}
+// }
 
 const oldChats = (socket) => {
     HideSelectedChannel()
