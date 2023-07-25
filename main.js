@@ -2,7 +2,7 @@ require("dotenv").config()
 const express = require('express');
 require("dotenv").config()
 // use only in dev mode
-const morgan = require("morgan");
+// const morgan = require("morgan");
 const http = require('http');
 const path = require("path")
 
@@ -18,7 +18,7 @@ const MONGO_URI = process.env.MONGO_URI
 
 
 
-app.use(morgan("dev"))
+// app.use(morgan("dev"))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use("/public", express.static('public/'))
