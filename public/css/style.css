@@ -21,9 +21,10 @@
     --main-border: 0.6px solid var(--main-border-color);
 }
 
-body{
+body {
     user-select: none;
 }
+
 img {
     width: 100%;
     height: 100%;
@@ -32,7 +33,7 @@ img {
 
 input,
 button {
-    width: 445px;
+    width: 500px;
     height: 30px;
     outline: none;
     border-radius: 4px;
@@ -42,6 +43,11 @@ button {
     font-weight: normal;
     color: black;
     border: 1px solid var(--color7);
+}
+
+input {
+    max-height: 200px;
+    overflow-y: scroll;
 }
 
 button {

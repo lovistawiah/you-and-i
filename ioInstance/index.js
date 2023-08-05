@@ -11,10 +11,6 @@ io.on("connection", (socket) => {
     offlineIndicator(io, socket)
     onlineIndicator(socket, io)
 
-    socket.on("disconnect", () => {
-        console.log(socket.decoded.username)
-    })
-
 })
 
 io.on("connection", (socket) => {

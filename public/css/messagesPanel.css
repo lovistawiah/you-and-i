@@ -23,7 +23,8 @@
     margin-top: auto;
     padding-bottom: 5px;
 }
-.selected-channel-info img{
+
+.selected-channel-info img {
     cursor: pointer;
 }
 
@@ -63,7 +64,7 @@
     width: 100px;
 }
 
-.new-app  a {
+.new-app a {
     text-decoration: none;
     color: white;
     cursor: default;
@@ -122,5 +123,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    visibility: hidden;
 }
+
 /* end of messages panel */

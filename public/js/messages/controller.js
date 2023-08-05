@@ -5,7 +5,9 @@ const selectedChannelUserId = document.querySelector(".user-id")
 const selectedChannelChannelId = document.querySelector(".channel-id")
 
 window.addEventListener("DOMContentLoaded", (e) => {
+    
     searchTextBox.focus()
+    
 })
 
 window.addEventListener("load", (e) => {

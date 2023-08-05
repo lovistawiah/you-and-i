@@ -4,6 +4,7 @@ const chatMessages = document.querySelector(".chat-messages")
 const groupsSection = document.querySelector(".groups")
 const newContacts = document.querySelector(".new-contacts")
 const sendMessageArea = document.querySelector(".send-message")
+const sendMessageForm = document.querySelector(".send-message-form")
 
 const channelEvents = {
     channelAndLastMessage: "channelAndLastMessage",
@@ -36,6 +37,7 @@ const searchMessageOrNewContact = (socket) => {
 
 function displayClickedChannelData(socket) {
     chatMessages.addEventListener("click", (e) => {
+        sendMessageForm.style.visibility = "visible"
         searchTextBox.innerText = ""
         sendMessageTextBox.innerText = ""
         const chat = e.target
@@ -89,6 +91,7 @@ function displayNewContacts(socket) {
             newContacts.addEventListener("click", (e) => {
                 //removing the user
                 clearSelectedChannel()
+                sendMessageForm.style.visibility = "visible"
                 messagesSection.innerHTML = ""
                 const activeChats = document.querySelectorAll(".chat-active")
                 if (activeChats.length > 0) {
@@ -158,7 +161,7 @@ const cloneOldChatContainer = (channelId, userId, username, lastMessage, created
 
     const userChatPic = children[2]
     const userImg = userChatPic.children[0]
-    userImg.src = "../public/img/loginsignup.png"
+    userImg.src = "../public/img/signup-image.jpeg"
     userImg.alt = "user chat pic"
 
     const userName = children[3]
