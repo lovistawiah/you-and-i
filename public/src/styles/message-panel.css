@@ -1,0 +1,242 @@
+body {
+    /* overflow: hidden; */
+}
+
+.message-container {
+    background: var(--message-receive-100);
+    display: grid;
+
+    grid-template-areas:
+        "user"
+        "messages"
+        "form";
+    grid-template-rows: 1fr 1fr minmax(20px, 90px);
+    grid-template-columns: 1fr;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    gap: 0;
+}
+
+/* user panel */
+.user {
+    grid-area: user;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: var(--message-receive-100);
+    border-bottom: 0.1px solid var(--secondary-400);
+}
+
+.dp-name-status {
+    display: flex;
+    width: 100%;
+    align-items: center;
+}
+
+.dp-holder {
+    display: flex;
+    width: 50px;
+    height: 50px;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.dp {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+    border-radius: 50px;
+}
+
+.username-status {
+    width: 170px;
+    height: 50px;
+    padding-right: 20px;
+}
+
+.username {
+    display: flex;
+    padding-top: 15px;
+    align-items: flex-end;
+    gap: 10px;
+    color: var(--primary-500);
+    font-family: Archivo;
+    font-size: 15.5px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    color: var(--primary-400);
+    font-family: Archivo;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
+
+/* end of user panel */
+
+/* messages box */
+.messages {
+    padding: 0 10px;
+    grid-area: messages;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    height: calc(100vh - 110px);
+    overflow-y: auto;
+
+}
+
+.message-holder {
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.sender {
+    align-self: flex-end;
+    align-items: flex-start;
+}
+
+.date {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    align-self: stretch;
+}
+
+.message-date {
+    margin-top: 10px;
+    display: flex;
+    padding: 2px 5px;
+    align-items: center;
+    border-radius: 15px;
+    border: 0.4px solid var(--secondary-200);
+    background: var(--text-100);
+    color: var(--primary-500);
+    text-align: center;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+
+.message-status {
+    width: fit-content;
+    display: flex;
+    padding: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    border-radius: 18px;
+    color: var(--secondary-color-600);
+    text-align: center;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.message-content-holder {
+    display: flex;
+    width: 220px;
+    max-width: 360px;
+    padding: 12px;
+    align-items: center;
+    gap: 10px;
+    border-radius: 25px;
+    background: var(--message-receive-400);
+    flex: 1 0 0;
+    color: var(--primary-500);
+    font-size: 15.5px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.2;
+}
+
+.sender-content {
+    border-radius: 25px;
+    background: var(--message-send-100);
+    color: var(--text-100)
+}
+
+/* end of messages box */
+
+/* send message: form */
+.send-message {
+    grid-area: form;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 5px;
+    gap: 10px;
+    border-top: 1px solid var(--secondary-200);
+    background: var(--message-receive-100);
+    position: fixed;
+    bottom: 0;
+}
+
+.message-input {
+    border-radius: 15px;
+    border: 0.5px solid var(--secondary-300);
+    background: var(--text-100);
+    height: 36px;
+    font-family: 'Archivo';
+    font-size: 15px;
+    padding: 5px 10px;
+    line-height: 1.2;
+    max-height: 80px;
+    resize: none;
+    outline: none;
+    width: 70%;
+    scrollbar-color: inherit var(--secondary-500);
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+}
+
+
+
+
+.input-button {
+    border: none;
+    outline: none;
+    width: 40px;
+    height: 40px;
+    padding: 5px;
+    margin-bottom: 5px;
+    align-self: self-end;
+    border-radius: 50px;
+    background: var(--message-send-300);
+    cursor: pointer;
+}
+
+
+
+.send-svg {
+    width: 90%;
+    height: 90%;
+    flex-shrink: 0;
+    border-radius: 50px;
+    fill: var(--text-100);
+}
+
+
+
+
+/* end of send message */
