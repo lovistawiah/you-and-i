@@ -1,29 +1,26 @@
 body {
-    /* overflow: hidden; */
+    overflow: hidden;
 }
 
 .message-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
     background: var(--message-receive-100);
-    display: grid;
-
-    grid-template-areas:
-        "user"
-        "messages"
-        "form";
-    grid-template-rows: 1fr 1fr minmax(20px, 90px);
-    grid-template-columns: 1fr;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    gap: 0;
 }
 
 /* user panel */
 .user {
-    grid-area: user;
     display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
@@ -88,14 +85,12 @@ body {
 
 /* messages box */
 .messages {
+    flex-grow: 1;
     padding: 0 10px;
-    grid-area: messages;
     display: flex;
+    margin-top: 50px;
     flex-direction: column;
-    margin: 0;
-    height: calc(100vh - 110px);
     overflow-y: auto;
-
 }
 
 .message-holder {
@@ -117,10 +112,11 @@ body {
     align-items: center;
     gap: 10px;
     align-self: stretch;
+    margin: 10px 0;
+
 }
 
 .message-date {
-    margin-top: 10px;
     display: flex;
     padding: 2px 5px;
     align-items: center;
@@ -146,7 +142,7 @@ body {
     border-radius: 18px;
     color: var(--secondary-color-600);
     text-align: center;
-    font-size: 11px;
+    font-size: 11.5px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -154,8 +150,7 @@ body {
 
 .message-content-holder {
     display: flex;
-    width: 220px;
-    max-width: 360px;
+    width: 320px;
     padding: 12px;
     align-items: center;
     gap: 10px;
@@ -179,28 +174,24 @@ body {
 
 /* send message: form */
 .send-message {
-    grid-area: form;
-    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    height: auto;
     padding: 5px;
     gap: 10px;
     border-top: 1px solid var(--secondary-200);
     background: var(--message-receive-100);
-    position: fixed;
-    bottom: 0;
 }
 
 .message-input {
     border-radius: 15px;
     border: 0.5px solid var(--secondary-300);
     background: var(--text-100);
-    height: 36px;
+    height: 25px;
     font-family: 'Archivo';
     font-size: 15px;
-    padding: 5px 10px;
-    line-height: 1.2;
+    padding: 4px 10px;
     max-height: 80px;
     resize: none;
     outline: none;
@@ -211,31 +202,23 @@ body {
 }
 
 
-
-
-.input-button {
-    border: none;
-    outline: none;
-    width: 40px;
-    height: 40px;
-    padding: 5px;
-    margin-bottom: 5px;
-    align-self: self-end;
+.send-button {
+    width: 36px;
+    height: 36px;
     border-radius: 50px;
-    background: var(--message-send-300);
+    outline: none;
+    border: none;
+    background-color: var(--message-send-300);
+    display: flex;
+    padding: 3px;
     cursor: pointer;
 }
-
-
 
 .send-svg {
     width: 90%;
     height: 90%;
-    flex-shrink: 0;
-    border-radius: 50px;
-    fill: var(--text-100);
+    align-self: center;
 }
-
 
 
 

@@ -36,3 +36,14 @@
 	--text-500: #f8f8f8;
 	--text-600: #fdfdfd;
 }
+
+button {
+	cursor: pointer;
+}
+a:visited {
+	color: var(--message-send-400, #294E8F);
+}
+
+a {
+	color: var(--message-send-400, #294E8F)
+}

@@ -1,5 +1,7 @@
-.container {
+.account-container {
     display: flex;
+    width: 100%;
+    height: 100vh;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -8,8 +10,8 @@
 }
 
 .logo {
-    width: 100px;
-    height: 100px;
+    width: 120px;
+    height: 120px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,7 +27,7 @@
 
 .first-message {
     color: #000;
-    font-size: 32px;
+    font-size: 36px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
@@ -45,89 +47,99 @@
 .second-message-box>span {
     color: var(--message-send-500, #1E407E);
     text-align: center;
-    font-size: 32px;
+    font-size: 40px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
 }
 
-.form {
+.account-form {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 18px;
 }
 
-.form-input {
-    width: 130px;
-    height: 24px;
-    padding: 7px 183px 9px 14px;
+.register-form-input,
+.login-form-input {
+    width: 320px;
+    height: 30px;
     align-items: center;
+    padding-left: 4px;
     border-radius: 5px;
     border: 0.3px solid var(--primary-100, #767676);
     background: #FFF;
     color: var(--primary-500, #111);
-    font-size: 15px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 500;
     line-height: normal;
     outline: var(--primary-100);
 }
 
-.form-button {
-    border-radius: 5px;
+.register-form-button,
+.login-form-button {
+    border-radius: 18px;
     border: 0.3px solid var(--primary-100, #767676);
     background: var(--message-send-400, #294E8F);
+    cursor: pointer;
     display: flex;
-    width: 280px;
+    width: 250px;
     padding: 7px 14px;
     justify-content: center;
     align-items: center;
     gap: 10px;
-    color: var(--text-100, var(--Color, #FFF));
+    color: var(--text-100);
     font-family: Archivo;
-    font-size: 14.5px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
 }
 
-.form-button:hover {
-    background: var(--message-send-500);
+.register-form-button:hover,
+.login-form-button:hover {
+background-color: var(--message-send-500);
 }
 
-.form-button:active {
-    background: var(--message-send-600);
+.register-form-button:active,
+.login-form-button:active {
+background: var(--message-send-400, #294E8F);
 }
 
 .forgot-password {
     color: var(--message-send-500);
     font-family: Archivo;
-    font-size: 14.5px;
+    font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
     text-decoration-line: underline;
 }
 
-.account {
+.register-account,.have-account {
     display: flex;
     padding: 9px 31px;
     justify-content: center;
     align-items: center;
-    gap: 8px;
-    color: var(--primary-400, #252525);
-    font-size: 14.5px;
+    color: var(--primary-400);
+    font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
 }
 
 .link {
-    color: var(--message-send-600, );
+    color: var(--message-send-600);
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
+    padding-left: 8px;
     text-decoration-line: underline;
+}
+
+
+.link:link {
+    color: var(--message-send-600);
 }

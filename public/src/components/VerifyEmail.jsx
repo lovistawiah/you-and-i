@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import logoSvg from '../svg/logo.svg'
 
-import '../styles/add-email.css'
+import '../styles/email.css'
 const VerifyEmail = () => {
   return (
     <section className="container">

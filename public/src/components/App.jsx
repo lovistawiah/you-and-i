@@ -8,7 +8,6 @@ import Login from './Login'
 import Home from './Home'
 import ForgotPassword from './ForgotPassword'
 import VerifyEmail from './VerifyEmail'
-import AddEmail from './AddEmail'
 import MessagePanel from './MessagePanel'
 import ChatPanel from './ChatPanel'
 const App = () => {
@@ -20,7 +19,6 @@ const App = () => {
                 <Route path='/' element={<Home />} />
                 <Route path='/forgot-password' element={<ForgotPassword />} />
                 <Route path='/verify-email' element={<VerifyEmail />} />
-                <Route path='/add-email' element={<AddEmail />} />
                 <Route path='/message-panel' element={<MessagePanel />} />
                 <Route path='/chat-panel' element={<ChatPanel />} />
             </Routes>
