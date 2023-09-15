@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 const Home = () => {
     return (
-        <div style={{display: 'flex', gap: '20px', paddingTop: '20px'}}>
+        <div style={{display: 'flex',paddingTop: '20px'}}>
             <Link to='/register'>Register</Link>
             <Link to='/login'>Login</Link>
             <Link to='/forgot-password'>Forgot password</Link>

@@ -19,7 +19,7 @@ const Login = () => {
             </section>
             <form className='account-form' onSubmit={()=> navigate('/')}>
                 <input type="text" name="" className="login-form-input" id="" placeholder='Username or Email' />
-                <input type="text" name="" className="login-form-input" id="" placeholder='Password' />
+                <input type="password" name="" className="login-form-input" id="" placeholder='Password' />
                 <button className='login-form-button'>Login</button>
             </form>
             <Link className='forgot-password' to='/forgot-password'>Forgot Password</Link>

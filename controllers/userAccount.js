@@ -8,8 +8,8 @@ const User = require("../models/Users")
 const signup = async (req, res) => {
     let message = ""
     try {
-        let { firstName, lastName, username, email, password, confirmPassword } = req.body
-        if (!firstName || !lastName || !username || !email || !password || !confirmPassword) {
+        let { firstName, lastName, email, password, confirmPassword } = req.body
+        if (!firstName || !lastName  || !email || !password || !confirmPassword) {
             message = "all fields are required"
             res.status(400).json({ message })
             return
@@ -22,7 +22,7 @@ const signup = async (req, res) => {
         }
 
         password = await bcrypt.hash(password, 10)
-        const account = { firstName, lastName, username, email, password }
+        const account = { firstName, lastName, email, password }
         const user = await User.create(account)
         if (!user) {
             message = "account cannot be created"
@@ -31,8 +31,8 @@ const signup = async (req, res) => {
         }
         message = "ok"
         res.status(200).json({ message })
-
-        return
+        console.log(firstName, lastName, username, email, password, confirmPassword)
+        return 
     } catch (err) {
         let StatusCode = 500
         message = "Internal Server Error"

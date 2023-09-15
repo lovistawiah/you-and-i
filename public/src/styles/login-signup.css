@@ -1,17 +1,16 @@
 .account-container {
+    width: 100dvw;
+    height: 100dvh;
     display: flex;
-    width: 100%;
-    height: 100vh;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 15px;
-    flex-shrink: 0;
+    gap: 10px;
 }
 
 .logo {
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -40,12 +39,12 @@
     padding: 0px 0px 0 40px;
     justify-content: flex-end;
     align-items: center;
-    gap: 27px;
+    gap: 20px;
     color: var(--message-send-500);
 }
 
 .second-message-box>span {
-    color: var(--message-send-500, #1E407E);
+    color: var(--message-send-500);
     text-align: center;
     font-size: 40px;
     font-style: normal;
@@ -57,54 +56,56 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 18px;
 }
 
 .register-form-input,
 .login-form-input {
-    width: 320px;
+    width: 280px;
     height: 30px;
-    align-items: center;
-    padding-left: 4px;
+    font-family: 'Archivo';
+    padding-left: 7px;
     border-radius: 5px;
-    border: 0.3px solid var(--primary-100, #767676);
-    background: #FFF;
-    color: var(--primary-500, #111);
-    font-size: 16px;
+    border: 0.5px solid var(--primary-600);
+    font-size: 14px;
     font-style: normal;
-    font-weight: 500;
+    color: var(--primary-600);
+    font-weight: 400;
     line-height: normal;
-    outline: var(--primary-100);
+    outline: none;
+    margin: 10px 0;
+}
+
+.register-form-input::placeholder,
+.login-form-input::placeholder {
+    color: var(--primary-400);
 }
 
 .register-form-button,
 .login-form-button {
     border-radius: 18px;
-    border: 0.3px solid var(--primary-100, #767676);
-    background: var(--message-send-400, #294E8F);
+    border: 0.3px solid var(--secondary-100);
+    background: var(--message-send-100);
     cursor: pointer;
-    display: flex;
-    width: 250px;
+    text-align: center;
+    width: 200px;
     padding: 7px 14px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+    margin-top: 10px;
     color: var(--text-100);
-    font-family: Archivo;
+    font-family: 'Archivo';
     font-size: 16px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: 200;
     line-height: normal;
 }
 
 .register-form-button:hover,
 .login-form-button:hover {
-background-color: var(--message-send-500);
+    background-color: var(--message-send-200);
 }
 
 .register-form-button:active,
 .login-form-button:active {
-background: var(--message-send-400, #294E8F);
+    background: var(--message-send-300);
 }
 
 .forgot-password {
@@ -117,9 +118,10 @@ background: var(--message-send-400, #294E8F);
     text-decoration-line: underline;
 }
 
-.register-account,.have-account {
+.register-account,
+.have-account {
     display: flex;
-    padding: 9px 31px;
+    padding: 0 31px;
     justify-content: center;
     align-items: center;
     color: var(--primary-400);
@@ -130,7 +132,7 @@ background: var(--message-send-400, #294E8F);
 }
 
 .link {
-    color: var(--message-send-600);
+    color: var(--message-send-400);
     font-size: 16px;
     font-style: normal;
     font-weight: 400;

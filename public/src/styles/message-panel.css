@@ -1,31 +1,43 @@
 body {
+    margin: 0;
+    padding: 0;
     overflow: hidden;
+    width: 100dvw;
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--background-300);
 }
 
-.message-container {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-    background: var(--message-receive-100);
-    position: fixed;
-    top: 0;
+#root {
+    position: relative;
     left: 0;
     right: 0;
     bottom: 0;
+    top: 0;
+    width: 95dvw;
+    height: 95dvh;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    background-color: white;
 }
+
 
 /* user panel */
 .user {
     display: flex;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
+    width: 100%;
     flex-direction: column;
     justify-content: space-between;
     align-items: flex-start;
-    background: var(--message-receive-100);
-    border-bottom: 0.1px solid var(--secondary-400);
+    height: 50px;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
 }
 
 .dp-name-status {
@@ -51,60 +63,54 @@ body {
 }
 
 .username-status {
-    width: 170px;
-    height: 50px;
+    padding-top: 9px;
+    width: 100%;
+    padding-bottom: 1px;
     padding-right: 20px;
+    border-bottom: 0.1px solid var(--background-500);
 }
 
 .username {
     display: flex;
-    padding-top: 15px;
-    align-items: flex-end;
+    align-items: flex-start;
     gap: 10px;
     color: var(--primary-500);
     font-family: Archivo;
-    font-size: 15.5px;
+    font-size: 14.5px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
 }
 
 .status {
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    color: var(--primary-400);
+    color: var(--primary-100);
     font-family: Archivo;
-    font-size: 13px;
+    font-size: 12px;
     font-style: normal;
     font-weight: 300;
     line-height: normal;
+    opacity: 0.7;
 }
 
 /* end of user panel */
 
 /* messages box */
 .messages {
-    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
     padding: 0 10px;
-    display: flex;
-    margin-top: 50px;
-    flex-direction: column;
     overflow-y: auto;
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    bottom: 55px;
+    scroll-behavior: smooth;
 }
 
-.message-holder {
-    width: fit-content;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-}
-
-.sender {
-    align-self: flex-end;
-    align-items: flex-start;
-}
-
+/* message date holder */
 .date {
     display: flex;
     flex-direction: column;
@@ -119,11 +125,9 @@ body {
 .message-date {
     display: flex;
     padding: 2px 5px;
-    align-items: center;
     border-radius: 15px;
-    border: 0.4px solid var(--secondary-200);
-    background: var(--text-100);
-    color: var(--primary-500);
+    border: 0.4px solid var(--message-receive-200);
+    color: var(--primary-100);
     text-align: center;
     font-size: 12px;
     font-style: normal;
@@ -132,94 +136,258 @@ body {
 }
 
 
-.message-status {
+.message-holder {
     width: fit-content;
     display: flex;
-    padding: 10px;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+    align-items: flex-start;
+    flex-direction: column;
+}
+.message-holder .message-status {
+    padding-right: 20px
+}
+
+
+.sender-holder {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    align-items: flex-end;
+    align-self: flex-end;
+    justify-content: flex-end;
+}
+
+.sender-holder .message-status {
+    padding-right: 25px;
+}
+
+.message-content-holder {
+    padding: 10px 10px;
+    border-radius: 25px;
+    color: var(--primary-600);
+    font-size: 13.5px;
+    word-spacing: 0.5px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.2;
+    /* min-width: 8px; */
+    max-width: 310px;
+    background-color: var(--background-300);
+}
+
+.sender-content {
+    background: var(--message-send-300);
+    color: var(--text-100);
+}
+
+
+
+
+
+.message-status {
+    width: fit-content;
+    padding: 5px 10px;
     border-radius: 18px;
-    color: var(--secondary-color-600);
+    color: var(--secondary-400);
     text-align: center;
-    font-size: 11.5px;
+    font-size: 10.5px;
     font-style: normal;
     font-weight: 400;
     line-height: normal;
 }
 
-.message-content-holder {
-    display: flex;
-    width: 320px;
-    padding: 12px;
-    align-items: center;
-    gap: 10px;
-    border-radius: 25px;
-    background: var(--message-receive-400);
-    flex: 1 0 0;
-    color: var(--primary-500);
-    font-size: 15.5px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1.2;
+.message-status {
+    align-self: flex-end;
 }
 
-.sender-content {
-    border-radius: 25px;
-    background: var(--message-send-100);
-    color: var(--text-100)
+/* .sender .message-status {
+    padding-right: 30px;
 }
+
+
 
 /* end of messages box */
 
 /* send message: form */
 .send-message {
     display: flex;
+    height: 50px;
+    padding: 0px 5px;
     justify-content: center;
-    align-items: center;
+    padding-top: 5px;
+    align-items: flex-end;
+    gap: 12px;
     height: auto;
-    padding: 5px;
-    gap: 10px;
-    border-top: 1px solid var(--secondary-200);
-    background: var(--message-receive-100);
+    padding-top: 10px;
+    padding-bottom: 10px;
+    position: absolute;
+    /* background-color: blue; */
+    bottom: 0;
+    width: 100%;
+    border: 1px solid #C7C7C7;
 }
 
 .message-input {
     border-radius: 15px;
-    border: 0.5px solid var(--secondary-300);
-    background: var(--text-100);
-    height: 25px;
+    border: 0.7px solid var(--primary-100);
     font-family: 'Archivo';
-    font-size: 15px;
-    padding: 4px 10px;
+    font-size: 15.5px;
+    height: 30px;
+    padding: 5px 10px;
     max-height: 80px;
     resize: none;
     outline: none;
-    width: 70%;
-    scrollbar-color: inherit var(--secondary-500);
-    scrollbar-width: none;
-    scroll-behavior: smooth;
+    background: rgb(255, 255, 255);
+
+    width: 75%;
 }
 
 
 .send-button {
-    width: 36px;
-    height: 36px;
+    width: 28px;
+    height: 28px;
     border-radius: 50px;
     outline: none;
     border: none;
-    background-color: var(--message-send-300);
+    background-color: var(--message-send-400);
     display: flex;
     padding: 3px;
     cursor: pointer;
+    align-self: flex-end;
 }
 
 .send-svg {
-    width: 90%;
-    height: 90%;
+    width: 98%;
+    height: 98%;
     align-self: center;
+    border-radius: 50px;
+    fill: white;
 }
 
+
+@media (min-width: 768px) {
+    .user {
+        height: 70px;
+    }
+
+    .dp-name-status {
+        padding-top: 5px;
+        padding-left: 7px;
+    }
+
+    .dp-holder {
+        width: 60px;
+        height: 60px;
+    }
+
+    .dp {
+        width: 100%;
+        height: 100%;
+    }
+
+    .username-status {
+        height: 100%;
+        padding-left: 7px;
+        padding-top: 15px;
+    }
+
+    .username {
+        font-size: 16px;
+    }
+
+    .status {
+        font-size: 13.8px;
+    }
+
+    .messages {
+        top: 70px;
+    }
+
+    .message-date {
+        font-size: 14px;
+    }
+
+    .message-status {
+        font-size: 13px;
+    }
+
+    .message-content-holder {
+        width: 20rem;
+        font-size: 16px;
+    }
+
+    .message-input {
+        font-size: 15px;
+    }
+
+    .send-button {
+        width: 40px;
+        height: 40px;
+    }
+
+}
+
+@media (min-width: 1024px) {
+    .user {
+        height: 90px;
+    }
+
+    .dp-name-status {
+        padding-top: 10px;
+        padding-left: 10px;
+    }
+
+    .dp-holder {
+        width: 70px;
+        height: 70px;
+    }
+
+    .dp {
+        width: 100%;
+        height: 100%;
+    }
+
+    .username-status {
+        height: 100%;
+        padding-left: 7px;
+        padding-top: 20px;
+    }
+
+    .username {
+        font-size: 18px;
+    }
+
+    .status {
+        font-size: 14.8px;
+    }
+
+    .messages {
+        top: 90px;
+    }
+
+    .message-date {
+        font-size: 16px;
+    }
+
+    .message-status {
+        font-size: 14px;
+    }
+
+    .message-content-holder {
+        width: 32rem;
+        font-size: 18px;
+    }
+
+    .message-input {
+        font-size: 16px;
+        padding-top: 9px;
+    }
+
+    .send-button {
+        width: 60px;
+        height: 60px;
+    }
+
+}
 
 
 /* end of send message */

@@ -1,15 +1,15 @@
 import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import '../styles/fonts.css'
-import '../styles/main.css'
+import './styles/fonts.css'
+import './styles/main.css'
 
-import Register from './Register'
-import Login from './Login'
-import Home from './Home'
-import ForgotPassword from './ForgotPassword'
-import VerifyEmail from './VerifyEmail'
-import MessagePanel from './MessagePanel'
-import ChatPanel from './ChatPanel'
+import Register from './components/Register'
+import Login from './components/Login'
+import Home from './components/Home'
+import ForgotPassword from './components/ForgotPassword'
+import VerifyEmail from './components/VerifyEmail'
+import MessagePanel from './components/MessagePanel'
+import ChatPanel from './components/ChatPanel'
 const App = () => {
     return (
         <BrowserRouter>
