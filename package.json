@@ -1,31 +1,34 @@
 {
-  "name": "you-and-i",
+  "name": "you-and-i-react",
   "version": "1.0.0",
-  "description": "chatting for her and I",
+  "description": "client app for you and I",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon main.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/lovistawiah/you-and-i.git"
+    "format": "prettier --write \"src/**/*.{js,jsx}\"",
+    "lint": "eslint \"src/**/*.{js,jsx}\" --quiet",
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "lovis tawiah",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/lovistawiah/you-and-i/issues"
-  },
-  "homepage": "https://github.com/lovistawiah/you-and-i#readme",
   "dependencies": {
-    "bcrypt": "^5.1.0",
-    "dotenv": "^16.1.3",
-    "express": "^4.18.2",
-    "jsonwebtoken": "^9.0.0",
-    "mongoose": "^7.2.2",
-    "socket.io": "^4.6.2"
+    "@tanstack/react-query": "^4.10.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
+    "react-router-dom": "^6.4.1"
   },
   "devDependencies": {
-    "morgan": "^1.10.0"
+    "@vitejs/plugin-react": "^2.1.0",
+    "eslint": "^8.24.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-import": "^2.26.0",
+    "eslint-plugin-jsx-a11y": "^6.6.1",
+    "eslint-plugin-react": "^7.31.8",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "prettier": "^2.7.1",
+    "vite": "^3.1.4"
   }
 }

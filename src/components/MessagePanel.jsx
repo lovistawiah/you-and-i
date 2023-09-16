@@ -14,6 +14,7 @@ const MessagePanel = () => {
     const textareaHeight = Math.min(80, Math.max(30, textarea.scrollHeight));
 
     // Calculate the bottom value for the message section
+    // the default bottom value of the messages is 50px
     const messageSectionBottom = `${textareaHeight + 20}px`;
     setMessageSectionBottom(messageSectionBottom);
     messagesBox.current.scrollTop = messagesBox.current.scrollHeight
