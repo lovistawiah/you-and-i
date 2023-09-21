@@ -8,6 +8,7 @@ const MessagePanel = () => {
   const [messageSectionBottom, setMessageSectionBottom] = useState('55');
   const messagesBox = useRef(null)
   const [message, setMessage] = useState('');
+
   function scrollToBottom () {
     messagesBox.current.scrollTop = messagesBox.current.scrollHeight
   }
@@ -22,15 +23,7 @@ const MessagePanel = () => {
 
     messagesBox.current.scrollTop = messagesBox.current.scrollHeight
   };
-  function controlContainerHeight() {
-    setContainerHeight(visualViewport.height)
-  }
-  useEffect(() => {
-    visualViewport.addEventListener('resize', controlContainerHeight)
-    return () => {
-      visualViewport.removeEventListener('resize', controlContainerHeight)
-    }
-  }, [])
+
 
   const elements = []
   for (let i = 0; i < 20; i++) {
@@ -53,8 +46,7 @@ const MessagePanel = () => {
 
   }
   return (
-    <section className='message-container'
-      style={{ height: `${containerHeight}px` }}>
+    <section className='message-container'>
       <section className="user">
         <section className="dp-name-status">
           <section className="dp-holder">
@@ -88,7 +80,6 @@ const MessagePanel = () => {
             height += 1
             e.target.style.height = `${height}px`
           }}
-          style={{ minHeight: '30px', maxHeight: '80px' }}
           onFocus={scrollToBottom}
           className='message-input' >
         </textarea>

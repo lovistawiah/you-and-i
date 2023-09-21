@@ -18,9 +18,9 @@ const App = () => {
                 <Route path='/login' element={<Login />} />
                 <Route path='/' element={<Home />} />
                 <Route path='/forgot-password' element={<ForgotPassword />} />
-                <Route path='/verify-email' element={<VerifyEmail />} />
-                <Route path='/message-panel' element={<MessagePanel />} />
-                <Route path='/chat-panel' element={<ChatPanel />} />
+                <Route path='/verify' element={<VerifyEmail />} />
+                <Route path='/messages' element={<MessagePanel />} />
+                <Route path='/chats' element={<ChatPanel />} />
             </Routes>
         </BrowserRouter>
     )

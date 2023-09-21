@@ -7,7 +7,7 @@ const VerifyEmail = () => {
     <section className="email-container">
       <div className="skip-div">
         {/* add next page to here */}
-        <Link className='skip-link'>Skip</Link>
+        <Link to='/' className='skip-link'>Skip</Link>
       </div>
       <section className='logo-box'>
         <img src={logoSvg} alt="logo of you and I" />

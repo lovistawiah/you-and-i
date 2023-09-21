@@ -1,10 +1,18 @@
-import { Link } from 'react-router-dom'
-import createUser from '../account/createUser'
+import { Link, useNavigate } from 'react-router-dom'
+import { createUser } from '../account/createUser'
 import '../styles/login-signup.css'
 import logoSVg from '../svg/logo.svg'
+import { useState } from 'react'
 const Register = () => {
+    const navigate = useNavigate()
+    const [errorMessage, setErrorMessage] = useState('')
     return (
         <div className='account-container'>
+            {
+                errorMessage ? (
+                    <div className="request-message">{errorMessage}</div>
+                ) : null
+            }
             <section className="logo">
                 <img src={logoSVg} alt="logo of you and I" />
             </section>
@@ -16,29 +24,31 @@ const Register = () => {
                     <span> You and I </span>
                 </div>
             </section>
-            <form onSubmit={(e) => {
+            <form 
+            className='account-form'
+            onSubmit={async (e) => {
                 e.preventDefault()
                 const formData = new FormData(e.target)
                 const formObj = {
-                    firstName: formData.get('first-name') ?? "",
-                    lastName: formData.get('last-name') ?? "",
-                    email: formData.get('email') ?? "",
-                    password: formData.get('password') ?? "",
-                    confirmPassword: formData.get('confirm-password') ?? ""
+                    firstName: formData.get('first-name'),
+                    lastName: formData.get('last-name'),
+                    email: formData.get('email'),
+                    password: formData.get('password'),
+                    confirmPassword: formData.get('confirm-password')
                 }
-                createUser(formObj)
-
+                const { message, code } = await createUser(formObj)
+                code == 200 ? navigate('/verify') : setErrorMessage(message)
             }}
-                className='account-form'>
-                <input type="text" name="first-name" className="register-form-input" id="" placeholder='First Name' />
+            >
+                <input type="text" name="first-name" className="register-form-input" id="" placeholder='First Name' required />
 
-                <input type="text" name="last-name" className="register-form-input" id="" placeholder='Last Name' />
+                <input type="text" name="last-name" className="register-form-input" id="" placeholder='Last Name' required />
 
-                <input type="email" name="email" className="register-form-input" id="" placeholder='Email' />
+                <input type="email" name="email" className="register-form-input" id="" placeholder='Email' required />
 
-                <input type="password" name="password" className="register-form-input" id="" placeholder='Password' />
+                <input type="password" name="password" className="register-form-input" id="" placeholder='Password' required />
 
-                <input type="password" name="confirm-password" className="register-form-input" id="" placeholder='Confirm Password' />
+                <input type="password" name="confirm-password" className="register-form-input" id="" placeholder='Confirm Password' required />
 
                 <button className='register-form-button'
                 >Create Account
