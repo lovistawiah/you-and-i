@@ -28,9 +28,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/public", express.static("public/"));
 
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "index.html"));
-});
+// app.get("/", (req, res) => {
+//   res.sendFile(path.join(__dirname, "index.html"));
+// });
 app.use("/api", router);
 app.post("/deleteData", require("./controllers/allData"));
 // ? attaching the server to the messages sockets.

@@ -1,40 +1,57 @@
-const mongoose = require("mongoose")
+const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema(
+  {
     firstName: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     lastName: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     username: {
-        type: String,
-        unique: true
+      type: String,
+      unique: true,
     },
     email: {
-        type: String,
-        required: true,
-        unique: true
+      type: String,
+      required: true,
+      unique: true,
     },
     password: {
-        type: String,
-        required: true
+      type: String,
+      required: true,
     },
     bio: {
-        type: String
+      type: String,
     },
-    lastSeen:{
-        type: String
+    lastSeen: {
+      type: String,
     },
-    channels: [{
+    channels: [
+      {
         type: mongoose.Schema.Types.ObjectId,
-        ref: "channel"
-    }]
-}, { timestamps: true });
-userSchema.index({ channels: 1, 'channels.messages': -1 })
+        ref: "channel",
+      },
+    ],
+    verificaton: {
+      code: {
+        type: String,
+      },
+      verified: {
+        type: Boolean,
+        default: false,
+      },
+      expires: {
+        type: Date,
+      },
+    },
+  },
+  { timestamps: true }
+);
+userSchema.index({ channels: 1, "channels.messages": -1 });
 
-const User = mongoose.model('user', userSchema);
+const User = mongoose.model("user", userSchema);
 
 module.exports = User;
