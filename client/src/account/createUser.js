@@ -29,13 +29,15 @@ async function createUser({
         },
       }
     );
+    console.log(result)
     if (result.data) {
       return { message: "created", code: 200 };
     }
   } catch (err) {
     const code = err.response.status;
     const message = err.response.data.message;
-    return { code, message };
+    console.log(code,message)
+    // return { code, message };
   }
 }
 

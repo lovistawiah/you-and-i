@@ -20,7 +20,6 @@ const MONGO_URI = process.env.MONGO_URI;
 app.use(morgan("dev"));
 app.use(
   cors({
-    origin: "http://172.20.10.2:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );

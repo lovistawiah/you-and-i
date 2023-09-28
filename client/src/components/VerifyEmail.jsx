@@ -17,7 +17,7 @@ const VerifyEmail = () => {
         <section className="email-message">Verify your email address</section>
       </section>
       <form className='form'>
-        <input type="number" name="" id="" placeholder='' className='verify-input verify-code' />
+        <input type="text" name="" id="" placeholder='' className='verify-input verify-code' />
         <button className='form-button'>Verify Email</button>
       </form>
       <section className='resend-box'>
