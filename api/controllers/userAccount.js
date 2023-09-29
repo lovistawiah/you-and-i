@@ -45,10 +45,10 @@ const signup = async (req, res) => {
       verifyMessage(number)
     );
 
-    const userId = user.id.toString();
+    const userId = user._id
     await user.save();
-    message = "ok";
 
+    message = "ok";
     res.status(200).json({ message, userId });
     return;
   } catch (err) {

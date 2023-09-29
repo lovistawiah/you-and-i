@@ -42,12 +42,11 @@ async function createUser({
 
 async function verifyUser(obj) {
   try {
-    console.log(obj)
+    console.log(obj);
+    const { code, id } = obj;
     const result = await axios.post(
       "http://localhost:5000/api/verify",
-      {
-        obj,
-      },
+      { code, id },
       {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -55,7 +54,7 @@ async function verifyUser(obj) {
       }
     );
     if (result.data) {
-      console.log(data)
+      console.log(data);
       return { status: 200, message: "ok" };
     }
   } catch (err) {

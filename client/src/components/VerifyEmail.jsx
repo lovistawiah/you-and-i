@@ -34,8 +34,6 @@ const VerifyEmail = () => {
           code: formData.get('code'),
           id: userId
         }
-        console.log(userId)
-        console.log(formObj)
         const { status, message } = await verifyUser(formObj)
         console.log(status, message)
         if (status == 202) {
