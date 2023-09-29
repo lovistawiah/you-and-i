@@ -1,10 +1,12 @@
+import { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { createUser } from '../account/createUser'
-import '../styles/login-signup.css'
+import { createUser } from '../account/User'
+import UserContext from '../utils/UserContext'
 import logoSVg from '../svg/logo.svg'
-import { useState } from 'react'
+import '../styles/login-signup.css'
 const Register = () => {
     const navigate = useNavigate()
+    const [_, setUserDetails] = useContext(UserContext)
     const [errorMessage, setErrorMessage] = useState('')
     return (
         <div className='account-container'>
@@ -24,21 +26,26 @@ const Register = () => {
                     <span> You and I </span>
                 </div>
             </section>
-            <form 
-            className='account-form'
-            onSubmit={async (e) => {
-                e.preventDefault()
-                const formData = new FormData(e.target)
-                const formObj = {
-                    firstName: formData.get('first-name'),
-                    lastName: formData.get('last-name'),
-                    email: formData.get('email'),
-                    password: formData.get('password'),
-                    confirmPassword: formData.get('confirm-password')
-                }
-                const { message, code } = await createUser(formObj)
-                code == 200 ? navigate('/verify') : setErrorMessage(message)
-            }}
+            <form
+                className='account-form'
+                onSubmit={async (e) => {
+                    e.preventDefault()
+                    const formData = new FormData(e.target)
+                    const formObj = {
+                        firstName: formData.get('first-name'),
+                        lastName: formData.get('last-name'),
+                        email: formData.get('email'),
+                        password: formData.get('password'),
+                        confirmPassword: formData.get('confirm-password')
+                    }
+                    const { message, userId, status } = await createUser(formObj)
+                    if (status == 200) {
+                        setUserDetails(userId)
+                        navigate('/verify')
+                    } else {
+                        setErrorMessage(message)
+                    }
+                }}
             >
                 <input type="text" name="first-name" className="register-form-input" id="" placeholder='First Name' required />
 

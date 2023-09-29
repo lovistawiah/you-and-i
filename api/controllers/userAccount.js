@@ -20,9 +20,9 @@ const signup = async (req, res) => {
       res.status(400).json({ message });
       return;
     }
-    
-    //making the username the email value if the user do not provide username 
-    const username = email.split('@')[0]
+
+    //making the username the email value if the user do not provide username
+    const username = email.split("@")[0];
     password = await bcrypt.hash(password, 10);
     const account = { firstName, lastName, email, password, username };
     const user = await User.create(account);
@@ -35,8 +35,8 @@ const signup = async (req, res) => {
 
     // adding six code to the user info
     const number = generateSixRandomNumbers();
-    user.verificaton.code = number;
-    user.verificaton.expires = expiryDate();
+    user.verification.code = number;
+    user.verification.expires = expiryDate();
 
     sendEmailCode(
       process.env.GMAIL_CLIENT,
@@ -44,10 +44,12 @@ const signup = async (req, res) => {
       number,
       verifyMessage(number)
     );
+
+    const userId = user.id.toString();
     await user.save();
     message = "ok";
 
-    res.status(200).json({ message });
+    res.status(200).json({ message, userId });
     return;
   } catch (err) {
     console.log(err);
@@ -56,8 +58,6 @@ const signup = async (req, res) => {
 
     if (err.code == 11000) {
       const errValue = Object.keys(err.keyValue);
-
-      // console.log(errValue);
       message = `${errValue} already exists`;
       StatusCode = 400;
     }
@@ -69,19 +69,25 @@ const verifyEmail = async (req, res) => {
   try {
     let message = "";
     const { id, code } = req.body;
-    const user = await User.findById(id);
-    const userCode = user.verificaton.code;
+    const user = await User.findOne(id);
+    console.log(user);
+    if (!user) return;
+
+    const userCode = user.verification.code;
+    console.log(userCode, code);
     if (code !== userCode) {
       message = "code is invalid";
       res.status(400).json({ message });
       return;
     }
-    user.verificaton.verified = true;
+    console.log(user, code);
+    user.verification.verified = true;
     await user.save(true);
     message = "ok";
     res.status(202).json({ message });
     return;
   } catch (err) {
+    console.log(err);
     const message = err.message;
     res.status(500).json({ message });
   }
@@ -153,6 +159,7 @@ const userInfo = async (req, res) => {
     console.log(err);
   }
 };
+
 const pass = process.env.GMAIL_PASS;
 function sendEmailCode(sender, receiver, code, verifyMessage) {
   if (!sender || !receiver || !verifyMessage || !code) {
