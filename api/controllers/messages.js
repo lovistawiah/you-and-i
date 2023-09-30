@@ -106,7 +106,7 @@ function addMembers(channelMembers) {
 }
 
 
-async function addMessage(channelId, loggedUserId, message, messageReceivers, socket, io) {
+async function addMessage(channelId, loggedUserId, message, messageReceivers,  io) {
 
     const messageCreated = await Messages.create({
         channelId,

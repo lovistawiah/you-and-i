@@ -34,14 +34,14 @@ const signup = async (req, res) => {
     }
 
     // adding six code to the user info
-    const number = generateSixRandomNumbers();
-    user.verification.code = number;
+    const code = generateSixRandomNumbers();
+    user.verification.code = code;
     user.verification.expires = expiryDate();
 
     sendEmailCode(
       process.env.GMAIL_CLIENT,
       user.email,
-      number,
+      code,
       verifyMessage(number)
     );
 
@@ -71,6 +71,15 @@ const verifyEmail = async (req, res) => {
     const { id, code } = req.body;
     const user = await User.findOne({ _id: id });
     if (!user) return;
+
+    const expiryDate = new Date(user.verification.expires);
+    const date = new Date();
+    if (date === expiryDate) {
+      res.status(400).json({
+        message: "verification code is expired, request for new code",
+      });
+      return;
+    }
 
     const userCode = user.verification.code;
     if (code !== userCode) {
@@ -191,6 +200,26 @@ function sendEmailCode(sender, receiver, code, verifyMessage) {
   });
 }
 
+const requestNewCode = async (req, res) => {
+  let message = "";
+  const { id } = req.body;
+  if (!id) {
+    message = "user identification does not exist";
+    res.status(400).json({ message });
+    return;
+  }
+  const user = await User.findOne({ _id: id });
+
+  if (!user) {
+    res.status(400).json({ message: "user does not exist" });
+    return;
+  }
+  const newCode = generateSixRandomNumbers()
+  user.verification.code = newCode
+  user.verification.expires = expiryDate()
+  sendEmailCode(process.env.GMAIL_CLIENT,user.email,newCode,verifyMessage(newCode))
+};
+
 const expiryDate = () => {
   const today = new Date();
   const date = today.getDate();
@@ -226,7 +255,7 @@ function verifyMessage(number) {
     <h2>${number}</h2>
     </p>
     <p>this code expires in the next 24 hours</p>
-    <p>If you did not request for verification you can ingore this message</p>
+    <p>If you did not request for verification you can ignore this message</p>
     <p>Thanks <br> The You and I Team</p>
 </body>
 </html>`);
@@ -237,4 +266,5 @@ module.exports = {
   userInfo,
   getAllUsers,
   verifyEmail,
+  requestNewCode
 };

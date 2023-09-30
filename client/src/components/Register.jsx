@@ -1,12 +1,10 @@
-import { useContext, useState } from 'react'
+import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { createUser } from '../account/User'
-import UserContext from '../utils/UserContext'
 import logoSVg from '../svg/logo.svg'
 import '../styles/login-signup.css'
 const Register = () => {
     const navigate = useNavigate()
-    const [_, setUserDetails] = useContext(UserContext)
     const [errorMessage, setErrorMessage] = useState('')
     return (
         <div className='account-container'>
@@ -40,7 +38,7 @@ const Register = () => {
                     }
                     const { message, userId, status } = await createUser(formObj)
                     if (status == 200) {
-                        setUserDetails(userId)
+                        localStorage.setItem('handleUserId', userId)
                         navigate('/verify')
                     } else {
                         setErrorMessage(message)

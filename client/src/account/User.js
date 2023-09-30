@@ -29,7 +29,6 @@ async function createUser({
         },
       }
     );
-    console.log(result);
     if (result.data) {
       return { message: "created", status: 200, userId: result.data.userId };
     }
@@ -53,7 +52,6 @@ async function verifyUser(obj) {
       }
     );
     if (result.data) {
-      console.log(result.data);
       return { status: 200, message: "ok" };
     }
   } catch (err) {
@@ -82,5 +80,8 @@ async function loginUser({ usernameEmail, password }) {
     const message = err.response.data.message;
     return { status, message };
   }
+}
+async function reVerify({id}){
+  const result = await axios.post("http://localhost:5000/api/signup");
 }
 export { createUser, loginUser, verifyUser };

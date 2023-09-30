@@ -1,13 +1,11 @@
-import { Link, Navigate, useNavigate } from 'react-router-dom'
-import UserContext from '../utils/UserContext'
+import { Link, useNavigate } from 'react-router-dom'
 import logoSvg from '../svg/logo.svg'
-
-import '../styles/email.css'
-import { useContext, useState } from 'react'
+import {  useState } from 'react'
 import { verifyUser } from '../account/User'
+import '../styles/email.css'
+
 const VerifyEmail = () => {
   const navigate = useNavigate()
-  const [userId] = useContext(UserContext)
   const [errorMessage, setErrorMessage] = useState('')
   return (
     <section className="email-container">
@@ -30,9 +28,12 @@ const VerifyEmail = () => {
       <form className='form' onSubmit={async(e) => {
         e.preventDefault()
         const formData = new FormData(e.target)
+        if (!localStorage.getItem('handleUserId')){
+          return setErrorMessage('user Id not found 😟, create new Account😃')
+        } 
         const formObj = {
           code: formData.get('code'),
-          id: userId
+          id: localStorage.getItem('handleUserId')
         }
         const { status, message } = await verifyUser(formObj)
         console.log(status, message)
@@ -42,11 +43,11 @@ const VerifyEmail = () => {
           setErrorMessage(message)
         }
       }}>
-        <input type="text" name="code" id="" placeholder='' className='verify-input verify-code' />
+        <input type="text" name="code" className='verify-input verify-code' />
         <button className='form-button'>Verify Email</button>
       </form>
       <section className='resend-box'>
-        <Link className='resend-code'>Resend Code</Link>
+        <Link className='resend-code' >Resend Code</Link>
       </section>
     </section>
   )
