@@ -42,7 +42,6 @@ async function createUser({
 
 async function verifyUser(obj) {
   try {
-    console.log(obj);
     const { code, id } = obj;
     const result = await axios.post(
       "http://localhost:5000/api/verify",
@@ -54,7 +53,7 @@ async function verifyUser(obj) {
       }
     );
     if (result.data) {
-      console.log(data);
+      console.log(result.data);
       return { status: 200, message: "ok" };
     }
   } catch (err) {
@@ -76,7 +75,7 @@ async function loginUser({ usernameEmail, password }) {
       }
     );
     if (result.data) {
-      return { code: 200, message: "ok" };
+      return { status: 200, message: "ok" };
     }
   } catch (err) {
     const status = err.response.status;

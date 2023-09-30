@@ -33,8 +33,8 @@ const Login = () => {
                         usernameEmail: formData.get('username-email'),
                         password: formData.get('password')
                     }
-                    const { message, code } = await longiUser(obj)
-                    code == 200 ? navigate('/chats') : setErrorMessage(message)
+                    const { message, status } = await loginUser(obj)
+                    status == 200 ? navigate('/chats') : setErrorMessage(message)
                 }}
             >
                 <input type="text" name="username-email" className="login-form-input" id="" placeholder='Username or Email' />

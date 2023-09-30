@@ -45,7 +45,7 @@ const signup = async (req, res) => {
       verifyMessage(number)
     );
 
-    const userId = user._id
+    const userId = user._id;
     await user.save();
 
     message = "ok";
@@ -69,25 +69,24 @@ const verifyEmail = async (req, res) => {
   try {
     let message = "";
     const { id, code } = req.body;
-    const user = await User.findOne(id);
-    console.log(user);
+    const user = await User.findOne({ _id: id });
     if (!user) return;
 
     const userCode = user.verification.code;
-    console.log(userCode, code);
     if (code !== userCode) {
       message = "code is invalid";
       res.status(400).json({ message });
       return;
     }
-    console.log(user, code);
+
     user.verification.verified = true;
+    user.verification.expires = "";
     await user.save(true);
+
     message = "ok";
     res.status(202).json({ message });
     return;
   } catch (err) {
-    console.log(err);
     const message = err.message;
     res.status(500).json({ message });
   }
@@ -96,6 +95,7 @@ const verifyEmail = async (req, res) => {
 //? login controller
 const login = async (req, res) => {
   let message = "";
+  let verifiedMessage = true;
   try {
     const { usernameEmail, password } = req.body;
     if (!usernameEmail || !password) {
@@ -128,13 +128,18 @@ const login = async (req, res) => {
       }
     );
 
+    if (!user.verification.verified) {
+      verifiedMessage = false;
+    }
+
     res.status(200).json({
       message: "ok",
-      userInfo: { userId: user._id, username: user.username },
+      userInfo: { userId: user._id, username: user.username, verifiedMessage },
       token,
     });
     return;
   } catch (err) {
+    console.log(err);
     message = "Internal Server Error";
     res.status(500).json({ message });
   }

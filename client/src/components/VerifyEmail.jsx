@@ -36,7 +36,7 @@ const VerifyEmail = () => {
         }
         const { status, message } = await verifyUser(formObj)
         console.log(status, message)
-        if (status == 202) {
+        if (status == 200) {
           navigate('/login')
         } else {
           setErrorMessage(message)
