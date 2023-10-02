@@ -30,8 +30,7 @@ const Register = () => {
                     e.preventDefault()
                     const formData = new FormData(e.target)
                     const formObj = {
-                        firstName: formData.get('first-name'),
-                        lastName: formData.get('last-name'),
+                        username: formData.get('username'),
                         email: formData.get('email'),
                         password: formData.get('password'),
                         confirmPassword: formData.get('confirm-password')
@@ -45,9 +44,7 @@ const Register = () => {
                     }
                 }}
             >
-                <input type="text" name="first-name" className="register-form-input" id="" placeholder='First Name' required />
-
-                <input type="text" name="last-name" className="register-form-input" id="" placeholder='Last Name' required />
+                <input type="text" name="username" className="register-form-input" id="" placeholder='username' required />
 
                 <input type="email" name="email" className="register-form-input" id="" placeholder='Email' required />
 

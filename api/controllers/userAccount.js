@@ -8,8 +8,8 @@ const { generateSixRandomNumbers } = require("./emailcode");
 const signup = async (req, res) => {
   let message = "";
   try {
-    let { firstName, lastName, email, password, confirmPassword } = req.body;
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
+    let { username, email, password, confirmPassword } = req.body;
+    if (!username|| !email || !password || !confirmPassword) {
       message = "all fields are required";
       res.status(400).json({ message });
       return;
@@ -22,9 +22,8 @@ const signup = async (req, res) => {
     }
 
     //making the username the email value if the user do not provide username
-    const username = email.split("@")[0];
     password = await bcrypt.hash(password, 10);
-    const account = { firstName, lastName, email, password, username };
+    const account = { username, email, password, username };
     const user = await User.create(account);
     console.log(user);
     if (!user) {
@@ -37,7 +36,6 @@ const signup = async (req, res) => {
     const code = generateSixRandomNumbers();
     user.verification.code = code;
     user.verification.expires = expiryDate();
-
     sendEmailCode(
       process.env.GMAIL_CLIENT,
       user.email,
@@ -260,6 +258,7 @@ function verifyMessage(number) {
 </body>
 </html>`);
 }
+
 module.exports = {
   login,
   signup,

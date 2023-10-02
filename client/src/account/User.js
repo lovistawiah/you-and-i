@@ -1,14 +1,13 @@
 import axios from "axios";
 
 async function createUser({
-  firstName,
-  lastName,
+  username,
   email,
   password,
   confirmPassword,
 }) {
   try {
-    if (!firstName || !lastName || !email) {
+    if (!username || !email) {
       return { code: 400, message: "all fields are required" };
     }
     if (password != confirmPassword) {
@@ -17,8 +16,7 @@ async function createUser({
     const result = await axios.post(
       "http://localhost:5000/api/signup",
       {
-        firstName,
-        lastName,
+        username,
         email,
         password,
         confirmPassword,
