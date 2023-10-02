@@ -9,7 +9,7 @@ const signup = async (req, res) => {
   let message = "";
   try {
     let { username, email, password, confirmPassword } = req.body;
-    if (!username|| !email || !password || !confirmPassword) {
+    if (!username || !email || !password || !confirmPassword) {
       message = "all fields are required";
       res.status(400).json({ message });
       return;
@@ -25,7 +25,7 @@ const signup = async (req, res) => {
     password = await bcrypt.hash(password, 10);
     const account = { username, email, password, username };
     const user = await User.create(account);
-    console.log(user);
+
     if (!user) {
       message = "account cannot be created, try again later";
       res.status(400).json({ message });
@@ -40,7 +40,7 @@ const signup = async (req, res) => {
       process.env.GMAIL_CLIENT,
       user.email,
       code,
-      verifyMessage(number)
+      verifyMessage(code)
     );
 
     const userId = user._id;
@@ -174,7 +174,9 @@ const userInfo = async (req, res) => {
 
 const pass = process.env.GMAIL_PASS;
 function sendEmailCode(sender, receiver, code, verifyMessage) {
+  console.log(sender, receiver, code);
   if (!sender || !receiver || !verifyMessage || !code) {
+    console.log("error");
     return;
   }
   let mailTransporter = mailer.createTransport({
@@ -212,10 +214,15 @@ const requestNewCode = async (req, res) => {
     res.status(400).json({ message: "user does not exist" });
     return;
   }
-  const newCode = generateSixRandomNumbers()
-  user.verification.code = newCode
-  user.verification.expires = expiryDate()
-  sendEmailCode(process.env.GMAIL_CLIENT,user.email,newCode,verifyMessage(newCode))
+  const newCode = generateSixRandomNumbers();
+  user.verification.code = newCode;
+  user.verification.expires = expiryDate();
+  sendEmailCode(
+    process.env.GMAIL_CLIENT,
+    user.email,
+    newCode,
+    verifyMessage(newCode)
+  );
 };
 
 const expiryDate = () => {
@@ -265,5 +272,5 @@ module.exports = {
   userInfo,
   getAllUsers,
   verifyEmail,
-  requestNewCode
+  requestNewCode,
 };

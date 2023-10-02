@@ -44,7 +44,7 @@ const Register = () => {
                     }
                 }}
             >
-                <input type="text" name="username" className="register-form-input" id="" placeholder='username' required />
+                <input type="text" name="username" className="register-form-input" id="" placeholder='Username' required />
 
                 <input type="email" name="email" className="register-form-input" id="" placeholder='Email' required />
 
