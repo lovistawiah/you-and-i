@@ -1,8 +1,7 @@
 const bcrypt = require("bcrypt");
-const mailer = require("nodemailer");
 const jwt = require("jsonwebtoken");
 const User = require("../models/Users");
-const { generateSixRandomNumbers } = require("./emailcode");
+const { expiryDate, generateSixRandomNumbers } = require("./emailUtils");
 
 // ? signup controller
 const signup = async (req, res) => {
@@ -21,7 +20,6 @@ const signup = async (req, res) => {
       return;
     }
 
-    //making the username the email value if the user do not provide username
     password = await bcrypt.hash(password, 10);
     const account = { username, email, password, username };
     const user = await User.create(account);
@@ -36,12 +34,9 @@ const signup = async (req, res) => {
     const code = generateSixRandomNumbers();
     user.verification.code = code;
     user.verification.expires = expiryDate();
-    sendEmailCode(
-      process.env.GMAIL_CLIENT,
-      user.email,
-      code,
-      verifyMessage(code)
-    );
+
+    // ? skipping code verification now
+    // sendEmailCode(user.email, code, verifyMessage(code));
 
     const userId = user._id;
     await user.save();
@@ -110,7 +105,6 @@ const login = async (req, res) => {
       res.status(400).json({ message });
       return;
     }
-
     const user = await User.findOne({
       $or: [{ username: usernameEmail }, { email: usernameEmail }],
     });
@@ -134,7 +128,6 @@ const login = async (req, res) => {
         expiresIn: "30d",
       }
     );
-
     if (!user.verification.verified) {
       verifiedMessage = false;
     }
@@ -151,14 +144,6 @@ const login = async (req, res) => {
     res.status(500).json({ message });
   }
 };
-const getAllUsers = async (req, res) => {
-  try {
-    const users = await User.find({});
-    res.status(200).json({ users });
-  } catch (e) {
-    console.log(e);
-  }
-};
 
 const userInfo = async (req, res) => {
   try {
@@ -171,34 +156,6 @@ const userInfo = async (req, res) => {
     console.log(err);
   }
 };
-
-const pass = process.env.GMAIL_PASS;
-function sendEmailCode(sender, receiver, code, verifyMessage) {
-  console.log(sender, receiver, code);
-  if (!sender || !receiver || !verifyMessage || !code) {
-    console.log("error");
-    return;
-  }
-  let mailTransporter = mailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: sender,
-      pass: pass,
-    },
-  });
-
-  let mailDetails = {
-    from: sender,
-    to: receiver,
-    subject: `Verification Code:${code} from You and I`,
-    text: verifyMessage,
-  };
-
-  mailTransporter.sendMail(mailDetails, function (err, data) {
-    if (err) console.error(err);
-    console.log(data);
-  });
-}
 
 const requestNewCode = async (req, res) => {
   let message = "";
@@ -225,46 +182,15 @@ const requestNewCode = async (req, res) => {
   );
 };
 
-const expiryDate = () => {
-  const today = new Date();
-  const date = today.getDate();
-  const codeDate = new Date(today.setDate(date + 1));
-  return codeDate;
+const getAllUsers = async (req, res) => {
+  try {
+    const users = await User.find({});
+    res.status(200).json({ users });
+  } catch (e) {
+    console.log(e);
+  }
 };
 
-function verifyMessage(number) {
-  return (content = `<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>You and I verification code</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        h3 {
-            font-size: 2rem;
-            font-weight: lighter;
-        }
-        p {
-            font-size: 16.5px;
-        }
-    </style>
-</head>
-<body>
-    <h3>You and I</h3>
-    <p>Your verification code:
-    <h2>${number}</h2>
-    </p>
-    <p>this code expires in the next 24 hours</p>
-    <p>If you did not request for verification you can ignore this message</p>
-    <p>Thanks <br> The You and I Team</p>
-</body>
-</html>`);
-}
 
 module.exports = {
   login,
