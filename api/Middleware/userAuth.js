@@ -21,7 +21,6 @@ const authenticateSocket = async (socket, next) => {
         socket.decoded = payload.userInfo
         return next()
     } catch (err) {
-        console.log(err)
         return next(new Error("Authentication failed"))
     }
 }

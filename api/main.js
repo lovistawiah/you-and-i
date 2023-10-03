@@ -6,7 +6,6 @@ const cors = require("cors");
 // use only in dev mode
 const morgan = require("morgan");
 const http = require("http");
-const path = require("path");
 
 //local files
 const ioInstance = require("./ioInstance/index");
@@ -18,18 +17,11 @@ const server = http.createServer(app);
 const MONGO_URI = process.env.MONGO_URI;
 
 app.use(morgan("dev"));
-app.use(
-  cors({
-    methods: ["GET", "POST", "PUT", "DELETE"],
-  })
-);
+app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/public", express.static("public/"));
 
-// app.get("/", (req, res) => {
-//   res.sendFile(path.join(__dirname, "index.html"));
-// });
 app.use("/api", router);
 app.post("/deleteData", require("./controllers/allData"));
 // ? attaching the server to the messages sockets.

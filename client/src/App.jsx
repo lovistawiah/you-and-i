@@ -1,4 +1,5 @@
 import { createRoot } from 'react-dom/client'
+import { socket } from './socket'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 import './styles/fonts.css'
@@ -15,15 +16,15 @@ import ChatPanel from './components/ChatPanel'
 const App = () => {
     return (
         <BrowserRouter>
-                <Routes>
-                    <Route path='/register' element={<Register />} />
-                    <Route path='/login' element={<Login />} />
-                    <Route path='/' element={<Home />} />
-                    <Route path='/forgot-password' element={<ForgotPassword />} />
-                    <Route path='/verify' element={<VerifyEmail />} />
-                    <Route path='/messages' element={<MessagePanel />} />
-                    <Route path='/chats' element={<ChatPanel />} />
-                </Routes>
+            <Routes>
+                <Route path='/register' element={<Register />} />
+                <Route path='/login' element={<Login />} />
+                <Route path='/' element={<Home />} />
+                <Route path='/forgot-password' element={<ForgotPassword />} />
+                <Route path='/verify' element={<VerifyEmail />} />
+                <Route path='/messages' element={<MessagePanel />} />
+                <Route path='/chats' element={<ChatPanel />} />
+            </Routes>
         </BrowserRouter>
     )
 }
