@@ -1,11 +1,19 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { useQuery } from '@tanstack/react-query'
 import { createUser } from '../account/User'
 import logoSVg from '../svg/logo.svg'
 import '../styles/login-signup.css'
 const Register = () => {
-    const navigate = useNavigate()
+    // const navigate = useNavigate()
     const [errorMessage, setErrorMessage] = useState('')
+    const [signUp, setSignUp] = useState({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: ""
+    })
+    const result = useQuery(['login', signUp],createUser)
     return (
         <div className='account-container'>
             {
@@ -35,13 +43,7 @@ const Register = () => {
                         password: formData.get('password'),
                         confirmPassword: formData.get('confirm-password')
                     }
-                    const { message, userId, status } = await createUser(formObj)
-                    if (status == 200) {
-                        localStorage.setItem('handleUserId', userId)
-                        navigate('/verify')
-                    } else {
-                        setErrorMessage(message)
-                    }
+                    setSignUp(formObj)
                 }}
             >
                 <input type="text" name="username" className="register-form-input" id="" placeholder='Username' required />

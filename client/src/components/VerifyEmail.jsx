@@ -1,7 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 import logoSvg from '../svg/logo.svg'
 import { useState } from 'react'
-import { verifyUser } from '../account/User'
 import '../styles/email.css'
 import countDown from '../utils/countdown'
 
@@ -17,8 +16,7 @@ const VerifyEmail = () => {
         ) : null
       }
       <div className="skip-div">
-        {/* add next page to here */}
-        <Link to='/' className='skip-link'>Skip</Link>
+        <Link to='/chats' className='skip-link'>Skip</Link>
       </div>
       <section className='logo-box'>
         <img src={logoSvg} alt="logo of you and I" />
@@ -29,21 +27,16 @@ const VerifyEmail = () => {
       </section>
       <form className='form' onSubmit={async (e) => {
         e.preventDefault()
-        const formData = new FormData(e.target)
-        if (!localStorage.getItem('handleUserId')) {
-          return setErrorMessage('user Id not found 😟, create new Account😃')
-        }
-        const formObj = {
-          code: formData.get('code'),
-          id: localStorage.getItem('handleUserId')
-        }
-        const { status, message } = await verifyUser(formObj)
-        console.log(status, message)
-        if (status == 200) {
-          navigate('/login')
-        } else {
-          setErrorMessage(message)
-        }
+
+        // const formData = new FormData(e.target)
+        // if (!localStorage.getItem('handleUserId')) {
+        //   return setErrorMessage('user Id not found 😟, create new Account😃')
+        // }
+        // const formObj = {
+        //   code: formData.get('code'),
+        //   id: localStorage.getItem('handleUserId')
+        // }
+        //!! fix this later
       }}>
         <input type="text" name="code" className='verify-input verify-code' />
         <button className='form-button'>Verify Email</button>

@@ -3,10 +3,16 @@ import { Link, useNavigate } from 'react-router-dom'
 import '../styles/login-signup.css'
 import logoSVg from '../svg/logo.svg'
 import { loginUser } from '../account/User'
+import { useQuery } from '@tanstack/react-query'
 
 const Login = () => {
     const [errorMessage, setErrorMessage] = useState('')
-    const navigate = useNavigate()
+    const [login, setLogin] = useState({
+        usernameEmail: "",
+        password: ""
+    })
+    const result = useQuery(['login', login], loginUser)
+    // const navigate = useNavigate()
     return (
         <div className='account-container'>
             {
@@ -33,8 +39,8 @@ const Login = () => {
                         usernameEmail: formData.get('username-email'),
                         password: formData.get('password')
                     }
-                    const { message, status } = await loginUser(obj)
-                    status == 200 ? navigate('/chats') : setErrorMessage(message)
+                    setLogin(obj)
+
                 }}
             >
                 <input type="text" name="username-email" className="login-form-input" id="" placeholder='Username or Email' />

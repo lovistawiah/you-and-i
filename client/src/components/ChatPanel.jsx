@@ -7,7 +7,6 @@ const ChatPanel = () => {
     const itemElements = []
     for (let i = 0; i < 40; i++) {
         itemElements.push(<section key={i} className="chat">
-
             <section className="chat-pic">
                 <img src={Dp} alt="user dp" className='chat-dp' />
             </section>
