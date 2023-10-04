@@ -7,11 +7,6 @@ import { useQuery } from '@tanstack/react-query'
 
 const Login = () => {
     const [errorMessage, setErrorMessage] = useState('')
-    const [login, setLogin] = useState({
-        usernameEmail: "",
-        password: ""
-    })
-    const result = useQuery(['login', login], loginUser)
     // const navigate = useNavigate()
     return (
         <div className='account-container'>
@@ -39,7 +34,8 @@ const Login = () => {
                         usernameEmail: formData.get('username-email'),
                         password: formData.get('password')
                     }
-                    setLogin(obj)
+                    const result = await loginUser(obj)
+                    result?.status != 200 ? setErrorMessage(result?.message) : null
 
                 }}
             >

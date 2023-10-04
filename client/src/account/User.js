@@ -1,51 +1,77 @@
-async function createUser({ queryKey }) {
-  const { username, email, password, confirmPassword } = queryKey[1];
-  const res = await fetch("http://localhost:5000/api/signup", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: { username, email, password, confirmPassword },
-  });
-  if (!res.ok) {
-    const status = res.status;
-    const message = res.statusText;
+import axios from "axios";
+async function createUser({ username, email, password, confirmPassword }) {
+  try {
+    if (!username || !email) {
+      return { code: 400, message: "all fields are required" };
+    }
+    if (password != confirmPassword) {
+      return { code: 400, message: "passwords do not match" };
+    }
+    const result = await axios.post(
+      "http://localhost:5000/api/signup",
+      {
+        username,
+        email,
+        password,
+        confirmPassword,
+      },
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+    if (result.data) {
+      return { message: "created", status: 200, userId: result.data.userId };
+    }
+  } catch (err) {
+    const status = err.response.status;
+    const message = err.response.data.message;
     return { status, message };
   }
-  return res.json();
+}
+async function verifyUser(obj) {
+  try {
+    const { code, id } = obj;
+    const result = await axios.post(
+      "http://localhost:5000/api/verify",
+      { code, id },
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+    if (result.data) {
+      return { status: 200, message: "ok" };
+    }
+  } catch (err) {
+    const status = err.response.status;
+    const message = err.response.data.message;
+    return { status, message };
+  }
 }
 
-async function verifyUser({ queryKey }) {
-  const { code, id } = queryKey[1];
-
-  const result = await fetch("http://localhost:5000/api/verify", {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: { code, id },
-  });
-
-  if (!result.ok) {
-    const status = result.status;
-    const message = result.statusText;
+async function loginUser({ usernameEmail, password }) {
+  try {
+    const result = await axios.post(
+      "http://localhost:5000/api/login",
+      { usernameEmail, password },
+      {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+    if (result.data) {
+      console.log(result.data?.token)
+      document.cookie  =`authToken=${token}; Secure: HttpOnly`
+      return { status: 200, message: "ok" };
+    }
+  } catch (err) {
+    const status = err.response;
+    const message = err.response;
     return { status, message };
   }
-  return result.json();
-}
-
-async function loginUser({ queryKey }) {
-  const { usernameEmail, password } = queryKey[1];
-  const result = await fetch("http://localhost:5000/api/login", {
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded",
-    },
-    body: { usernameEmail, password },
-  });
-  if (!result.ok) {
-    const status = result.status;
-    const message = result.statusText;
-    return { status, message };
-  }
-  return result.json();
 }
 export { createUser, loginUser };

@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client'
 import { socket } from './socket'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
+
 import './styles/fonts.css'
 import './styles/main.css'
 import Register from './components/Register'
@@ -11,11 +12,20 @@ import ForgotPassword from './components/ForgotPassword'
 import VerifyEmail from './components/VerifyEmail'
 import MessagePanel from './components/MessagePanel'
 import ChatPanel from './components/ChatPanel'
+// import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
-
+// const queryClient = new QueryClient({
+//     defaultOptions: {
+//         queries: {
+//             staleTime: 1000,
+//             cacheTime: 1000
+//         }
+//     }
+// })
 const App = () => {
     return (
         <BrowserRouter>
+        
             <Routes>
                 <Route path='/register' element={<Register />} />
                 <Route path='/login' element={<Login />} />

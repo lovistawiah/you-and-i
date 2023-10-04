@@ -3,7 +3,9 @@ const User = require("../models/Users")
 
 const authenticateSocket = async (socket, next) => {
     const { token } = socket.handshake.auth
+    console.log(socket.handshake)
     try {
+        console.log(token)
         if (!token) {
             return new Error("token not available")
         }

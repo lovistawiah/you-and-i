@@ -1,31 +1,47 @@
-const io = require("socket.io")()
-const { authenticateSocket } = require("../Middleware/userAuth")
-const { getChannels, newChannel, offlineIndicator, typing, askUserStatus, onlineIndicator } = require("../controllers/Channel")
-const { createMessage, getMessages, createNewChannelMessage } = require("../controllers/messages")
+const { Server } = require("socket.io");
+const { authenticateSocket } = require("../Middleware/userAuth");
+const {
+  getChannels,
+  newChannel,
+  offlineIndicator,
+  typing,
+  askUserStatus,
+  onlineIndicator,
+} = require("../controllers/Channel");
+const {
+  createMessage,
+  getMessages,
+  createNewChannelMessage,
+} = require("../controllers/messages");
 
-io.use(authenticateSocket)
+const io = new Server({
+  cors: {
+    origin: ["http://localhost:5173"],
+    credentials: true
+  },
+});
+io.use(authenticateSocket);
 io.on("connection", (socket) => {
-    console.log(socket.id)
-    socket.join(socket.decoded.userId)
-    socket.userId = socket.decoded.userId
+  
+  socket.join(socket.decoded.userId);
+  socket.userId = socket.decoded.userId;
 
-    offlineIndicator(io, socket)
-    onlineIndicator(socket, io)
-
-})
+  offlineIndicator(io, socket);
+  onlineIndicator(socket, io);
+});
 
 io.on("connection", (socket) => {
-    //from controller/messages.js
-    createMessage(io, socket)
-    getMessages(socket)
-    createNewChannelMessage(socket, io)
-})
+  //from controller/messages.js
+  createMessage(io, socket);
+  getMessages(socket);
+  createNewChannelMessage(socket, io);
+});
 io.on("connection", (socket) => {
-    //from controller/channel.js
-    getChannels(socket)
-    newChannel(socket)
-    typing(socket)
-    askUserStatus(socket)
-})
+  //from controller/channel.js
+  getChannels(socket);
+  newChannel(socket);
+  typing(socket);
+  askUserStatus(socket);
+});
 
-module.exports = io
+module.exports = io;

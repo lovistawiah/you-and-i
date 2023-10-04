@@ -131,12 +131,8 @@ const login = async (req, res) => {
     if (!user.verification.verified) {
       verifiedMessage = false;
     }
-
-    res.status(200).json({
-      message: "ok",
-      userInfo: { userId: user._id, username: user.username, verifiedMessage },
-      token,
-    });
+    res.cookie("authToken", token, { httpOnly: true, secure: true });
+    res.status(200).json({ message: "ok", token });
     return;
   } catch (err) {
     console.log(err);
@@ -190,7 +186,6 @@ const getAllUsers = async (req, res) => {
     console.log(e);
   }
 };
-
 
 module.exports = {
   login,

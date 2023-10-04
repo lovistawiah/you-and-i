@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 const cors = require("cors");
 
@@ -13,17 +14,24 @@ const router = require("./routes/routes");
 const connection = require("./db/connection");
 
 const app = express();
-const server = http.createServer(app);
+
+app.use((req, res, next) => {
+  next();
+});
+
+const server = http.createServer(app); // Attach Express app to the HTTP server
+
 const MONGO_URI = process.env.MONGO_URI;
 
 app.use(morgan("dev"));
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({ origin: true }));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use("/public", express.static("public/"));
-
 app.use("/api", router);
 app.post("/deleteData", require("./controllers/allData"));
+
 // ? attaching the server to the messages sockets.
 ioInstance.attach(server);
 
