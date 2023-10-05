@@ -64,9 +64,11 @@ async function loginUser({ usernameEmail, password }) {
       }
     );
     if (result.data) {
-      console.log(result.data?.token)
-      document.cookie  =`authToken=${token}; Secure: HttpOnly`
-      return { status: 200, message: "ok" };
+      if (result.data.token && result.data.token != "") {
+        const token = result.data.token;
+        localStorage.setItem("Oh_vnyX", token);
+        return { status: 200, message: "ok" };
+      }
     }
   } catch (err) {
     const status = err.response;

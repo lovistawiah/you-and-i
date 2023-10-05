@@ -1,11 +1,7 @@
-function getAuthToken(cookieName) {
-  const cookies = document.cookie.split(";");
-  for (const cookie of cookies) {
-    const [name, value] = cookie.trim().split("=");
-    if (name == cookieName) {
-      const token = value != undefined ? value : undefined;
-      return token;
-    }
+function getAuthToken() {
+  const token = localStorage.getItem("Oh_vnyX");
+  if (token && typeof token == "string") {
+    return token;
   }
   return undefined;
 }

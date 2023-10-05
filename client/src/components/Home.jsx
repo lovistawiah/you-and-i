@@ -8,6 +8,7 @@ const Home = () => {
             <Link to='/chats'>Chat Panel</Link>
             <Link to='/messages'>Message Panel</Link>
             <Link to='/verify'>Verify Email</Link>
+            <Link to='/new-friends'></Link>
         </div>
     )
 }

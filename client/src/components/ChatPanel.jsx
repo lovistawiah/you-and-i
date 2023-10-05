@@ -1,9 +1,25 @@
-import '../styles/chat-panel.css'
-import Dp from '../img/user-dp.png'
+import { useEffect, useState } from 'react'
+import { socket } from '../socket'
 import CreateUserSvg from './react-svg/CreateUserSvg'
 import Messages from './react-svg/MessagesSvg'
 import Settings from './react-svg/SettingsSvg'
+
+import Dp from '../img/user-dp.png'
+import '../styles/chat-panel.css'
+import { getChannels } from '../utils/channels'
 const ChatPanel = () => {
+    const [isConnected, setConnect] = useState(false)
+    const data = getChannels()
+
+    useEffect(() => {
+        socket.on("connect", () => {
+            setConnect(true)
+        })
+        if (socket.disconnected) {
+            socket.connect()
+            setConnect(false)
+        }
+    }, [isConnected])
     const itemElements = []
     for (let i = 0; i < 40; i++) {
         itemElements.push(<section key={i} className="chat">
@@ -20,7 +36,10 @@ const ChatPanel = () => {
         </section>)
     }
     return (
+        <>
         <section className="chat-container">
+            <p>{data == null || typeof data == 'string' ? 'no channels found' : data}</p>
+            <p>{isConnected ? 'connected' : 'not connected'}</p>
             <section className="search-container">
                 <input type="search" name="" id="" className='search-input' placeholder='Search ' />
             </section>
@@ -37,6 +56,7 @@ const ChatPanel = () => {
                 <Messages />
             </section>
         </section>
+        </>
     )
 }
 export default ChatPanel

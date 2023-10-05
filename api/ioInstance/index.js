@@ -18,14 +18,12 @@ const io = new Server({
   cors: {
     origin: ["http://localhost:5173"],
     credentials: true
-  },
+  }, 
 });
 io.use(authenticateSocket);
 io.on("connection", (socket) => {
-  
   socket.join(socket.decoded.userId);
   socket.userId = socket.decoded.userId;
-
   offlineIndicator(io, socket);
   onlineIndicator(socket, io);
 });

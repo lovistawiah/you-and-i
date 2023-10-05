@@ -1,5 +1,4 @@
 import { createRoot } from 'react-dom/client'
-import { socket } from './socket'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 
 
@@ -12,6 +11,7 @@ import ForgotPassword from './components/ForgotPassword'
 import VerifyEmail from './components/VerifyEmail'
 import MessagePanel from './components/MessagePanel'
 import ChatPanel from './components/ChatPanel'
+import NewFriends from './components/NewFriends'
 // import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 // const queryClient = new QueryClient({
@@ -34,6 +34,7 @@ const App = () => {
                 <Route path='/verify' element={<VerifyEmail />} />
                 <Route path='/messages' element={<MessagePanel />} />
                 <Route path='/chats' element={<ChatPanel />} />
+                <Route path='/new-friends' element={<NewFriends/>}/>
             </Routes>
         </BrowserRouter>
     )
