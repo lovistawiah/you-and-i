@@ -1,4 +1,4 @@
-.svg-box {
+/* .svg-box {
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -36,4 +36,4 @@ svg {
 .svg-box:focus svg {
     fill: var(--message-send-300);
 }
-
+ */

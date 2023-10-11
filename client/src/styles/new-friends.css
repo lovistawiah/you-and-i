@@ -1,4 +1,4 @@
-.newContacts {
+/* .newContacts {
     display: flex;
     height: 100dvh;
     width: 100dvw;
@@ -155,4 +155,4 @@
     text-overflow: ellipsis;
     overflow: hidden;
     color: var(--message-receive-500, #8C8C8C);
-} */
+} */ 

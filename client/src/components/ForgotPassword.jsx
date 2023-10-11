@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom'
 import '../styles/forgot-password.css'
-import logoSvg from '../svg/logo.svg'
+// import logoSvg from '../svg/logo.svg'
 
 const ForgotPassword = () => {
     return (
         <section className="forgot-password-container">
             <section className="logo-box">
-                <img src={logoSvg} alt="you and i logo" />
+                {/* <img src={logoSvg} alt="you and i logo" /> */}
             </section>
             <section className="welcome-message">
                 You and I

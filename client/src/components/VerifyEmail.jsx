@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
-import logoSvg from '../svg/logo.svg'
+// import logoSvg from '../svg/logo.svg'
 import { useState } from 'react'
 import '../styles/email.css'
 import countDown from '../utils/countdown'
@@ -19,7 +19,7 @@ const VerifyEmail = () => {
         <Link to='/chats' className='skip-link'>Skip</Link>
       </div>
       <section className='logo-box'>
-        <img src={logoSvg} alt="logo of you and I" />
+        {/* <img src={logoSvg} alt="logo of you and I" /> */}
       </section>
       <section className="name-email-message">
         <section className="company-name">You and I</section>

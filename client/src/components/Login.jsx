@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import '../styles/login-signup.css'
-import logoSVg from '../svg/logo.svg'
+// import logoSVg from '../svg/logo.svg'
 import { loginUser } from '../account/User'
 
 const Login = () => {
@@ -15,7 +15,7 @@ const Login = () => {
                 ) : null
             }
             <section className="logo">
-                <img src={logoSVg} alt="logo of you and I" />
+                {/* <img src={logoSVg} alt="logo of you and I" /> */}
             </section>
             <section className='welcome-message'>
                 <span className='first-message'>
