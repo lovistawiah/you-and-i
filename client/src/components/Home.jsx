@@ -44,6 +44,12 @@ const Home = () => {
                 </section>
             </section>
             <section className="messages-panel">
+            <section className="chat-info">
+                <section className="chat-dp">
+                    <img src={Dp} alt="user db" />
+                </section>
+            <section className="chat-username-status"></section>
+            </section>
             </section>
         </section>
     )
