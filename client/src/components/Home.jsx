@@ -3,7 +3,7 @@ import MessagesIcon from './react-svg/MessagesIcon'
 import SettingsIcon from './react-svg/SettingsIcon'
 import SearchIcon from './react-svg/SearchIcon'
 import ArrowDownIcon from './react-svg/ArrowDownIcon'
-import Dp from '../public/images/ellipse-2.png'
+import Dp from '/images/ellipse-2.png'
 const Home = () => {
     const chats = []
     for (let i = 0; i < 20; i++) {
