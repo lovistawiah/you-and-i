@@ -48,8 +48,19 @@ const Home = () => {
                 <section className="chat-dp">
                     <img src={Dp} alt="user db" />
                 </section>
-            <section className="chat-username-status"></section>
+            <section className="chat-username-status">
+                <section className="chat-username">Lovis Tawiah</section>
+                <section className="chat-status">Online</section>
             </section>
+            </section>
+            <section className="messages">
+                <section className="date-box">
+                    <section className="messages-date">
+                            12/03/2023
+                    </section>
+                </section>
+            </section>
+            
             </section>
         </section>
     )
