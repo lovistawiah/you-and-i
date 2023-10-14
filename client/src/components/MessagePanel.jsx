@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import {  useRef, useState } from 'react'
 import '../styles/message-panel.css'
 import dpSvg from '../svg/dp.svg'
 import SendSvg from './react-svg/SendSvg'
 const MessagePanel = () => {
-  const [containerHeight, setContainerHeight] = useState(visualViewport.height)
 
   const [messageSectionBottom, setMessageSectionBottom] = useState('55');
   const messagesBox = useRef(null)
