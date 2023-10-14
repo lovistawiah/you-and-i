@@ -232,3 +232,227 @@
     height: 32.5px;
     padding-bottom: 1px;
 }
+
+
+.messages-panel {
+    padding-top: 10px;
+    display: flex;
+    overflow: hidden;
+    height: 100vh;
+    flex-grow: 1;
+    flex-direction: column;
+    align-items: flex-start;
+    flex-shrink: 0;
+    align-self: stretch;
+}
+
+.chat-info {
+    display: flex;
+    overflow: hidden;
+    align-items: center;
+    align-self: stretch;
+}
+
+.chat-dp {
+    display: flex;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-dp img {
+    width: 48px;
+    height: 48px;
+    border-radius: 48px;
+    background: lightgray 50% / cover no-repeat;
+    flex-shrink: 0;
+}
+
+.chat-username-status {
+    display: flex;
+    height: 50px;
+    overflow: hidden;
+    border-bottom: 1px solid var(--message-receive-200);
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1 0 0;
+    padding-left: 0px;
+    align-items: flex-start;
+    align-self: stretch;
+}
+
+.chat-username {
+    display: flex;
+    padding-top: 10px;
+    padding: 0 5px;
+    align-items: flex-end;
+    gap: 10px;
+    flex: 1 0 0;
+    align-self: stretch;
+    color: var(--secondary-400);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.chat-status {
+    display: flex;
+    padding: 0px 3px 5px 5px;
+    align-self: stretch;
+    opacity: 0.6;
+    color: var(--secondary-400);
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
+
+.messages {
+    display: flex;
+    overflow: hidden;
+    width: 100%;
+    padding: 0 10px;
+    background: var(--text-100);
+    flex-direction: column;
+    gap: 1px;
+    flex: 1 1 0;
+    align-self: stretch;
+}
+
+.date-box {
+    display: flex;
+    padding: 6px 0px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: center;
+}
+
+.messages-date {
+    padding: 2px 5px;
+    width: fit-content;
+    height: fit-content;
+    border-radius: 15px;
+    border: 0.4px solid #C7C7C7;
+    background: var(--text-100);
+    color: var(--primary-500);
+    text-align: center;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.message {
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: fit-content;
+}
+
+.send {
+    display: flex;
+    flex-direction: column;
+    align-self: flex-end;
+}
+
+.message-content {
+    display: flex;
+    width: 275px;
+    max-width: fit-content;
+    overflow: hidden;
+    padding: 10px;
+    border-radius: 25px;
+    background: var(--message-receive-100);
+    color: var(--secondary-500);
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.message-status {
+    align-self: flex-end;
+    padding-top: 1px;
+    padding-right: 13px;
+    color: var(--secondary-400);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    text-align: center;
+}
+
+.send .message-content {
+    border-radius: 25px;
+    background: var(--message-send-100, #3C65FF);
+    color: var(--text-500, #F5F5F5);
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+}
+
+.send .message-status {
+    align-self: flex-start;
+    padding-right: 0;
+    padding-left: 13px;
+}
+
+.send-message {
+    display: flex;
+    height: auto;
+    overflow: hidden;
+    padding: 10px 5px;
+    border-top: 1px solid var(--message-receive-500, #8C8C8C);
+    justify-content: flex-end;
+    align-items: flex-end;
+    gap: 12px;
+    align-self: stretch;
+}
+
+.message-box {
+    resize: none;
+    height: 31px;
+    max-height: 80px;
+    padding: 5px 9px;
+    border-radius: 25px;
+    border: 0.9px solid var(--message-receive-500, #8C8C8C);
+    background: var(--message-receive-100, #F4F4F4);
+    flex: 1 1 0;
+    color: #000;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    outline: none;
+    line-height: 1.5;
+}
+
+
+
+.send-message button {
+    display: flex;
+    width: 32px;
+    height: 32px;
+    padding: 5px;
+    border-radius: 50px;
+    background: var(--message-send-100, #3C65FF);
+    justify-content: center;
+    align-items: center;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.send-message svg {
+    fill: #FFF;
+    width: 95%;
+    height: 95%;
+    flex-shrink: 0;
+}
