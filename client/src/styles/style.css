@@ -91,7 +91,7 @@
 
 /* changing the outline of the svg: thus, the path  */
 .search-holder svg path {
-    fill: #767676;
+    fill: var(--secondary-200);
 }
 
 .chats-text-container {
@@ -170,7 +170,6 @@
     margin-left: 5px;
     justify-content: center;
     align-items: center;
-    font-family: 'Roboto', sans-serif;
 }
 
 .picture-frame img {
@@ -457,4 +456,118 @@
     width: 95%;
     height: 95%;
     flex-shrink: 0;
+}
+
+/* mobile */
+@media (max-width: 485px) {
+    .home-page {
+        flex-direction: row;
+    }
+
+    .icon-panel {
+        flex-direction: row;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 10;
+        justify-content: space-evenly;
+        height: 20px;
+    }
+
+    .icon-panel svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .chats-panel {
+        padding-bottom: 40px;
+        width: 100%;
+    }
+
+    .search-box {
+        width: 100%;
+        height: 50px;
+        padding-top: 10px;
+    }
+
+    .search-holder input {
+        height: 24px;
+        width: 250px;
+        font-size: 14px;
+        padding-left: 20px;
+    }
+
+    .search-holder svg {
+        width: 14px;
+        height: 14px;
+        top: 5px;
+    }
+
+    .chats-text-container {
+        margin-top: 50px;
+    }
+
+    .chats-text {
+        font-size: 18px;
+    }
+
+    .chats-text-container svg {
+        width: 16px;
+        height: 16px;
+        margin-top: 5px;
+    }
+
+    .chats {
+        width: 100dvw;
+        height: 100dvh;
+        scroll-behavior: smooth;
+    }
+
+    .chat {
+        width: 100%;
+        height: fit-content;
+    }
+
+    .picture-frame {
+        height: 45px;
+        width: fit-content;
+        margin-left: 10px;
+        margin-right: 5px;
+        justify-content: flex-start;
+    }
+
+    .picture-frame img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .user-info {
+        height: 48px;
+        width: 100%;
+    }
+
+    .username-and-time {
+        height: calc(48 / 2 * 1px);
+        padding-top: 10px;
+    }
+
+    .username-and-time .username {
+        font-size: 14px;
+    }
+
+    .username-and-time .last-message-time {
+        font-size: 11px;
+    }
+
+    .user-info .last-message {
+        font-size: 12.1px;
+        height: calc(48 / 2 * 1px);
+        line-height: 1;
+    }
+
+    .messages-panel {
+        display: none;
+    }
 }
