@@ -1,3 +1,5 @@
+import SendIcon from './react-svg/SendIcon'
+import Dp from '../public/images/user-dp.png'
 const Messages = () => {
     return (
         <section className="messages-panel">
