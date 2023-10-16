@@ -1,12 +1,20 @@
+import { useContext } from 'react'
 import { Link } from 'react-router-dom'
+import ChatMessagesDisplayContext from '../utils/displayContext'
 import SearchIcon from './react-svg/SearchIcon'
 import ArrowDownIcon from './react-svg/ArrowDownIcon'
 import Dp from '../public/images/user-dp.png'
-const Chats = () => {
+const Chats = ({ chatsDisplay }) => {
+    const [display,setDisplay] = useContext(ChatMessagesDisplayContext)
+    // FIXME: when I click on a chat is should hide the chat panel and show the messages panel with the necessary data.
+    // FIXME: implement dark theme
+    const handleChatClick = () => {
+        console.log('hello, world!')
+    }
     const chats = []
     for (let i = 0; i < 20; i++) {
         chats.push(
-            <Link className='link'>
+            <Link key={i} className='link' onClick={handleChatClick}>
                 <section className="chat">
                     <section className="picture-frame">
                         <img src={Dp} alt="user dp" />
@@ -25,7 +33,7 @@ const Chats = () => {
         )
     }
     return (
-        <section className="chats-panel">
+        <section className="chats-panel" style={{ display: chatsDisplay }}>
             <div className="search-box">
                 <section className="search-holder">
                     <SearchIcon />

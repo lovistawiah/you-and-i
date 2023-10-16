@@ -7,14 +7,12 @@ import Messages from './Messages'
 import Chats from './Chats'
 const Home = () => {
     const [bodyWidth, setBodyWidth] = useState(document.body.clientWidth)
-
-
     const handleResize = () => {
         setBodyWidth(document.body.clientWidth)
     }
+
     useEffect(() => {
         window.addEventListener('resize', handleResize)
-
         return () => {
             window.removeEventListener('resize', handleResize)
         }
@@ -30,8 +28,16 @@ const Home = () => {
                     <SettingsIcon />
                 </Link>
             </section>
-            <Chats />
-            <Messages />
+            {
+                bodyWidth < 485 ? (
+                    <Chats />
+                ) : (
+                    <>
+                        <Chats />
+                        <Messages />
+                    </>
+                )
+            }
         </section>
     )
 }

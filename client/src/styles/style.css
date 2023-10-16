@@ -163,7 +163,6 @@
     overflow: hidden;
     align-items: center;
     flex-shrink: 0;
-    pointer-events: all;
 }
 
 .chat:hover {
@@ -181,14 +180,12 @@
     margin-left: 5px;
     justify-content: center;
     align-items: center;
-    pointer-events: none;
 }
 
 .picture-frame img {
     width: 48px;
     height: 48px;
     border-radius: 50px;
-    pointer-events: none;
 }
 
 .user-info {
@@ -198,8 +195,7 @@
     overflow: hidden;
     flex-direction: column;
     align-items: center;
-    pointer-events: none;
-     border-bottom: 0.9px solid var(--message-receive-200);
+    border-bottom: 0.9px solid var(--message-receive-200);
 }
 
 .username-and-time {
@@ -209,7 +205,6 @@
     padding-top: 15px;
     flex-shrink: 0;
     align-self: stretch;
-    pointer-events: none;
 }
 
 .username-and-time .username {
@@ -225,7 +220,6 @@
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-    pointer-events: none;
 }
 
 .username-and-time .last-message-time {
@@ -235,7 +229,6 @@
     font-style: normal;
     font-weight: 300;
     line-height: normal;
-    pointer-events: none;
 }
 
 .user-info .last-message {
@@ -250,7 +243,6 @@
     line-height: normal;
     text-overflow: ellipsis;
     height: 32.5px;
-    pointer-events: none;
 }
 
 
