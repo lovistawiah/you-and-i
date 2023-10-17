@@ -1,6 +1,13 @@
 import SendIcon from './react-svg/SendIcon'
-import Dp from '../public/images/user-dp.png'
+import Dp from '../images/user-dp.png'
 const Messages = () => {
+    const messages = []
+    for (let i = 0; i < 20; i++) {
+        messages.push(<section className="message">
+            <section className="message-content">hello, it is me and I’m typing and it is working as expected and what do you think</section>
+            <section className="message-status">Delivered</section>
+        </section>)
+    }
     return (
         <section className="messages-panel">
             <section className="chat-info">
@@ -18,10 +25,7 @@ const Messages = () => {
                         12/03/2023
                     </section>
                 </section>
-                <section className="message">
-                    <section className="message-content">hello, it is me and I’m typing and it is working as expected and what do you think</section>
-                    <section className="message-status">Delivered</section>
-                </section>
+                {messages}
                 <section className="message send">
                     <section className="message-content">hello, it is me and I’m typing and it is working as expected and what do you think</section>
                     <section className="message-status">Delivered</section>
@@ -29,12 +33,7 @@ const Messages = () => {
             </section>
             {/* send message box */}
             <form action="" className="send-message">
-                <textarea onKeyUp={(e) => {
-                    e.target.style.height = '31px'
-                    let height = e.target.scrollHeight
-                    height += 1
-                    e.target.style.height = `${height}px`
-                }} className="message-box" name="" id="" ></textarea>
+                <textarea className="message-box" name="" id="" ></textarea>
                 <button>
                     <SendIcon />
                 </button>
@@ -43,3 +42,4 @@ const Messages = () => {
     )
 }
 export default Messages
+
