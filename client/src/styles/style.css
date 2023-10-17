@@ -4,7 +4,6 @@
     display: flex;
     width: 100dvw;
     height: 100dvh;
-    overflow: hidden;
     background: var(--Color, #FFF);
     align-items: flex-start;
     flex-shrink: 0;
@@ -13,7 +12,6 @@
 .icon-panel {
     display: flex;
     width: 60px;
-    overflow: hidden;
     padding: 20px 0px;
     border-right: 1px solid var(--message-receive-200);
     background: #FFF;
@@ -91,7 +89,7 @@
 
 /* changing the outline of the svg: thus, the path  */
 .search-holder svg path {
-    fill: #767676;
+    fill: var(--secondary-200);
 }
 
 .chats-text-container {
@@ -152,6 +150,10 @@
 }
 
 
+.link {
+    text-decoration: none;
+    cursor: default;
+}
 
 .chat {
     display: flex;
@@ -160,7 +162,15 @@
     overflow: hidden;
     align-items: center;
     flex-shrink: 0;
-    border-bottom: 1px solid var(--message-receive-300);
+}
+
+.chat:hover {
+    background-color: var(--message-receive-100);
+}
+
+.chat:active {
+    background: var(--message-receive-200);
+
 }
 
 .picture-frame {
@@ -170,7 +180,6 @@
     margin-left: 5px;
     justify-content: center;
     align-items: center;
-    font-family: 'Roboto', sans-serif;
 }
 
 .picture-frame img {
@@ -186,6 +195,7 @@
     overflow: hidden;
     flex-direction: column;
     align-items: center;
+    border-bottom: 0.9px solid var(--message-receive-200);
 }
 
 .username-and-time {
@@ -239,12 +249,12 @@
 .messages-panel {
     padding-top: 10px;
     display: flex;
-    overflow: hidden;
-    height: 100vh;
+    height: 100dvh;
+    width: 100dvw;
     flex-grow: 1;
     flex-direction: column;
     align-items: flex-start;
-    flex-shrink: 0;
+    flex-shrink: 1;
     align-self: stretch;
 }
 
@@ -287,12 +297,8 @@
 }
 
 .chat-username {
-    display: flex;
     padding-top: 10px;
     padding: 0 5px;
-    align-items: flex-end;
-    gap: 10px;
-    flex: 1 0 0;
     align-self: stretch;
     color: var(--secondary-400);
     font-size: 16px;
@@ -302,7 +308,7 @@
 }
 
 .chat-status {
-    display: flex;
+
     padding: 0px 3px 5px 5px;
     align-self: stretch;
     opacity: 0.6;
@@ -315,7 +321,7 @@
 
 .messages {
     display: flex;
-    overflow: hidden;
+    overflow: auto;
     width: 100%;
     padding: 0 10px;
     background: var(--text-100);
@@ -323,6 +329,8 @@
     gap: 1px;
     flex: 1 1 0;
     align-self: stretch;
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
 }
 
 .date-box {
@@ -351,11 +359,13 @@
 
 .message {
     display: flex;
-    overflow: hidden;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     width: fit-content;
+    height: fit-content;
+    margin-bottom: 10px;
+    scrollbar-width: thin;
 }
 
 .send {
@@ -423,7 +433,7 @@
     resize: none;
     height: 31px;
     max-height: 80px;
-    padding: 5px 9px;
+    padding: 2px 9px;
     border-radius: 25px;
     border: 0.9px solid var(--message-receive-500, #8C8C8C);
     background: var(--message-receive-100, #F4F4F4);
@@ -433,7 +443,7 @@
     font-style: normal;
     font-weight: 400;
     outline: none;
-    line-height: 1.5;
+    line-height: normal;
 }
 
 
@@ -457,4 +467,177 @@
     width: 95%;
     height: 95%;
     flex-shrink: 0;
+}
+
+/* mobile */
+@media (max-width: 485px) {
+    .home-page {
+        flex-direction: row;
+    }
+
+    .icon-panel {
+        flex-direction: row;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        z-index: 10;
+        justify-content: space-evenly;
+        height: 20px;
+    }
+
+    .icon-panel svg {
+        width: 18px;
+        height: 18px;
+    }
+
+    .chats-panel {
+        padding-bottom: 40px;
+        width: 100%;
+    }
+
+    .search-box {
+        width: 100%;
+        height: 50px;
+        padding-top: 10px;
+    }
+
+    .search-holder input {
+        height: 24px;
+        width: 250px;
+        font-size: 14px;
+        padding-left: 20px;
+    }
+
+    .search-holder svg {
+        width: 14px;
+        height: 14px;
+        top: 5px;
+    }
+
+    .chats-text-container {
+        margin-top: 50px;
+    }
+
+    .chats-text {
+        font-size: 18px;
+    }
+
+    .chats-text-container svg {
+        width: 16px;
+        height: 16px;
+        margin-top: 5px;
+    }
+
+    .chats {
+        width: 100dvw;
+        height: 100dvh;
+        scroll-behavior: smooth;
+    }
+
+    .chat {
+        width: 100%;
+        height: fit-content;
+    }
+
+    .picture-frame {
+        height: 45px;
+        width: fit-content;
+        margin-left: 10px;
+        margin-right: 5px;
+        justify-content: flex-start;
+    }
+
+    .picture-frame img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .user-info {
+        height: 48px;
+        width: 100%;
+    }
+
+    .username-and-time {
+        height: calc(48 / 2 * 1px);
+        padding-top: 10px;
+    }
+
+    .username-and-time .username {
+        font-size: 14px;
+    }
+
+    .username-and-time .last-message-time {
+        font-size: 11px;
+        padding-right: 5px;
+    }
+
+    .user-info .last-message {
+        font-size: 12.1px;
+        height: calc(48 / 2 * 1px);
+        line-height: 1;
+    }
+
+    .messages-panel {
+        padding: 0;
+        margin: 0;
+        width: 100dvw;
+        height: 100dvh;
+    }
+
+    .chat-info {
+        height: 40px;
+        padding-top: 5px;
+        padding-left: 10px;
+        width: 100%;
+    }
+
+    .chat-dp {
+        width: 35px;
+        height: 35px;
+    }
+
+    .chat-dp img {
+        width: 100%;
+        height: 100%;
+    }
+
+    .chat-username-status {
+        width: 100%;
+        height: 100%;
+    }
+
+    .chat-username {
+        font-size: 14px;
+        padding-top: 5px;
+        padding-bottom: 0;
+        height: fit-content;
+    }
+
+    .chat-status {
+        font-size: 10px;
+    }
+
+    .messages-date {
+        font-size: 10px;
+    }
+
+    .message {
+        width: 250px;
+    }
+
+    .message-content {
+        font-size: 14px;
+    }
+
+    .message-status {
+        font-size: 10px;
+    }
+
+    .send-message textarea {
+        height: 24px;
+        line-height: normal;
+        font-size: 14px;
+    }
 }
