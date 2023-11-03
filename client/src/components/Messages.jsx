@@ -9,6 +9,7 @@ const Messages = () => {
         </section>)
     }
     return (
+        
         <section className="messages-panel">
             <section className="chat-info">
                 <section className="chat-dp">
