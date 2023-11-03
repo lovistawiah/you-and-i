@@ -23,8 +23,7 @@
 }
 
 .icon-panel svg {
-    width: 32px;
-    height: 32px;
+ font-size: 32px;
 }
 
 .icon-panel svg path {
@@ -71,7 +70,6 @@
     width: 300px;
     padding: 0 0 0 23px;
     color: var(--secondary-200);
-    font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-style: normal;
     font-weight: 400;
@@ -106,7 +104,6 @@
 
 .chats-text {
     color: var(--secondary-100, #868686);
-    font-family: 'Roboto', sans-serif;
     font-size: 24px;
     font-style: normal;
     font-weight: 500;
@@ -215,7 +212,6 @@
     align-self: stretch;
     opacity: 0.7;
     color: var(--primary-400, #050505);
-    font-family: 'Roboto', sans-serif;
     font-size: 16px;
     font-style: normal;
     font-weight: 500;
@@ -224,7 +220,6 @@
 
 .username-and-time .last-message-time {
     color: var(--message-receive-500, #8C8C8C);
-    font-family: 'Roboto', sans-serif;
     font-size: 12px;
     font-style: normal;
     font-weight: 300;
@@ -236,7 +231,6 @@
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     color: var(--message-receive-500, #8C8C8C);
-    font-family: 'Roboto', sans-serif;
     font-size: 13px;
     font-style: normal;
     font-weight: 400;
