@@ -1,13 +1,10 @@
-import { useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import ChatMessagesDisplayContext from '../utils/displayContext'
+import '../styles/style.css'
 import SearchIcon from './react-svg/SearchIcon'
 import ArrowDownIcon from './react-svg/ArrowDownIcon'
 import Dp from '../images/user-dp.png'
 const Chats = () => {
     const navigate = useNavigate()
-    // FIXME: when I click on a chat is should hide the chat panel and show the messages panel with the necessary data.
-    // FIXME: implement dark theme
     const handleChatClick = (e) => {
         e.preventDefault()
         navigate('/messages')

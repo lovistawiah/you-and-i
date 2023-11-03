@@ -1,3 +1,4 @@
+import { Textarea } from '@chakra-ui/react'
 import SendIcon from './react-svg/SendIcon'
 import Dp from '../images/user-dp.png'
 const Messages = () => {
@@ -19,6 +20,7 @@ const Messages = () => {
                     <section className="chat-status">Online</section>
                 </section>
             </section>
+            
             <section className="messages">
                 <section className="date-box">
                     <section className="messages-date">
@@ -32,8 +34,9 @@ const Messages = () => {
                 </section>
             </section>
             {/* send message box */}
+
             <form action="" className="send-message">
-                <textarea className="message-box" name="" id="" ></textarea>
+        <Textarea placeholder="this is my placeholder" resize="none" ></Textarea>
                 <button>
                     <SendIcon />
                 </button>
