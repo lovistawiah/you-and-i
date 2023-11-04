@@ -169,23 +169,61 @@
     flex-direction: column;
     width: 100%;
     height: 100dvh;
+    font-family: 'Noto Sans Bengali', sans-serif;
 }
 
 .chat-info {
     display: flex;
     align-items: center;
-    height: 50px;
+    height: 40px;
+    padding-left: 10px;
+    /* position: fi; */
+}
+
+.chat-info svg {
+    font-size: 24px;
+    margin-right: 10px;
 }
 
 .chat-info svg path {
     fill: var(--message-receive-500);
-    font-size: 20px;
 }
 
 .chat-dp {
-    width: 45px;
-    height: 45px;
+    width: 40px;
+    height: 35px;
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 50%;
+
+}
+
+.chat-dp img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: 0px 0px;
+}
+
+.chat-username-status {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-bottom: 1px solid var(--message-receive-400);
+    width: 100%;
+}
+
+
+.chat-username {
+    font-size: 15px;
+    padding-top: 3px;
+    height: 20px;
+}
+
+.chat-status {
+    font-size: 13px;
+    color: var(--message-receive-400);
 }
