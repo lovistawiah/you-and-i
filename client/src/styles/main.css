@@ -42,3 +42,7 @@
 	--background-200: rgba(254, 255, 254);
 	--background-100: rgba(248, 250, 249);
 }
+body {
+	font-family: 'Noto Sans NKo Unjoined', sans-serif;
+	background-color: var(--primary-100);
+}

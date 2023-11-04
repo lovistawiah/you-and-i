@@ -1,7 +1,9 @@
 import { Textarea } from '@chakra-ui/react'
 import SendIcon from './react-svg/SendIcon'
 import Dp from '../images/user-dp.png'
-const Messages = () => {
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faArrowDown, faArrowLeft, faArrowRight, faChevronLeft, faDownLeftAndUpRightToCenter } from '@fortawesome/free-solid-svg-icons'
+const Messages = ({ panel }) => {
     const messages = []
     for (let i = 0; i < 20; i++) {
         messages.push(<section className="message">
@@ -10,9 +12,10 @@ const Messages = () => {
         </section>)
     }
     return (
-        
-        <section className="messages-panel">
+
+        <section className="messages-panel" style={{ display: panel == "chats" ? 'none' : '' }}>
             <section className="chat-info">
+                <FontAwesomeIcon icon={faChevronLeft} />
                 <section className="chat-dp">
                     <img src={Dp} alt="user db" />
                 </section>
@@ -21,7 +24,7 @@ const Messages = () => {
                     <section className="chat-status">Online</section>
                 </section>
             </section>
-            
+
             <section className="messages">
                 <section className="date-box">
                     <section className="messages-date">
@@ -37,7 +40,7 @@ const Messages = () => {
             {/* send message box */}
 
             <form action="" className="send-message">
-        <Textarea placeholder="this is my placeholder" resize="none" ></Textarea>
+                <Textarea placeholder="this is my placeholder" resize="none" ></Textarea>
                 <button>
                     <SendIcon />
                 </button>
