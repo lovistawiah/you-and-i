@@ -9,8 +9,8 @@ const Messages = ({ panel }) => {
         messages.push(
         <section className="message">
             <p className="message-content">hello, it is me and I’m typing and it is working as expected and what do you think
-            <section className="message-status">Delivered</section>
             </p>
+            <section className="message-status">Delivered</section>
         </section>)
     }
     return (
@@ -30,13 +30,11 @@ const Messages = ({ panel }) => {
             </section>
 
             <section className="messages">
-                <section className="date-box">
-                    <section className="messages-date">
+                    <p className="messages-date">
                         12/03/2023
-                    </section>
-                </section>
+                    </p>
                 {messages}
-                <section className="message send">
+                <section className="message sender">
                     <section className="message-content">hello, it is me and I’m typing and it is working as expected and what do you think</section>
                     <section className="message-status">Delivered</section>
                 </section>
