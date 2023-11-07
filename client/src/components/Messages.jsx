@@ -2,16 +2,34 @@ import { Textarea } from '@chakra-ui/react'
 import SendIcon from './react-svg/SendIcon'
 import Dp from '../images/user-dp.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft  } from '@fortawesome/free-solid-svg-icons'
+import { faChevronLeft, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import { useEffect, useRef, useState } from 'react'
 const Messages = ({ panel }) => {
+    const [textAreaHeight, setTextAreaHeight] = useState(24)
+    
+    let ref = useRef(null)
+
+    useEffect(() => {
+        const increaseTextAreaHeight = () => {
+            const height = ref.current.offsetHeight
+            setTextAreaHeight('auto')
+            console.log(textAreaHeight)
+            console.log(height)
+        }
+        increaseTextAreaHeight()
+        window.addEventListener('resize', increaseTextAreaHeight)
+
+        return () => window.addEventListener('resize', increaseTextAreaHeight)
+    }, [textAreaHeight])
     const messages = []
+
     for (let i = 0; i < 20; i++) {
         messages.push(
-        <section className="message">
-            <p className="message-content">hello, it is me and I’m typing and it is working as expected and what do you think
-            </p>
-            <section className="message-status">Delivered</section>
-        </section>)
+            <section className="message">
+                <p className="message-content">hello, it is me and I’m typing and it is working as expected and what do you think
+                </p>
+                <section className="message-status">Delivered</section>
+            </section>)
     }
     return (
 
@@ -30,9 +48,9 @@ const Messages = ({ panel }) => {
             </section>
 
             <section className="messages">
-                    <p className="messages-date">
-                        12/03/2023
-                    </p>
+                <p className="messages-date">
+                    12/03/2023
+                </p>
                 {messages}
                 <section className="message sender">
                     <section className="message-content">hello, it is me and I’m typing and it is working as expected and what do you think</section>
@@ -41,10 +59,10 @@ const Messages = ({ panel }) => {
             </section>
             {/* send message box */}
 
-            <form action="" className="send-message">
-                <Textarea placeholder="this is my placeholder" resize="none" ></Textarea>
+            <form className="send-message">
+                <textarea placeholder="this is my placeholder" className='textarea' ref={ref} style={{ height: textAreaHeight == 'auto' ? textAreaHeight : `${textAreaHeight}px` }}></textarea>
                 <button>
-                    <SendIcon />
+                    <FontAwesomeIcon icon={faPaperPlane} />
                 </button>
             </form>
         </section>

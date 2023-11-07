@@ -274,8 +274,36 @@
     background-color: var(--message-send-100);
     color: var(--text-500);
 }
+
 .message.sender .message-status {
     text-align: start;
     padding-right: unset;
     padding-left: 15px;
+}
+
+.send-message {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: flex-end;
+    height: auto;
+    justify-content: center;
+    background-color: red;
+    padding-top: 10px;
+}
+
+textarea {
+    width: 70%;
+    resize: vertical;
+    padding: 4px 5px;
+    outline: var(--message-receive-500);
+}
+
+.textarea {
+    border: 1.2px solid blue;
+    margin-bottom: 5px;
+    scrollbar-width: thin;
 }
