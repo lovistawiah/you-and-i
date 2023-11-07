@@ -70,11 +70,11 @@
 }
 
 .chat {
-    width: 100%;
+    width: 100dvw;
     display: flex;
     align-items: center;
-    padding-left: 5px;
     height: 60px;
+    justify-content: flex-start;
 }
 
 .picture-frame {
@@ -94,7 +94,7 @@
 }
 
 .user-info {
-    width: 80%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -120,6 +120,7 @@
 .last-message-time {
     font-weight: 300;
     font-size: 13px;
+    padding-right: 10px;
     color: var(--message-receive-400);
 }
 
@@ -141,7 +142,6 @@
     justify-content: space-evenly;
     align-items: center;
     border-top: 1px solid var(--message-receive-400);
-    height: 35px;
     position: fixed;
     bottom: 0;
     left: 0;
@@ -165,19 +165,25 @@
 /* messages panel */
 
 .messages-panel {
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 40px auto  min-content;
     width: 100%;
     height: 100dvh;
     font-family: 'Noto Sans Bengali', sans-serif;
 }
 
 .chat-info {
+    grid-row: 1/2;
     display: flex;
     align-items: center;
-    height: 40px;
     padding-left: 10px;
-    /* position: fi; */
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    background-color: white;
 }
 
 .chat-info svg {
@@ -228,10 +234,12 @@
 }
 
 .messages {
-    flex: 1 1 auto;
     width: 100%;
+    overflow:auto;
     display: flex;
     flex-direction: column;
+    grid-row: 2/3;
+
 }
 
 .messages-date {
@@ -283,27 +291,48 @@
 
 .send-message {
     width: 100%;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
     display: flex;
-    align-items: flex-end;
-    height: auto;
     justify-content: center;
+    align-items: flex-end;
     background-color: red;
-    padding-top: 10px;
-}
-
-textarea {
-    width: 70%;
-    resize: vertical;
-    padding: 4px 5px;
-    outline: var(--message-receive-500);
+    padding: 10px 0;
+    grid-row: 3/4;
 }
 
 .textarea {
-    border: 1.2px solid blue;
-    margin-bottom: 5px;
-    scrollbar-width: thin;
+    width: 80%;
+    resize: none;
+    border: 1px solid var(--message-receive-500);
+    padding: 7px 10px;
+    line-height: 1.5;
+    outline: var(--message-receive-600);
+    align-self: center;
+    border-radius: 20px;
+
+
+}
+
+.send-message button {
+    margin-left: 10px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: var(--message-send-100);
+}
+
+.send-message button svg {
+    font-size: 16px;
+    align-self: center;
+    object-position: 1px 1px;
+}
+
+.send-message button svg path {
+    fill: white;
 }

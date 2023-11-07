@@ -1,28 +1,10 @@
-import { Textarea } from '@chakra-ui/react'
+import TextareaAutoResize from 'react-textarea-autosize'
 import SendIcon from './react-svg/SendIcon'
 import Dp from '../images/user-dp.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
-import { useEffect, useRef, useState } from 'react'
 const Messages = ({ panel }) => {
-    const [textAreaHeight, setTextAreaHeight] = useState(24)
-    
-    let ref = useRef(null)
-
-    useEffect(() => {
-        const increaseTextAreaHeight = () => {
-            const height = ref.current.offsetHeight
-            setTextAreaHeight('auto')
-            console.log(textAreaHeight)
-            console.log(height)
-        }
-        increaseTextAreaHeight()
-        window.addEventListener('resize', increaseTextAreaHeight)
-
-        return () => window.addEventListener('resize', increaseTextAreaHeight)
-    }, [textAreaHeight])
     const messages = []
-
     for (let i = 0; i < 20; i++) {
         messages.push(
             <section className="message">
@@ -60,7 +42,7 @@ const Messages = ({ panel }) => {
             {/* send message box */}
 
             <form className="send-message">
-                <textarea placeholder="this is my placeholder" className='textarea' ref={ref} style={{ height: textAreaHeight == 'auto' ? textAreaHeight : `${textAreaHeight}px` }}></textarea>
+                <TextareaAutoResize className='textarea'  maxRows={3}/>
                 <button>
                     <FontAwesomeIcon icon={faPaperPlane} />
                 </button>
