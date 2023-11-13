@@ -1,4 +1,4 @@
-/* .newContacts {
+ .newContacts {
     display: flex;
     height: 100dvh;
     width: 100dvw;
@@ -129,7 +129,7 @@
     overflow: hidden;
 }
 
-/* .username {
+.username {
     padding: 20px 26px 21px 2px;
     gap: 10px;
     flex: 1 0 0;
@@ -143,9 +143,9 @@
     font-style: normal;
     font-weight: 500;
     line-height: normal;
-} */
+} 
 
-/* .bio {
+.bio {
     color: var(--message-receive-500, #8C8C8C);
     font-family: Archivo;
     font-size: 13.5px;
@@ -155,4 +155,4 @@
     text-overflow: ellipsis;
     overflow: hidden;
     color: var(--message-receive-500, #8C8C8C);
-} */ 
+} 

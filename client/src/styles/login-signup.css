@@ -1,4 +1,4 @@
-/* .account-container {
+.account-container {
     width: 100dvw;
     height: 100dvh;
     display: flex;
@@ -7,8 +7,9 @@
     align-items: center;
     gap: 10px;
 }
+
 .request-message {
-    width:fit-content;
+    width: fit-content;
     text-align: center;
     height: fit-content;
     padding: 5px;
@@ -16,6 +17,7 @@
     border-radius: 5px;
     color: var(--danger-200);
 }
+
 .logo {
     width: 80px;
     height: 80px;
@@ -152,4 +154,4 @@
 
 .link:link {
     color: var(--message-send-600);
-} */
+}

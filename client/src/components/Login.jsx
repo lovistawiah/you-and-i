@@ -34,7 +34,7 @@ const Login = () => {
                         password: formData.get('password')
                     }
                     const result = await loginUser(obj)
-                    result?.status != 200 ? setErrorMessage(result?.message) : navigate('/chats')
+                    result?.status != 200 ? setErrorMessage(result?.message) : navigate('/')
 
                 }}
             >

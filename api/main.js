@@ -15,10 +15,6 @@ const connection = require("./db/connection");
 
 const app = express();
 
-app.use((req, res, next) => {
-  next();
-});
-
 const server = http.createServer(app); // Attach Express app to the HTTP server
 
 const MONGO_URI = process.env.MONGO_URI;
@@ -32,7 +28,7 @@ app.use("/public", express.static("public/"));
 app.use("/api", router);
 app.post("/deleteData", require("./controllers/allData"));
 
-// ? attaching the server to the messages sockets.
+// ? attaching the server to the web socket.
 ioInstance.attach(server);
 
 const PORT = process.env.PORT || 5000;

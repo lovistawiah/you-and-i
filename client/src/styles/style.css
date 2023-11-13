@@ -298,8 +298,9 @@
     display: flex;
     justify-content: center;
     align-items: flex-end;
-    background-color: red;
     padding: 10px 0;
+    background-color: var(--text-200);
+    border-top: 1px solid var(--message-receive-200);
     grid-row: 3/4;
 }
 
