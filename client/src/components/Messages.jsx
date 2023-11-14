@@ -1,17 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { socket } from '../socket'
 import { useSelector } from 'react-redux'
 import TextareaAutoResize from 'react-textarea-autosize'
 import Dp from '../images/user-dp.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
-import { useRef } from 'react'
 import { messageEvents } from '../utils/eventNames'
 
 const Messages = () => {
-    const channel = useRef(null)
-    const user = useRef(null)
     const [message, setMessage] = useState('')
+    const [messages, setMessages] = useState()
     const chatInfo = useSelector(state => state.chatInfo.value)
 
     const sendMessage = (e) => {
@@ -37,7 +35,11 @@ const Messages = () => {
         setMessage("")
 
     }
-
+    useEffect(() => {
+        socket.emit(messageEvents.displayChannelAllMessages, chatInfo?.channelId, (response) => {
+            console.log(response)
+        })
+    }, [messages])
     return (
         <section className="messages-panel">
             <section className="chat-info">

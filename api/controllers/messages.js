@@ -13,10 +13,11 @@ const messageEvents = {
 }
 
 const getMessages = (socket) => {
-    socket.on(messageEvents.displayChannelAllMessages, async (data) => {
+    socket.on(messageEvents.displayChannelAllMessages, async (arg,callback) => {
         //using the channelId to retrieve the all the messages in a particular channel
         try {
-            const channelId = data
+            const channelId = arg
+            console.log(channelId)
             const channelMessages = await Channel.findOne({ _id: channelId }).populate({
                 path: 'messages'
             })
@@ -34,7 +35,7 @@ const getMessages = (socket) => {
                 })
 
             })
-            socket.emit(messageEvents.displayChannelAllMessages, messages)
+            callback(messages)
         } catch (error) {
             console.log(error)
         }
