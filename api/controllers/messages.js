@@ -23,12 +23,13 @@ const getMessages = (socket) => {
             })
             const messages = []
             channelMessages.messages.forEach(messageData => {
-                let { isDeleted, message, sender, createdAt } = messageData
+                let { isDeleted, message, sender, createdAt,_id } = messageData
 
                 if (isDeleted) {
                     message = "this message was deleted"
                 }
                 messages.push({
+                    _id,
                     message,
                     sender,
                     createdAt

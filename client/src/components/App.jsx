@@ -9,8 +9,8 @@ import ForgotPassword from './ForgotPassword'
 import VerifyEmail from './VerifyEmail'
 import NewFriends from './NewFriends'
 import Chat from './Chat'
-import Messages from './Messages'
 import store from '../app/store'
+import MessagePanel from './MessagePanel'
 const App = () => {
     return (
         <BrowserRouter>
@@ -22,7 +22,7 @@ const App = () => {
                     <Route path='/forgot-password' element={<ForgotPassword />} />
                     <Route path='/verify' element={<VerifyEmail />} />
                     <Route path='/new-friends' element={<NewFriends />} />
-                    <Route path='/messages' element={<Messages />} />
+                    <Route path='/messages' element={<MessagePanel />} />
                 </Routes>
             </Provider>
         </BrowserRouter>
