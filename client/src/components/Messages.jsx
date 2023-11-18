@@ -1,12 +1,23 @@
-const Messages = () => {
+import Message from "./Message";
+const Messages = ({ messages, userId }) => {
+
     return (
         <section className="messages">
-            <p className='messages-date'>{messageHeaderDate(createdAt)}</p>
-            <section className={`message ${sender != chatInfo?.userId ? 'sender' : ''}`} >
-                <section className="message-content">{message}</section>
-                <section className="message-status">{messageStatus(createdAt)}</section>
-            </section>
+            {
+                messages?.map(({ _id, message, sender, createdAt }) => (
+
+                    <Message
+                        key={_id}
+                        message={message}
+                        sender={sender}
+                        createdAt={createdAt}
+                        userId={userId}
+                    />
+
+                ))
+            }
         </section>
-    )
-}
-export default Messages
+    );
+};
+
+export default Messages;

@@ -11,6 +11,7 @@ import NewFriends from './NewFriends'
 import Chat from './Chat'
 import store from '../app/store'
 import MessagePanel from './MessagePanel'
+
 const App = () => {
     return (
         <BrowserRouter>
