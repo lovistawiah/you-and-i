@@ -12,20 +12,32 @@ import { chatInfo } from '../app/chatInfoSlice'
 
 
 const Chats = () => {
-    const [chats, setChats] = useState()
+
+    const [chats, setChats] = useState([])
     const dispatch = useDispatch()
+
     useEffect(() => {
-        socket.on(channelEvents.channelAndLastMessage, (data) => {
-            setChats(data)
-        })
+        const getChatData = (chatsData) => {
+            setChats(chatsData)
+        }
+        socket.on(channelEvents.channelAndLastMessage, getChatData)
+        return () => {
+            socket.off(channelEvents.channelAndLastMessage)
+        }
     }, [chats])
+    
+    useEffect(() => {
+        return () => {
+            socket.disconnect();
+        }
+    }, [])
+
     const handleChat = ({ userId, channelId }) => {
         const chatObj = {
             userId,
             channelId
         }
         dispatch(chatInfo(chatObj))
-
     }
     return (
         <>
