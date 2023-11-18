@@ -15,14 +15,27 @@ const MessagePanel = () => {
     const chatInfo = useSelector((state) => state.chatInfo.value);
 
     useEffect(() => {
-        socket.emit(messageEvents.displayChannelAllMessages, chatInfo?.channelId, (response) => {
-            setMessages(response);
-        });
-    }, [chatInfo?.channelId]);
+        socket.connect();
+        return () => {
+            socket.disconnect();
+        }
+    }, []);
 
-    const sendMessage = (e) => {
-        const { userId, channelId } = chatInfo
+    useEffect(() => {
+        const getMessages = (messagesData) => {
+            setMessages(messagesData)
+        }
+
+        socket.emit(messageEvents.displayChannelAllMessages, chatInfo?.channelId, getMessages);
+
+        return () => {
+            socket.off(messageEvents.displayChannelAllMessages, getMessages)
+        }
+    }, [chatInfo?.channelId])
+
+    const submitForm = (e) => {
         e.preventDefault()
+        const { userId, channelId } = chatInfo
         if (!message) return
         // emitting to old channel
         if (channelId && userId) {
@@ -44,6 +57,16 @@ const MessagePanel = () => {
         setMessage("")
     }
 
+    const onKeyDown = (e) => {
+        if (e.key == "Enter" && !e.shiftKey) {
+            submitForm(e)
+        }
+    }
+
+    const sendMessage = (e) => {
+        submitForm(e)
+    }
+
     return (
         <section className="messages-panel">
             <section className="chat-info">
@@ -62,8 +85,14 @@ const MessagePanel = () => {
                 userId={chatInfo?.userId}
             />
             <form className="send-message" onSubmit={sendMessage}>
-                <TextareaAutoResize className='textarea' maxRows={3} value={message} onChange={(e) => setMessage(e.target.value)} />
-                <button>
+                <TextareaAutoResize
+                    className='textarea'
+                    value={message}
+                    maxRows={3}
+                    onChange={(e) => setMessage(e.target.value)}
+                    onKeyDown={onKeyDown}
+                />
+                <button type='submit'>
                     <FontAwesomeIcon icon={faPaperPlane} />
                 </button>
             </form>
