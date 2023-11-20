@@ -38,10 +38,9 @@ const getChannels = async (socket) => {
     if (userChannels.length == 0) {
         const message = 'no channels found'
         socket.emit(channelEvents.channelAndLastMessage,message)
-        console.log('no channels')
         return
     };
-
+// sorting and return the channel's last message with the latest date
     userChannels.sort((channelA, channelB) => {
       const lastMessageA = channelA.messages[channelA.messages.length - 1];
       const lastMessageB = channelB.messages[channelB.messages.length - 1];
@@ -50,10 +49,12 @@ const getChannels = async (socket) => {
       );
     });
     const channelAndLastMessage = [];
+
     userChannels.forEach((channel) => {
       const { members, messages } = channel;
       members.forEach((member) => {
         if (member._id.toString() != userId) {
+
           const userInfo = {
             userId: member._id,
             username: member.username,
@@ -70,6 +71,7 @@ const getChannels = async (socket) => {
             sender: lastMessageDetails.sender,
             createdAt: lastMessageDetails.createdAt,
           };
+
           channelAndLastMessage.push({
             channelInfo,
             userInfo,
@@ -85,9 +87,6 @@ const getChannels = async (socket) => {
   }
 };
 
-const getChannel = async (req, res) => {
-  res.status(200).send("oneChannel");
-};
 
 const createChannel = async (members) => {
   try {
@@ -173,6 +172,7 @@ const newChannel = (socket) => {
 async function offlineIndicator(io, socket) {
   try {
     const { userId } = socket.decoded;
+
     socket.on("disconnect", async () => {
       const status = new Date();
       await User.findByIdAndUpdate(userId, { lastSeen: status }, { new: true });
@@ -246,7 +246,6 @@ const typing = (socket) => {
 };
 
 module.exports = {
-  getChannel,
   newChannel,
   getChannels,
   createChannel,

@@ -2,7 +2,10 @@ const jwt = require("jsonwebtoken")
 const User = require("../models/Users")
 
 const authenticateSocket = async (socket, next) => {
-    const { token } = socket.handshake.auth
+    let { token } = socket.handshake.auth
+    if(!token) {
+        token = socket.handshake.headers.token
+    }
     try {
         if (!token) {
             return new Error("token not available")
