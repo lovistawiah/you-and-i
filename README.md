@@ -26,14 +26,14 @@ I created this project to chat my girlfriend nearby. She does not have phone and
 - tanstack react query
 - figma
 
-## Problems faced during development mode.
+## Problems faced during development mode
 
-## What was really inspired me to start.
+## What was really inspired me to start
 
 I told a good old friend about this project. He has shown serious interest in the project from day one.
 He added valuable features that will help the project to grow.
 
-## Features and Versions of the project.
+## Features and Versions of the project
 
 ### v1.0.0
 
