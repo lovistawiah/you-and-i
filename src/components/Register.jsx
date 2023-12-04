@@ -30,6 +30,7 @@ const Register = () => {
                     e.preventDefault()
                     const formData = new FormData(e.target)
                     const formObj = {
+                        username: formData.get('username'),
                         email: formData.get('email'),
                         password: formData.get('password'),
                         confirmPassword: formData.get('confirm-password')
