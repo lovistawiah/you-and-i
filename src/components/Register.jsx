@@ -30,7 +30,6 @@ const Register = () => {
                     e.preventDefault()
                     const formData = new FormData(e.target)
                     const formObj = {
-                        username: formData.get('username'),
                         email: formData.get('email'),
                         password: formData.get('password'),
                         confirmPassword: formData.get('confirm-password')
@@ -41,8 +40,6 @@ const Register = () => {
                     status != 200 ? setErrorMessage(result?.message): navigate('/login')
                 }}
             >
-                <input type="text" name="username" className="register-form-input" id="" placeholder='Username' required />
-
                 <input type="email" name="email" className="register-form-input" id="" placeholder='Email' required />
 
                 <input type="password" name="password" className="register-form-input" id="" placeholder='Password' required />
