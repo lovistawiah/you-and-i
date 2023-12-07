@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { socket } from '../socket'
 
 import TextareaAutoResize from 'react-textarea-autosize'
-import Dp from '../images/user-dp.png'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronLeft, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { messageEvents } from '../utils/eventNames'
@@ -12,14 +11,9 @@ import { useSelector } from 'react-redux'
 const MessagePanel = () => {
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState([])
+    // const [singleMessage, setSingleMessage] = useState({})
     const chatInfo = useSelector((state) => state.chatInfo.value);
 
-    useEffect(() => {
-        socket.connect();
-        return () => {
-            socket.disconnect();
-        }
-    }, []);
 
     useEffect(() => {
         const getMessages = (messagesData) => {
@@ -33,26 +27,23 @@ const MessagePanel = () => {
         }
     }, [chatInfo?.channelId])
 
+    useEffect(() => {
+        socket.on(messageEvents.sendMessage, (data) => {
+            console.log(data)
+            setSingleMessage(data)
+        })
+    }, [])
+// FIXME: sent message that return.
     const submitForm = (e) => {
         e.preventDefault()
-        const { userId, channelId } = chatInfo
+        const { userId } = chatInfo
         if (!message) return
-        // emitting to old channel
-        if (channelId && userId) {
-            console.log(userId)
-            const messageObj = {
-                channelId,
-                message
-            }
-            socket.emit(messageEvents.sendMessage, messageObj)
-        }
-
-        if (userId && !channelId) {
+        if (userId) {
             const messageObj = {
                 userId,
                 message
             }
-            socket.emit(messageEvents.newChannelMessage, messageObj)
+            socket.emit(messageEvents.sendMessage, messageObj)
         }
         setMessage("")
     }
@@ -72,11 +63,10 @@ const MessagePanel = () => {
             <section className="chat-info">
                 <FontAwesomeIcon icon={faChevronLeft} />
                 <section className="chat-dp">
-                    <img src={Dp} alt="user db" />
+                    <img src={chatInfo.avatarUrl} alt="user db" />
                 </section>
-
                 <section className="chat-username-status">
-                    <section className="chat-username"></section>
+                    <section className="chat-username">{chatInfo.username}</section>
                     <section className="chat-status">Online</section>
                 </section>
             </section>

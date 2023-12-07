@@ -2,7 +2,7 @@ const channelEvents = {
   channelAndLastMessage: "channelAndLastMessage",
   addNewChat: "addNewChat",
   search: "search",
-  displayNewChats: "displayNewChats",
+  contacts: "contacts",
 };
 const userEvents = {
   status: "status",

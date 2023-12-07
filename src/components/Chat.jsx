@@ -18,7 +18,10 @@ const Chats = () => {
 
     useEffect(() => {
         const getChatData = (chatsData) => {
-            setChats(chatsData)
+            if (Array.isArray(chatsData)) {
+                setChats(chatsData)
+
+            }
         }
         socket.on(channelEvents.channelAndLastMessage, getChatData)
         return () => {
@@ -26,12 +29,6 @@ const Chats = () => {
         }
     }, [chats])
     
-    useEffect(() => {
-        return () => {
-            socket.disconnect();
-        }
-    }, [])
-
     const handleChat = ({ userId, channelId }) => {
         const chatObj = {
             userId,
@@ -55,7 +52,7 @@ const Chats = () => {
                 </section>
 
                 <section className="chats">
-                    {chats?.map(({ channelInfo, userInfo, messageInfo }) => (
+                    {chats.map(({ channelInfo, userInfo, messageInfo }) => (
                         <Link to='/messages' className="chat" id={channelInfo.channelId} key={channelInfo.channelId} onClick={() => handleChat({ userId: userInfo.userId, channelId: channelInfo.channelId })}>
                             <section className="picture-frame">
                                 <img src={Dp} alt="user dp" />
@@ -70,7 +67,6 @@ const Chats = () => {
                                 <p className="last-message">
                                     {messageInfo.lastMessage}
                                 </p>
-
                             </section>
                         </Link>
                     ))}

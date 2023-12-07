@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { socket } from '../socket'
-import dbImg from '../images/user-dp.png'
 
 import '../styles/new-friends.css'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
@@ -21,19 +20,20 @@ const NewFriends = () => {
 
   useEffect(() => {
     socket.emit(channelEvents.search, searchValue)
-    socket.on(channelEvents.displayNewChats, (data) => {
+    socket.on(channelEvents.contacts, (data) => {
       if (Array.isArray(data)) {
         setNewFriends(data)
       }
     })
   }, [searchValue])
 
-  const addNewFriend = (newFriendId, newFriendName) => {
-    const newFriendObj = {
-      newFriendId,
-      newFriendName
+  const addUserInfo = (userId, username,avatarUrl) => {
+    const userInfo = {
+      userId,
+      username,
+      avatarUrl
     }
-    dispatch(chatInfo(newFriendObj))
+    dispatch(chatInfo(userInfo))
   }
 
   return (
@@ -49,10 +49,10 @@ const NewFriends = () => {
       </section>
       <section className="new-friends-list">
         {
-          newFriends?.map(({ _id, username }) => (
-            <Link to='/messages' onClick={() => addNewFriend(_id, username)} className="new-friend" key={_id} >
+          newFriends?.map(({ _id, username, avatarUrl }) => (
+            <Link to='/messages' onClick={() => addUserInfo(_id, username,avatarUrl)} className="new-friend" key={_id} >
               <section className="dp-holder">
-                <img src={dbImg} alt="" />
+                <img src={avatarUrl} alt="" />
               </section>
               <section className="user-info">
                 <h4 className='username'>
