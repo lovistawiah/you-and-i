@@ -20,19 +20,17 @@ const Chats = () => {
         const getChatData = (chatsData) => {
             if (Array.isArray(chatsData)) {
                 setChats(chatsData)
-
             }
         }
         socket.on(channelEvents.channelAndLastMessage, getChatData)
-        return () => {
-            socket.off(channelEvents.channelAndLastMessage)
-        }
     }, [chats])
-    
-    const handleChat = ({ userId, channelId }) => {
+
+    const handleChat = ({ userId, channelId, avatarUrl, username }) => {
         const chatObj = {
             userId,
-            channelId
+            channelId,
+            avatarUrl,
+            username
         }
         dispatch(chatInfo(chatObj))
     }
@@ -53,7 +51,7 @@ const Chats = () => {
 
                 <section className="chats">
                     {chats.map(({ channelInfo, userInfo, messageInfo }) => (
-                        <Link to='/messages' className="chat" id={channelInfo.channelId} key={channelInfo.channelId} onClick={() => handleChat({ userId: userInfo.userId, channelId: channelInfo.channelId })}>
+                        <Link to='/messages' className="chat" id={channelInfo.channelId} key={channelInfo.channelId} onClick={() => handleChat({ userId: userInfo.userId, channelId: channelInfo.channelId, avatarUrl: userInfo.avatarUrl, username: userInfo.username })}>
                             <section className="picture-frame">
                                 <img src={Dp} alt="user dp" />
                             </section>

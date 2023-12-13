@@ -1,14 +1,10 @@
-import { useEffect, useState } from "react"
+// import { useEffect, useState } from "react"
 import { messageHeaderDate, messageStatus } from "../utils/compareDate"
 
 const Message = ({ message, sender, createdAt, userId }) => {
     const formattedMessageHeaderDate = messageHeaderDate(createdAt)
     const messageStatusText = messageStatus(createdAt)
-    const [displayDate, setDisplayDate] = useState(true)
-    const [date, _] = useState(formattedMessageHeaderDate)
 
-    useEffect(() => {
-    }, [date])
     return (
         <>
             <p className="messages-date">{formattedMessageHeaderDate}</p>

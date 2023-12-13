@@ -19,21 +19,12 @@ const MessagePanel = () => {
         const getMessages = (messagesData) => {
             setMessages(messagesData)
         }
+        socket.emit(messageEvents.channelMessages, chatInfo.channelId);
+        socket.on(messageEvents.channelMessages, getMessages)
 
-        socket.emit(messageEvents.displayChannelAllMessages, chatInfo?.channelId, getMessages);
+    }, [chatInfo.channelId])
 
-        return () => {
-            socket.off(messageEvents.displayChannelAllMessages, getMessages)
-        }
-    }, [chatInfo?.channelId])
 
-    useEffect(() => {
-        socket.on(messageEvents.sendMessage, (data) => {
-            console.log(data)
-            setSingleMessage(data)
-        })
-    }, [])
-// FIXME: sent message that return.
     const submitForm = (e) => {
         e.preventDefault()
         const { userId } = chatInfo
@@ -46,6 +37,9 @@ const MessagePanel = () => {
             socket.emit(messageEvents.sendMessage, messageObj)
         }
         setMessage("")
+        socket.on(messageEvents.sendMessage, (data) => {
+            console.log(data)
+        })
     }
 
     const onKeyDown = (e) => {
@@ -72,7 +66,7 @@ const MessagePanel = () => {
             </section>
             <Messages
                 messages={messages}
-                userId={chatInfo?.userId}
+                userId={chatInfo.userId}
             />
             <form className="send-message" onSubmit={sendMessage}>
                 <TextareaAutoResize

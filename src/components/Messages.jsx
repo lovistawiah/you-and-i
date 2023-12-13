@@ -1,6 +1,5 @@
 import Message from "./Message";
 const Messages = ({ messages, userId }) => {
-
     return (
         <section className="messages">
             {

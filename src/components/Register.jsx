@@ -37,7 +37,6 @@ const Register = () => {
                     }
                     const result = await createUser(formObj)
                     const status = result?.status
-                    console.log(status)
                     status != 200 ? setErrorMessage(result?.message): navigate('/login')
                 }}
             >

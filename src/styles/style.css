@@ -1,4 +1,4 @@
-@import url('./main.css');
+/* @import url('./main.css');
 
 .chats-panel {
     width: 100%;
@@ -162,16 +162,14 @@
     fill: var(--primary-500);
 }
 
-/* messages panel */
-
-/* .messages-panel {
+.messages-panel {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 40px auto  min-content;
     width: 100%;
     height: 100dvh;
     font-family: 'Noto Sans Bengali', sans-serif;
-} */
+}
 
 .chat-info {
     grid-row: 1/2;
@@ -336,4 +334,4 @@
 
 .send-message button svg path {
     fill: white;
-}
+} */

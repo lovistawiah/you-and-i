@@ -1,22 +1,22 @@
-const channelEvents = {
-  channelAndLastMessage: "channelAndLastMessage",
-  addNewChat: "addNewChat",
-  search: "search",
-  contacts: "contacts",
-};
 const userEvents = {
   status: "status",
   typing: "typing",
+  errorMessage: "errorMessage",
+};
+
+const channelEvents = {
+  channelAndLastMessage: "channelAndLastMessage",
+  search: "search",
+  contacts: "contacts",
+  errorMessage: "errorMessage",
 };
 
 const messageEvents = {
-  displaySelectedChannelMessages: "displaySelectedChannelMessages",
   sendMessage: "sendMessage",
   deleteMessage: "deleteMessage",
   offlineOnlineIndicator: "offlineOnlineIndicator",
-  displayChannelAllMessages: "displayChannelAllMessages",
-  SingleMessage: "SingleMessage",
-  newChannelMessage: "newChannelMessage",
+  channelMessages: "channelMessages",
+  errorMessage: "errorMessage",
 };
 
 export { channelEvents, userEvents, messageEvents };

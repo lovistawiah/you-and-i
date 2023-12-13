@@ -1,4 +1,8 @@
 function lastSeen(status) {
+  let amPm,
+    timeText,
+    dateText,
+    lastSeenDateMessage = "";
   const statusDate = new Date(status);
   const date = new Date();
   const monthNumber = statusDate.getMonth();
@@ -51,7 +55,7 @@ function messageStatus(createdAt) {
 
 function messageHeaderDate(messageDate) {
   const date = new Date();
-  if(!messageDate) return
+  if (!messageDate) return;
   messageDate = new Date(messageDate);
 
   const monthNumber = date.getMonth();
