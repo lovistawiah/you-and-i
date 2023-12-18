@@ -35,7 +35,7 @@ const Chats = () => {
     }
     return (
         <>
-            <section className="chats-panel">
+            <section className="bg-blue-200">
                 <div className="search-container">
                     <section className="search-holder">
                         <FontAwesomeIcon icon={faMagnifyingGlass} />

@@ -1,14 +1,16 @@
 import { createRoot } from 'react-dom/client'
 import {Provider} from 'react-redux'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Register from './Register'
-import Login from './Login'
-import ForgotPassword from './ForgotPassword'
-import VerifyEmail from './VerifyEmail'
-import NewFriends from './NewFriends'
-import Chat from './Chat'
-import store from '../app/store'
-import MessagePanel from './MessagePanel'
+import Register from './components/Register'
+import Login from './components/Login'
+import ForgotPassword from './components/ForgotPassword'
+import VerifyEmail from './components/VerifyEmail'
+import NewFriends from './components/NewFriends'
+import Chat from './components/Chat'
+import store from './app/store'
+import MessagePanel from './components/MessagePanel'
+import "./index.css"
+
 
 const App = () => {
     return (
