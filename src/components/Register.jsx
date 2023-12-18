@@ -24,6 +24,7 @@ const Register = () => {
                     <span> You and I </span>
                 </div>
             </section>
+        
             <form
                 className='account-form'
                 onSubmit={async (e) => {

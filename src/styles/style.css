@@ -1,4 +1,4 @@
-/* @import url('./main.css');
+@import url('./main.css');
 
 .chats-panel {
     width: 100%;
@@ -334,4 +334,4 @@
 
 .send-message button svg path {
     fill: white;
-} */
+}
