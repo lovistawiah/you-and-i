@@ -1,6 +1,4 @@
 import { Link } from 'react-router-dom'
-import '../styles/forgot-password.css'
-// import logoSvg from '../svg/logo.svg'
 
 const ForgotPassword = () => {
     return (

@@ -1,4 +1,3 @@
-// import { useEffect, useState } from "react"
 import { messageHeaderDate, messageStatus } from "../utils/compareDate"
 
 const Message = ({ message, sender, createdAt, userId }) => {

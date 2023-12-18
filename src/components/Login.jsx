@@ -1,7 +1,5 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import '../styles/login-signup.css'
-// import logoSVg from '../svg/logo.svg'
 import { loginUser } from '../account/User'
 
 const Login = () => {

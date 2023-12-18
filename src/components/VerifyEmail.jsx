@@ -1,7 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom'
 // import logoSvg from '../svg/logo.svg'
 import { useState } from 'react'
-import '../styles/email.css'
 import countDown from '../utils/countdown'
 
 const VerifyEmail = () => {

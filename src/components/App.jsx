@@ -1,8 +1,6 @@
 import { createRoot } from 'react-dom/client'
 import {Provider} from 'react-redux'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import '../styles/fonts.css'
-import '../styles/main.css'
 import Register from './Register'
 import Login from './Login'
 import ForgotPassword from './ForgotPassword'

@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { socket } from '../socket'
 
-import '../styles/new-friends.css'
 import { faSearch } from '@fortawesome/free-solid-svg-icons'
 import { useEffect, useState } from 'react'
 import { channelEvents } from '../utils/eventNames'

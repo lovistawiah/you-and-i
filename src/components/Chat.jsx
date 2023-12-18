@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faChevronDown, faComments, faGear, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import '../styles/style.css'
 
 import Dp from '../images/user-dp.png'
 import { useEffect, useState } from 'react'
