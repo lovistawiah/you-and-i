@@ -11,7 +11,7 @@ const Search = () => {
         setSearch("")
     }
     return (
-        <div className="w-full h-[70px] px-2.5 bg-white flex-col justify-center items-center gap-2.5 inline-flex">
+        <div className="w-full h-[70px] px-2.5 bg-white flex-col justify-center items-center flex">
             <section className="relative">
                 <FontAwesomeIcon icon={faMagnifyingGlass}
                     className='absolute top-[10px] left-1 text-zinc-500'
