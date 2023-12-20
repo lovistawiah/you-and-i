@@ -6,7 +6,7 @@ import Login from './components/Login'
 import ForgotPassword from './components/ForgotPassword'
 import VerifyEmail from './components/VerifyEmail'
 import NewFriends from './components/NewFriends'
-import Chat from './components/Chat'
+import Chat from './components/ChatMainPage'
 import store from './app/store'
 import MessagePanel from './components/MessagePanel'
 import "./index.css"

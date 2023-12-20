@@ -3,11 +3,13 @@ import { channelEvents } from '../utils/eventNames'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown, faComments, faGear, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import {  faComments, faGear, } from '@fortawesome/free-solid-svg-icons'
 
 import Dp from '../images/user-dp.png'
 import { useEffect, useState } from 'react'
 import { chatInfo } from '../app/chatInfoSlice'
+import Search from './Search'
+import ChatTextContainer from './ChatTextContainer'
 
 
 const Chats = () => {
@@ -35,18 +37,9 @@ const Chats = () => {
     }
     return (
         <>
-            <section className="bg-blue-200">
-                <div className="search-container">
-                    <section className="search-holder">
-                        <FontAwesomeIcon icon={faMagnifyingGlass} />
-                        <input type="text" name="" placeholder='Search' id="" />
-                    </section>
-                </div>
-
-                <section className="chats-text-container">
-                    <section className="chats-text">Chats</section>
-                    <FontAwesomeIcon icon={faChevronDown} />
-                </section>
+            <section className="bg-white">
+                <Search />
+                <ChatTextContainer />
 
                 <section className="chats">
                     {chats.map(({ channelInfo, userInfo, messageInfo }) => (
