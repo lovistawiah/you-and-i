@@ -3,15 +3,15 @@ import { socket } from '../socket'
 
 import TextareaAutoResize from 'react-textarea-autosize'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import {  faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { messageEvents } from '../utils/eventNames'
 import Messages from './Messages'
 import { useSelector } from 'react-redux'
+import ChatInfo from './ChatInfo'
 
 const MessagePanel = () => {
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState([])
-    // const [singleMessage, setSingleMessage] = useState({})
     const chatInfo = useSelector((state) => state.chatInfo.value);
 
 
@@ -53,17 +53,12 @@ const MessagePanel = () => {
     }
 
     return (
-        <section className="messages-panel">
-            <section className="chat-info">
-                <FontAwesomeIcon icon={faChevronLeft} />
-                <section className="chat-dp">
-                    <img src={chatInfo.avatarUrl} alt="user db" />
-                </section>
-                <section className="chat-username-status">
-                    <section className="chat-username">{chatInfo.username}</section>
-                    <section className="chat-status">Online</section>
-                </section>
-            </section>
+        <section className="w-full h-[50px] flex flex-col justify-between alignstat">
+            <ChatInfo
+                avatarUrl={chatInfo.avatarUrl}
+                onlineStatus={"online"}
+                username={chatInfo.username}
+            />
             <Messages
                 messages={messages}
                 userId={chatInfo.userId}

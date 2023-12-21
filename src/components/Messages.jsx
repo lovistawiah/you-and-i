@@ -1,7 +1,7 @@
 import Message from "./Message";
 const Messages = ({ messages, userId }) => {
     return (
-        <section className="messages">
+        <section className="mt-[51px]">
             {
                 messages?.map(({ _id, message, sender, createdAt }) => (
 
