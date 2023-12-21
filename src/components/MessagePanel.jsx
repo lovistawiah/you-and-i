@@ -63,9 +63,9 @@ const MessagePanel = () => {
                 messages={messages}
                 userId={chatInfo.userId}
             />
-            <form className="send-message" onSubmit={sendMessage}>
+            <form className="fixed bottom-0 h-auto w-full" onSubmit={sendMessage}>
                 <TextareaAutoResize
-                    className='textarea'
+                    className='border border-stone-300 resize-none'
                     value={message}
                     maxRows={3}
                     onChange={(e) => setMessage(e.target.value)}
