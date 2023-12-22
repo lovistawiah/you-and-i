@@ -1,7 +1,7 @@
 import Message from "./Message";
 const Messages = ({ messages, userId }) => {
     return (
-        <section className="mt-[51px]">
+        <section className="flex-col flex w-full ">
             {
                 messages?.map(({ _id, message, sender, createdAt }) => (
 

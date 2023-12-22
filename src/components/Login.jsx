@@ -34,7 +34,7 @@ const Login = () => {
                 }}
             >
                 <InputForm
-                    name={"usernameEmail"}
+                    name={"username-email"}
                     type={"text"}
                     placeholder={"enter username or email"}
                     id={""}

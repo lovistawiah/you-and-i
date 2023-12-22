@@ -3,7 +3,7 @@ import { socket } from '../socket'
 
 import TextareaAutoResize from 'react-textarea-autosize'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {  faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { messageEvents } from '../utils/eventNames'
 import Messages from './Messages'
 import { useSelector } from 'react-redux'
@@ -53,7 +53,7 @@ const MessagePanel = () => {
     }
 
     return (
-        <section className="w-full h-[50px] flex flex-col justify-between alignstat">
+        <section className="w-full h-[50px] flex bg-white flex-col justify-start items-start">
             <ChatInfo
                 avatarUrl={chatInfo.avatarUrl}
                 onlineStatus={"online"}
@@ -63,16 +63,16 @@ const MessagePanel = () => {
                 messages={messages}
                 userId={chatInfo.userId}
             />
-            <form className="fixed bottom-0 h-auto w-full" onSubmit={sendMessage}>
+            <form className="fixed bottom-0 p-1 min-h-[50px] max-h-[90px] w-full flex items-end justify-between bg-white" onSubmit={sendMessage}>
                 <TextareaAutoResize
-                    className='border border-stone-300 resize-none'
+                    className='resize-none w-[88%] active:outline-none border border-blue-100 outline-none focus:border-blue-200'
                     value={message}
                     maxRows={3}
                     onChange={(e) => setMessage(e.target.value)}
                     onKeyDown={onKeyDown}
                 />
-                <button type='submit'>
-                    <FontAwesomeIcon icon={faPaperPlane} />
+                <button type='submit' className='w-[32px] h-[32px] p-1 bg-blue-600 rounded-[50px] justify-center items-center active:bg-blue-900 hover:bg-blue-700'>
+                    <FontAwesomeIcon icon={faPaperPlane} className='text-white' />
                 </button>
             </form>
         </section>
