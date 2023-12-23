@@ -1,19 +1,20 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { socket } from '../socket'
 
-import TextareaAutoResize from 'react-textarea-autosize'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
-import { messageEvents } from '../utils/eventNames'
-import Messages from './Messages'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useSelector } from 'react-redux'
+import TextareaAutoResize from 'react-textarea-autosize'
+import { messageEvents } from '../utils/eventNames'
 import ChatInfo from './ChatInfo'
+import Messages from './Messages'
 
 const MessagePanel = () => {
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState([])
+    const [messageMarginBtm, setMessageMarginBtm] = useState(0)
     const chatInfo = useSelector((state) => state.chatInfo.value);
-
+    const formRef = useRef(null)
 
     useEffect(() => {
         const getMessages = (messagesData) => {
@@ -24,7 +25,14 @@ const MessagePanel = () => {
 
     }, [chatInfo.channelId])
 
-
+    useEffect(() => {
+        const formHeight = formRef.current.offsetHeight
+        const heightMap = new Map()
+        if (!heightMap.has(heightMap)) {
+            heightMap.set('form-height', formHeight)
+            setMessageMarginBtm(formHeight)
+        }
+    }, [message])
     const submitForm = (e) => {
         e.preventDefault()
         const { userId } = chatInfo
@@ -53,17 +61,19 @@ const MessagePanel = () => {
     }
 
     return (
-        <section className="w-full h-[50px] flex bg-white flex-col justify-start items-start">
+        <section className="w-full h-screen grid grid-cols-1 grid-rows-5">
             <ChatInfo
                 avatarUrl={chatInfo.avatarUrl}
                 onlineStatus={"online"}
                 username={chatInfo.username}
             />
             <Messages
+                messageMarginBtm={messageMarginBtm}
                 messages={messages}
                 userId={chatInfo.userId}
             />
-            <form className="fixed bottom-0 p-1 min-h-[50px] max-h-[90px] w-full flex items-end justify-between bg-white" onSubmit={sendMessage}>
+            <form ref={formRef}
+                className="fixed bottom-0 p-1 min-h-[50px] max-h-[90px] w-full flex items-end justify-between bg-green-800 row-span-1" onSubmit={sendMessage}>
                 <TextareaAutoResize
                     className='resize-none w-[88%] active:outline-none border border-blue-100 outline-none focus:border-blue-200'
                     value={message}
