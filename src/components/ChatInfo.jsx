@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 const ChatInfo = ({ avatarUrl, username, onlineStatus }) => {
     return (
-        <section className="h-[50px] flex justify-between items-center w-full fixed top-0 z-10 bg-blue-500 row-span-1">
+        <section className="h-[50px] flex justify-between items-center w-full fixed top-0 z-10 row-span-1">
             <FontAwesomeIcon icon={faChevronLeft} className="cursor-pointer hover:bg-gray-100 hover:rounded-full p-2" />
             <section className="w-[50px] h-[50px] justify-between items-center flex">
                 <img src={avatarUrl} alt="user db" className="w-12 h-12 rounded-full" />

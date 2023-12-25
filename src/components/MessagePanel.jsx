@@ -73,15 +73,15 @@ const MessagePanel = () => {
                 userId={chatInfo.userId}
             />
             <form ref={formRef}
-                className="fixed bottom-0 p-1 min-h-[50px] max-h-[90px] w-full flex items-end justify-between bg-green-800 row-span-1" onSubmit={sendMessage}>
+                className="fixed bottom-0 p-1  pl-4  d,Nmm   min-h-[50px] max-h-[90px] w-full flex items-end  justify-start row-span-1 border border-t" onSubmit={sendMessage}>
                 <TextareaAutoResize
-                    className='resize-none w-[88%] active:outline-none border border-blue-100 outline-none focus:border-blue-200'
+                    className='resize-none w-[80%] active:outline-none border border-blue-100 outline-none focus:border-blue-200'
                     value={message}
                     maxRows={3}
                     onChange={(e) => setMessage(e.target.value)}
                     onKeyDown={onKeyDown}
                 />
-                <button type='submit' className='w-[32px] h-[32px] p-1 bg-blue-600 rounded-[50px] justify-center items-center active:bg-blue-900 hover:bg-blue-700'>
+                <button type='submit' className='w-[30px] h-[30px] p-1 bg-blue-600 rounded-[50px] justify-center items-center ml-2 active:bg-blue-900 hover:bg-blue-700'>
                     <FontAwesomeIcon icon={faPaperPlane} className='text-white' />
                 </button>
             </form>

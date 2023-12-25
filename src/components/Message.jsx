@@ -14,7 +14,7 @@ const Message = ({ message, sender, createdAt, userId }) => {
         itemsClass = 'self-start'
         messageStatusAlign = 'self-end'
         textColor = 'text-zinc-600'
-        messageContainerBg = 'bg-neutral-300'
+        messageContainerBg = 'bg-zinc-300'
     }
 
     return (
@@ -26,7 +26,7 @@ const Message = ({ message, sender, createdAt, userId }) => {
                     {message}
                 </section>
 
-                <section className={`${messageStatusAlign} text-center text-zinc-800 text-sm font-normal`}>
+                <section className={`${messageStatusAlign} text-center text-zinc-800 text-[13px] font-normal`}>
                     {messageStatusText}
                 </section>
             </section>
