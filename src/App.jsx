@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client'
-import {Provider} from 'react-redux'
+import { Provider } from 'react-redux'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Register from './components/Register'
 import Login from './components/Login'

@@ -1,32 +1,35 @@
-import { messageHeaderDate, messageStatus } from "../utils/compareDate"
+import { messageStatus } from "../utils/compareDate"
+import MessageHeaderDate from "./MessageHeaderDate"
 
 const Message = ({ message, sender, createdAt, userId }) => {
-    const formattedMessageHeaderDate = messageHeaderDate(createdAt)
+    if (!message || !sender || !createdAt || !userId) return
     const messageStatusText = messageStatus(createdAt)
     let itemsClass, messageStatusAlign, textColor, messageContainerBg = ""
     if (sender === userId) {
-        itemsClass = 'self-end'
-        messageStatusAlign = 'self-start'
-        textColor = 'text-zinc-100'
-        messageContainerBg = 'bg-blue-600'
-
-    } else {
         itemsClass = 'self-start'
         messageStatusAlign = 'self-end'
         textColor = 'text-zinc-600'
-        messageContainerBg = 'bg-zinc-300'
+        messageContainerBg = 'bg-zinc-200'
+
+    } else {
+        itemsClass = 'self-end'
+        textColor = 'text-zinc-100'
+        messageStatusAlign = 'self-end'
+        messageContainerBg = 'bg-blue-600'
     }
 
     return (
         <>
-            <section className="w-min h-auto p-1 bg-white rounded-full border border-stone-500  items-center flex self-center text-center text-black text-sm font-normal">{formattedMessageHeaderDate}</section>
+            <MessageHeaderDate
+                messageDate={createdAt}
+            />
 
             <section className={`min-w-min flex flex-col ${itemsClass} mx-2 my-2`} >
-                <section className={`${textColor} rounded-[25px] max-w-[255px] p-[8px] ${messageContainerBg}`}>
+                <section className={`${textColor} rounded-[25px] max-w-[255px] text-sm p-[8px] mb-[3px] ${messageContainerBg}`}>
                     {message}
                 </section>
 
-                <section className={`${messageStatusAlign} text-center text-zinc-800 text-[13px] font-normal`}>
+                <section className={`${messageStatusAlign} text-center text-zinc-800 text-[13px] mb-1 font-normal`}>
                     {messageStatusText}
                 </section>
             </section>

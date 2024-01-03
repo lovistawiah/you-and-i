@@ -1,10 +1,9 @@
 import { messageHeaderDate } from "../utils/compareDate";
 const MessageHeaderDate = ({ messageDate }) => {
     const formattedDate = messageHeaderDate(messageDate)
-    const existingDate = document.querySelector('p.messages-date')
-console.log(existingDate)
     return <>
-        {formattedDate && formattedDate !== existingDate && <p className="messages-date">{formattedDate}</p>}
+        <section className="w-min h-auto p-1 bg-white rounded-full border border-stone-100  items-center flex self-center text-center text-black text-[12px] font-normal my-1">{formattedDate}</section>
+
     </>
 };
 

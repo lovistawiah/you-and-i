@@ -17,6 +17,9 @@ const Chats = () => {
             }
         }
         socket.on(channelEvents.channelAndLastMessage, getChatData)
+        return () => {
+            socket.off(channelEvents.channelAndLastMessage)
+        }
     }, [chats])
 
     return (
