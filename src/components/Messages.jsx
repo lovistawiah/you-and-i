@@ -5,8 +5,7 @@ import Message from "./Message";
 import { socket } from "../socket";
 import { messageEvents } from "../utils/eventNames";
 
-const Messages = ({ formSubmitted }) => {
-    console.log(formSubmitted)
+const Messages = () => {
     // console.log(formRef)
     // const messagesMarginBottom = formRef.current.offsetHeight
     const chatInfo = useSelector((state) => state.chatInfo.value);
@@ -30,20 +29,16 @@ const Messages = ({ formSubmitted }) => {
             socket.off('error');
         };
     }, [chatInfo.channelId]);
+
     useEffect(() => {
         socket.on(messageEvents.sendMessage, (data) => {
-            if (!data) return
-            console.log(data)
-            setMessages(() => {
-                let updatedMessages = [...messages, data]
-                console.log(updatedMessages.length)
-                return updatedMessages
-            })
+            setMessages([...messages, data])
         })
         return () => {
             socket.off(messageEvents.sendMessage)
         }
-    }, [formSubmitted])
+    })
+
     useEffect(() => {
         messagesRef.current.scrollTop = messagesRef.current.scrollHeight
     }, [messages])

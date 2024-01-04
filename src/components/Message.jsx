@@ -2,6 +2,7 @@ import { messageStatus } from "../utils/compareDate"
 import MessageHeaderDate from "./MessageHeaderDate"
 
 const Message = ({ message, sender, createdAt, userId }) => {
+    // FIXME: createdAt returns undefined from the server, fix
     if (!message || !sender || !createdAt || !userId) return
     const messageStatusText = messageStatus(createdAt)
     let itemsClass, messageStatusAlign, textColor, messageContainerBg = ""
