@@ -1,10 +1,10 @@
+import TextareaAutoResize from 'react-textarea-autosize'
 import { useRef, useState, useEffect, useMemo } from 'react'
-import { socket } from '../socket'
-
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useSelector } from 'react-redux'
-import TextareaAutoResize from 'react-textarea-autosize'
+import { socket } from '../socket'
+
 import { messageEvents } from '../utils/eventNames'
 import ChatInfo from './ChatInfo'
 import Message from './Message'
@@ -60,7 +60,6 @@ const MessagePanel = () => {
 
     useEffect(() => {
         const handleSendMessage = (data) => {
-            console.log(data)
             setMessages((prevMessages) => [...prevMessages, data])
         }
         socket.on(messageEvents.sendMessage, handleSendMessage)
@@ -71,8 +70,6 @@ const MessagePanel = () => {
 
     useEffect(() => {
         messagesRef.current.scrollTop = messagesRef.current.scrollHeight
-        console.log('message changed')
-        console.log(messages.length)
     }, [messages])
     useEffect(() => {
         const offsetHeight = formRef.current.offsetHeight
