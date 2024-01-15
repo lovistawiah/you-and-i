@@ -85,6 +85,7 @@ const MessagePanel = () => {
                 userId={chatInfo.userId}
             />
         )),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [messages]
     );
 
