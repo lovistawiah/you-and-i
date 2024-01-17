@@ -10,7 +10,7 @@ const Login = () => {
     const [errorMessage, setErrorMessage] = useState('')
     const navigate = useNavigate()
     return (
-        <div className='w-screen py-[23px] px-[6px] flex flex-col items-center gap-4 justify-center'>
+        <div className='w-screen h-screen py-[23px] px-[6px] flex flex-col items-center gap-4 justify-center'>
             {
                 errorMessage ? (
                     <div className="text-red-500 border-[0.5px] p-1 border-red-300 rounded">{errorMessage}</div>
