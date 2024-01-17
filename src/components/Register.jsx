@@ -5,16 +5,13 @@ import Logo from "../../public/logo.png"
 import InputForm from './InputForm'
 import WelcomeText from './WelcomeText'
 import FormButton from './FormButton'
+import ErrorContainer from './ErrorContainer'
 const Register = () => {
     const navigate = useNavigate()
     const [errorMessage, setErrorMessage] = useState('')
     return (
         <div className='w-screen h-screen py-[23px] px-[6px] flex flex-col items-center gap-4 justify-center'>
-            {
-                errorMessage ? (
-                    <div className="text-red-500 border-[0.5px] p-1 border-red-300 rounded">{errorMessage}</div>
-                ) : null
-            }
+            <ErrorContainer errorMessage={errorMessage} />
             <section className="logo">
                 <img src={Logo} alt="logo of you and I" />
             </section>
@@ -43,9 +40,9 @@ const Register = () => {
                 />
                 <FormButton btnText={"Create account"} />
             </form>
-            <section className=' h-9 px-[31px] py-[9px] bg-white justify-center items-center gap-1 inline-flex text-sm'>
+            <section className='h-9 px-[31px] py-[9px] bg-white justify-center items-center gap-1 inline-flex text-sm md:text-lg'>
                 Have an Account?
-                <Link to='/login' className='text-blue-700 hover:underline '>
+                <Link to='/login' className='text-blue-700 hover:underline md:text-lg'>
                     Login
                 </Link>
             </section>
