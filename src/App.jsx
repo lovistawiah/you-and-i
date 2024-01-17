@@ -6,18 +6,17 @@ import Login from './components/Login'
 import ForgotPassword from './components/ForgotPassword'
 import VerifyEmail from './components/VerifyEmail'
 import NewFriends from './components/NewFriends'
-import Chat from './components/ChatMainPage'
+import MainPage from './components/ChatMainPage'
 import store from './app/store'
 import MessagePanel from './components/MessagePanel'
 import "./index.css"
-
 
 const App = () => {
     return (
         <BrowserRouter>
             <Provider store={store}>
                 <Routes>
-                    <Route path='/' element={<Chat />} />
+                    <Route path='/' element={<MainPage />} />
                     <Route path='/register' element={<Register />} />
                     <Route path='/login' element={<Login />} />
                     <Route path='/forgot-password' element={<ForgotPassword />} />
