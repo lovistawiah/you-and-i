@@ -30,6 +30,9 @@ const MainPage = () => {
                 setToken(false)
             }
         })
+        return () => {
+            socket.off('connect_error')
+        }
     }, [isToken])
     return (
         !isToken ? (

@@ -11,16 +11,18 @@ const NewContacts = () => {
 
     useEffect(() => {
         const getChatData = (newContactsData) => {
+            console.log(newContactsData)
             if (Array.isArray(newContactsData)) {
                 setNewContacts(newContactsData)
             }
         }
         // change to listen on new contacts
-        socket.on(channelEvents.channelAndLastMessage, getChatData)
+        socket.on(channelEvents.contacts, getChatData)
         return () => {
             socket.off(channelEvents.channelAndLastMessage)
         }
-    }, [newContacts])
+    }, [])
+    console.log(newContacts)
     return (
 
         <>
