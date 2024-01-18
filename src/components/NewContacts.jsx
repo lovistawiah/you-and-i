@@ -29,7 +29,7 @@ const NewContacts = () => {
             <Search />
             <PageHeader pageName={"Contacts"} />
             <section>
-                {/* get new contacts info from faker first */}
+                {/*TODO: get new contacts info from faker first */}
             </section>
         </>
     )
