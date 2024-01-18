@@ -1,5 +1,3 @@
-import React from 'react'
-
 const WelcomeText = () => {
     return (
         <section className='w-[291px] h-[98px] mb-2 md:mb-6 py-2 bg-white flex-col justify-start items-center inline-flex'>

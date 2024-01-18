@@ -6,26 +6,28 @@ import Login from './components/Login'
 import ForgotPassword from './components/ForgotPassword'
 import VerifyEmail from './components/VerifyEmail'
 import NewFriends from './components/NewFriends'
-import MainPage from './components/ChatMainPage'
+import MainPage from './components/MainPage'
 import store from './app/store'
 import MessagePanel from './components/MessagePanel'
 import "./index.css"
 
 const App = () => {
     return (
-        <BrowserRouter>
-            <Provider store={store}>
-                <Routes>
-                    <Route path='/' element={<MainPage />} />
-                    <Route path='/register' element={<Register />} />
-                    <Route path='/login' element={<Login />} />
-                    <Route path='/forgot-password' element={<ForgotPassword />} />
-                    <Route path='/verify' element={<VerifyEmail />} />
-                    <Route path='/new-friends' element={<NewFriends />} />
-                    <Route path='/messages' element={<MessagePanel />} />
-                </Routes>
-            </Provider>
-        </BrowserRouter>
+        <div className='p-0 m-0'>
+            <BrowserRouter>
+                <Provider store={store}>
+                    <Routes>
+                        <Route path='/' element={<MainPage />} />
+                        <Route path='/register' element={<Register />} />
+                        <Route path='/login' element={<Login />} />
+                        <Route path='/forgot-password' element={<ForgotPassword />} />
+                        <Route path='/verify' element={<VerifyEmail />} />
+                        <Route path='/new-friends' element={<NewFriends />} />
+                        <Route path='/messages' element={<MessagePanel />} />
+                    </Routes>
+                </Provider>
+            </BrowserRouter>
+        </div>
     )
 }
 
