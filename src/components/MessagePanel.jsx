@@ -46,7 +46,7 @@ const MessagePanel = () => {
         const getMessages = (messagesData) => {
             setMessages(messagesData)
         };
-        socket.emit(messageEvents.channelMessages, chatInfo.channelId);
+        socket.emit(messageEvents.channelMessages, chatInfo?.channelId);
         socket.on(messageEvents.channelMessages, getMessages);
 
         socket.on('error', (error) => {
@@ -91,15 +91,15 @@ const MessagePanel = () => {
 
 
     return (
-        <section className="w-full h-screen grid grid-rows-5">
+        <section className="w-screen h-screen grid grid-rows-5 ">
 
             <ChatInfo
-                avatarUrl={chatInfo.avatarUrl}
+                avatarUrl={chatInfo?.avatarUrl}
                 onlineStatus={"online"}
-                username={chatInfo.username}
+                username={chatInfo?.username}
             />
             {/* messages */}
-            <section ref={messagesRef} className="flex w-full overflow-y-auto mt-[50px] py-2 row-span-5 flex-col">
+            <section ref={messagesRef} className="flex w-full overflow-y-auto mt-[50px] py-2 row-span-5 flex-col bg-gray-100">
                 {
                     memoizedMessages
 

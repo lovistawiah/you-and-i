@@ -1,6 +1,6 @@
 const WelcomeText = () => {
     return (
-        <section className='w-[291px] h-[98px] mb-2 md:mb-6 py-2 bg-white flex-col justify-start items-center inline-flex'>
+        <section className='w-[291px] h-[98px] mb-2 md:mb-6 py-2 flex-col justify-start items-center inline-flex'>
             <span className='text-black text-[32px] font-normal md:text-[48px] '>
                 Welcome to,
             </span>

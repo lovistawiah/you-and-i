@@ -13,7 +13,7 @@ import "./index.css"
 
 const App = () => {
     return (
-        <div className='p-0 m-0'>
+        <div className='p-0 m-0 bg-gray-50'>
             <BrowserRouter>
                 <Provider store={store}>
                     <Routes>

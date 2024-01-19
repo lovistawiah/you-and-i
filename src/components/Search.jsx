@@ -1,29 +1,48 @@
-import { faClose, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
+import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { useState } from 'react';
 
 const Search = () => {
-    const [search, setSearch] = useState("")
+    const [search, setSearch] = useState('');
+
     const handleSearch = (e) => {
-        setSearch(e.target.value)
-    }
+        setSearch(e.target.value);
+    };
+
     const clearSearch = () => {
-        setSearch("")
-    }
+        setSearch('');
+    };
+    // TODO: search component should appear under the chat container
     return (
-        <div className="w-full h-[70px] px-2.5 bg-white flex-col justify-center items-center flex">
+        <div className="w-full h-[70px] px-2.5 flex-col justify-center items-center flex fixed top-[59px] bg-gray-50 ">
             <section className="relative">
-                <FontAwesomeIcon icon={faMagnifyingGlass}
-                    className='absolute top-[10px] left-1 text-zinc-500'
+                {
+                    !search && (
+                        <FontAwesomeIcon
+                            icon={faSearch}
+                            className="absolute top-[10px] left-1 text-zinc-500"
+                        />
+                    )
+                }
+                <input
+                    type="text"
+                    name=""
+                    placeholder="Search"
+                    id=""
+                    className="w-[300px] h-9 pl-6 bg-white border-b-[1px] border-zinc-500 justify-start items-center gap-1.5 inline-flex outline-none text-base font-normal"
+                    value={search}
+                    onChange={handleSearch}
                 />
-                <input type="text" name="" placeholder='Search' id="" className='w-[300px] h-9 pl-6  bg-white rounded-[20px] border border-zinc-500 justify-start items-center gap-1.5 inline-flex outline-none text-base font-normal' onKeyUp={handleSearch} />
-                {search && <FontAwesomeIcon icon={faClose}
-                    className='absolute right-2 top-[10px] text-zinc-500'
-                    onClick={clearSearch}
-                />}
+                {search && (
+                    <FontAwesomeIcon
+                        icon={faTimes}
+                        className="absolute right-2 top-[10px] text-zinc-500 cursor-pointer"
+                        onClick={clearSearch}
+                    />
+                )}
             </section>
         </div>
-    )
-}
+    );
+};
 
-export default Search
+export default Search;

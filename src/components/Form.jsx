@@ -3,6 +3,8 @@ import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import TextareaAutoResize from 'react-textarea-autosize'
 import { useState } from 'react'
+import { socket } from '../socket'
+import { messageEvents } from '../utils/eventNames'
 const Form = () => {
     const [message, setMessage] = useState('')
     const chatInfo = useSelector((state) => state.chatInfo.value);
@@ -17,10 +19,8 @@ const Form = () => {
                 message
             }
             socket.emit(messageEvents.sendMessage, messageObj)
-            setFormSubmitted(true);
         }
         setMessage("")
-        setFormSubmitted(false)
     }
 
     const onKeyDown = (e) => {

@@ -25,13 +25,13 @@ const NewContacts = () => {
     console.log(newContacts)
     return (
 
-        <>
+        <section className='order-2'>
             <Search />
             <PageHeader pageName={"Contacts"} />
             <section>
                 {/*TODO: get new contacts info from faker first */}
             </section>
-        </>
+        </section>
     )
 }
 export default NewContacts
