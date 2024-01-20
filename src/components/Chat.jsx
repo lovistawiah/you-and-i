@@ -14,7 +14,7 @@ const Chat = ({ channelInfo, userInfo, messageInfo }) => {
         dispatch(chatInfo(chatObj))
     }
     return (
-        <Link to='/messages' className="w-full justify-start items-center flex " id={channelInfo.channelId} key={channelInfo.channelId} onClick={() => handleChat({ userId: userInfo.userId, channelId: channelInfo.channelId, avatarUrl: userInfo.avatarUrl, username: userInfo.username })}>
+        <Link to='/messages' className=" w-full justify-start items-center flex " id={channelInfo.channelId} key={channelInfo.channelId} onClick={() => handleChat({ userId: userInfo.userId, channelId: channelInfo.channelId, avatarUrl: userInfo.avatarUrl, username: userInfo.username })}>
 
             <section className="w-[70px] h-[65px] p-2.5 justify-center items-center flex shrink-0">
                 <img src={userInfo.avatarUrl} alt="user dp" className='rounded-full' />

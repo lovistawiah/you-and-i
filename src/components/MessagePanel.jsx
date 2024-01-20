@@ -91,7 +91,7 @@ const MessagePanel = () => {
 
 
     return (
-        <section className="w-screen h-screen grid grid-rows-5 ">
+        <section className="w-screen h-screen grid grid-rows-5 md:w-full bg-blue-600 order-2 ">
 
             <ChatInfo
                 avatarUrl={chatInfo?.avatarUrl}
@@ -99,7 +99,7 @@ const MessagePanel = () => {
                 username={chatInfo?.username}
             />
             {/* messages */}
-            <section ref={messagesRef} className="flex w-full overflow-y-auto mt-[50px] py-2 row-span-5 flex-col bg-gray-100">
+            <section ref={messagesRef} className="flex w-full overflow-y-auto py-2 row-span-5 flex-col ">
                 {
                     memoizedMessages
 

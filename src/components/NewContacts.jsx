@@ -25,7 +25,7 @@ const NewContacts = () => {
     console.log(newContacts)
     return (
 
-        <section className='order-2'>
+        <section className='order-1'>
             <Search />
             <PageHeader pageName={"Contacts"} />
             <section>
