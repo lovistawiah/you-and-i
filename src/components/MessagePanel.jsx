@@ -1,6 +1,6 @@
 import TextareaAutoResize from 'react-textarea-autosize'
 import { useRef, useState, useEffect, useMemo } from 'react'
-import { faPaperPlane } from '@fortawesome/free-solid-svg-icons'
+import { faFaceSmile, faPaperPlane, faPaperclip } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useSelector } from 'react-redux'
 import { socket } from '../socket'
@@ -8,7 +8,6 @@ import { socket } from '../socket'
 import { messageEvents } from '../utils/eventNames'
 import ChatInfo from './ChatInfo'
 import Message from './Message'
-
 
 const MessagePanel = () => {
     const formRef = useRef()
@@ -56,6 +55,7 @@ const MessagePanel = () => {
         return () => {
             socket.off(messageEvents.channelMessages, getMessages);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
@@ -91,12 +91,12 @@ const MessagePanel = () => {
 
 
     return (
-        <section className="w-screen h-screen grid grid-rows-5 md:w-full bg-blue-600 order-2 ">
+        <section className="h-screen w-full grid grid-rows-5 bg-gray-50 order-2 md:w-full border-r-8 border-green-950 md:relative">
 
             <ChatInfo
-                avatarUrl={chatInfo?.avatarUrl}
+                avatarUrl={"https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/951.jpg"}
                 onlineStatus={"online"}
-                username={chatInfo?.username}
+                username={"Lovis"}
             />
             {/* messages */}
             <section ref={messagesRef} className="flex w-full overflow-y-auto py-2 row-span-5 flex-col ">
@@ -109,14 +109,19 @@ const MessagePanel = () => {
 
             {/* form  */}
             <form ref={formRef}
-                className="fixed bottom-0 p-1  pl-4 min-h-[50px] max-h-[90px] w-full flex items-end  justify-start row-span-1 border border-t" onSubmit={sendMessage}>
-                <TextareaAutoResize className='resize-none px-1 py-1 text-sm text-zinc-700 w-[80%] active:outline-none border rounded border-zinc-600 outline-none focus:border-zinc-700'
-                    value={message}
-                    maxRows={3}
-                    onChange={(e) => setMessage(e.target.value)}
-                    onKeyDown={onKeyDown}
-                />
-                <button type='submit' className='w-[28px] h-[28px] p-1 bg-blue-600 rounded-[50px] justify-center items-center ml-2 active:bg-blue-900 hover:bg-blue-700 flex'>
+                className="bg-white flex items-end py-2 justify-center px-2" onSubmit={sendMessage}>
+                <section className='bg-blue-500 w-full p-0 m-0 relative flex'>
+                    <FontAwesomeIcon icon={faPaperclip} className='absolute left-3 top-3 text-gray-400' />
+                    <TextareaAutoResize className='resize-none md:px-9 pl-8 pr-10 py-2 text-sm text-zinc-700 w-[100%] h-full active:outline-none border outline-none bg-white'
+                        value={message}
+                        maxRows={3}
+                        onChange={(e) => setMessage(e.target.value)}
+                        onKeyDown={onKeyDown}
+                        placeholder='Write a message...'
+                    />
+                    <FontAwesomeIcon icon={faFaceSmile} className='absolute right-4 top-3 text-gray-400' />
+                </section>
+                <button type='submit' className='w-[36px] h-[38px] p-2 bg-blue-600 rounded-lg justify-center items-center ml-2 active:bg-blue-900 hover:bg-blue-700 flex'>
                     <FontAwesomeIcon icon={faPaperPlane} className='text-white' />
                 </button>
             </form>

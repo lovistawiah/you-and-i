@@ -1,5 +1,5 @@
 import {faker} from '@faker-js/faker'
-export function Chats() {
+ function Chats() {
   return {
     channelInfo:{
         channelId:faker.database.mongodbObjectId()
@@ -19,3 +19,14 @@ export function Chats() {
 export const CHATS = faker.helpers.multiple(Chats, {
   count:20
 })
+
+function PersonInfo (){
+  return {
+  
+      username: faker.internet.userName(),
+      avatarUrl: faker.internet.avatar(),
+      onlineStatus: faker.date.future()
+    }
+}
+
+export default PersonInfo
