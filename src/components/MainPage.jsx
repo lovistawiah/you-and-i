@@ -36,12 +36,12 @@ const MainPage = () => {
         }
     }, [isToken])
     useEffect(() => {
-
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
         };
         window.addEventListener('resize', handleResize);
         console.log(windowWidth)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window.innerWidth])
     return (
         !isToken ? (

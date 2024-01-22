@@ -12,10 +12,9 @@ const Search = () => {
     const clearSearch = () => {
         setSearch('');
     };
-    // TODO: search component should appear under the chat container
     return (
         <div className="h-[70px] px-2.5 flex-col justify-center items-center flex fixed top-[59px] bg-gray-50 w-full md:relative md:top-[20px]">
-            <section className="relative w-70%">
+            <section className="relative w-[70%]">
                 {
                     !search && (
                         <FontAwesomeIcon

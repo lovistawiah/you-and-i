@@ -2,8 +2,10 @@ import { Link } from 'react-router-dom'
 import { chatInfo } from '../app/chatInfoSlice'
 import { useDispatch } from 'react-redux'
 import { messageStatus } from '../utils/compareDate'
+import { useEffect, useState } from 'react'
 const Chat = ({ channelInfo, userInfo, messageInfo }) => {
     const dispatch = useDispatch()
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const handleChat = ({ userId, channelId, avatarUrl, username }) => {
         const chatObj = {
             userId,
@@ -13,8 +15,18 @@ const Chat = ({ channelInfo, userInfo, messageInfo }) => {
         }
         dispatch(chatInfo(chatObj))
     }
+
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+        window.addEventListener('resize', handleResize);
+        console.log(windowWidth)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [window.innerWidth])
     return (
-        <Link to='/messages' className=" w-full justify-start items-center flex " id={channelInfo.channelId} key={channelInfo.channelId} onClick={() => handleChat({ userId: userInfo.userId, channelId: channelInfo.channelId, avatarUrl: userInfo.avatarUrl, username: userInfo.username })}>
+        // add messages page if page width less than 1000
+        <Link to={`/${windowWidth < 1000 ? 'messages' : ''}`} className=" w-full justify-start items-center flex " id={channelInfo.channelId} key={channelInfo.channelId} onClick={() => handleChat({ userId: userInfo.userId, channelId: channelInfo.channelId, avatarUrl: userInfo.avatarUrl, username: userInfo.username })}>
 
             <section className="w-[70px] h-[65px] p-2.5 justify-center items-center flex shrink-0">
                 <img src={userInfo.avatarUrl} alt="user dp" className='rounded-full' />

@@ -1,8 +1,10 @@
-import TextareaAutoResize from 'react-textarea-autosize'
-import { useRef, useState, useEffect, useMemo } from 'react'
+import data from '@emoji-mart/data'
+import Picker from '@emoji-mart/react'
 import { faFaceSmile, faPaperPlane, faPaperclip } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
+import TextareaAutoResize from 'react-textarea-autosize'
 import { socket } from '../socket'
 
 import { messageEvents } from '../utils/eventNames'
@@ -10,13 +12,13 @@ import ChatInfo from './ChatInfo'
 import Message from './Message'
 
 const MessagePanel = () => {
-    const formRef = useRef()
     const messagesRef = useRef(null)
-    const chatInfo = useSelector((state) => state.chatInfo.value);
-    const [marginBottom, setMarginBottom] = useState(50)
-
+    const info = useSelector((state) => state.chatInfo.value);
+    const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+    const [showEmojis, setShowEmojis] = useState(false)
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
+    const [chatInfo, setChatInfo] = useState(info)
 
     const submitForm = (e) => {
         e.preventDefault()
@@ -69,12 +71,9 @@ const MessagePanel = () => {
     })
 
     useEffect(() => {
-        messagesRef.current.scrollTop = messagesRef.current.scrollHeight
+        messagesRef.current.scrollTop = messagesRef?.current?.scrollHeight
     }, [messages])
-    useEffect(() => {
-        const offsetHeight = formRef.current.offsetHeight
-        setMarginBottom(offsetHeight)
-    }, [marginBottom])
+
     const memoizedMessages = useMemo(
         () => messages.map((messageInfo) => (
             <Message
@@ -88,45 +87,65 @@ const MessagePanel = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [messages]
     );
+    useEffect(() => {
+        const handleResize = () => {
+            setWindowWidth(window.innerWidth);
+        };
+        window.addEventListener('resize', handleResize);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [window.innerWidth])
 
+    useEffect(() => {
+        setChatInfo(info)
+    }, [info])
 
+    const handleShowEmoji = () => {
+        setShowEmojis(showEmojis ? false : true)
+    }
+
+    const getEmoji = (emojiObj) => {
+        const emoji = emojiObj.native
+        setMessage(message + emoji)
+    }
     return (
-        <section className="h-screen w-full grid grid-rows-5 bg-gray-50 order-2 md:w-full border-r-8 border-green-950 md:relative">
+        <section className="h-screen w-full grid grid-rows-5 bg-gray-100 order-2 md:w-full border-r-8 border-green-950 md:relative ">
 
             <ChatInfo
-                avatarUrl={"https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/951.jpg"}
+                avatarUrl={chatInfo?.avatarUrl}
                 onlineStatus={"online"}
-                username={"Lovis"}
+                username={chatInfo?.username}
+                windowWidth={windowWidth}
             />
-            {/* messages */}
+
             <section ref={messagesRef} className="flex w-full overflow-y-auto py-2 row-span-5 flex-col ">
-                {
-                    memoizedMessages
-
-                }
+                {memoizedMessages}
             </section>
-            {/* end of messages */}
 
-            {/* form  */}
-            <form ref={formRef}
-                className="bg-white flex items-end py-2 justify-center px-2" onSubmit={sendMessage}>
+            {
+                showEmojis && <section className={`absolute z-50 bottom-[90px] right-12`}>
+                    <Picker data={data} onEmojiSelect={getEmoji} emojiSize={17} previewPosition={"none"} theme={"light"} />
+                </section>
+            }
+
+            <form
+                className="bg-white flex items-end py-2 justify-center px-2 border-t " onSubmit={sendMessage}>
                 <section className='bg-blue-500 w-full p-0 m-0 relative flex'>
-                    <FontAwesomeIcon icon={faPaperclip} className='absolute left-3 top-3 text-gray-400' />
-                    <TextareaAutoResize className='resize-none md:px-9 pl-8 pr-10 py-2 text-sm text-zinc-700 w-[100%] h-full active:outline-none border outline-none bg-white'
+                    <FontAwesomeIcon icon={faPaperclip} className='absolute left-3 bottom-3 text-gray-400' />
+                    <TextareaAutoResize className={`resize-none md:px-9 pl-8 pr-10 py-2 text-sm text-zinc-700 w-[100%] h-full active:outline-none border outline-none bg-gray-100`}
                         value={message}
                         maxRows={3}
                         onChange={(e) => setMessage(e.target.value)}
                         onKeyDown={onKeyDown}
                         placeholder='Write a message...'
                     />
-                    <FontAwesomeIcon icon={faFaceSmile} className='absolute right-4 top-3 text-gray-400' />
+                    {
+                        windowWidth > 1000 && <FontAwesomeIcon icon={faFaceSmile} className='absolute right-4 bottom-3 text-gray-400' onClick={handleShowEmoji} />
+                    }
                 </section>
                 <button type='submit' className='w-[36px] h-[38px] p-2 bg-blue-600 rounded-lg justify-center items-center ml-2 active:bg-blue-900 hover:bg-blue-700 flex'>
                     <FontAwesomeIcon icon={faPaperPlane} className='text-white' />
                 </button>
             </form>
-            {/* end of form */}
-
         </section>
     )
 };
