@@ -21,10 +21,10 @@ const MainPage = () => {
     // }, [chats])
     return (
         <>
-            <section className="order-2 h-screen md:w-[35vw] overflow-hidden md:border-r relative">
+            <section className="order-2 w-full md:border-r">
                 <PageHeader pageName={"Chats"} />
                 <Search />
-                <div className="overflow-y-auto mt-[129px] absolute top-4 bottom-4 left-0 right-0 z-[99] w-full">
+                <div className="overflow-y-auto mt-[129px] absolute top-2 bottom-[56px] left-0 right-0 w-full md:bottom-1">
                     {chats.map(({ channelInfo, userInfo, messageInfo }, i) => (
                         <Chat
                             key={i}

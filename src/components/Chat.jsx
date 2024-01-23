@@ -6,12 +6,13 @@ import { useEffect, useState } from 'react'
 const Chat = ({ channelInfo, userInfo, messageInfo }) => {
     const dispatch = useDispatch()
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-    const handleChat = ({ userId, channelId, avatarUrl, username }) => {
+    const handleChat = ({ userId, channelId, avatarUrl, username, onlineStatus }) => {
         const chatObj = {
             userId,
             channelId,
             avatarUrl,
-            username
+            username,
+            onlineStatus
         }
         dispatch(chatInfo(chatObj))
     }
@@ -21,19 +22,17 @@ const Chat = ({ channelInfo, userInfo, messageInfo }) => {
             setWindowWidth(window.innerWidth);
         };
         window.addEventListener('resize', handleResize);
-        console.log(windowWidth)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window.innerWidth])
     return (
         // add messages page if page width less than 1000
-        <Link to={`/${windowWidth < 1000 ? 'messages' : ''}`} className=" w-full justify-start items-center flex " id={channelInfo.channelId} key={channelInfo.channelId} onClick={() => handleChat({ userId: userInfo.userId, channelId: channelInfo.channelId, avatarUrl: userInfo.avatarUrl, username: userInfo.username })}>
+        <Link to={`/${windowWidth < 640 ? 'messages' : ''}`} className=" w-full justify-start items-center flex " id={channelInfo.channelId} key={channelInfo.channelId} onClick={() => handleChat({ userId: userInfo.userId, channelId: channelInfo.channelId, avatarUrl: userInfo.avatarUrl, username: userInfo.username, onlineStatus: userInfo.onlineStatus })}>
 
             <section className="w-[70px] h-[65px] p-2.5 justify-center items-center flex shrink-0">
                 <img src={userInfo.avatarUrl} alt="user dp" className='rounded-full' />
             </section>
 
             <section className="py-1 flex flex-col w-full gap-[0px] border-b border-neutral-400">
-
                 <section className="flex items-end h-[32px] px-[4px] justify-between shrink-0">
                     <section className=" h-[24.50px] pt-1 text-zinc-950 text-base font-medium" id={userInfo.userId}>
                         {userInfo.username}

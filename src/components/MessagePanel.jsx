@@ -19,7 +19,6 @@ const MessagePanel = () => {
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
     const [chatInfo, setChatInfo] = useState(info)
-
     const submitForm = (e) => {
         e.preventDefault()
         const { userId } = chatInfo
@@ -43,6 +42,7 @@ const MessagePanel = () => {
     const sendMessage = (e) => {
         submitForm(e)
     }
+
     useEffect(() => {
         const getMessages = (messagesData) => {
             setMessages(messagesData)
@@ -71,7 +71,9 @@ const MessagePanel = () => {
     })
 
     useEffect(() => {
-        messagesRef.current.scrollTop = messagesRef?.current?.scrollHeight
+        if (messagesRef.current) {
+            messagesRef.current.scrollTop = messagesRef.current.scrollHeight
+        }
     }, [messages])
 
     const memoizedMessages = useMemo(
@@ -97,6 +99,7 @@ const MessagePanel = () => {
 
     useEffect(() => {
         setChatInfo(info)
+        console.log("changed", info)
     }, [info])
 
     const handleShowEmoji = () => {
@@ -108,45 +111,55 @@ const MessagePanel = () => {
         setMessage(message + emoji)
     }
     return (
-        <section className="h-screen w-full grid grid-rows-5 bg-gray-100 order-2 md:w-full border-r-8 border-green-950 md:relative ">
 
-            <ChatInfo
-                avatarUrl={chatInfo?.avatarUrl}
-                onlineStatus={"online"}
-                username={chatInfo?.username}
-                windowWidth={windowWidth}
-            />
-
-            <section ref={messagesRef} className="flex w-full overflow-y-auto py-2 row-span-5 flex-col ">
-                {memoizedMessages}
-            </section>
-
+        <section className="h-screen w-full grid grid-rows-5 bg-gray-100 order-2  border-green-950 md:relative">
             {
-                showEmojis && <section className={`absolute z-50 bottom-[90px] right-12`}>
-                    <Picker data={data} onEmojiSelect={getEmoji} emojiSize={17} previewPosition={"none"} theme={"light"} />
-                </section>
+                // when a chat is selected, show chat info and messages if length > 0 
+                chatInfo ? <section className='absolute shadow w-[300px] h-[100px] font-rale font-base text-xl flex justify-center items-center top-[50%] left-[35%]'>
+                    Click on chat to see messages
+                </section> : <>
+                    <ChatInfo
+                        avatarUrl={chatInfo?.avatarUrl}
+                        onlineStatus={chatInfo?.onlineStatus}
+                        username={chatInfo?.username}
+                        windowWidth={windowWidth}
+                    />
+                    <section ref={messagesRef} className="flex w-full overflow-y-auto py-2 row-span-5 flex-col ">
+                        {
+                            memoizedMessages
+                        }
+                    </section>
+                    {
+                        showEmojis && <section className={`absolute z-50 bottom-[90px] right-12`}>
+                            <Picker data={data} onEmojiSelect={getEmoji} emojiSize={17} previewPosition={"none"} theme={"light"} />
+                        </section>
+                    }
+
+                    <form
+                        className="bg-white flex items-end py-2 justify-center px-2 border-t " onSubmit={sendMessage}>
+                        <section className='bg-blue-500 w-full p-0 m-0 relative flex'>
+                            <FontAwesomeIcon icon={faPaperclip} className='absolute left-3 bottom-3 text-gray-400' />
+                            <TextareaAutoResize className={`resize-none md:px-9 pl-8 pr-10 py-2 text-sm text-zinc-700 w-[100%] h-full active:outline-none border outline-none bg-gray-100`}
+                                value={message}
+                                maxRows={3}
+                                onChange={(e) => setMessage(e.target.value)}
+                                onKeyDown={onKeyDown}
+                                placeholder='Write a message...'
+                            />
+                            {
+                                windowWidth > 1000 && <FontAwesomeIcon icon={faFaceSmile} className='absolute right-4 bottom-3 text-gray-400' onClick={handleShowEmoji} />
+                            }
+                        </section>
+                        <button type='submit' className='w-[36px] h-[38px] p-2 bg-blue-600 rounded-lg justify-center items-center ml-2 active:bg-blue-900 hover:bg-blue-700 flex'>
+                            <FontAwesomeIcon icon={faPaperPlane} className='text-white' />
+                        </button>
+                    </form>
+                </>
             }
 
-            <form
-                className="bg-white flex items-end py-2 justify-center px-2 border-t " onSubmit={sendMessage}>
-                <section className='bg-blue-500 w-full p-0 m-0 relative flex'>
-                    <FontAwesomeIcon icon={faPaperclip} className='absolute left-3 bottom-3 text-gray-400' />
-                    <TextareaAutoResize className={`resize-none md:px-9 pl-8 pr-10 py-2 text-sm text-zinc-700 w-[100%] h-full active:outline-none border outline-none bg-gray-100`}
-                        value={message}
-                        maxRows={3}
-                        onChange={(e) => setMessage(e.target.value)}
-                        onKeyDown={onKeyDown}
-                        placeholder='Write a message...'
-                    />
-                    {
-                        windowWidth > 1000 && <FontAwesomeIcon icon={faFaceSmile} className='absolute right-4 bottom-3 text-gray-400' onClick={handleShowEmoji} />
-                    }
-                </section>
-                <button type='submit' className='w-[36px] h-[38px] p-2 bg-blue-600 rounded-lg justify-center items-center ml-2 active:bg-blue-900 hover:bg-blue-700 flex'>
-                    <FontAwesomeIcon icon={faPaperPlane} className='text-white' />
-                </button>
-            </form>
         </section>
+
+
     )
 };
 export default MessagePanel

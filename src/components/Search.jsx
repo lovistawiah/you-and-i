@@ -13,8 +13,8 @@ const Search = () => {
         setSearch('');
     };
     return (
-        <div className="h-[70px] px-2.5 flex-col justify-center items-center flex fixed top-[59px] bg-gray-50 w-full md:relative md:top-[20px]">
-            <section className="relative w-[70%]">
+        <div className="h-[70px] px-2.5 flex-col justify-center items-center flex fixed top-[59px] bg-gray-50 w-full md:relative md:top-[10px]">
+            <section className="relative w-[90%]">
                 {
                     !search && (
                         <FontAwesomeIcon
