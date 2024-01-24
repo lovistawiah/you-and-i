@@ -10,7 +10,8 @@ import { socket } from '../socket'
 import { messageEvents } from '../utils/eventNames'
 import ChatInfo from './ChatInfo'
 import Message from './Message'
-
+// if old chat trigger an effect to check for channelId.
+// if new chat check clear messages
 const MessagePanel = () => {
     const messagesRef = useRef(null)
     const info = useSelector((state) => state.chatInfo.value);
@@ -19,6 +20,7 @@ const MessagePanel = () => {
     const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
     const [chatInfo, setChatInfo] = useState(info)
+
     const submitForm = (e) => {
         e.preventDefault()
         const { userId } = chatInfo
@@ -45,8 +47,10 @@ const MessagePanel = () => {
 
     useEffect(() => {
         const getMessages = (messagesData) => {
+            console.log(messagesData)
             setMessages(messagesData)
         };
+        console.log(ChatInfo?.channelId)
         socket.emit(messageEvents.channelMessages, chatInfo?.channelId);
         socket.on(messageEvents.channelMessages, getMessages);
 
@@ -58,7 +62,7 @@ const MessagePanel = () => {
             socket.off(messageEvents.channelMessages, getMessages);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [chatInfo])
 
     useEffect(() => {
         const handleSendMessage = (data) => {
@@ -98,6 +102,7 @@ const MessagePanel = () => {
     }, [window.innerWidth])
 
     useEffect(() => {
+        setMessages([])
         setChatInfo(info)
     }, [info])
 
@@ -111,18 +116,18 @@ const MessagePanel = () => {
     }
     return (
 
-        <section className="h-screen w-full grid grid-rows-5 bg-gray-100 order-2  border-green-950 md:relative">
+        <section className="h-screen w-full grid grid-rows-4 bg-gray-100 order-2  border-green-950 md:relative">
             {
                 !chatInfo ? <section className='absolute shadow w-[300px] h-[100px] font-rale font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[25%]'>
                     Select chat to see messages
                 </section> : <>
                     <ChatInfo
+                        userId={chatInfo?.userId}
                         avatarUrl={chatInfo?.avatarUrl}
-                        onlineStatus={chatInfo?.onlineStatus}
                         username={chatInfo?.username}
                         windowWidth={windowWidth}
                     />
-                    <section ref={messagesRef} className="flex w-full overflow-y-auto py-2 row-span-5 flex-col ">
+                    <section ref={messagesRef} className="flex w-full overflow-y-auto py-2 row-span-5 flex-col mt-[60px]">
                         {
                             messages.length < 1 ? <section className='absolute shadow w-[300px] h-[100px] font-rale font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[15%]'>
                                 No Messages found

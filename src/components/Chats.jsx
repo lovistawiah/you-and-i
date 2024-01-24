@@ -4,17 +4,15 @@ import { channelEvents } from '../utils/eventNames'
 import Search from './Search'
 import PageHeader from './PageHeader'
 import Chat from './Chat'
-import { CHATS } from '../utils/fakerWork'
 
 const MainPage = () => {
-    const [chats, setChats] = useState(CHATS)
+    const [chats, setChats] = useState([])
     useEffect(() => {
+
         const getChatData = (chatsData) => {
-            if (Array.isArray(chatsData)) {
-                // setChats(chatsData)
-                console.log(chatsData)
-            }
+            setChats(chatsData)
         }
+        socket.emit(channelEvents.channelAndLastMessage, {})
         socket.on(channelEvents.channelAndLastMessage, getChatData)
 
         // return () => {
@@ -27,14 +25,18 @@ const MainPage = () => {
                 <PageHeader pageName={"Chats"} />
                 <Search />
                 <div className="overflow-y-auto mt-[129px] absolute top-2 bottom-[56px] left-0 right-0 w-full md:bottom-1">
-                    {chats.map(({ channelInfo, userInfo, messageInfo }, i) => (
-                        <Chat
-                            key={i}
-                            channelInfo={channelInfo}
-                            userInfo={userInfo}
-                            messageInfo={messageInfo}
-                        />
-                    ))}
+                    {
+                        Array.isArray(chats) && chats.length > 0 ?
+                            chats.map(({ channelInfo, userInfo, messageInfo }, i) => (
+                                <Chat
+                                    key={i}
+                                    channelInfo={channelInfo}
+                                    userInfo={userInfo}
+                                    messageInfo={messageInfo}
+                                />
+                            )) :
+                            <section className='text-center font-rale font-bold text-lg'>{chats}</section>
+                    }
                 </div>
             </section>
 

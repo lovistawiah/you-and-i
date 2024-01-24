@@ -9,6 +9,7 @@ const Messages = () => {
     const chatInfo = useSelector((state) => state.chatInfo.value);
     const messagesRef = useRef(null)
     const [messages, setMessages] = useState([])
+
     useEffect(() => {
         const getMessages = (messagesData) => {
             if (!messagesData) return;
