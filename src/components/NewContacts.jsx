@@ -4,26 +4,20 @@ import { socket } from '../socket'
 import { channelEvents } from '../utils/eventNames'
 import Search from './Search'
 import PageHeader from './PageHeader'
-
 import { chatInfo } from '../app/chatInfoSlice'
-import NEW_CONTACTS from '../utils/fakerWork'
 import { Link } from 'react-router-dom'
 
 
 const NewContacts = () => {
     const dispatch = useDispatch()
-    const [newContacts, setNewContacts] = useState(NEW_CONTACTS)
+    const [newContacts, setNewContacts] = useState([])
 
     useEffect(() => {
-        // const getChatData = (data) => {
-        //     console.log(data[1])
-        // }
-        // change to listen on new contacts
-        // emit request before receiving the data
-        socket.on(channelEvents.contacts, (data) => {
-            console.log("loading")
-            console.log(data)
-        })
+        const getNewContacts = (data) => {
+            setNewContacts(data)
+        }
+        socket.emit(channelEvents.contacts, {})
+        socket.on(channelEvents.contacts, getNewContacts)
         return () => {
             socket.off(channelEvents.contacts)
         }
@@ -54,7 +48,7 @@ const NewContacts = () => {
             <section className='overflow-y-auto mt-[129px] absolute top-2 bottom-[56px] left-0 right-0 w-full md:bottom-1'>
                 {
                     newContacts?.map((newContact) => (
-                        <Link to={`/${windowWidth < 1000 ? 'messages' : ''}`} onClick={() => handleChat({ userId: newContact.id, username: newContact.username, avatarUrl: newContact.avatarUrl })} className="w-full justify-start items-center flex" key={newContact.id} >
+                        <Link to={`/${windowWidth < 1000 ? 'messages' : ''}`} onClick={() => handleChat({ userId: newContact._id, username: newContact.username, avatarUrl: newContact.avatarUrl })} className="w-full justify-start items-center flex" key={newContact._id} >
                             <section className="w-[70px] h-[65px] p-2.5 justify-center items-center flex shrink-0">
                                 <img src={newContact.avatarUrl} alt="user profile" className='rounded-full' />
                             </section>
