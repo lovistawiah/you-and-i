@@ -13,7 +13,7 @@ import { Link } from 'react-router-dom'
 
 const NewContacts = () => {
     const dispatch = useDispatch()
-    const [newContacts, setNewContacts] = useState([])
+    const [newContacts, setNewContacts] = useState(NEW_CONTACTS)
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const handleChat = ({ userId, channelId, avatarUrl, username, onlineStatus }) => {
         const chatObj = {
@@ -47,7 +47,7 @@ const NewContacts = () => {
         }
     }, [])
     return (
-        <section className='order-2 w-full md:border-r'>
+        <section className='order-2 w-full md:w-[40%] relative'>
             <PageHeader pageName={"Contacts"} />
             <Search />
             <section className='overflow-y-auto mt-[129px] absolute top-2 bottom-[56px] left-0 right-0 w-full md:bottom-1'>
@@ -67,7 +67,6 @@ const NewContacts = () => {
                             </section>
                         </Link >
                     ))
-
                 }
             </section>
         </section>

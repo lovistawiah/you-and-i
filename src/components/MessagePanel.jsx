@@ -99,7 +99,6 @@ const MessagePanel = () => {
 
     useEffect(() => {
         setChatInfo(info)
-        console.log("changed", info)
     }, [info])
 
     const handleShowEmoji = () => {
@@ -114,9 +113,8 @@ const MessagePanel = () => {
 
         <section className="h-screen w-full grid grid-rows-5 bg-gray-100 order-2  border-green-950 md:relative">
             {
-                // when a chat is selected, show chat info and messages if length > 0 
-                chatInfo ? <section className='absolute shadow w-[300px] h-[100px] font-rale font-base text-xl flex justify-center items-center top-[50%] left-[35%]'>
-                    Click on chat to see messages
+                !chatInfo ? <section className='absolute shadow w-[300px] h-[100px] font-rale font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[25%]'>
+                    Select chat to see messages
                 </section> : <>
                     <ChatInfo
                         avatarUrl={chatInfo?.avatarUrl}
@@ -126,7 +124,9 @@ const MessagePanel = () => {
                     />
                     <section ref={messagesRef} className="flex w-full overflow-y-auto py-2 row-span-5 flex-col ">
                         {
-                            memoizedMessages
+                            messages.length < 1 ? <section className='absolute shadow w-[300px] h-[100px] font-rale font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[25%]'>
+                                No Messages found
+                            </section> : memoizedMessages
                         }
                     </section>
                     {
@@ -156,7 +156,6 @@ const MessagePanel = () => {
                     </form>
                 </>
             }
-
         </section>
 
 

@@ -1,11 +1,15 @@
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-
+import { useNavigate } from 'react-router-dom'
 const ChatInfo = ({ avatarUrl, username, onlineStatus, windowWidth }) => {
+    const navigate = useNavigate()
+    const goBack = () => {
+        navigate('/')
+    }
     return (
         <section className=" flex justify-between items-center w-full absolute top-0 z-10 row-span-1 bg-white pl-2 border-b py-1">
             {   //show back arrow on mobile device
-                windowWidth < 640 && <FontAwesomeIcon icon={faChevronLeft} className="cursor-pointer hover:bg-gray-100 hover:rounded-full p-2" />
+                windowWidth < 640 && <FontAwesomeIcon icon={faChevronLeft} className="cursor-pointer hover:bg-gray-100 hover:rounded-full p-2 m-2" onClick={goBack} />
             }
             <section className="w-[50px] h-[50px] justify-between items-center flex">
                 <img src={avatarUrl} alt="user profile" className="w-12 h-12 rounded-full" />
