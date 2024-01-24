@@ -21,7 +21,7 @@ export const CHATS = faker.helpers.multiple(Chats, {
   count:100
 })
 
-function PersonInfo (){
+export function PersonInfo (){
   return {
       id:faker.database.mongodbObjectId(),
       username: faker.internet.userName(),

@@ -124,14 +124,14 @@ const MessagePanel = () => {
                     />
                     <section ref={messagesRef} className="flex w-full overflow-y-auto py-2 row-span-5 flex-col ">
                         {
-                            messages.length < 1 ? <section className='absolute shadow w-[300px] h-[100px] font-rale font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[25%]'>
+                            messages.length < 1 ? <section className='absolute shadow w-[300px] h-[100px] font-rale font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[15%]'>
                                 No Messages found
                             </section> : memoizedMessages
                         }
                     </section>
                     {
                         showEmojis && <section className={`absolute z-50 bottom-[90px] right-12`}>
-                            <Picker data={data} onEmojiSelect={getEmoji} emojiSize={17} previewPosition={"none"} theme={"light"} />
+                            <Picker data={data} onEmojiSelect={getEmoji} emojiSize={18} previewPosition={"none"} theme={"light"} />
                         </section>
                     }
 
@@ -139,7 +139,7 @@ const MessagePanel = () => {
                         className="bg-white flex items-end py-2 justify-center px-2 border-t " onSubmit={sendMessage}>
                         <section className='bg-blue-500 w-full p-0 m-0 relative flex'>
                             <FontAwesomeIcon icon={faPaperclip} className='absolute left-3 bottom-3 text-gray-400' />
-                            <TextareaAutoResize className={`resize-none md:px-9 pl-8 pr-10 py-2 text-sm text-zinc-700 w-[100%] h-full active:outline-none border outline-none bg-gray-100`}
+                            <TextareaAutoResize className={`resize-none md:px-9 pl-8 pr-10 py-2 text-base text-zinc-700 w-[100%] h-full active:outline-none border outline-none bg-gray-100`}
                                 value={message}
                                 maxRows={3}
                                 onChange={(e) => setMessage(e.target.value)}

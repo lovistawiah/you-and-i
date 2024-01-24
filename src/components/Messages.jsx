@@ -6,8 +6,6 @@ import { socket } from "../socket";
 import { messageEvents } from "../utils/eventNames";
 
 const Messages = () => {
-    // console.log(formRef)
-    // const messagesMarginBottom = formRef.current.offsetHeight
     const chatInfo = useSelector((state) => state.chatInfo.value);
     const messagesRef = useRef(null)
     const [messages, setMessages] = useState([])
@@ -18,17 +16,8 @@ const Messages = () => {
         };
         socket.emit(messageEvents.channelMessages, chatInfo.channelId);
         socket.on(messageEvents.channelMessages, getMessages);
-
-        socket.on('error', (error) => {
-            // TODO: fix socket error
-            console.error('Socket error:', error);
-        });
-
-        return () => {
-            socket.off(messageEvents.channelMessages, getMessages);
-            socket.off('error');
-        };
     }, [chatInfo.channelId]);
+
 
     useEffect(() => {
         socket.on(messageEvents.sendMessage, (data) => {

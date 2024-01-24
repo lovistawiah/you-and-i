@@ -8,17 +8,19 @@ import { CHATS } from '../utils/fakerWork'
 
 const MainPage = () => {
     const [chats, setChats] = useState(CHATS)
-    // useEffect(() => {
-    //     const getChatData = (chatsData) => {
-    //         if (Array.isArray(chatsData)) {
-    //             setChats(chatsData)
-    //         }
-    //     }
-    //     socket.on(channelEvents.channelAndLastMessage, getChatData)
-    //     return () => {
-    //         socket.off(channelEvents.channelAndLastMessage)
-    //     }
-    // }, [chats])
+    useEffect(() => {
+        const getChatData = (chatsData) => {
+            if (Array.isArray(chatsData)) {
+                // setChats(chatsData)
+                console.log(chatsData)
+            }
+        }
+        socket.on(channelEvents.channelAndLastMessage, getChatData)
+
+        // return () => {
+        //     socket.off(channelEvents.channelAndLastMessage)
+        // }
+    }, [])
     return (
         <>
             <section className="order-2 w-full md:border-r md:w-[40%] relative">

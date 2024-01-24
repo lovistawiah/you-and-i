@@ -12,7 +12,7 @@ const ChatInfo = ({ avatarUrl, username, onlineStatus, windowWidth }) => {
                 windowWidth < 640 && <FontAwesomeIcon icon={faChevronLeft} className="cursor-pointer hover:bg-gray-100 hover:rounded-full p-2 m-2" onClick={goBack} />
             }
             <section className="w-[50px] h-[50px] justify-between items-center flex">
-                <img src={avatarUrl} alt="user profile" className="w-12 h-12 rounded-full" />
+                <img src={avatarUrl} alt="user profile" className="object-contain w-fit h-fit rounded-full" />
             </section>
             <section className="w-full h-[50px] flex-col justify-between items-center flex pt-2">
                 <section className="w-full h-[25px] px-[5px] text-zinc-800 text-base pt-[1px] font-bold font-rale">{username}

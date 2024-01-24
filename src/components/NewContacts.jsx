@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import { useEffect, useState } from 'react'
 import { useDispatch } from "react-redux"
 import { socket } from '../socket'
@@ -14,6 +13,21 @@ import { Link } from 'react-router-dom'
 const NewContacts = () => {
     const dispatch = useDispatch()
     const [newContacts, setNewContacts] = useState(NEW_CONTACTS)
+
+    useEffect(() => {
+        // const getChatData = (data) => {
+        //     console.log(data[1])
+        // }
+        // change to listen on new contacts
+        // emit request before receiving the data
+        socket.on(channelEvents.contacts, (data) => {
+            console.log("loading")
+            console.log(data)
+        })
+        return () => {
+            socket.off(channelEvents.contacts)
+        }
+    }, [])
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const handleChat = ({ userId, channelId, avatarUrl, username, onlineStatus }) => {
         const chatObj = {
@@ -33,19 +47,6 @@ const NewContacts = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window.innerWidth])
 
-    useEffect(() => {
-        const getChatData = (newContactsData) => {
-            console.log(newContactsData)
-            if (Array.isArray(newContactsData)) {
-                setNewContacts(newContactsData)
-            }
-        }
-        // change to listen on new contacts
-        socket.on(channelEvents.contacts, getChatData)
-        return () => {
-            socket.off(channelEvents.channelAndLastMessage)
-        }
-    }, [])
     return (
         <section className='order-2 w-full md:w-[40%] relative'>
             <PageHeader pageName={"Contacts"} />
