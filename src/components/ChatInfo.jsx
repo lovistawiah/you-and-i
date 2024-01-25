@@ -30,7 +30,7 @@ const ChatInfo = ({ windowWidth, userId }) => {
             <section className="w-full h-[50px] flex-col justify-between items-center flex pt-2">
                 <section className="w-full h-[25px] px-[5px] text-zinc-800 text-base pt-[1px] font-bold font-rale">{chatInfo?.username}
                 </section>
-                <section className="w-full h-[20px] px-[5px] pb-2.5 justify-start items-center  flex opacity-60  text-zinc-800 text-[13px] font-rale">{status?.userId === userId ? lastSeen(status.status) : ''}
+                <section className="w-full h-[20px] px-[5px] pb-2.5 justify-start items-center  flex opacity-60  text-zinc-900 text-[13px] font-rale"><span className="font-semibold font-rale pr-[3px]">last seen: </span>{status?.userId === userId ? lastSeen(status.status) : ''}
                 </section>
             </section>
         </section>
