@@ -1,28 +1,23 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from "react-redux"
-import { socket } from '../socket'
-import { channelEvents } from '../utils/eventNames'
-import Search from './Search'
 import PageHeader from './PageHeader'
 import { chatInfo } from '../app/chatInfoSlice'
 import { Link } from 'react-router-dom'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'
+import useSearchContact from '../hooks/useSearchContact'
 
 
 const NewContacts = () => {
     const dispatch = useDispatch()
-    const [contacts, setContacts] = useState([])
-
-    useEffect(() => {
-        const getContacts = (data) => {
-            setContacts(data)
-        }
-        socket.emit(channelEvents.contacts, {})
-        socket.on(channelEvents.contacts, getContacts)
-        return () => {
-            socket.off(channelEvents.contacts)
-        }
-    }, [])
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+    const { contacts, searchInput, setSearchInput } = useSearchContact()
+    const handleSearch = (e) => {
+        setSearchInput(e.target.value);
+    };
+    const clearSearch = () => {
+        setSearchInput('');
+    };
     const handleUserInfo = ({ userId, channelId, avatarUrl, username }) => {
         const chatObj = {
             userId,
@@ -39,10 +34,40 @@ const NewContacts = () => {
         window.addEventListener('resize', handleResize);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window.innerWidth])
+
     return (
         <section className='order-2 w-full md:w-[40%] relative'>
             <PageHeader pageName={"Contacts"} />
-            <Search />
+
+            <div className="h-[70px] px-2.5 flex-col justify-center items-center flex fixed top-[59px] bg-gray-50 w-full md:relative md:top-[10px]">
+                <section className="relative w-[90%]">
+                    {
+                        !searchInput && (
+                            <FontAwesomeIcon
+                                icon={faSearch}
+                                className="absolute top-[10px] left-1 text-zinc-500"
+                            />
+                        )
+                    }
+                    <input
+                        type="text"
+                        name=""
+                        placeholder="Search"
+                        id=""
+                        className="w-full h-9 pl-6 bg-white border-b-[1px] border-zinc-500 justify-start items-center gap-1.5 inline-flex outline-none text-base font-normal"
+                        value={searchInput}
+                        onChange={handleSearch}
+                    />
+                    {searchInput && (
+                        <FontAwesomeIcon
+                            icon={faTimes}
+                            className="absolute right-3 top-[10px] text-zinc-500 cursor-pointer"
+                            onClick={clearSearch}
+                        />
+                    )}
+                </section>
+            </div>
+
             <section className='overflow-y-auto mt-[129px] absolute top-2 bottom-[56px] left-0 right-0 w-full md:bottom-1'>
                 {
                     contacts?.map((contact) => (

@@ -47,10 +47,8 @@ const MessagePanel = () => {
 
     useEffect(() => {
         const getMessages = (messagesData) => {
-            console.log(messagesData)
             setMessages(messagesData)
         };
-        console.log(ChatInfo?.channelId)
         socket.emit(messageEvents.channelMessages, chatInfo?.channelId);
         socket.on(messageEvents.channelMessages, getMessages);
 
