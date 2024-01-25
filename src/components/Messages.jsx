@@ -8,9 +8,13 @@ import { messageHeaderDate } from "../utils/compareDate";
 import MessageHeaderDate from "./MessageHeaderDate"
 
 const Messages = () => {
-    const dates = new Set()
     const info = useSelector((state) => state.chatInfo.value);
     const [chatInfo, setChatInfo] = useState(info)
+    const [datesSet, setDatesSet] = useState(new Set)
+
+    const addDateToSet = (date) => {
+        setDatesSet((prevDates) => new Set([...prevDates, date]))
+    }
 
     const messagesRef = useRef(null)
     const [messages, setMessages] = useState([])
@@ -54,18 +58,24 @@ const Messages = () => {
         }
     }, [messages])
 
+    useEffect(() => {
+        console.log(datesSet);
+    }, [datesSet]);
+
     const memoizedMessages = useMemo(
         () => messages.map((msg) => (
             <>
                 {
-                    dates.has(messageHeaderDate(msg.createdAt)) ? null : <>
-                        {dates.add(messageHeaderDate(msg.createdAt))}
-                        <MessageHeaderDate
-                            messageDate={messageHeaderDate(msg.createdAt)}
-                        />
-                    </>
+                    datesSet.has(messageHeaderDate(msg.createdAt)) ? null : (
+                        <>
+                            <MessageHeaderDate
+                                messageDate={messageHeaderDate(msg.createdAt)}
+                            />
+                            {addDateToSet(messageHeaderDate(msg.createdAt))}
+                        </>
+                    )
                 }
-                <Message
+                < Message
                     key={msg._id}
                     message={msg.message}
                     sender={msg.sender}

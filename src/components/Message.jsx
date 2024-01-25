@@ -23,7 +23,7 @@ const Message = ({ message, sender, createdAt, userId }) => {
                 {message}
             </section>
 
-            <section className={`${messageStatusAlign} text-center text-zinc-800 text-[13px] mb-1 font-normal`}>
+            <section className={`${messageStatusAlign} text-center text-zinc-600 text-[13px] mb-1 font-normal`}>
                 {messageStatusText}
             </section>
         </section>
