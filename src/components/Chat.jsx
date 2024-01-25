@@ -6,13 +6,13 @@ import { useEffect, useState } from 'react'
 const Chat = ({ channelInfo, userInfo, messageInfo }) => {
     const dispatch = useDispatch()
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-    const handleChat = ({ userId, channelId, avatarUrl, username, onlineStatus }) => {
+    const handleChat = ({ userId, channelId, avatarUrl, username }) => {
         const chatObj = {
             userId,
             channelId,
             avatarUrl,
             username,
-            onlineStatus
+
         }
         dispatch(chatInfo(chatObj))
     }
@@ -26,8 +26,7 @@ const Chat = ({ channelInfo, userInfo, messageInfo }) => {
     }, [window.innerWidth])
     return (
         // add messages page if page width less than 1000
-        <Link to={`/${windowWidth < 640 ? 'messages' : ''}`} className=" w-full justify-start items-center flex " id={channelInfo.channelId} key={channelInfo.channelId} onClick={() => handleChat({ userId: userInfo.userId, channelId: channelInfo.channelId, avatarUrl: userInfo.avatarUrl, username: userInfo.username, onlineStatus: userInfo.onlineStatus })}>
-
+        <Link to={`/${windowWidth < 640 ? 'messages' : ''}`} className=" w-full justify-start items-center flex " id={channelInfo.channelId} key={channelInfo.channelId} onClick={() => handleChat({ userId: userInfo.userId, channelId: channelInfo.channelId, avatarUrl: userInfo.avatarUrl, username: userInfo.username })}>
             <section className="w-[70px] h-[65px] p-2.5 justify-center items-center flex shrink-0">
                 <img src={userInfo.avatarUrl} alt="user dp" className='rounded-full' />
             </section>

@@ -1,4 +1,5 @@
 function lastSeen(status) {
+  if(!status) return
   let amPm,
     timeText,
     dateText,
@@ -37,6 +38,7 @@ function lastSeen(status) {
 }
 
 function messageStatus(createdAt) {
+  if(!createdAt) return
   let amPm = "";
   const date = new Date(createdAt);
   let hours = date.getHours();
@@ -54,6 +56,7 @@ function messageStatus(createdAt) {
 }
 
 function messageHeaderDate(messageDate) {
+  if(!messageDate) return
   const date = new Date();
   if (!messageDate) return;
   messageDate = new Date(messageDate);

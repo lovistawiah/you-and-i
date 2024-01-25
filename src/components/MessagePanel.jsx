@@ -2,25 +2,20 @@ import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { faFaceSmile, faPaperPlane, faPaperclip } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import TextareaAutoResize from 'react-textarea-autosize'
 import { socket } from '../socket'
-
 import { messageEvents } from '../utils/eventNames'
 import ChatInfo from './ChatInfo'
-import Message from './Message'
-// if old chat trigger an effect to check for channelId.
-// if new chat check clear messages
+import Messages from './Messages'
+
+
 const MessagePanel = () => {
-    const messagesRef = useRef(null)
-    const info = useSelector((state) => state.chatInfo.value);
+    const chatInfo = useSelector((state) => state.chatInfo.value);
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [showEmojis, setShowEmojis] = useState(false)
-    const [messages, setMessages] = useState([])
     const [message, setMessage] = useState('')
-    const [chatInfo, setChatInfo] = useState(info)
-
     const submitForm = (e) => {
         e.preventDefault()
         const { userId } = chatInfo
@@ -46,52 +41,6 @@ const MessagePanel = () => {
     }
 
     useEffect(() => {
-        const getMessages = (messagesData) => {
-            setMessages(messagesData)
-        };
-        socket.emit(messageEvents.channelMessages, chatInfo?.channelId);
-        socket.on(messageEvents.channelMessages, getMessages);
-
-        socket.on('error', (error) => {
-            console.error('Socket error:', error);
-        });
-
-        return () => {
-            socket.off(messageEvents.channelMessages, getMessages);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [chatInfo])
-
-    useEffect(() => {
-        const handleSendMessage = (data) => {
-            setMessages((prevMessages) => [...prevMessages, data])
-        }
-        socket.on(messageEvents.sendMessage, handleSendMessage)
-        return () => {
-            socket.off(messageEvents.sendMessage, handleSendMessage)
-        }
-    })
-
-    useEffect(() => {
-        if (messagesRef.current) {
-            messagesRef.current.scrollTop = messagesRef.current.scrollHeight
-        }
-    }, [messages])
-
-    const memoizedMessages = useMemo(
-        () => messages.map((messageInfo) => (
-            <Message
-                key={messageInfo._id}
-                message={messageInfo.message}
-                sender={messageInfo.sender}
-                createdAt={messageInfo.createdAt}
-                userId={chatInfo.userId}
-            />
-        )),
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [messages]
-    );
-    useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
         };
@@ -99,10 +48,6 @@ const MessagePanel = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window.innerWidth])
 
-    useEffect(() => {
-        setMessages([])
-        setChatInfo(info)
-    }, [info])
 
     const handleShowEmoji = () => {
         setShowEmojis(showEmojis ? false : true)
@@ -120,18 +65,10 @@ const MessagePanel = () => {
                     Select chat to see messages
                 </section> : <>
                     <ChatInfo
-                        userId={chatInfo?.userId}
-                        avatarUrl={chatInfo?.avatarUrl}
-                        username={chatInfo?.username}
                         windowWidth={windowWidth}
+                        userId={chatInfo?.userId}
                     />
-                    <section ref={messagesRef} className="flex w-full overflow-y-auto py-2 row-span-5 flex-col mt-[60px]">
-                        {
-                            messages.length < 1 ? <section className='absolute shadow w-[300px] h-[100px] font-rale font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[15%]'>
-                                No Messages found
-                            </section> : memoizedMessages
-                        }
-                    </section>
+                    <Messages />
                     {
                         showEmojis && <section className={`absolute z-50 bottom-[90px] right-12`}>
                             <Picker data={data} onEmojiSelect={getEmoji} emojiSize={18} previewPosition={"none"} theme={"light"} />
