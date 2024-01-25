@@ -1,7 +1,8 @@
-import { messageStatus } from "../utils/compareDate"
+
+import { format } from "date-fns"
 const Message = ({ message, sender, createdAt, userId }) => {
     if (!message || !sender || !createdAt || !userId) return
-    const messageStatusText = messageStatus(createdAt)
+    const messageStatusText = format(createdAt, 'h:mm a')
     let itemsClass, messageStatusAlign, textColor, messageContainerBg = ""
     if (sender === userId) {
         itemsClass = 'self-start'

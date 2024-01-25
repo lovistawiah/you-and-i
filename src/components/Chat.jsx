@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom'
 import { chatInfo } from '../app/chatInfoSlice'
 import { useDispatch } from 'react-redux'
-import { messageStatus } from '../utils/compareDate'
 import { useEffect, useState } from 'react'
+import { format } from 'date-fns'
 const Chat = ({ channelInfo, userInfo, messageInfo }) => {
+    const chatDate = format(messageInfo.createdAt, 'h:mm a')
     const dispatch = useDispatch()
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const handleChat = ({ userId, channelId, avatarUrl, username }) => {
@@ -37,7 +38,7 @@ const Chat = ({ channelInfo, userInfo, messageInfo }) => {
                         {userInfo.username}
                     </section>
                     <div className="h-[24.50px] pb-[3px] pr-4 justify-end items-center pt-1 text-neutral-400 text-xs font-light">
-                        {messageStatus(messageInfo.createdAt)}
+                        {chatDate}
                     </div>
                 </section>
 
