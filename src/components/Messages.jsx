@@ -66,6 +66,7 @@ const Messages = () => {
         () => messages.map((msg) => (
             <>
                 {
+                    //FIXME: make message header date render correctly
                     datesSet.has(messageHeaderDate(msg.createdAt)) ? null : (
                         <>
                             <MessageHeaderDate
