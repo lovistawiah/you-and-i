@@ -10,15 +10,20 @@ import MessageHeaderDate from "./MessageHeaderDate"
 const Messages = () => {
     const info = useSelector((state) => state.chatInfo.value);
     const [chatInfo, setChatInfo] = useState(info)
-    const [datesSet, setDatesSet] = useState(new Set)
-
-    const addDateToSet = (date) => {
-        setDatesSet((prevDates) => new Set([...prevDates, date]))
-    }
-
+    const [datesSet, setDatesSet] = useState(new Set())
     const messagesRef = useRef(null)
     const [messages, setMessages] = useState([])
 
+    const addDateToSet = (messageDate) => {
+        if (!datesSet.has(messageDate)) {
+            setDatesSet((prev) => new Set([...prev, messageDate]))
+            console.log("true")
+            return true
+        }
+        console.log("false")
+        console.log(datesSet.values())
+        return false
+    }
     useEffect(() => {
         const getMessages = (messagesData) => {
             setMessages(messagesData)
@@ -58,23 +63,15 @@ const Messages = () => {
         }
     }, [messages])
 
-    useEffect(() => {
-        console.log(datesSet);
-    }, [datesSet]);
-
     const memoizedMessages = useMemo(
         () => messages.map((msg) => (
             <>
                 {
                     //FIXME: make message header date render correctly
-                    datesSet.has(messageHeaderDate(msg.createdAt)) ? null : (
-                        <>
-                            <MessageHeaderDate
-                                messageDate={messageHeaderDate(msg.createdAt)}
-                            />
-                            {addDateToSet(messageHeaderDate(msg.createdAt))}
-                        </>
-                    )
+                    addDateToSet(messageHeaderDate(msg.createdAt)) &&
+                    <MessageHeaderDate
+                        messageDate={messageHeaderDate(msg.createdAt)}
+                    />
                 }
                 < Message
                     key={msg._id}
