@@ -10,18 +10,15 @@ import MessageHeaderDate from "./MessageHeaderDate"
 const Messages = () => {
     const info = useSelector((state) => state.chatInfo.value);
     const [chatInfo, setChatInfo] = useState(info)
-    const [datesSet, setDatesSet] = useState(new Set())
+    const datesSet = new Set()
     const messagesRef = useRef(null)
     const [messages, setMessages] = useState([])
 
     const addDateToSet = (messageDate) => {
         if (!datesSet.has(messageDate)) {
-            setDatesSet((prev) => new Set([...prev, messageDate]))
-            console.log("true")
+            datesSet.add(messageDate)
             return true
         }
-        console.log("false")
-        console.log(datesSet.values())
         return false
     }
     useEffect(() => {
@@ -65,6 +62,7 @@ const Messages = () => {
 
     const memoizedMessages = useMemo(
         () => messages.map((msg) => (
+
             <>
                 {
                     //FIXME: make message header date render correctly
