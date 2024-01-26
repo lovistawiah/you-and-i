@@ -1,24 +1,30 @@
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useEffect, useState } from "react"
+// import { useEffect, useState } from "react"
 import { useNavigate } from 'react-router-dom'
-import { socket } from "../socket"
-import { userEvents } from "../utils/eventNames"
-import { lastSeen } from "../utils/compareDate"
+// import { socket } from "../socket"
+// import { userEvents } from "../utils/eventNames"
+// import { lastSeen } from "../utils/compareDate"
 import { useSelector } from "react-redux"
-const ChatInfo = ({ windowWidth, userId }) => {
+const ChatInfo = ({ windowWidth, /*userId*/ }) => {
     const chatInfo = useSelector((state) => state.chatInfo.value);
-    const [status, setStatus] = useState({})
+    // const [status, setStatus] = useState({})
     const navigate = useNavigate()
     const goBack = () => {
         navigate('/')
     }
-    useEffect(() => {
-        socket.emit(userEvents.status, chatInfo?.userId)
-        socket.on(userEvents.status, (userStatus) => {
-            setStatus(userStatus)
-        })
-    }, [chatInfo?.userId])
+    // TODO: work on user online and offline status later.
+    // useEffect(() => {
+    //     socket.emit(userEvents.status, chatInfo?.userId)
+    //     socket.on(userEvents.status, (userStatus) => {
+    //         setStatus(userStatus)
+    //     })
+
+    //     console.log("here")
+    //     return () => {
+    //         socket.removeListener(userEvents.status)
+    //     }
+    // })
     return (
         <section className=" flex justify-between items-center w-full absolute top-0 z-10 row-span-1 bg-white pl-2 border-b py-1">
             {   //show back arrow on mobile device
@@ -31,8 +37,8 @@ const ChatInfo = ({ windowWidth, userId }) => {
                 <section className="w-full h-[25px] px-[5px] text-zinc-800 text-base pt-[1px] font-bold font-rale">{chatInfo?.username}
                 </section>
                 <section className="w-full h-[20px] px-[5px] pb-2.5 justify-start items-center  flex opacity-60  text-zinc-900 text-[13px] font-rale">
-                    <span className="font-semibold font-rale pr-[3px]">{status.userId === userId ? status.status === "online" ? "Online" : lastSeen(status.status) : ""}
-                    </span>
+                    {/* <span className="font-semibold font-rale pr-[3px]">{status.userId === userId ? status.status === "online" ? "Online" : lastSeen(status.status) : ""}
+                    </span> */}
                 </section>
             </section>
         </section>

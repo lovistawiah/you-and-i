@@ -41,6 +41,9 @@ const Messages = () => {
     useEffect(() => {
         setMessages([])
         setChatInfo(info)
+        datesSet.clear()
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [info])
 
 

@@ -58,7 +58,7 @@ const MessagePanel = () => {
         setMessage(message + emoji)
     }
     return (
-
+        // TODO: when window width > mobile width, show chat panel and settings if message panel is active page
         <section className="h-screen w-full grid grid-rows-4 bg-gray-100 order-2  border-green-950 md:relative">
             {
                 !chatInfo ? <section className='absolute shadow w-[300px] h-[100px] font-rale font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[25%]'>
