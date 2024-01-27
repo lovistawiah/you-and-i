@@ -9,9 +9,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComments, faGear, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import { socket } from '../socket'
 
-
 const MainPage = () => {
-    // default to page 3 since it the Chat page
+    // TODO: show profile pic on the bottom of the menu panel if window.innerWidth > 1000
     const [isToken, setToken] = useState(true)
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [activePage, setActivePage] = useState(3)
@@ -29,10 +28,17 @@ const MainPage = () => {
         socket.on('connect_error', (data) => {
             if (data) {
                 setToken(false)
+            } else {
+                setToken(true)
             }
         })
+        const handleConnect = () => {
+            setToken(true)
+        }
+        socket.on("connect", handleConnect)
         return () => {
             socket.off('connect_error')
+            socket.off('connect', handleConnect)
         }
     }, [isToken])
 
