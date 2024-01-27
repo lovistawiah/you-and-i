@@ -14,10 +14,13 @@ import MediaModal from './MediaModal'
 
 const MessagePanel = () => {
     const chatInfo = useSelector((state) => state.chatInfo.value);
+    // const formRef = useRef(null)
+    // TODO: make emoji container and share container sit on top of the form element
+    // const [formHeight, setFormHeight] = useState(formRef?.current?.clientHeight || null)
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [showEmojis, setShowEmojis] = useState(false)
     const [message, setMessage] = useState('')
-    const [showMediaModal, setShowMediaModal] = useState(true)
+    const [showMediaModal, setShowMediaModal] = useState(false)
 
     const showShareModal = () => {
         setShowMediaModal(showMediaModal ? false : true)
@@ -53,8 +56,9 @@ const MessagePanel = () => {
         window.addEventListener('resize', handleResize);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window.innerWidth])
+    useEffect(() => {
 
-
+    })
     const handleShowEmoji = () => {
         setShowEmojis(showEmojis ? false : true)
     }
@@ -63,6 +67,7 @@ const MessagePanel = () => {
         const emoji = emojiObj.native
         setMessage(message + emoji)
     }
+
     return (
         // TODO: when window width > mobile width, show chat panel and settings if message panel is active page
         <section className="h-screen w-full grid grid-rows-4 bg-gray-100 order-2  border-green-950 md:relative">

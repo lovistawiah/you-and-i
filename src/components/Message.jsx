@@ -23,7 +23,7 @@ const Message = ({ message, sender, createdAt, userId }) => {
                 !message.startsWith('https://storage.googleapis.com/you-and-i-testing/media/images') ?
                     <section className={`${textColor} rounded-[25px] max-w-[300px] text-start text-sm p-[8px] mb-[3px] ${messageContainerBg}`}>
                         {message}
-                    </section> : <section className="max-w-[300px]">
+                    </section> : <section className="md:max-w-[300px] max-w-[200px]">
                         <img src={message} alt="" className="w-full h-full object-contain rounded" />
                     </section>
 
