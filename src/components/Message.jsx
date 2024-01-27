@@ -19,9 +19,15 @@ const Message = ({ message, sender, createdAt, userId }) => {
 
     return (
         <section className={`min-w-min flex flex-col ${itemsClass} mx-2 my-2`} >
-            <section className={`${textColor} rounded-[25px] max-w-[300px] text-start text-sm p-[8px] mb-[3px] ${messageContainerBg}`}>
-                {message}
-            </section>
+            {
+                !message.startsWith('https://storage.googleapis.com/you-and-i-testing/media/images') ?
+                    <section className={`${textColor} rounded-[25px] max-w-[300px] text-start text-sm p-[8px] mb-[3px] ${messageContainerBg}`}>
+                        {message}
+                    </section> : <section className="max-w-[300px]">
+                        <img src={message} alt="" className="w-full h-full object-contain rounded" />
+                    </section>
+
+            }
 
             <section className={`${messageStatusAlign} text-center text-zinc-600 text-[13px] mb-1 font-normal`}>
                 {messageStatusText}
