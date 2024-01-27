@@ -9,6 +9,7 @@ const channelEvents = {
   search: "search",
   contacts: "contacts",
   errorMessage: "errorMessage",
+  searchChats: "searchChats"
 };
 
 const messageEvents = {

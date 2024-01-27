@@ -1,14 +1,23 @@
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { socket } from '../socket'
 
 
-const Search = () => {
+const Search = ({ eventName, }) => {
     const [searchInput, setSearchInput] = useState('');
     const handleSearch = (e) => {
         setSearchInput(e.target.value);
     };
-
+    useEffect(() => {
+        const trimmedSearch = searchInput.trim()
+        if (trimmedSearch) {
+            socket.emit(eventName, trimmedSearch)
+        }
+        return () => {
+            socket.removeListener(eventName)
+        }
+    }, [searchInput, eventName])
     const clearSearch = () => {
         setSearchInput('');
     };
