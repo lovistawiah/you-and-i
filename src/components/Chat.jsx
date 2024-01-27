@@ -3,6 +3,8 @@ import { chatInfo } from '../app/chatInfoSlice'
 import { useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faImage } from '@fortawesome/free-regular-svg-icons'
 const Chat = ({ channelInfo, userInfo, messageInfo }) => {
     const chatDate = format(messageInfo.createdAt, 'h:mm a')
     const dispatch = useDispatch()
@@ -44,7 +46,10 @@ const Chat = ({ channelInfo, userInfo, messageInfo }) => {
 
                 {/* last message */}
                 <section className="text-neutral-400 text-sm font-normal line-clamp-2 text-ellipsis w-full flex-grow basis-0 pt-[4px] pr-0 pb-[40px] pl-1">
-                    {messageInfo.lastMessage}
+                    {
+                        !messageInfo.lastMessage.startsWith('https://storage.googleapis.com/you-and-i-testing/media/images') ?
+                            <>{messageInfo.lastMessage}</> : <FontAwesomeIcon icon={faImage} className='text-lg' />
+                    }
                 </section>
             </section>
         </Link>
