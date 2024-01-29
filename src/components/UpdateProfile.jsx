@@ -23,7 +23,7 @@ const UpdateProfile = () => {
     }
 
     return (
-        <section className="w-screen">
+        <section className="w-screen h-screen">
 
             <section className='flex justify-between md:block mt-2 w-full'>
                 {   //show back arrow on mobile device
