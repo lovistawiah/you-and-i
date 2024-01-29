@@ -35,7 +35,14 @@ const UpdateProfile = () => {
             <section className='w-[200px] mt-[70px] m-auto flex justify-center items-center'>
                 <section className="relative w-[100px] h-[100px] ">
                     <img src={PersonInfo().avatarUrl} alt="" className='rounded-full object-contain border-[3px] border-blue-200 w-full h-full' />
-                    <FontAwesomeIcon icon={faCameraAlt} className='absolute right-0 bottom-0 text-xl p-2 bg-blue-400 rounded-full text-white' />
+                    {/* eslint-disable-next-line jsx-a11y/label-has-associated-control  */}
+                    <label htmlFor='fileInput' className='absolute right-0 bottom-0'>
+                        <span className='relative'>
+                            <FontAwesomeIcon icon={faCameraAlt} className='text-lg text-white bg-blue-400 p-[8px] rounded-full ' />
+                            <input type="file" name="" id="fileInput" className='bg-yellow-500 w-0 invisible' />
+
+                        </span>
+                    </label>
                 </section>
             </section >
 

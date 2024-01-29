@@ -15,8 +15,8 @@ const Settings = () => {
                         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control  */}
                         <label htmlFor='fileInput' className='absolute right-0 bottom-0'>
                             <span className='relative'>
-                                <FontAwesomeIcon icon={faCameraAlt} className='text-lg text-white bg-blue-400 p-[8px] ml-5 rounded-full ' />
-                                <input type="file" name="" id="fileInput" className='bg-yellow-500 w-0 invisible' />
+                                <FontAwesomeIcon icon={faCameraAlt} className='text-lg text-white bg-blue-400 p-[8px] rounded-full ' />
+                                <input type="file" name="" id="fileInput" className='w-0 invisible' />
 
                             </span>
                         </label>
