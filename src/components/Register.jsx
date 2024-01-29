@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { createUser } from '../account/User'
+import { userInfo } from "../app/userInfoSlice"
+import { signUp } from '../account/User'
 import Logo from "../../public/logo.png"
 import InputForm from './InputForm'
 import WelcomeText from './WelcomeText'
@@ -8,8 +10,16 @@ import FormButton from './FormButton'
 import ErrorContainer from './ErrorContainer'
 const Register = () => {
     const navigate = useNavigate()
+    const dispatch = useDispatch()
     const [errorMessage, setErrorMessage] = useState('')
+
+    const saveUserInfoAndNavigate = (userObj) => {
+        if (!userObj) return
+        dispatch(userInfo(userObj))
+        navigate('/update-profile')
+    }
     return (
+
         <div className='w-screen h-screen py-[23px] px-[6px] flex flex-col items-center gap-4 justify-center'>
             <ErrorContainer errorMessage={errorMessage} />
             <section className="logo">
@@ -27,9 +37,9 @@ const Register = () => {
                         password: formData.get('password'),
                         confirmPassword: formData.get('confirm-password')
                     }
-                    const result = await createUser(formObj)
-                    const status = result?.status
-                    status != 200 ? setErrorMessage(result?.message) : navigate('/update-profile')
+                    //? return userInfo or error message if status > 200
+                    const result = await signUp(formObj)
+                    result.status != 200 ? setErrorMessage(result?.message) : saveUserInfoAndNavigate(result.userInfo)
                 }}
             >
                 <InputForm type={"email"} name={"email"} placeholder={"Email"} id={""}
@@ -47,6 +57,7 @@ const Register = () => {
                 </Link>
             </section>
         </div>
+
     )
 }
 export default Register

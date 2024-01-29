@@ -1,6 +1,6 @@
 import axios from "axios";
 const baseUrl = 'http://localhost:5000/api'
-async function createUser({ email, password, confirmPassword }) {
+async function signUp({ email, password, confirmPassword }) {
   try {
     if (!email || !password || !confirmPassword) {
       return { code: 400, message: "all fields are required" };
@@ -20,17 +20,26 @@ async function createUser({ email, password, confirmPassword }) {
         },
       }
     );
-    if (result.data) {
-      localStorage.setItem('userId',result?.data?.userId)
-      return { message: "created", status: 200, userId: result.data.userId };
+    if (result.status === 200) {
+      const { userInfo } = result.data
+      return {
+        userInfo,
+        status: result.status
+      }
     }
+
+    return {
+      message: result.data?.message,
+      status: result.status
+    }
+    
   } catch (err) {
     const status = err.response.status;
     const message = err.response.data.message;
     return { status, message };
   }
 }
-async function loginUser({ usernameEmail, password }) {
+async function login({ usernameEmail, password }) {
   try {
     const result = await axios.post(
       baseUrl+"/login",
@@ -79,10 +88,10 @@ async function updateUserInfo(formData){
     }
     
   } catch (err) {
-     const status = err.response.status;
+    const status = err.response.status;
     const message = err.response.data.message;
     return { status, message };
   }
 
 }
-export { createUser, loginUser ,updateUserProfile,updateUserInfo};
+export { signUp, login ,updateUserProfile,updateUserInfo};

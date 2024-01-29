@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { loginUser } from '../account/User'
+import { login } from '../account/User'
 import Logo from '../../public/logo.png'
 import WelcomeText from './WelcomeText'
 import InputForm from './InputForm'
@@ -25,7 +25,7 @@ const Login = () => {
                         usernameEmail: formData.get('username-email'),
                         password: formData.get('password')
                     }
-                    const result = await loginUser(obj)
+                    const result = await login(obj)
                     result?.status != 200 ? setErrorMessage(result?.message) : navigate('/')
 
                 }}
