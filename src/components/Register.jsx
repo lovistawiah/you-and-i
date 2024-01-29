@@ -29,7 +29,7 @@ const Register = () => {
                     }
                     const result = await createUser(formObj)
                     const status = result?.status
-                    status != 200 ? setErrorMessage(result?.message) : navigate('/login')
+                    status != 200 ? setErrorMessage(result?.message) : navigate('/update-profile')
                 }}
             >
                 <InputForm type={"email"} name={"email"} placeholder={"Email"} id={""}
