@@ -1,4 +1,5 @@
 import axios from "axios";
+const baseUrl = 'http://localhost:5000/api'
 async function createUser({ email, password, confirmPassword }) {
   try {
     if (!email || !password || !confirmPassword) {
@@ -7,8 +8,7 @@ async function createUser({ email, password, confirmPassword }) {
     if (password != confirmPassword) {
       return { code: 400, message: "passwords do not match" };
     }
-    const result = await axios.post(
-      "http://localhost:5000/api/signup",
+    const result = await axios.post(baseUrl+"/signup",
       {
         email,
         password,
@@ -21,6 +21,7 @@ async function createUser({ email, password, confirmPassword }) {
       }
     );
     if (result.data) {
+      localStorage.setItem('userId',result?.data?.userId)
       return { message: "created", status: 200, userId: result.data.userId };
     }
   } catch (err) {
@@ -32,7 +33,7 @@ async function createUser({ email, password, confirmPassword }) {
 async function loginUser({ usernameEmail, password }) {
   try {
     const result = await axios.post(
-      "http://localhost:5000/api/login",
+      baseUrl+"/login",
       { usernameEmail, password },
       {
         headers: {
@@ -53,4 +54,12 @@ async function loginUser({ usernameEmail, password }) {
     return { status, message };
   }
 }
-export { createUser, loginUser };
+/**
+ *
+ * @param {File} file 
+ */
+async function updateUserProfile(formData){
+const result = await axios.post(baseUrl+'/update-profile',formData)
+return result?.data
+}
+export { createUser, loginUser ,updateUserProfile};
