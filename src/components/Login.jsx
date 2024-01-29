@@ -44,7 +44,7 @@ const Login = () => {
                 />
                 <FormButton btnText={"Login"} />
             </form>
-            <Link className='text-blue-500 hover:underline md:text-lg' to='/forgot-password'>Forgot Password</Link>
+            {/* <Link className='text-blue-500 hover:underline md:text-lg' to='/forgot-password'>Forgot Password</Link> */}
             <section className='h-9 px-[31px] py-[9px] bg-white justify-center items-center gap-1 inline-flex text-sm md:text-lg'>
                 New Account? <Link to='/register' className='text-blue-500 hover:underline'>Register</Link>
             </section>
