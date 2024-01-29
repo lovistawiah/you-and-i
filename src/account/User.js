@@ -49,8 +49,8 @@ async function loginUser({ usernameEmail, password }) {
       }
     }
   } catch (err) {
-    const status = err.response;
-    const message = err.response;
+    const status = err.response.status;
+    const message = err.response.data.message;
     return { status, message };
   }
 }
@@ -59,7 +59,30 @@ async function loginUser({ usernameEmail, password }) {
  * @param {File} file 
  */
 async function updateUserProfile(formData){
-const result = await axios.post(baseUrl+'/update-profile',formData)
-return result?.data
+  try {
+    const result = await axios.post(baseUrl+'/update-profile',formData)
+    return result?.data
+
+  } catch (err) {
+    const status = err.response.status;
+    const message = err.response.data.message;
+    return { status, message };
+  }
 }
-export { createUser, loginUser ,updateUserProfile};
+
+async function updateUserInfo(formData){
+  try {
+    const result = await axios.patch(baseUrl + '/update-user',formData)
+    console.log(result)
+    if(result.data.message){
+      return result.data?.userInfo
+    }
+    
+  } catch (err) {
+     const status = err.response.status;
+    const message = err.response.data.message;
+    return { status, message };
+  }
+
+}
+export { createUser, loginUser ,updateUserProfile,updateUserInfo};

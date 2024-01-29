@@ -3,14 +3,14 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { PersonInfo } from '../utils/fakerWork'
-import InputForm from './InputForm'
-import { updateUserProfile } from '../account/User'
+import { updateUserInfo, updateUserProfile } from '../account/User'
 
 
 const UpdateProfile = () => {
     const navigate = useNavigate()
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [imgSrc, setImgSrc] = useState("https://via.placeholder.com/24X24")
+    const [userInfo, setUserInfo] = useState({})
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
@@ -21,7 +21,9 @@ const UpdateProfile = () => {
     const goBack = () => {
         navigate('/register')
     }
+
     const handleProfilePic = async (e) => {
+        e.preventDefault()
         const file = e.target.files[0]
         if (!file) return
         // TODO: re-write to add error holder 
@@ -37,7 +39,22 @@ const UpdateProfile = () => {
         }
         // TODO: create error holder that appears above the entire page
     }
-
+    const handleUserInfo = async (e) => {
+        e.preventDefault()
+        const formData = new FormData(e.target)
+        const formObj = {
+            username: formData.get('username'),
+            bio: formData.get('bio'),
+            userId: localStorage.getItem('userId')
+        }
+        if (!formObj.userId) return
+        // TODO: add error holder 
+        const userObj = await updateUserInfo(formObj)
+        if (userObj) {
+            setUserInfo(userObj)
+        }
+        navigate('/')
+    }
     return (
         <section className="w-screen h-screen">
             <section className='flex justify-between md:block mt-2 w-full'>
@@ -61,24 +78,17 @@ const UpdateProfile = () => {
             </section >
 
             {/* user information */}
-            <section className="text-center font-rale text-lg font-medium pt-4 w-fit m-auto">{PersonInfo().username}
+            <section className="text-center font-rale text-lg font-medium pt-4 w-fit m-auto">{userInfo.username ? userInfo.username : PersonInfo().username}
             </section>
-            <section className="text-center font-rale text-sm font-light text-gray-500 w-fit m-auto">{PersonInfo().username}
+            <section className="text-center font-rale text-sm font-light text-gray-500 w-fit m-auto">{userInfo.bio ? userInfo.bio : PersonInfo().username}
             </section>
 
-            <form className="w-full h-fit flex mt-[35px] flex-col items-center gap-4">
-                <InputForm
-                    id={'username'}
-                    type={'text'}
-                    name={'username'}
-                    placeholder={'Username'}
-                />
-                <InputForm
-                    id={'bio'}
-                    type={'text'}
-                    name={'bio'}
-                    placeholder={'Bio'}
-                />
+            <form className="w-full h-fit flex mt-[35px] flex-col items-center gap-4" onSubmit={handleUserInfo}>
+
+                <input type="text" name="username" className="w-[275px] h-[36px] py-[1px] pr-0 pl-[4px] rounded-[5px] bg-white border border-zinc-500 text-base font-normal text-neutral-700 active:border-zinc-800 outline-none md:w-[400px]  md:text-lg " id="username" placeholder="Username" required />
+
+                <input type="text" name="bio" className="w-[275px] h-[36px] py-[1px] pr-0 pl-[4px] rounded-[5px] bg-white border border-zinc-500 text-base font-normal text-neutral-700 active:border-zinc-800 outline-none md:w-[400px]  md:text-lg " id="bio" placeholder="bio" required />
+
                 <button className='w-[100px] h-[33px] px-3.5 py-[7px] font-rale  bg-blue-600 rounded-[5px] border border-neutral-500 flex items-center justify-center text-white text-base font-normal hover:bg-blue-700 active:bg-blue-800 outline-none  md:w-[300px] md:text-lg '
                 >Update
                 </button>
