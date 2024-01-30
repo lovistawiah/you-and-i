@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { faCameraAlt, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faCameraAlt, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate } from 'react-router-dom'
 import { userInfo } from '../app/userInfoSlice'
@@ -43,7 +43,6 @@ const UpdateProfile = () => {
                 message: 'file not selected'
             })
         }
-        // TODO google image giving 404
         const { userId } = personInfo
         if (userId) {
             const formData = new FormData()
@@ -80,21 +79,34 @@ const UpdateProfile = () => {
         const formData = new FormData(e.target)
         const formObj = {
             username: formData.get('username'),
-            userId: userInfo.userId
+            userId: personInfo.userId
         }
         if (!formObj.userId) {
             setInfo({ type: "error", message: "Unknown error, try again" })
+            return
         }
+        console.log(formObj.username.length)
+        if (formObj.username.length < 5) {
+
+            setInfo({ type: "error", message: "username should be 5 characters or more" })
+            return
+        }
+
         const userObj = await updateUserInfo(formObj)
-        if (userObj) {
+        if (userObj.status === 200) {
             setPersonInfo(userObj)
+        } else {
+            setInfo({
+                type: "ok",
+                message: userObj.message
+            })
         }
         navigate('/')
     }
-    const inputRegex = /^[a-zA-Z0-9.]*$/;
+    const inputRegex = /^[a-zA-Z0-9.@]*$/;
     return (
         <section className="w-screen h-screen">
-            <InfoContainer info={info} />
+            <InfoContainer info={info} setInfo={setInfo} />
             <section className='flex justify-between md:block mt-2 w-full'>
                 {   //show back arrow on mobile device
                     windowWidth < 640 && <FontAwesomeIcon icon={faChevronLeft} className="cursor-pointer hover:bg-gray-100 hover:rounded-full p-2 ml-2" onClick={goBack} />
@@ -104,12 +116,12 @@ const UpdateProfile = () => {
             {/* profile pic */}
             <section className='w-[200px] mt-[70px] m-auto flex justify-center items-center'>
                 <section className="relative w-[100px] h-[100px] ">
-                    <img src={personInfo?.avatarUrl} alt="" className='rounded-full object-cover border-[3px] border-blue-200 w-full h-full' />
+                    <img src={personInfo?.avatarUrl} alt="" className='rounded-full object-cover border-[2px] border-blue-200 w-full h-full' />
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control  */}
                     <label htmlFor='fileInput' className='absolute right-0 bottom-0 hidden'>
                         <span className='relative'>
                             <FontAwesomeIcon icon={faCameraAlt} className='text-lg text-white bg-blue-400 p-[8px] rounded-full ' />
-                            <input type="file" name="file" id="fileInput" className='w-0 invisible' onChange={handleProfilePic} disabled={true} />
+                            <input type="file" name="file" id="fileInput" className='w-0 hidden' onChange={handleProfilePic} disabled={true} />
                         </span>
                     </label>
                 </section>
@@ -126,9 +138,9 @@ const UpdateProfile = () => {
 
                 <input type="text" name="username" className={`w-[275px] h-[36px] py-[1px] pr-0 pl-[4px] bg-white border-b border-zinc-500 text-base font-normal text-neutral-700 active:border-zinc-800 outline-none md:w-[400px] ${!inputRegex.test(usernameInput) ? 'text-red-500 bg-red-50' : ''}`} id="username" placeholder={personInfo.username} required onChange={handleUsernameInput} />
 
-                <button className={`w-[100px] h-[33px] px-3.5 py-[7px] font-rale  bg-blue-600 rounded-[5px] border flex items-center justify-center text-white text-base font-normal hover:bg-blue-700 active:bg-blue-800 outline-none md:w-[250px] md:text-lg disabled:bg-red-500 disabled:cursor-not-allowed`}
+                <button className={`w-[100px] h-[33px] px-3.5 py-[7px] font-rale  bg-blue-600 rounded-[5px] border flex items-center justify-center text-white text-base font-normal hover:bg-blue-700 active:bg-blue-800 outline-none md:w-[250px] md:text-lg disabled:bg-red-500 disabled:cursor-not-allowed ${usernameInput == "" ? 'bg-gray-400 cursor-not-allowed hover:bg-gray-600' : ''}`}
                     disabled={!inputRegex.test(usernameInput)}
-                >Update
+                >Next <FontAwesomeIcon icon={faArrowRight} className='pl-1' />
                 </button>
             </form>
 

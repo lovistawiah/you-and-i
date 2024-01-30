@@ -91,9 +91,14 @@ async function updateUserProfile(formData){
 async function updateUserInfo(formData){
   try {
     const result = await axios.patch(baseUrl + '/update-user',formData)
-    console.log(result)
     if(result.data.message){
-      return result.data?.userInfo
+      const token = result.data.token
+     localStorage.setItem("Oh_vnyX", token);
+      return {
+        status: result.status,
+        userInfo: result.data?.userInfo,
+        message: result.data?.message
+      }
     }
     
   } catch (err) {
