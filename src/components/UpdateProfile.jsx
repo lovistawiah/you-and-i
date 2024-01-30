@@ -93,7 +93,15 @@ const UpdateProfile = () => {
 
         const userObj = await updateUserInfo(formObj)
         if (userObj.status === 200) {
-            setPersonInfo(userObj)
+            setPersonInfo({
+                ...personInfo,
+                username: userObj.userInfo.username
+            })
+
+            dispatch(userInfo({
+                ...personInfo,
+                username: userObj.userInfo.username
+            }))
         } else {
             setInfo({
                 type: "ok",
