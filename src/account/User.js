@@ -100,7 +100,7 @@ async function updateUserInfo(formData){
     if(err instanceof AxiosError){
       const message = err.message
       const status = err.code
-       return { status, message };
+      return { status, message };
     }
   }
 

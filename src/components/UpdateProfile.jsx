@@ -106,10 +106,10 @@ const UpdateProfile = () => {
                 <section className="relative w-[100px] h-[100px] ">
                     <img src={personInfo?.avatarUrl} alt="" className='rounded-full object-cover border-[3px] border-blue-200 w-full h-full' />
                     {/* eslint-disable-next-line jsx-a11y/label-has-associated-control  */}
-                    <label htmlFor='fileInput' className='absolute right-0 bottom-0'>
+                    <label htmlFor='fileInput' className='absolute right-0 bottom-0 hidden'>
                         <span className='relative'>
                             <FontAwesomeIcon icon={faCameraAlt} className='text-lg text-white bg-blue-400 p-[8px] rounded-full ' />
-                            <input type="file" name="file" id="fileInput" className='w-0 invisible' onChange={handleProfilePic} />
+                            <input type="file" name="file" id="fileInput" className='w-0 invisible' onChange={handleProfilePic} disabled={true} />
                         </span>
                     </label>
                 </section>
