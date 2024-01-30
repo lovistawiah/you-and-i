@@ -85,7 +85,6 @@ const UpdateProfile = () => {
             setInfo({ type: "error", message: "Unknown error, try again" })
             return
         }
-        console.log(formObj.username.length)
         if (formObj.username.length < 5) {
 
             setInfo({ type: "error", message: "username should be 5 characters or more" })
