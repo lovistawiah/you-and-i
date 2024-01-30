@@ -8,8 +8,8 @@ import Chat from './Chat'
 const MainPage = () => {
     const [chats, setChats] = useState([])
     useEffect(() => {
-
         const getChatData = (chatsData) => {
+            console.log('here')
             setChats(chatsData)
         }
         socket.emit(channelEvents.channelAndLastMessage, {})

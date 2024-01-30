@@ -28,6 +28,12 @@ const UpdateProfile = () => {
         window.addEventListener('resize', handleResize);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window.innerWidth])
+    useEffect(() => {
+        if (!user) {
+            navigate('/login')
+        }
+
+    }, [navigate, user])
     const handleUsernameInput = (e) => {
         setUsernameInput(e.target.value)
     }
@@ -143,7 +149,7 @@ const UpdateProfile = () => {
 
             <form className="w-full h-fit flex mt-[35px] flex-col items-center gap-4" onSubmit={handleUserInfo}>
 
-                <input type="text" name="username" className={`w-[275px] h-[36px] py-[1px] pr-0 pl-[4px] bg-white border-b border-zinc-500 text-base font-normal text-neutral-700 active:border-zinc-800 outline-none md:w-[400px] ${!inputRegex.test(usernameInput) ? 'text-red-500 bg-red-50' : ''}`} id="username" placeholder={personInfo.username} required onChange={handleUsernameInput} />
+                <input type="text" name="username" className={`w-[275px] h-[36px] py-[1px] pr-0 pl-[4px] bg-white border-b border-zinc-500 text-base font-normal text-neutral-700 active:border-zinc-800 outline-none md:w-[400px] ${!inputRegex.test(usernameInput) ? 'text-red-500 bg-red-50' : ''}`} id="username" placeholder={personInfo?.username} required onChange={handleUsernameInput} />
 
                 <button className={`w-[100px] h-[33px] px-3.5 py-[7px] font-rale  bg-blue-600 rounded-[5px] border flex items-center justify-center text-white text-base font-normal hover:bg-blue-700 active:bg-blue-800 outline-none md:w-[250px] md:text-lg disabled:bg-red-500 disabled:cursor-not-allowed ${usernameInput == "" ? 'bg-gray-400 cursor-not-allowed hover:bg-gray-600' : ''}`}
                     disabled={!inputRegex.test(usernameInput)}
