@@ -143,7 +143,6 @@ const UpdateProfile = () => {
                 >Next <FontAwesomeIcon icon={faArrowRight} className='pl-1' />
                 </button>
             </form>
-
         </section >
     )
 }
