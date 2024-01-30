@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 const baseUrl = 'http://localhost:5000/api'
 async function signUp({ email, password, confirmPassword }) {
   try {
@@ -34,9 +34,11 @@ async function signUp({ email, password, confirmPassword }) {
     }
     
   } catch (err) {
-    const status = err.response.status;
-    const message = err.response.data.message;
-    return { status, message };
+   if(err instanceof AxiosError){
+      const message = err.message
+      const status = err.code
+       return { status, message };
+    }
   }
 }
 async function login({ usernameEmail, password }) {
@@ -58,9 +60,11 @@ async function login({ usernameEmail, password }) {
       }
     }
   } catch (err) {
-    const status = err.response.status;
-    const message = err.response.data.message;
-    return { status, message };
+   if(err instanceof AxiosError){
+      const message = err.message
+      const status = err.code
+       return { status, message };
+    }
   }
 }
 /**
@@ -70,12 +74,17 @@ async function login({ usernameEmail, password }) {
 async function updateUserProfile(formData){
   try {
     const result = await axios.post(baseUrl+'/update-profile',formData)
-    return result?.data
-
+    return {
+      status: result.status,
+      message: result.data?.message,
+      url: result?.data?.url
+    }
   } catch (err) {
-    const status = err.response.status;
-    const message = err.response.data.message;
-    return { status, message };
+    if(err instanceof AxiosError){
+      const message = err.message
+      const status = err.code
+       return { status, message };
+    }
   }
 }
 
@@ -88,9 +97,11 @@ async function updateUserInfo(formData){
     }
     
   } catch (err) {
-    const status = err.response.status;
-    const message = err.response.data.message;
-    return { status, message };
+    if(err instanceof AxiosError){
+      const message = err.message
+      const status = err.code
+       return { status, message };
+    }
   }
 
 }

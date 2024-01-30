@@ -5,14 +5,14 @@ import Logo from '../../public/logo.png'
 import WelcomeText from './WelcomeText'
 import InputForm from './InputForm'
 import FormButton from './FormButton'
-import ErrorContainer from './ErrorContainer'
+import InfoContainer from './InfoContainer'
 
 const Login = () => {
     const [errorMessage, setErrorMessage] = useState('')
     const navigate = useNavigate()
     return (
         <div className='w-screen h-screen py-[23px] px-[6px] flex flex-col items-center gap-4 justify-center'>
-            <ErrorContainer errorMessage={errorMessage} />
+            <InfoContainer errorMessage={errorMessage} />
             <section className="logo">
                 <img src={Logo} alt="logo of you and I" />
             </section>
@@ -27,7 +27,6 @@ const Login = () => {
                     }
                     const result = await login(obj)
                     result?.status != 200 ? setErrorMessage(result?.message) : navigate('/')
-
                 }}
             >
                 <InputForm

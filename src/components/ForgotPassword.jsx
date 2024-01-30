@@ -20,7 +20,7 @@ const ForgotPassword = () => {
                 <button className='reset-button'>Reset Password</button>
             </form>
             <section className="password-rememberred">
-                Rememberred Password? <Link to='#'>Login</Link>
+                Remembered Password? <Link to='#'>Login</Link>
             </section>
         </section>
     )
