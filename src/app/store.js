@@ -1,11 +1,9 @@
 import { configureStore } from "@reduxjs/toolkit";
-import chatInfo from "./chatInfoSlice";
-import userInfo from "./userInfoSlice";
-const store = configureStore({
-  reducer: {
-    chatInfo,
-    userInfo
-  },
-});
+import {persistStore} from 'redux-persist'
+import rootReducer from './rootReducer'
 
-export default store;
+const store = configureStore({
+  reducer: rootReducer,
+});
+const persistor = persistStore(store)
+export {store,persistor};
