@@ -1,6 +1,6 @@
 {
   "name": "you-and-i-react",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "client app for you and I",
   "main": "main.js",
   "scripts": {
