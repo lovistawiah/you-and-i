@@ -10,6 +10,7 @@ const MainPage = () => {
     useEffect(() => {
         const getChatData = (chatsData) => {
             setChats(chatsData)
+            console.log(chatsData)
         }
         socket.emit(channelEvents.channelAndLastMessage, {})
         socket.on(channelEvents.channelAndLastMessage, getChatData)
@@ -17,7 +18,7 @@ const MainPage = () => {
         return () => {
             socket.off(channelEvents.channelAndLastMessage)
         }
-    })
+    }, [])
     return (
         <>
             <section className="order-2 w-full md:border-r md:w-[40%] relative">

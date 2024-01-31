@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate } from 'react-router-dom'
 import { updateUserInfo, updateUserProfile } from '../account/User'
 import InfoContainer from './InfoContainer'
-import { setUserInfo } from '../app/userReducer'
+import { setUserInfo } from '../app/userSlice'
 
 const UpdateProfile = () => {
     const user = useSelector((state) => state.userInfo.value)

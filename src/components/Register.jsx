@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { setUserInfo } from "../app/userReducer"
+import { setUserInfo } from "../app/userSlice"
 import { signUp } from '../account/User'
 import Logo from "../../public/logo.png"
 import InputForm from './InputForm'

@@ -5,7 +5,7 @@ import { socket } from '../socket'
 import { messageEvents } from '../utils/eventNames'
 
 const MediaModal = ({ show }) => {
-    const chatInfo = useSelector((state) => state.chatInfo.value);
+    const chatInfo = useSelector((state) => state.chat.value);
     function sendMediaMessage(arrayBuffer, fileName, fileType) {
         const { userId } = chatInfo
         if (!userId && !fileName && !fileType) return

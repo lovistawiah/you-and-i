@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 // import { lastSeen } from "../utils/compareDate"
 import { useSelector } from "react-redux"
 const ChatInfo = ({ windowWidth, /*userId*/ }) => {
-    const chatInfo = useSelector((state) => state.chatInfo.value);
+    const chatInfo = useSelector((state) => state.chat.value);
     // const [status, setStatus] = useState({})
     const navigate = useNavigate()
     const goBack = () => {

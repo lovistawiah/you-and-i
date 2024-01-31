@@ -1,6 +1,6 @@
 import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
-import { faFaceSmile, faPaperPlane, faPaperclip } from '@fortawesome/free-solid-svg-icons'
+import { faFaceSmile, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
@@ -9,22 +9,25 @@ import { socket } from '../socket'
 import { messageEvents } from '../utils/eventNames'
 import ChatInfo from './ChatInfo'
 import Messages from './Messages'
-import MediaModal from './MediaModal'
+// import MediaModal from './MediaModal'
 
 
 const MessagePanel = () => {
-    const chatInfo = useSelector((state) => state.chatInfo.chatInfo);
+    const chatInfo = useSelector((state) => state.chat.value);
+    console.log(chatInfo)
     // const formRef = useRef(null)
     // TODO: make emoji container and share container sit on top of the form element
     // const [formHeight, setFormHeight] = useState(formRef?.current?.clientHeight || null)
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [showEmojis, setShowEmojis] = useState(false)
     const [message, setMessage] = useState('')
-    const [showMediaModal, setShowMediaModal] = useState(false)
 
-    const showShareModal = () => {
-        setShowMediaModal(showMediaModal ? false : true)
-    }
+    // const [showMediaModal, setShowMediaModal] = useState(false)
+
+    // const showShareModal = () => {
+    //     setShowMediaModal(showMediaModal ? false : true)
+    // }
+
     const submitForm = (e) => {
         e.preventDefault()
         const { userId } = chatInfo
@@ -85,16 +88,16 @@ const MessagePanel = () => {
                             <Picker data={data} onEmojiSelect={getEmoji} emojiSize={18} previewPosition={"none"} theme={"light"} />
                         </section>
                     }
-                    <MediaModal
+                    {/* <MediaModal
                         show={showMediaModal}
-                    />
+                    /> */}
 
                     <form
                         className="bg-white flex items-end py-2 justify-center px-2 border-t " onSubmit={sendMessage}>
                         <section className='bg-blue-500 w-full p-0 m-0 relative flex'>
-                            <FontAwesomeIcon icon={faPaperclip} className='absolute left-3 bottom-3 text-gray-400 cursor-pointer' onClick={showShareModal} />
+                            {/* <FontAwesomeIcon icon={faPaperclip} className='absolute left-3 bottom-3 text-gray-400 cursor-pointer ' onClick={showShareModal} /> */}
 
-                            <TextareaAutoResize className={`resize-none md:px-9 pl-8 pr-10 py-2 text-base text-zinc-700 w-[100%] h-full active:outline-none border outline-none bg-gray-100`}
+                            <TextareaAutoResize className={`resize-none md:px-9 pl-2 pr-10 py-2 text-base text-zinc-700 w-[100%] h-full active:outline-none border outline-none bg-gray-100`}
                                 value={message}
                                 maxRows={3}
                                 onChange={(e) => setMessage(e.target.value)}

@@ -8,7 +8,7 @@ import { messageHeaderDate } from "../utils/compareDate";
 import MessageHeaderDate from "./MessageHeaderDate"
 
 const Messages = () => {
-    const info = useSelector((state) => state.chatInfo.value);
+    const info = useSelector((state) => state.chat.value);
     const [chatInfo, setChatInfo] = useState(info)
     const datesSet = new Set()
     const messagesRef = useRef(null)

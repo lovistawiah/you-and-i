@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { setChatInfo } from '../app/chatReducer'
+import { setChatInfo } from '../app/chatSlice'
 import { useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
