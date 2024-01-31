@@ -1,14 +1,16 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 
 import Message from "./Message";
 import { socket } from "../socket";
 import { messageEvents } from "../utils/eventNames";
 import { messageHeaderDate } from "../utils/compareDate";
 import MessageHeaderDate from "./MessageHeaderDate"
+import { updateLastMessage } from "../app/chatsSlice";
 
 const Messages = () => {
     const info = useSelector((state) => state.chat.value);
+    const dispatch = useDispatch()
     const [chatInfo, setChatInfo] = useState(info)
     const datesSet = new Set()
     const messagesRef = useRef(null)
@@ -49,8 +51,8 @@ const Messages = () => {
 
     useEffect(() => {
         const handleSendMessage = (data) => {
-            console.log(data)
             setMessages((prevMessages) => [...prevMessages, data])
+            dispatch(updateLastMessage({ channelId: data.channelId, lastMessage: data.message, createdAt: data.createdAt }))
         }
         socket.on(messageEvents.sendMessage, handleSendMessage)
         return () => {
@@ -69,7 +71,6 @@ const Messages = () => {
 
             <>
                 {
-                    //FIXME: make message header date render correctly
                     addDateToSet(messageHeaderDate(msg.createdAt)) &&
                     <MessageHeaderDate
                         messageDate={messageHeaderDate(msg.createdAt)}

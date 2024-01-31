@@ -10,10 +10,12 @@ export const chatsReducer = createSlice({
     state.chats = action.payload
    },
    updateLastMessage: (state,action)=>{
-    const {channelId,lastMessage} = action.payload
-    const findIndex = state.chats.findIndex(({channelInfo})=> channelInfo.channelId === channelId)
-    if(findIndex !== -1){
-      state.chats[findIndex].messageInfo.lastMessage = lastMessage 
+    const {channelId,lastMessage,createdAt} = action.payload
+    const findIdx = state.chats.findIndex((chat)=> chat.channelId === channelId)
+    if(findIdx !== -1){
+      state.chats[findIdx].lastMessage = lastMessage
+      state.chats[findIdx].createdAt  = createdAt
+      state.chats.sort((chatA,chatB)=> new Date(chatB.createdAt) - new Date(chatA.createdAt))
     }
    }
   },
