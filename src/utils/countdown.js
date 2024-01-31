@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
-function countDown() {
+
+const countdown = () => {
   const [counter, setCounter] = useState(60);
   useEffect(() => {
     if (counter == 0) return;
@@ -9,6 +10,9 @@ function countDown() {
     return () => clearInterval(interval);
   }, [counter]);
   return counter
+
 }
+
+
 
 export default countDown;
