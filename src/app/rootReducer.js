@@ -1,8 +1,8 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import {persistReducer} from 'redux-persist'
 import  storage from 'redux-persist/lib/storage'
-import userReducer from "./userSlice";
-import chatReducer from "./chatSlice";
+import userReducer from "./userReducer";
+import chatReducer from "./chatReducer";
 
 const rootReducer = combineReducers({
     user: userReducer,
