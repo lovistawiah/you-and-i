@@ -8,7 +8,7 @@ import InfoContainer from './InfoContainer'
 import { setUserInfo } from '../app/userSlice'
 
 const UpdateProfile = () => {
-    const user = useSelector((state) => state.userInfo.value)
+    const user = useSelector((state) => state.user.value)
     const navigate = useNavigate()
     const [personInfo, setPersonInfo] = useState(user)
     const [usernameInput, setUsernameInput] = useState("")

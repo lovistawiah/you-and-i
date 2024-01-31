@@ -20,6 +20,10 @@ const useSearchContact = () =>{
         socket.emit(channelEvents.contacts,{})
         socket.on(channelEvents.contacts,getContacts)
     }
+    return ()=>{
+        socket.off(channelEvents.search)
+        socket.off(channelEvents.contacts)
+    }
     },[searchInput])
 
 return {contacts,searchInput,setSearchInput}

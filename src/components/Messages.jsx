@@ -49,6 +49,7 @@ const Messages = () => {
 
     useEffect(() => {
         const handleSendMessage = (data) => {
+            console.log(data)
             setMessages((prevMessages) => [...prevMessages, data])
         }
         socket.on(messageEvents.sendMessage, handleSendMessage)

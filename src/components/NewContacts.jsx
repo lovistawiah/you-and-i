@@ -27,6 +27,7 @@ const NewContacts = () => {
         }
         dispatch(setChatInfo(chatObj))
     }
+    console.log(contacts)
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
