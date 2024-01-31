@@ -3,14 +3,11 @@ import { useSelector, useDispatch } from 'react-redux'
 import { faArrowRight, faCameraAlt, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate } from 'react-router-dom'
-import { userInfo } from '../app/userInfoSlice'
 import { updateUserInfo, updateUserProfile } from '../account/User'
 import InfoContainer from './InfoContainer'
+import { setUserInfo } from '../app/userReducer'
 
 const UpdateProfile = () => {
-    // TODO: cache the contacts, cache each channel messages.
-    // TODO: make emoji panel and share panel sit on message form and increase bottom level as form height increase
-
     const user = useSelector((state) => state.userInfo.value)
     const navigate = useNavigate()
     const [personInfo, setPersonInfo] = useState(user)
@@ -18,6 +15,7 @@ const UpdateProfile = () => {
     const [info, setInfo] = useState({})
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const dispatch = useDispatch()
+
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
@@ -27,16 +25,18 @@ const UpdateProfile = () => {
     }, [window.innerWidth])
     useEffect(() => {
         if (!user) {
-            window.location.reload()
+            window.location.replace('/')
         }
 
     }, [navigate, user])
+
     const handleUsernameInput = (e) => {
         setUsernameInput(e.target.value)
     }
     const goBack = () => {
         navigate('/register')
     }
+
     const handleProfilePic = async (e) => {
         e.preventDefault()
         const file = e.target.files[0]
@@ -66,7 +66,7 @@ const UpdateProfile = () => {
                     ...personInfo,
                     avatarUrl: result.url
                 }
-                dispatch(userInfo(updatedUserInfo))
+                dispatch(setUserInfo(updatedUserInfo))
             }
 
         } else {
@@ -101,7 +101,7 @@ const UpdateProfile = () => {
                 username: userObj.userInfo.username
             })
 
-            dispatch(userInfo({
+            dispatch(setUserInfo({
                 ...personInfo,
                 username: userObj.userInfo.username
             }))

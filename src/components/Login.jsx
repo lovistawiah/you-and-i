@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { login } from '../account/User'
 import Logo from '../../public/logo.png'
 import WelcomeText from './WelcomeText'
@@ -9,7 +9,6 @@ import InfoContainer from './InfoContainer'
 
 const Login = () => {
     const [errorMessage, setErrorMessage] = useState('')
-    const navigate = useNavigate()
     return (
         <div className='w-screen h-screen py-[23px] px-[6px] flex flex-col items-center gap-4 justify-center'>
             <InfoContainer errorMessage={errorMessage} />
@@ -26,7 +25,7 @@ const Login = () => {
                         password: formData.get('password')
                     }
                     const result = await login(obj)
-                    result?.status != 200 ? setErrorMessage(result?.message) : navigate('/')
+                    result?.status != 200 ? setErrorMessage(result?.message) : window.location.replace('/')
                 }}
             >
                 <InputForm

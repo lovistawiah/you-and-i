@@ -17,7 +17,7 @@ const MainPage = () => {
         return () => {
             socket.off(channelEvents.channelAndLastMessage)
         }
-    }, [])
+    })
     return (
         <>
             <section className="order-2 w-full md:border-r md:w-[40%] relative">

@@ -6,11 +6,11 @@ export const chatReducer = createSlice({
     value: null,
   },
   reducers: {
-    chatInfo: (state, action) => {
+    setChatInfo: (state, action) => {
       state.value = action.payload;
     },
   },
 });
 
-export const { chatInfo } = chatReducer.actions;
+export const { setChatInfo } = chatReducer.actions;
 export default chatReducer.reducer;

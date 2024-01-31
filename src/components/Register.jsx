@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { userInfo } from "../app/userInfoSlice"
+import { setUserInfo } from "../app/userReducer"
 import { signUp } from '../account/User'
 import Logo from "../../public/logo.png"
 import InputForm from './InputForm'
@@ -15,7 +15,7 @@ const Register = () => {
 
     const saveUserInfoAndNavigate = (userObj) => {
         if (!userObj) return
-        dispatch(userInfo(userObj))
+        dispatch(setUserInfo(userObj))
         navigate('/update-profile')
     }
     return (

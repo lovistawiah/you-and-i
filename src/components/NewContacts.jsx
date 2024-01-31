@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from "react-redux"
 import PageHeader from './PageHeader'
-import { chatInfo } from '../app/chatInfoSlice'
+import { setChatInfo } from '../app/chatReducer'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'
@@ -25,7 +25,7 @@ const NewContacts = () => {
             avatarUrl,
             username,
         }
-        dispatch(chatInfo(chatObj))
+        dispatch(setChatInfo(chatObj))
     }
     useEffect(() => {
         const handleResize = () => {

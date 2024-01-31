@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { chatInfo } from '../app/chatInfoSlice'
+import { setChatInfo } from '../app/chatReducer'
 import { useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
@@ -17,7 +17,7 @@ const Chat = ({ channelInfo, userInfo, messageInfo }) => {
             username,
 
         }
-        dispatch(chatInfo(chatObj))
+        dispatch(setChatInfo(chatObj))
     }
 
     useEffect(() => {

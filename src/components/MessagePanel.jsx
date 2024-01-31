@@ -13,7 +13,7 @@ import MediaModal from './MediaModal'
 
 
 const MessagePanel = () => {
-    const chatInfo = useSelector((state) => state.chatInfo.value);
+    const chatInfo = useSelector((state) => state.chatInfo.chatInfo);
     // const formRef = useRef(null)
     // TODO: make emoji container and share container sit on top of the form element
     // const [formHeight, setFormHeight] = useState(formRef?.current?.clientHeight || null)
