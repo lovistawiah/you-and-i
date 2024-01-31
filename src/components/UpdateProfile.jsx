@@ -8,9 +8,6 @@ import { updateUserInfo, updateUserProfile } from '../account/User'
 import InfoContainer from './InfoContainer'
 
 const UpdateProfile = () => {
-    // TODO: get userData from redux
-    // TODO: display profile,username,bio
-    // TODO: add automatic bio: hey there, I'm on You and I
     // TODO: cache the contacts, cache each channel messages.
     // TODO: make emoji panel and share panel sit on message form and increase bottom level as form height increase
 
@@ -30,7 +27,7 @@ const UpdateProfile = () => {
     }, [window.innerWidth])
     useEffect(() => {
         if (!user) {
-            navigate('/login')
+            window.location.reload()
         }
 
     }, [navigate, user])
