@@ -9,6 +9,7 @@ const Chat = ({ channelId, userId, username, avatarUrl, lastMessage, createdAt }
     const chatDate = format(createdAt, 'h:mm a')
     const dispatch = useDispatch()
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+
     const handleChat = ({ userId, channelId, avatarUrl, username }) => {
         const chatObj = {
             userId,

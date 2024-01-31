@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { socket } from '../socket'
 import { channelEvents } from '../utils/eventNames'
 import Search from './Search'
@@ -10,15 +10,16 @@ const MainPage = () => {
     useEffect(() => {
         const getChatData = (chatsData) => {
             setChats(chatsData)
-            console.log(chatsData)
         }
         socket.emit(channelEvents.channelAndLastMessage, {})
         socket.on(channelEvents.channelAndLastMessage, getChatData)
-
         return () => {
             socket.off(channelEvents.channelAndLastMessage)
         }
     }, [])
+    const cachedChats = useMemo(() => {
+        return chats
+    }, [chats])
     return (
         <>
             <section className="order-2 w-full md:border-r md:w-[40%] relative">
@@ -26,16 +27,16 @@ const MainPage = () => {
                 <Search eventName={channelEvents.searchChats} />
                 <div className="overflow-y-auto mt-[129px] absolute top-2 bottom-[56px] left-0 right-0 w-full md:bottom-1">
                     {
-                        Array.isArray(chats) && chats.length > 0 ?
-                            chats.map((chat) => (
+                        Array.isArray(cachedChats) && cachedChats.length > 0 ?
+                            chats.map((cachedChats) => (
                                 <Chat
-                                    key={chat.channelId}
-                                    avatarUrl={chat.avatarUrl}
-                                    channelId={chat.channelId}
-                                    createdAt={chat.createdAt}
-                                    lastMessage={chat.lastMessage}
-                                    userId={chat.userId}
-                                    username={chat.username}
+                                    key={cachedChats.channelId}
+                                    avatarUrl={cachedChats.avatarUrl}
+                                    channelId={cachedChats.channelId}
+                                    createdAt={cachedChats.createdAt}
+                                    lastMessage={cachedChats.lastMessage}
+                                    userId={cachedChats.userId}
+                                    username={cachedChats.username}
                                 />
                             )) :
                             <section className='text-center font-rale font-bold text-lg'>{chats}</section>
