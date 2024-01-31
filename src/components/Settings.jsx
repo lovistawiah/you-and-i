@@ -1,7 +1,6 @@
 import { faCameraAlt, } from '@fortawesome/free-solid-svg-icons';
 import PageHeader from './PageHeader'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { PersonInfo } from '../utils/fakerWork';
 
 const Settings = () => {
     return (
@@ -11,7 +10,7 @@ const Settings = () => {
                 {/* profile pic */}
                 <section className='w-[200px] mt-[70px] m-auto flex justify-center items-center'>
                     <section className="relative w-[100px] h-[100px] ">
-                        <img src={PersonInfo().avatarUrl} alt="" className='rounded-full object-contain border-[3px] border-blue-200 w-full h-full' />
+                        <img src={""} alt="" className='rounded-full object-contain border-[3px] border-blue-200 w-full h-full' />
                         {/* eslint-disable-next-line jsx-a11y/label-has-associated-control  */}
                         <label htmlFor='fileInput' className='absolute right-0 bottom-0'>
                             <span className='relative'>
@@ -24,8 +23,8 @@ const Settings = () => {
                 </section >
 
                 {/* user information */}
-                <section className="text-center font-rale text-l font-medium pt-4 w-fit m-auto">{PersonInfo().username} </section>
-                <section className="text-center font-rale text-sm font-light text-gray-500 w-fit m-auto">{PersonInfo().username} </section>
+                <section className="text-center font-rale text-l font-medium pt-4 w-fit m-auto">{""} </section>
+                <section className="text-center font-rale text-sm font-light text-gray-500 w-fit m-auto">{''} </section>
                 <form className="w-full h-fit flex mt-[35px] flex-col items-center gap-4">
 
                     <input type="text" name="username" className="h-[36px] py-[1px] pr-0 pl-[4px] bg-white border-b border-zinc-500 text-base font-normal text-neutral-700 active:border-zinc-800 outline-none w-[70%] " id="" placeholder="Change username" />

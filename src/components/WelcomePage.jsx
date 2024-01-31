@@ -1,5 +1,5 @@
 
-import Logo from '../images/you-and-i-logo.png'
+import Logo from '../../public/logo.png'
 import LinkText from './LinkText'
 const WelcomePage = () => {
     return (
