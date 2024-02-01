@@ -8,10 +8,10 @@ import FormButton from './FormButton'
 import InfoContainer from './InfoContainer'
 
 const Login = () => {
-    const [errorMessage, setErrorMessage] = useState('')
+    const [info, setInfo] = useState({})
     return (
         <div className='w-screen h-screen py-[23px] px-[6px] flex flex-col items-center gap-4 justify-center'>
-            <InfoContainer errorMessage={errorMessage} />
+            <InfoContainer info={info} setInfo={setInfo} />
             <section className="logo">
                 <img src={Logo} alt="logo of you and I" />
             </section>
@@ -25,7 +25,7 @@ const Login = () => {
                         password: formData.get('password')
                     }
                     const result = await login(obj)
-                    result?.status != 200 ? setErrorMessage(result?.message) : window.location.replace('/')
+                    result?.status != 200 ? setInfo({ type: 'error', message: result?.message }) : window.location.replace('/')
                 }}
             >
                 <InputForm

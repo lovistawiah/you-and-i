@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { faArrowRight, faCameraAlt, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useNavigate } from 'react-router-dom'
-import { updateUserInfo, updateUserProfile } from '../account/User'
+import { updateUserInfo } from '../account/User'
 import InfoContainer from './InfoContainer'
 import { setUserInfo } from '../app/userSlice'
 
@@ -35,46 +35,6 @@ const UpdateProfile = () => {
     }
     const goBack = () => {
         navigate('/register')
-    }
-
-    const handleProfilePic = async (e) => {
-        e.preventDefault()
-        const file = e.target.files[0]
-        if (!file) {
-            setInfo({
-                type: 'error',
-                message: 'file not selected'
-            })
-        }
-        const { userId } = personInfo
-        if (userId) {
-            const formData = new FormData()
-            formData.append('image', file)
-            formData.append('userId', userId)
-            const result = await updateUserProfile(formData)
-
-            if (result.status === 200) {
-                setPersonInfo({
-                    ...personInfo,
-                    avatarUrl: result.url
-                })
-                setInfo({
-                    type: "ok",
-                    message: result.message
-                })
-                const updatedUserInfo = {
-                    ...personInfo,
-                    avatarUrl: result.url
-                }
-                dispatch(setUserInfo(updatedUserInfo))
-            }
-
-        } else {
-            setInfo({
-                type: "error",
-                message: "user does not exist"
-            })
-        }
     }
 
     const handleUserInfo = async (e) => {
@@ -127,13 +87,6 @@ const UpdateProfile = () => {
             <section className='w-[200px] mt-[70px] m-auto flex justify-center items-center'>
                 <section className="relative w-[100px] h-[100px] ">
                     <img src={personInfo?.avatarUrl} alt="" className='rounded-full object-cover border-[2px] border-blue-200 w-full h-full' />
-                    {/* eslint-disable-next-line jsx-a11y/label-has-associated-control  */}
-                    <label htmlFor='fileInput' className='absolute right-0 bottom-0 hidden'>
-                        <span className='relative'>
-                            <FontAwesomeIcon icon={faCameraAlt} className='text-lg text-white bg-blue-400 p-[8px] rounded-full ' />
-                            <input type="file" name="file" id="fileInput" className='w-0 hidden' onChange={handleProfilePic} disabled={true} />
-                        </span>
-                    </label>
                 </section>
             </section >
 

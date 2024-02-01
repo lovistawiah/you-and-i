@@ -34,9 +34,10 @@ async function signUp({ email, password, confirmPassword }) {
     }
     
   } catch (err) {
+
    if(err instanceof AxiosError){
-      const message = err.message
-      const status = err.code
+      const status = err.response.status
+      const {message}  = err.response.data
        return { status, message };
     }
   }
@@ -61,28 +62,8 @@ async function login({ usernameEmail, password }) {
     }
   } catch (err) {
    if(err instanceof AxiosError){
-      const message = err.message
-      const status = err.code
-       return { status, message };
-    }
-  }
-}
-/**
- *
- * @param {File} file 
- */
-async function updateUserProfile(formData){
-  try {
-    const result = await axios.post(baseUrl+'/update-profile',formData)
-    return {
-      status: result.status,
-      message: result.data?.message,
-      url: result?.data?.url
-    }
-  } catch (err) {
-    if(err instanceof AxiosError){
-      const message = err.message
-      const status = err.code
+      const status = err.response.status
+      const {message}  = err.response.data
        return { status, message };
     }
   }
@@ -102,12 +83,10 @@ async function updateUserInfo(formData){
     }
     
   } catch (err) {
-    if(err instanceof AxiosError){
-      const message = err.message
-      const status = err.code
-      return { status, message };
-    }
+     const status = err.response.status
+      const {message}  = err.response.data
+       return { status, message };
   }
 
 }
-export { signUp, login ,updateUserProfile,updateUserInfo};
+export { signUp, login ,updateUserInfo};
