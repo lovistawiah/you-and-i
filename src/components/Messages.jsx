@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 
 import Message from "./Message";
 import { socket } from "../socket";
-import { messageEvents } from "../utils/eventNames";
+import { msgEvents } from "../utils/eventNames";
 import { messageHeaderDate } from "../utils/compareDate";
 import MessageHeaderDate from "./MessageHeaderDate"
 import { updateLastMessage } from "../app/chatsSlice";
@@ -27,15 +27,15 @@ const Messages = () => {
         const getMessages = (messagesData) => {
             setMessages(messagesData)
         };
-        socket.emit(messageEvents.channelMessages, chatInfo?.channelId);
-        socket.on(messageEvents.channelMessages, getMessages);
+        socket.emit(msgEvents.msgs, chatInfo?.chatId);
+        socket.on(msgEvents.msgs, getMessages);
 
         socket.on('error', (error) => {
             console.error('Socket error:', error);
         });
 
         return () => {
-            socket.off(messageEvents.channelMessages, getMessages);
+            socket.off(msgEvents.msgs, getMessages);
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chatInfo])

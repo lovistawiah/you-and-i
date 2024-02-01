@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { differenceInMinutes, format, parseISO } from "date-fns"
 import { useEffect, useRef, useState } from "react"
 import { socket } from '../socket'
-import { messageEvents } from "../utils/eventNames"
+import { msgEvents } from "../utils/eventNames"
 import { useSelector } from 'react-redux'
 
 const Message = ({ message, sender, createdAt, userId, msgId }) => {
@@ -31,7 +31,7 @@ const Message = ({ message, sender, createdAt, userId, msgId }) => {
         if (!msgIdRef.current) return;
         const msgId = msgIdRef.current.id
         if (!msgId && !chatId) return
-        socket.emit(messageEvents.deleteMessage, { msgId, chatId })
+        socket.emit(msgEvents.delMsg, { msgId, chatId })
 
 
     }

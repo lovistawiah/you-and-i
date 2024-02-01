@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import TextareaAutoResize from 'react-textarea-autosize'
 import { socket } from '../socket'
-import { messageEvents } from '../utils/eventNames'
+import { msgEvents } from '../utils/eventNames'
 import ChatInfo from './ChatInfo'
 import Messages from './Messages'
 // import MediaModal from './MediaModal'
@@ -27,7 +27,7 @@ const MessagePanel = () => {
                 userId,
                 message
             }
-            socket.emit(messageEvents.sendMessage, messageObj)
+            socket.emit(msgEvents.sndMsg, messageObj)
         }
         setMessage("")
     }

@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { socket } from '../socket'
-import { channelEvents } from '../utils/eventNames'
+import { chatEvents } from '../utils/eventNames'
 import Search from './Search'
 import PageHeader from './PageHeader'
 import Chat from './Chat'
@@ -13,13 +13,14 @@ const MainPage = () => {
     const dispatch = useDispatch()
     useEffect(() => {
         const getChatData = (chatsData) => {
-            setChats(chatsData)
-            dispatch(addChats(chatsData))
+            console.log(chatsData)
+            // setChats(chatsData)
+            // dispatch(addChats(chatsData))
         }
-        socket.emit(channelEvents.channelAndLastMessage, {})
-        socket.on(channelEvents.channelAndLastMessage, getChatData)
+        socket.emit(chatEvents.chatLastMsg, {})
+        socket.on(chatEvents.chatLastMsg, getChatData)
         return () => {
-            socket.off(channelEvents.channelAndLastMessage)
+            socket.off(chatEvents.chatLastMsg)
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -36,7 +37,7 @@ const MainPage = () => {
         <>
             <section className="order-2 w-full md:border-r md:w-[40%] relative">
                 <PageHeader pageName={"Chats"} />
-                <Search eventName={channelEvents.searchChats} />
+                <Search eventName={chatEvents.searchChats} />
                 <div className="overflow-y-auto mt-[129px] absolute top-2 bottom-[56px] left-0 right-0 w-full md:bottom-1">
                     {
                         Array.isArray(cachedChats) && cachedChats.length > 0 ?

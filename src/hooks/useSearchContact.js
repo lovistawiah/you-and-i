@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { channelEvents } from "../utils/eventNames"
+import { chatEvents } from "../utils/eventNames"
 import { socket } from "../socket"
 
 const useSearchContact = () =>{
@@ -11,18 +11,18 @@ const useSearchContact = () =>{
         const searchedContacts = (data)=>{
             setContacts(data)
         }
-        socket.emit(channelEvents.search,searchInput)
-        socket.on(channelEvents.search,searchedContacts)
+        socket.emit(chatEvents.search,searchInput)
+        socket.on(chatEvents.search,searchedContacts)
     }else{
         const getContacts = (data)=>{
             setContacts(data)
         }
-        socket.emit(channelEvents.contacts,{})
-        socket.on(channelEvents.contacts,getContacts)
+        socket.emit(chatEvents.oldnNewChats,{})
+        socket.on(chatEvents.oldnNewChats,getContacts)
     }
     return ()=>{
-        socket.off(channelEvents.search)
-        socket.off(channelEvents.contacts)
+        socket.off(chatEvents.search)
+        socket.off(chatEvents.contacts)
     }
     },[searchInput])
 
