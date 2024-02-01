@@ -3,29 +3,31 @@ import { chatEvents } from "../utils/eventNames"
 import { socket } from "../socket"
 
 const useSearchContact = () =>{
-    const [contacts,setContacts] = useState([])
+    const [chats,setChats] = useState([])
     const [searchInput,setSearchInput] = useState('')
     
     useEffect(()=>{
     if(searchInput){
-        const searchedContacts = (data)=>{
-            setContacts(data)
+        const searchedChats = (data)=>{
+               setChats((prev)=> {
+               if(prev.reduce((prevValue)=>))
+               })
         }
         socket.emit(chatEvents.search,searchInput)
-        socket.on(chatEvents.search,searchedContacts)
+        socket.on(chatEvents.search,searchedChats)
     }else{
-        const getContacts = (data)=>{
-            setContacts(data)
+        const getChats = (data)=>{
+            setChats((prev)=> [...prev,data])
         }
         socket.emit(chatEvents.oldnNewChats,{})
-        socket.on(chatEvents.oldnNewChats,getContacts)
+        socket.on(chatEvents.oldnNewChats,getChats)
     }
     return ()=>{
         socket.off(chatEvents.search)
-        socket.off(chatEvents.contacts)
+        socket.off(chatEvents.chats)
     }
     },[searchInput])
 
-return {contacts,searchInput,setSearchInput}
+return {chats,searchInput,setSearchInput}
 }
 export default useSearchContact

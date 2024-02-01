@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useDispatch } from "react-redux"
 import PageHeader from './PageHeader'
 import { setChatInfo } from '../app/chatSlice'
@@ -11,7 +11,7 @@ import useSearchContact from '../hooks/useSearchContact'
 const NewContacts = () => {
     const dispatch = useDispatch()
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-    const { contacts, searchInput, setSearchInput } = useSearchContact()
+    const { chats, searchInput, setSearchInput } = useSearchContact()
     const handleSearch = (e) => {
         setSearchInput(e.target.value);
     };
@@ -34,7 +34,7 @@ const NewContacts = () => {
         window.addEventListener('resize', handleResize);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window.innerWidth])
-
+    const cachedChats = useMemo(() => chats, [chats])
     return (
         <section className='order-2 w-full md:w-[40%] relative'>
             <PageHeader pageName={"Contacts"} />
@@ -70,7 +70,7 @@ const NewContacts = () => {
 
             <section className='overflow-y-auto mt-[129px] absolute top-2 bottom-[56px] left-0 right-0 w-full md:bottom-1'>
                 {
-                    contacts?.map((contact) => (
+                    cachedChats?.map((contact) => (
                         <Link to={`/${windowWidth < 768 ? 'messages' : ''}`} onClick={() => handleUserInfo({ userId: contact._id, username: contact.username, avatarUrl: contact.avatarUrl, channelId: contact?.channelId })} className="w-full justify-start items-center flex" key={contact._id} >
                             <section className="w-[70px] h-[65px] p-2.5 justify-center items-center flex shrink-0">
                                 <img src={contact.avatarUrl} alt="user profile" className='rounded-full' />
