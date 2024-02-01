@@ -14,18 +14,9 @@ import Messages from './Messages'
 
 const MessagePanel = () => {
     const chatInfo = useSelector((state) => state.chat.value);
-    // const formRef = useRef(null)
-    // TODO: make emoji container and share container sit on top of the form element
-    // const [formHeight, setFormHeight] = useState(formRef?.current?.clientHeight || null)
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [showEmojis, setShowEmojis] = useState(false)
     const [message, setMessage] = useState('')
-
-    // const [showMediaModal, setShowMediaModal] = useState(false)
-
-    // const showShareModal = () => {
-    //     setShowMediaModal(showMediaModal ? false : true)
-    // }
 
     const submitForm = (e) => {
         e.preventDefault()
@@ -87,14 +78,11 @@ const MessagePanel = () => {
                             <Picker data={data} onEmojiSelect={getEmoji} emojiSize={18} previewPosition={"none"} theme={"light"} />
                         </section>
                     }
-                    {/* <MediaModal
-                        show={showMediaModal}
-                    /> */}
+
 
                     <form
                         className="bg-white flex items-end py-2 justify-center px-2 border-t " onSubmit={sendMessage}>
                         <section className='bg-blue-500 w-full p-0 m-0 relative flex'>
-                            {/* <FontAwesomeIcon icon={faPaperclip} className='absolute left-3 bottom-3 text-gray-400 cursor-pointer ' onClick={showShareModal} /> */}
 
                             <TextareaAutoResize className={`resize-none md:px-9 pl-2 pr-10 py-2 text-base text-zinc-700 w-[100%] h-full active:outline-none border outline-none bg-gray-100`}
                                 value={message}
@@ -106,6 +94,7 @@ const MessagePanel = () => {
                             {
                                 windowWidth > 1000 && <FontAwesomeIcon icon={faFaceSmile} className='absolute right-4 bottom-3 text-gray-400 cursor-pointer' onClick={handleShowEmoji} />
                             }
+
                         </section>
                         <button type='submit' className='w-[36px] h-[38px] p-2 bg-blue-600 rounded-lg justify-center items-center ml-2 active:bg-blue-900 hover:bg-blue-700 flex'>
                             <FontAwesomeIcon icon={faPaperPlane} className='text-white' />

@@ -6,10 +6,12 @@ import { format } from 'date-fns'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faImage } from '@fortawesome/free-regular-svg-icons'
 const Chat = ({ channelId, userId, username, avatarUrl, lastMessage, createdAt }) => {
-    const chatDate = format(createdAt, 'h:mm a')
+    let chatDate;
     const dispatch = useDispatch()
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-
+    if (format(createdAt, 'h:mm a')) {
+        chatDate = format(createdAt, 'h:mm a')
+    }
     const handleChat = ({ userId, channelId, avatarUrl, username }) => {
         const chatObj = {
             userId,
@@ -30,7 +32,7 @@ const Chat = ({ channelId, userId, username, avatarUrl, lastMessage, createdAt }
     }, [window.innerWidth])
     return (
         // add messages page if page width less than 1000
-        <Link to={`/${windowWidth < 640 ? 'messages' : ''}`} className=" w-full justify-start items-center flex " id={channelId} key={channelId} onClick={() => handleChat({ userId, channelId, avatarUrl, username })}>
+        <Link to={`/${windowWidth < 1000 ? 'messages' : ''}`} className=" w-full justify-start items-center flex " id={channelId} key={channelId} onClick={() => handleChat({ userId, channelId, avatarUrl, username })}>
             <section className="w-[70px] h-[65px] p-2.5 justify-center items-center flex shrink-0">
                 <img src={avatarUrl} alt="user dp" className='rounded-full' />
             </section>

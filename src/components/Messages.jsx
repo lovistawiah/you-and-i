@@ -77,11 +77,11 @@ const Messages = () => {
                     />
                 }
                 < Message
-                    key={msg._id}
-                    message={msg.message}
-                    sender={msg.sender}
-                    createdAt={msg.createdAt}
-                    userId={chatInfo.userId}
+                    msgId={msg?._id}
+                    message={msg?.message}
+                    sender={msg?.sender}
+                    createdAt={msg?.createdAt}
+                    userId={chatInfo?.userId}
                 />
             </>
         )),
