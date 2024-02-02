@@ -12,6 +12,7 @@ import UpdateProfile from './components/UpdateProfile'
 import Register from './components/Register'
 // import VerifyEmail from './components/VerifyEmail'
 import "./index.css"
+import { StrictMode } from 'react'
 
 const App = () => {
     return (
@@ -36,4 +37,6 @@ const App = () => {
 
 const container = document.getElementById('root')
 const root = createRoot(container)
-root.render(<App />)
+root.render(<StrictMode>
+    <App />
+</StrictMode>)

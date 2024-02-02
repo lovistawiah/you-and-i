@@ -1,20 +1,20 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import PageHeader from './PageHeader'
 import { setChatInfo } from '../app/chatSlice'
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'
-import useSearchContact from '../hooks/useSearchContact'
+import useContact from '../hooks/useContact'
 
 
-const NewContacts = () => {
+const Contacts = () => {
     const dispatch = useDispatch()
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-    const { chats, searchInput, setSearchInput } = useSearchContact()
-    const handleSearch = (e) => {
-        setSearchInput(e.target.value);
-    };
+    const { searchInput, setSearchInput } = useContact()
+    // return search users else the original list
+    const contacts = useSelector((state) => searchInput.length > 0 ? state.contacts.searchedContacts : state.contacts.contacts)
+
     const clearSearch = () => {
         setSearchInput('');
     };
@@ -34,7 +34,7 @@ const NewContacts = () => {
         window.addEventListener('resize', handleResize);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window.innerWidth])
-    const cachedChats = useMemo(() => chats, [chats])
+    const cachedContacts = useMemo(() => contacts, [contacts])
     return (
         <section className='order-2 w-full md:w-[40%] relative'>
             <PageHeader pageName={"Contacts"} />
@@ -56,7 +56,7 @@ const NewContacts = () => {
                         id=""
                         className="w-full h-9 pl-6 bg-white border-b-[1px] border-zinc-500 justify-start items-center gap-1.5 inline-flex outline-none text-base font-normal"
                         value={searchInput}
-                        onChange={handleSearch}
+                        onChange={(e) => setSearchInput(e.target.value)}
                     />
                     {searchInput && (
                         <FontAwesomeIcon
@@ -70,7 +70,7 @@ const NewContacts = () => {
 
             <section className='overflow-y-auto mt-[129px] absolute top-2 bottom-[56px] left-0 right-0 w-full md:bottom-1'>
                 {
-                    cachedChats?.map((contact) => (
+                    cachedContacts?.map((contact) => (
                         <Link to={`/${windowWidth < 768 ? 'messages' : ''}`} onClick={() => handleUserInfo({ userId: contact._id, username: contact.username, avatarUrl: contact.avatarUrl, channelId: contact?.channelId })} className="w-full justify-start items-center flex" key={contact._id} >
                             <section className="w-[70px] h-[65px] p-2.5 justify-center items-center flex shrink-0">
                                 <img src={contact.avatarUrl} alt="user profile" className='rounded-full' />
@@ -90,4 +90,4 @@ const NewContacts = () => {
         </section>
     )
 }
-export default NewContacts
+export default Contacts

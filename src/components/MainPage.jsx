@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import Settings from './Settings'
-import OldnNewChats from './OldnNewChats'
+import Contacts from './Contacts'
 import Chats from './Chats'
 import Menu from './Menu'
 import WelcomePage from './WelcomePage'
@@ -55,7 +55,7 @@ const MainPage = () => {
         ) : (
             <section className="relative w-screen h-screen md:flex md:flex-row flex">
                 {activePage === 1 && <Settings />}
-                {activePage === 2 && <OldnNewChats />}
+                {activePage === 2 && <Contacts />}
                 {activePage === 3 && <Chats />}
                 <Menu>
                     {

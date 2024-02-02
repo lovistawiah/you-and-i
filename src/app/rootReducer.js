@@ -1,14 +1,17 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import {persistReducer} from 'redux-persist'
 import  storage from 'redux-persist/lib/storage'
+
 import userReducer from "./userSlice";
 import chatReducer from "./chatSlice";
 import  chatsReducer  from "./chatsSlice";
+import contactsReducer from "./contacts";
 
 const rootReducer = combineReducers({
     user: userReducer,
     chat: chatReducer,
-    chats: chatsReducer
+    chats: chatsReducer,
+    contacts: contactsReducer
 })
 
 const persistConfig = {
