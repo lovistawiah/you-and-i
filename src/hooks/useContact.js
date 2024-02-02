@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { chatEvents } from "../utils/eventNames"
 import { socket } from "../socket"
 import {useDispatch} from "react-redux"
-import {searchContacts,updateContact} from "../app/contacts"
+import {searchContacts,updateContact} from "../app/contactsSlice"
 const useContact = () =>{
 
     const [searchInput,setSearchInput] = useState('')
@@ -14,13 +14,14 @@ const useContact = () =>{
 
     useEffect(()=>{
         const getChats = (data) => {
+            console.log(data)
             dispatch(updateContact(data)) //data is {_id,username,avatarUrl}
         };
 
-        socket.emit(chatEvents.oldnNewChats,{})
-        socket.on(chatEvents.oldnNewChats,getChats)
+        socket.emit(chatEvents.contacts,{})
+        socket.on(chatEvents.contacts,getChats)
     return ()=>{
-        socket.off(chatEvents.oldnNewChats,getChats)
+        socket.off(chatEvents.contacts,getChats)
     }
     
     // eslint-disable-next-line react-hooks/exhaustive-deps

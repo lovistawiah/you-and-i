@@ -54,9 +54,9 @@ const Messages = () => {
             setMessages((prevMessages) => [...prevMessages, data])
             dispatch(updateLastMessage({ channelId: data.channelId, lastMessage: data.message, createdAt: data.createdAt }))
         }
-        socket.on(messageEvents.sendMessage, handleSendMessage)
+        socket.on(msgEvents.sndMsg, handleSendMessage)
         return () => {
-            socket.off(messageEvents.sendMessage, handleSendMessage)
+            socket.off(msgEvents.sndMsg, handleSendMessage)
         }
     })
 

@@ -9,7 +9,6 @@ import { socket } from '../socket'
 import { msgEvents } from '../utils/eventNames'
 import ChatInfo from './ChatInfo'
 import Messages from './Messages'
-// import MediaModal from './MediaModal'
 
 
 const MessagePanel = () => {

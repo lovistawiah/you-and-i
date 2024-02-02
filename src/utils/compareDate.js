@@ -2,6 +2,9 @@ import { isToday,format, formatDistanceToNow } from "date-fns";
 
 function lastSeen(lastSeen){
   if(!lastSeen) return
+  if(!Date.parse(lastSeen)){
+    return lastSeen
+  }
   return formatDistanceToNow(lastSeen,{addSuffix: true})
 }
 

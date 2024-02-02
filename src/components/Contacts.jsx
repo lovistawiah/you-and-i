@@ -24,6 +24,7 @@ const Contacts = () => {
             channelId,
             avatarUrl,
             username,
+            status
         }
         dispatch(setChatInfo(chatObj))
     }
@@ -35,6 +36,7 @@ const Contacts = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window.innerWidth])
     const cachedContacts = useMemo(() => contacts, [contacts])
+
     return (
         <section className='order-2 w-full md:w-[40%] relative'>
             <PageHeader pageName={"Contacts"} />
@@ -71,7 +73,7 @@ const Contacts = () => {
             <section className='overflow-y-auto mt-[129px] absolute top-2 bottom-[56px] left-0 right-0 w-full md:bottom-1'>
                 {
                     cachedContacts?.map((contact) => (
-                        <Link to={`/${windowWidth < 768 ? 'messages' : ''}`} onClick={() => handleUserInfo({ userId: contact._id, username: contact.username, avatarUrl: contact.avatarUrl, channelId: contact?.channelId })} className="w-full justify-start items-center flex" key={contact._id} >
+                        <Link to={`/${windowWidth < 768 ? 'messages' : ''}`} onClick={() => handleUserInfo({ userId: contact._id, username: contact.username, avatarUrl: contact.avatarUrl, status: contact.status })} className="w-full justify-start items-center flex" key={contact._id} >
                             <section className="w-[70px] h-[65px] p-2.5 justify-center items-center flex shrink-0">
                                 <img src={contact.avatarUrl} alt="user profile" className='rounded-full' />
                             </section>
