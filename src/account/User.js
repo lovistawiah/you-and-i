@@ -1,5 +1,6 @@
 import axios, { AxiosError } from "axios";
-const baseUrl = 'https://you-and-i-6d9db751f88a.herokuapp.com/api'
+// const baseUrl = 'https://you-and-i-6d9db751f88a.herokuapp.com/api'
+const baseUrl ="http://localhost:5000/api"
 async function signUp({ email, password, confirmPassword }) {
   try {
     if (!email || !password || !confirmPassword) {
@@ -56,8 +57,10 @@ async function login({ usernameEmail, password }) {
     if (result.data) {
       if (result.data.token && result.data.token != "") {
         const token = result.data.token;
+        const { userInfo } = result.data
         localStorage.setItem("Oh_vnyX", token);
-        return { status: 200, message: "ok" };
+        
+        return { status: 200, message: "ok",userInfo };
       }
     }
   } catch (err) {
