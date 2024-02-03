@@ -3,7 +3,9 @@ import {createSlice} from '@reduxjs/toolkit'
 export const messageReducer = createSlice({
     name:"messages",
     initialState:{
-        messages: []
+        messages: [],
+        msgToBeUpdated : null,
+        updateMsg: false
     },
     reducers:{
         addMessage:(state,action)=>{
@@ -13,17 +15,25 @@ export const messageReducer = createSlice({
                 state.messages.push(message)
             }
         },
-        updateMessage: (state,action) =>{
+        modifyMsg: (state,action) =>{
             const {payload} = action
             const idx = state.messages.findIndex((message)=> message.Id ===payload.Id)
             if(idx !== -1){
                 state.messages[idx] = payload
             }
+        },
+        updateSingleMsg: (state,action)=>{
+            const {payload:msgObj} = action
+            state.msgToBeUpdated = msgObj
+            state.updateMsg = true
+        },
+        cancelUpdate: (state) =>{
+            state.updateMsg = false
+            state.msgToBeUpdated = null
         }
-        
     }
     
 })
 
-export const {addMessage,updateMessage} = messageReducer.actions
+export const {addMessage,modifyMsg,updateSingleMsg,cancelUpdate} = messageReducer.actions
 export default messageReducer.reducer

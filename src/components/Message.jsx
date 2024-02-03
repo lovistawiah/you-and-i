@@ -6,7 +6,7 @@ import { socket } from '../socket'
 import { msgEvents } from "../utils/eventNames"
 import { useSelector } from 'react-redux'
 import { useDispatch } from "react-redux"
-import { updateMessage } from "../app/messagesSlice"
+import { modifyMsg, updateSingleMsg } from "../app/messagesSlice"
 
 const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
     const dispatch = useDispatch()
@@ -37,11 +37,29 @@ const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
         if (!msgId && !chatId) return
         socket.emit(msgEvents.delMsg, { msgId, chatId })
     }
+    const editMsg = () => {
+        if (!msgIdRef.current && msgRef.current) return;
+        const msgId = msgIdRef.current.id
+        const message = msgRef.current.textContent
+        const msgObj = {
+            msgId,
+            message
+        }
+        // turns updateMsg to true
+        dispatch(updateSingleMsg(msgObj))
+    }
 
     useEffect(() => {
         socket.on(msgEvents.delMsg, (message) => {
-            dispatch(updateMessage(message))
+            dispatch(modifyMsg(message))
         })
+        socket.on(msgEvents.updateMsg, (message) => {
+            dispatch(modifyMsg(message))
+        })
+        return () => {
+            socket.off(msgEvents.updateMsg)
+            socket.off(msgEvents.delMsg)
+        }
     }, [])
 
     function handleMsgOps() {
@@ -68,8 +86,11 @@ const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
         <section ref={msgIdRef} className={`${align} relative`} id={msgId} key={msgId}>
             {showOps && userId !== sender && (
                 <ul ref={ulRef} className={`absolute ${opsPosition} ${opsAlign} bg-white p-2 w-fit rounded text-gray-500 z-20`} onBlur={handleMsgOps}>
+
                     <li className={`p-1 flex justify-between w-[100px] hover:bg-gray-100 rounded items-center cursor-pointer ${minDiff > 5 ? 'hidden' : ''} `}>
-                        <p>Edit</p> <FontAwesomeIcon icon={faPencil} />
+                        <button onClick={editMsg} className="p-1 flex justify-between w-full items-center outline-none">
+                            <p>Edit</p> <FontAwesomeIcon icon={faPencil} />
+                        </button>
                     </li>
                     <li className=' w-[100px] text-red-400  hover:bg-gray-100 rounded cursor-pointer'>
                         <button onClick={deleteMsg} className="p-1 flex justify-between w-full items-center outline-none">
