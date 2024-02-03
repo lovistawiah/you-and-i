@@ -53,6 +53,8 @@ const Chat = ({ chatId, userId, username, avatarUrl, lastMessage, lstMsgDate }) 
         return () => {
             socket.off(usrEvents.typing)
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     // when submitted turn typing should be null 
