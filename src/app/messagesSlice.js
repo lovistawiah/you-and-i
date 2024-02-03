@@ -12,9 +12,18 @@ export const messageReducer = createSlice({
             if(!msgExist){
                 state.messages.push(message)
             }
+        },
+        updateMessage: (state,action) =>{
+            const {payload} = action
+            const idx = state.messages.findIndex((message)=> message.Id ===payload.Id)
+            if(idx !== -1){
+                state.messages[idx] = payload
+            }
         }
+        
     }
+    
 })
 
-export const {addMessage} = messageReducer.actions
+export const {addMessage,updateMessage} = messageReducer.actions
 export default messageReducer.reducer

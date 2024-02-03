@@ -20,7 +20,6 @@ const Chat = ({ chatId, userId, username, avatarUrl, lastMessage, lstMsgDate }) 
             username,
 
         }
-        // console.log(chatObj)
         dispatch(setChatInfo(chatObj))
     }
 

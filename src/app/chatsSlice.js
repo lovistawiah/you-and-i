@@ -14,7 +14,6 @@ export const chatsReducer = createSlice({
       }
    },
    updateLastMessage: (state,action)=>{
-    console.log(action.payload)
     const {chatId,lastMessage,msgDate} = action.payload
     const findIdx = state.chats.findIndex((chat)=> chat.Id === chatId)
 

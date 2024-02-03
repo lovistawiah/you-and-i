@@ -5,8 +5,12 @@ import { useEffect, useRef, useState } from "react"
 import { socket } from '../socket'
 import { msgEvents } from "../utils/eventNames"
 import { useSelector } from 'react-redux'
-// if the selected chat Id is equal to the sender you can delete nor modify message.
+import { useDispatch } from "react-redux"
+import { updateMessage } from "../app/messagesSlice"
+
 const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
+    const dispatch = useDispatch()
+
     let msgColor, align, opsAlign, ellipsisOrder, margin, opsPosition;
     const chatId = useSelector((state) => state.chat.value.chatId)
     const ulRef = useRef(null)
@@ -32,9 +36,14 @@ const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
         const msgId = msgIdRef.current.id
         if (!msgId && !chatId) return
         socket.emit(msgEvents.delMsg, { msgId, chatId })
-
-
     }
+
+    useEffect(() => {
+        socket.on(msgEvents.delMsg, (message) => {
+            dispatch(updateMessage(message))
+        })
+    }, [])
+
     function handleMsgOps() {
         setShowOps(!showOps);
     }
@@ -65,7 +74,6 @@ const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
                     <li className=' w-[100px] text-red-400  hover:bg-gray-100 rounded cursor-pointer'>
                         <button onClick={deleteMsg} className="p-1 flex justify-between w-full items-center outline-none">
                             <p>Delete</p> <FontAwesomeIcon icon={faTrash} />
-
                         </button>
                     </li>
                 </ul>
@@ -73,7 +81,7 @@ const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
 
             <section className={`flex items-start gap-[5px]  ${margin}`}>
                 {
-                    userId !== sender && <FontAwesomeIcon
+                    message === "this message was deleted" || userId !== sender && <FontAwesomeIcon
                         icon={faEllipsisVertical}
                         onClick={handleMsgOps}
                         className={`${ellipsisOrder} text-gray-500 text-sm cursor-pointer`}

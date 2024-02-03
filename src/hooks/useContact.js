@@ -14,7 +14,6 @@ const useContact = () =>{
 
     useEffect(()=>{
         const getChats = (data) => {
-            console.log(data)
             dispatch(updateContact(data)) //data is {_id,username,avatarUrl}
         };
 
