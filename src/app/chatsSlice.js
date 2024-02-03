@@ -7,7 +7,11 @@ export const chatsReducer = createSlice({
   },
   reducers: {
    addChats: (state,action)=>{
-    state.chats = action.payload
+    const { payload } = action;
+      const chatExists = state.chats.some((chat) => chat.id=== payload.id);
+      if (!chatExists) {
+        state.chats.push(payload);
+      }
    },
    updateLastMessage: (state,action)=>{
     const {channelId,lastMessage,createdAt} = action.payload

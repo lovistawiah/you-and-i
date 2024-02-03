@@ -3,19 +3,19 @@ import { setChatInfo } from '../app/chatSlice'
 import { useDispatch } from 'react-redux'
 import { useEffect, useState } from 'react'
 import { format } from 'date-fns'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faImage } from '@fortawesome/free-regular-svg-icons'
-const Chat = ({ channelId, userId, username, avatarUrl, lastMessage, createdAt }) => {
+
+
+const Chat = ({ chatId, userId, username, avatarUrl, lastMessage, lstMsgDate }) => {
     let chatDate;
     const dispatch = useDispatch()
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-    if (format(createdAt, 'h:mm a')) {
-        chatDate = format(createdAt, 'h:mm a')
+    if (format(lstMsgDate, 'h:mm a')) {
+        chatDate = format(lstMsgDate, 'h:mm a')
     }
-    const handleChat = ({ userId, channelId, avatarUrl, username }) => {
+    const handleChat = ({ userId, chatId, avatarUrl, username }) => {
         const chatObj = {
             userId,
-            channelId,
+            chatId,
             avatarUrl,
             username,
 
@@ -31,8 +31,9 @@ const Chat = ({ channelId, userId, username, avatarUrl, lastMessage, createdAt }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window.innerWidth])
     return (
+
         // add messages page if page width less than 1000
-        <Link to={`/${windowWidth < 1000 ? 'messages' : ''}`} className=" w-full justify-start items-center flex " id={channelId} key={channelId} onClick={() => handleChat({ userId, channelId, avatarUrl, username })}>
+        <Link to={`/${windowWidth < 1000 ? 'messages' : ''}`} className=" w-full justify-start items-center flex " id={chatId} key={chatId} onClick={() => handleChat({ userId, chatId, avatarUrl, username })}>
             <section className="w-[70px] h-[65px] p-2.5 justify-center items-center flex shrink-0">
                 <img src={avatarUrl} alt="user dp" className='rounded-full' />
             </section>
@@ -49,10 +50,7 @@ const Chat = ({ channelId, userId, username, avatarUrl, lastMessage, createdAt }
 
                 {/* last message */}
                 <section className="text-neutral-400 text-sm font-normal line-clamp-2 text-ellipsis w-full flex-grow basis-0 pt-[4px] pr-0 pb-[40px] pl-1">
-                    {
-                        !lastMessage.startsWith('https://storage.googleapis.com/you-and-i-testing/media/images') ?
-                            <>{lastMessage}</> : <FontAwesomeIcon icon={faImage} className='text-lg' />
-                    }
+                    {lastMessage}
                 </section>
             </section>
         </Link>
