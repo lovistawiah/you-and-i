@@ -6,14 +6,14 @@ import { socket } from '../socket'
 import { msgEvents } from "../utils/eventNames"
 import { useSelector } from 'react-redux'
 
-const Message = ({ message, sender, createdAt, userId, msgId }) => {
+const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
     let msgColor, align, opsAlign, ellipsisOrder, margin, opsPosition;
     const chatId = useSelector((state) => state.chat.value.channelId)
     const ulRef = useRef(null)
     const msgRef = useRef(null)
     const msgIdRef = useRef(null)
     const [showOps, setShowOps] = useState(false);
-    const msgStatus = format(createdAt, 'h:mm a');
+    const msgStatus = format(msgDate, 'h:mm a');
 
     useEffect(() => {
         const handleClickOutside = (event) => {
@@ -52,8 +52,9 @@ const Message = ({ message, sender, createdAt, userId, msgId }) => {
         margin = 'ml-10';
         opsPosition = 'left-0'
     }
-    const minDiff = differenceInMinutes(new Date(), parseISO(createdAt))
+    const minDiff = differenceInMinutes(new Date(), parseISO(msgDate))
     return (
+
         <section ref={msgIdRef} className={`${align} relative`} id={msgId} key={msgId}>
             {showOps && (
                 <ul ref={ulRef} className={`absolute ${opsPosition} ${opsAlign} bg-white p-2 w-fit rounded text-gray-500 z-20`} onBlur={handleMsgOps}>
@@ -78,7 +79,13 @@ const Message = ({ message, sender, createdAt, userId, msgId }) => {
 
                 <section className={`w-fit flex flex-col`}>
                     <section ref={msgRef} className={`${msgColor}`}>{message}</section>
-                    <p className={``}>{msgStatus}</p>
+                    {
+                        info == 'created' ? <p>{msgStatus}</p> : <p>
+                            {/* make italics */}
+                            <span>{info}</span>
+                            {msgStatus}
+                        </p>
+                    }
                 </section>
             </section>
         </section>

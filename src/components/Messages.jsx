@@ -7,14 +7,15 @@ import { msgEvents } from "../utils/eventNames";
 import { messageHeaderDate } from "../utils/compareDate";
 import MessageHeaderDate from "./MessageHeaderDate"
 import { updateLastMessage } from "../app/chatsSlice";
+import { addMessage } from "../app/messagesSlice";
 
 const Messages = () => {
     const info = useSelector((state) => state.chat.value);
+    const messages = useSelector((state) => state.messages.messages)
     const dispatch = useDispatch()
     const [chatInfo, setChatInfo] = useState(info)
     const datesSet = new Set()
     const messagesRef = useRef(null)
-    const [messages, setMessages] = useState([])
 
     const addDateToSet = (messageDate) => {
         if (!datesSet.has(messageDate)) {
@@ -23,9 +24,10 @@ const Messages = () => {
         }
         return false
     }
+
     useEffect(() => {
         const getMessages = (messagesData) => {
-            setMessages(messagesData)
+            dispatch(addMessage(messagesData))
         };
         socket.emit(msgEvents.msgs, chatInfo?.chatId);
         socket.on(msgEvents.msgs, getMessages);
@@ -39,20 +41,19 @@ const Messages = () => {
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chatInfo])
-    // clear messages data before rendering
+
+
     useEffect(() => {
-        setMessages([])
         setChatInfo(info)
         datesSet.clear()
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [info])
 
 
     useEffect(() => {
-        const handleSendMessage = (data) => {
-            setMessages((prevMessages) => [...prevMessages, data])
-            dispatch(updateLastMessage({ channelId: data.channelId, lastMessage: data.message, createdAt: data.createdAt }))
+        const handleSendMessage = (msg) => {
+            dispatch(updateLastMessage({ chatId: msg.chatId, lastMessage: msg.message, msgDate: msg.msgDate }))
+            dispatch(addMessage(msg))
         }
         socket.on(msgEvents.sndMsg, handleSendMessage)
         return () => {
@@ -71,16 +72,18 @@ const Messages = () => {
 
             <>
                 {
-                    addDateToSet(messageHeaderDate(msg.createdAt)) &&
+                    addDateToSet(messageHeaderDate(msg.msgDate)) &&
                     <MessageHeaderDate
-                        messageDate={messageHeaderDate(msg.createdAt)}
+                        messageDate={messageHeaderDate(msg.msgDate)}
                     />
                 }
                 < Message
-                    msgId={msg?._id}
-                    message={msg?.message}
-                    sender={msg?.sender}
-                    createdAt={msg?.createdAt}
+                    key={msg.Id}
+                    msgId={msg.Id}
+                    message={msg.message}
+                    sender={msg.sender}
+                    msgDate={msg.msgDate}
+                    info={msg.info}
                     userId={chatInfo?.userId}
                 />
             </>
@@ -88,6 +91,7 @@ const Messages = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [messages]
     );
+
     return (
         <section ref={messagesRef} className="flex w-full overflow-y-auto py-2 row-span-5 flex-col mt-[60px]">
             {

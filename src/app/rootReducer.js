@@ -6,18 +6,20 @@ import userReducer from "./userSlice";
 import chatReducer from "./chatSlice";
 import  chatsReducer  from "./chatsSlice";
 import contactsReducer from "./contactsSlice";
+import  messageReducer  from "./messagesSlice";
 
 const rootReducer = combineReducers({
     user: userReducer,
     chat: chatReducer,
     chats: chatsReducer,
-    contacts: contactsReducer
+    contacts: contactsReducer,
+    messages: messageReducer
 })
 
 const persistConfig = {
     key: "root",
     storage,
-    whitelist:['user']
+    whitelist:['user','messages']
 }
 const persistedReducer = persistReducer(persistConfig,rootReducer)
 
