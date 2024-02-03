@@ -5,10 +5,10 @@ import { useEffect, useRef, useState } from "react"
 import { socket } from '../socket'
 import { msgEvents } from "../utils/eventNames"
 import { useSelector } from 'react-redux'
-
+// if the selected chat Id is equal to the sender you can delete nor modify message.
 const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
     let msgColor, align, opsAlign, ellipsisOrder, margin, opsPosition;
-    const chatId = useSelector((state) => state.chat.value.channelId)
+    const chatId = useSelector((state) => state.chat.value.chatId)
     const ulRef = useRef(null)
     const msgRef = useRef(null)
     const msgIdRef = useRef(null)
@@ -52,11 +52,12 @@ const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
         margin = 'ml-10';
         opsPosition = 'left-0'
     }
+
     const minDiff = differenceInMinutes(new Date(), parseISO(msgDate))
     return (
 
         <section ref={msgIdRef} className={`${align} relative`} id={msgId} key={msgId}>
-            {showOps && (
+            {showOps && userId !== sender && (
                 <ul ref={ulRef} className={`absolute ${opsPosition} ${opsAlign} bg-white p-2 w-fit rounded text-gray-500 z-20`} onBlur={handleMsgOps}>
                     <li className={`p-1 flex justify-between w-[100px] hover:bg-gray-100 rounded items-center cursor-pointer ${minDiff > 5 ? 'hidden' : ''} `}>
                         <p>Edit</p> <FontAwesomeIcon icon={faPencil} />
@@ -71,11 +72,13 @@ const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
             )}
 
             <section className={`flex items-start gap-[5px]  ${margin}`}>
-                <FontAwesomeIcon
-                    icon={faEllipsisVertical}
-                    onClick={handleMsgOps}
-                    className={`${ellipsisOrder} text-gray-500 text-sm cursor-pointer`}
-                />
+                {
+                    userId !== sender && <FontAwesomeIcon
+                        icon={faEllipsisVertical}
+                        onClick={handleMsgOps}
+                        className={`${ellipsisOrder} text-gray-500 text-sm cursor-pointer`}
+                    />
+                }
 
                 <section className={`w-fit flex flex-col`}>
                     <section ref={msgRef} className={`${msgColor}`}>{message}</section>
