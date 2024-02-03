@@ -25,7 +25,6 @@ const MainPage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-
     return (
         <>
             <section className="order-2 w-full md:border-r md:w-[40%] relative">
@@ -37,8 +36,8 @@ const MainPage = () => {
                             chats.map((chat) => (
                                 <Chat
                                     key={chat.Id}
+                                    chatId={chat.Id}
                                     avatarUrl={chat.avatarUrl}
-                                    chatId={chat.id}
                                     lstMsgDate={chat.lstMsgDate}
                                     lastMessage={chat.lastMessage}
                                     userId={chat.userId}

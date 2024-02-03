@@ -8,7 +8,7 @@ export const chatsReducer = createSlice({
   reducers: {
    addChats: (state,action)=>{
     const { payload } = action;
-      const chatExists = state.chats.some((chat) => chat.id=== payload.id);
+      const chatExists = state.chats.some((chat) => chat.Id=== payload.Id);
       if (!chatExists) {
         state.chats.push(payload);
       }
