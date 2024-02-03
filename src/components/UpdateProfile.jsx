@@ -73,7 +73,7 @@ const UpdateProfile = () => {
         }
         navigate('/')
     }
-    const inputRegex = /^[a-zA-Z0-9.@]*$/;
+    const inputRegex = /^[a-zA-Z0-9.@_]*$/;
     return (
         <section className="w-screen h-screen">
             <InfoContainer info={info} setInfo={setInfo} />

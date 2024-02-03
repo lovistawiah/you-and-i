@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { socket } from '../socket'
 
 
-const Search = ({ eventName, }) => {
+const Search = ({ eventName }) => {
     const [searchInput, setSearchInput] = useState('');
     const handleSearch = (e) => {
         setSearchInput(e.target.value);

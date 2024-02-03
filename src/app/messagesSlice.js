@@ -30,10 +30,13 @@ export const messageReducer = createSlice({
         cancelUpdate: (state) =>{
             state.updateMsg = false
             state.msgToBeUpdated = null
+        },
+        clearMessages: (state) =>{
+            state.messages = []
         }
     }
     
 })
 
-export const {addMessage,modifyMsg,updateSingleMsg,cancelUpdate} = messageReducer.actions
+export const {addMessage,modifyMsg,updateSingleMsg,cancelUpdate,clearMessages} = messageReducer.actions
 export default messageReducer.reducer

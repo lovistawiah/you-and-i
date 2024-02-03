@@ -1,32 +1,13 @@
-import { useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { socket } from '../socket'
+
 import { chatEvents } from '../utils/eventNames'
 import Search from './Search'
 import PageHeader from './PageHeader'
 import Chat from './Chat'
-import { addChats } from '../app/chatsSlice'
+import useChats from '../hooks/useChats'
+
 
 const MainPage = () => {
-    const chats = useSelector((state) => state.chats.chats)
-    const dispatch = useDispatch()
-
-    useEffect(() => {
-        const getChatData = (chatsData) => {
-            if (typeof chatsData !== 'string') {
-                dispatch(addChats(chatsData))
-            }
-        }
-        socket.emit(chatEvents.chatLastMsg, {})
-        socket.on(chatEvents.chatLastMsg, getChatData)
-        return () => {
-            socket.off(chatEvents.chatLastMsg)
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-
+    const chats = useChats()
     return (
         <section className="order-2 w-full md:border-r md:w-[40%] relative">
             <PageHeader pageName={"Chats"} />

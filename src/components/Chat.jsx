@@ -6,6 +6,7 @@ import { format } from 'date-fns'
 import { socket } from '../socket'
 import { usrEvents } from '../utils/eventNames'
 import { typing } from '../app/chatsSlice'
+import { clearMessages } from '../app/messagesSlice'
 
 const Chat = ({ chatId, userId, username, avatarUrl, lastMessage, lstMsgDate }) => {
     const dispatch = useDispatch()
@@ -24,6 +25,7 @@ const Chat = ({ chatId, userId, username, avatarUrl, lastMessage, lstMsgDate }) 
             username,
 
         }
+        dispatch(clearMessages())
         dispatch(setChatInfo(chatObj))
     }
 

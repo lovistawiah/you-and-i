@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'
 import useContact from '../hooks/useContact'
+import { clearMessages } from '../app/messagesSlice'
 
 
 const Contacts = () => {
@@ -26,7 +27,9 @@ const Contacts = () => {
             username,
             status
         }
+        dispatch(clearMessages())
         dispatch(setChatInfo(chatObj))
+
     }
     useEffect(() => {
         const handleResize = () => {
