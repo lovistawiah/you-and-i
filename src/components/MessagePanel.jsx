@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import TextareaAutoResize from 'react-textarea-autosize'
 import { socket } from '../socket'
-import { msgEvents } from '../utils/eventNames'
+import { msgEvents, usrEvents } from '../utils/eventNames'
 import ChatInfo from './ChatInfo'
 import Messages from './Messages'
 import { cancelUpdate } from '../app/messagesSlice'
@@ -80,6 +80,12 @@ const MessagePanel = () => {
         setMessage('')
         dispatch(cancelUpdate(true))
     }
+    const handleOnChange = (e) => {
+        setMessage(e.target.value)
+        if (message) {
+            socket.emit(usrEvents.typing, { chatId: chatInfo?.chatId })
+        }
+    }
 
     useEffect(() => {
         if (updateMsg && msgToBeUpdated) {
@@ -113,7 +119,7 @@ const MessagePanel = () => {
                             <TextareaAutoResize className={`resize-none md:px-9 pl-2 pr-10 py-2 text-base text-zinc-700 w-[100%] h-full active:outline-none border outline-none bg-gray-100`}
                                 value={message}
                                 maxRows={3}
-                                onChange={(e) => setMessage(e.target.value)}
+                                onChange={handleOnChange}
                                 onKeyDown={onKeyDown}
                                 placeholder='Write a message...'
                             />

@@ -1,14 +1,18 @@
 import { Link } from 'react-router-dom'
 import { setChatInfo } from '../app/chatSlice'
-import { useDispatch } from 'react-redux'
-import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useEffect, useRef, useState } from 'react'
 import { format } from 'date-fns'
-
+import { socket } from '../socket'
+import { usrEvents } from '../utils/eventNames'
+import { typing } from '../app/chatsSlice'
 
 const Chat = ({ chatId, userId, username, avatarUrl, lastMessage, lstMsgDate }) => {
-    let chatDate;
     const dispatch = useDispatch()
+    const isTypingObj = useSelector((state) => state.chats.typingObj)
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+    const chatRef = useRef(null)
+    let chatDate;
     if (format(lstMsgDate, 'h:mm a')) {
         chatDate = format(lstMsgDate, 'h:mm a')
     }
@@ -30,10 +34,33 @@ const Chat = ({ chatId, userId, username, avatarUrl, lastMessage, lstMsgDate }) 
         window.addEventListener('resize', handleResize);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window.innerWidth])
+
+    useEffect(() => {
+        let noDataTimeout;
+        function startNoDataTimer() {
+            noDataTimeout = setTimeout(() => {
+                dispatch(typing(null))
+            }, 3000)
+        }
+        socket.on(usrEvents.typing, (data) => {
+            const { chatId } = data
+            if (chatId) {
+                clearTimeout(noDataTimeout)
+                dispatch(typing(data))
+            }
+            startNoDataTimer()
+        })
+        return () => {
+            socket.off(usrEvents.typing)
+        }
+    }, [])
+
+    // when submitted turn typing should be null 
+
     return (
 
         // add messages page if page width less than 1000
-        <Link to={`/${windowWidth < 1000 ? 'messages' : ''}`} className=" w-full justify-start items-center flex " id={chatId} key={chatId} onClick={() => handleChat({ userId, chatId, avatarUrl, username })}>
+        <Link to={`/${windowWidth < 1000 ? 'messages' : ''}`} className=" w-full justify-start items-center flex " ref={chatRef} id={chatId} key={chatId} onClick={() => handleChat({ userId, chatId, avatarUrl, username })}>
             <section className="w-[70px] h-[65px] p-2.5 justify-center items-center flex shrink-0">
                 <img src={avatarUrl} alt="user dp" className='rounded-full' />
             </section>
@@ -50,7 +77,9 @@ const Chat = ({ chatId, userId, username, avatarUrl, lastMessage, lstMsgDate }) 
 
                 {/* last message */}
                 <section className="text-neutral-400 text-sm font-normal line-clamp-2 text-ellipsis w-full flex-grow basis-0 pt-[4px] pr-0 pb-[40px] pl-1">
-                    {lastMessage}
+                    {
+                        isTypingObj && isTypingObj.chatId === chatId ? <span>typing...</span> : <>{lastMessage}</>
+                    }
                 </section>
             </section>
         </Link>

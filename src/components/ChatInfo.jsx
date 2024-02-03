@@ -8,6 +8,7 @@ import { useSelector, useDispatch } from "react-redux"
 import { updateStatus } from "../app/chatSlice"
 const ChatInfo = ({ windowWidth, /*userId*/ }) => {
     const chatInfo = useSelector((state) => state.chat.value);
+    const isTypingObj = useSelector((state) => state.chats.typingObj)
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const goBack = () => {
@@ -39,9 +40,11 @@ const ChatInfo = ({ windowWidth, /*userId*/ }) => {
                 </section>
                 <section className="w-full h-[20px] px-[5px] pb-2.5 justify-start items-center  flex opacity-60  text-zinc-900 text-[13px] font-rale">
                     {
-                        chatInfo.status ? chatInfo.status === "Online" ? chatInfo.status : <span className="font-rale pr-[3px]">
-                            {`last seen ${chatInfo.status}`}
-                        </span> : null
+                        isTypingObj && isTypingObj.chatId === chatInfo?.chatId ? <span>typing...</span>
+                            :
+                            chatInfo.status ? chatInfo.status === "Online" ? chatInfo.status : <span className="font-rale pr-[3px]">
+                                {`last seen ${chatInfo.status}`}
+                            </span> : null
                     }
                 </section>
             </section>

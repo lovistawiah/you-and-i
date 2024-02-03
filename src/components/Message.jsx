@@ -7,16 +7,18 @@ import { msgEvents } from "../utils/eventNames"
 import { useSelector } from 'react-redux'
 import { useDispatch } from "react-redux"
 import { modifyMsg, updateSingleMsg } from "../app/messagesSlice"
+import { updateLastMessage } from "../app/chatsSlice"
 
 const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
     const dispatch = useDispatch()
-
-    let msgColor, align, opsAlign, ellipsisOrder, margin, opsPosition;
-    const chatId = useSelector((state) => state.chat.value.chatId)
     const ulRef = useRef(null)
     const msgRef = useRef(null)
     const msgIdRef = useRef(null)
+    const chatId = useSelector((state) => state.chat.value.chatId)
+    const storedMessages = useSelector((state) => state.messages.messages)
     const [showOps, setShowOps] = useState(false);
+
+    let msgColor, align, opsAlign, ellipsisOrder, margin, opsPosition;
     const msgStatus = format(msgDate, 'h:mm a');
 
     useEffect(() => {
@@ -50,11 +52,24 @@ const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
     }
 
     useEffect(() => {
-        socket.on(msgEvents.delMsg, (message) => {
-            dispatch(modifyMsg(message))
+        socket.on(msgEvents.delMsg, (msgObj) => {
+            dispatch(modifyMsg(msgObj))
+            //to update the chat last message if deleted message is the last message in the messages
+            const msgId = msgObj.Id
+            const idx = storedMessages.findIndex((stMsg) => stMsg.Id === msgId)
+            if (idx === storedMessages.length - 1) {
+                dispatch(updateLastMessage({ chatId: msgObj.chatId, lastMessage: msgObj.message, msgDate: msgObj.msgDate }))
+            }
+
         })
-        socket.on(msgEvents.updateMsg, (message) => {
-            dispatch(modifyMsg(message))
+        socket.on(msgEvents.updateMsg, (msgObj) => {
+            dispatch(modifyMsg(msgObj))
+            //to update the chat last message if updated message is the last message in the messages
+            const msgId = msgObj.Id
+            const idx = storedMessages.findIndex((stMsg) => stMsg.Id === msgId)
+            if (idx === storedMessages.length - 1) {
+                dispatch(updateLastMessage({ chatId: msgObj.chatId, lastMessage: msgObj.message, msgDate: msgObj.msgDate }))
+            }
         })
         return () => {
             socket.off(msgEvents.updateMsg)
