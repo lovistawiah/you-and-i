@@ -60,6 +60,8 @@ const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
             socket.off(msgEvents.updateMsg)
             socket.off(msgEvents.delMsg)
         }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     function handleMsgOps() {
