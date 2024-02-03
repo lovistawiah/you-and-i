@@ -86,10 +86,33 @@ async function updateUserInfo(formData){
     }
     
   } catch (err) {
-     const status = err.response.status
+     if(err instanceof AxiosError){
+      const status = err.response.status
       const {message}  = err.response.data
        return { status, message };
+    }
   }
-
 }
-export { signUp, login ,updateUserInfo};
+async function userSettings(formData){
+  try {
+    const result = await axios.patch(baseUrl + '/user-settings',formData)
+    if(result.status === 200){
+      const userInfo = result.data.userInfo
+      const message = result.data.message
+      return {
+        userInfo,
+        message,
+        status: result.status
+      }
+      
+    }
+    
+  } catch (err) {
+    if(err instanceof AxiosError){
+      const status = err.response.status
+      const {message}  = err.response.data
+       return { status, message };
+    }
+  }
+}
+export { signUp, login ,updateUserInfo,userSettings};

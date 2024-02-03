@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faComments, faGear, faUserPlus } from '@fortawesome/free-solid-svg-icons'
+import { useSelector } from "react-redux"
 import Settings from './Settings'
 import Contacts from './Contacts'
 import Chats from './Chats'
 import Menu from './Menu'
 import WelcomePage from './WelcomePage'
 import MessagePanel from './MessagePanel'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faComments, faGear, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import { socket } from '../socket'
 
 const MainPage = () => {
@@ -14,7 +15,7 @@ const MainPage = () => {
     const [isToken, setToken] = useState(true)
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [activePage, setActivePage] = useState(3)
-    // const [loggedInUser, setLoggedInUser] = useState({})
+    const userAvatar = useSelector((state) => state.user.value.avatarUrl)
     const icons = [
         { iconText: "Settings", iconName: faGear },
         { iconText: "Contacts", iconName: faUserPlus },
@@ -69,7 +70,7 @@ const MainPage = () => {
                     }
                     {
                         windowWidth > 768 && <section className="w-[32px] h-[32px] self-center justify-center items-center flex shrink-0 order-4 mt-auto my-2 ">
-                            <img src="" alt="user dp" className='rounded-full' />
+                            <img src={userAvatar} alt="user dp" className='rounded-full' />
                         </section>
                     }
                 </Menu>
