@@ -16,9 +16,15 @@ export const chatReducer = createSlice({
         state.value.status = lastSeen(status)
 
       }
+    },
+    updateNewChat: (state,action)=>{
+      const {chatId,userId} = action.payload
+      if(state.value.userId === userId && !state.value.chatId){
+        state.value.chatId = chatId
+      }
     }
   },
 });
 
-export const { setChatInfo,updateStatus } = chatReducer.actions;
+export const { setChatInfo,updateStatus,updateNewChat } = chatReducer.actions;
 export default chatReducer.reducer;

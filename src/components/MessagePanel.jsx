@@ -36,13 +36,20 @@ const MessagePanel = () => {
             handleCancelUpdate()
             return
         }
-        const { userId } = chatInfo
-        if (userId) {
+        const { userId, chatId } = chatInfo
+        if (chatId && userId) {
+            const messageObj = {
+                chatId,
+                message
+            }
+            socket.emit(msgEvents.sndMsg, messageObj)
+
+        } else if (userId && !chatId) {
             const messageObj = {
                 userId,
                 message
             }
-            socket.emit(msgEvents.sndMsg, messageObj)
+            socket.emit(msgEvents.newChat, messageObj)
         }
         setMessage("")
     }

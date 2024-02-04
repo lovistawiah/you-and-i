@@ -8,6 +8,7 @@ import { messageHeaderDate } from "../utils/compareDate";
 import MessageHeaderDate from "./MessageHeaderDate"
 import { updateLastMessage } from "../app/chatsSlice";
 import { addMessage } from "../app/messagesSlice";
+import { updateNewChat } from "../app/chatSlice";
 
 const Messages = () => {
     const info = useSelector((state) => state.chat.value);
@@ -54,6 +55,7 @@ const Messages = () => {
         const handleSendMessage = (msg) => {
             dispatch(updateLastMessage({ chatId: msg.chatId, lastMessage: msg.message, msgDate: msg.msgDate }))
             dispatch(addMessage(msg))
+            dispatch(updateNewChat({ chatId: msg.chatId, userId: info.userId }))
         }
         socket.on(msgEvents.sndMsg, handleSendMessage)
         return () => {
