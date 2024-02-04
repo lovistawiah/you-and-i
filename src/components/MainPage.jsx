@@ -11,11 +11,11 @@ import MessagePanel from './MessagePanel'
 import { socket } from '../socket'
 
 const MainPage = () => {
-    // TODO: show profile pic on the bottom of the menu panel if window.innerWidth > 1000
     const [isToken, setToken] = useState(true)
+    const [errMsg, setErrMsg] = useState("")
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [activePage, setActivePage] = useState(3)
-    const userAvatar = useSelector((state) => state.user.value.avatarUrl)
+    const userAvatar = useSelector((state) => state.user.value?.avatarUrl) ?? ""
     const icons = [
         { iconText: "Settings", iconName: faGear },
         { iconText: "Contacts", iconName: faUserPlus },
@@ -28,6 +28,8 @@ const MainPage = () => {
     useEffect(() => {
         socket.on('connect_error', (data) => {
             if (data) {
+                const message = data.message
+                setErrMsg(message)
                 setToken(false)
             } else {
                 setToken(true)
@@ -41,7 +43,7 @@ const MainPage = () => {
             socket.off('connect_error')
             socket.off('connect', handleConnect)
         }
-    }, [isToken])
+    }, [])
 
     useEffect(() => {
         const handleResize = () => {
@@ -50,9 +52,10 @@ const MainPage = () => {
         window.addEventListener('resize', handleResize);
 
     }, [])
+    console.log(isToken)
     return (
         !isToken ? (
-            <WelcomePage />
+            <WelcomePage message={errMsg} />
         ) : (
             <section className="relative w-screen h-screen md:flex md:flex-row flex">
                 {activePage === 1 && <Settings />}

@@ -10,6 +10,7 @@ const useChats =()=>{
 
     useEffect(() => {
         const getChatData = (chatsData) => {
+            console.log(chatsData)
             if (typeof chatsData !== 'string') {
                 dispatch(addChats(chatsData))
             }
