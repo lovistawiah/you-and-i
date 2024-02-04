@@ -26,6 +26,7 @@ const Chat = ({ chatId, userId, username, avatarUrl, lastMessage, lstMsgDate }) 
 
         }
         dispatch(clearMessages())
+        dispatch(setChatInfo({}))
         dispatch(setChatInfo(chatObj))
     }
 
