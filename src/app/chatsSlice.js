@@ -47,8 +47,10 @@ export const chatsReducer = createSlice({
  */
    searchChats: (state,action) => {
     const {payload:username} = action
-    state.searchChats = state.chats.filter((chat)=>chat.username.includes(username))
-    state.searchChats.sort((chatA,chatB)=> chatB.username - chatA.username)
+    if(username){
+      state.searchChats = state.chats.filter((chat)=>chat.username.includes(username))
+      state.searchChats.sort((chatA,chatB)=> chatB.username - chatA.username)
+    }
    }
   },
 });

@@ -1,12 +1,12 @@
-import {useSelector,useDispatch} from 'react-redux'
-import { useEffect } from 'react'
+import {useDispatch} from 'react-redux'
+import { useEffect, useState } from 'react'
 import { socket } from '../socket'
 import { chatEvents, msgEvents } from '../utils/eventNames'
-import { addChats, addNewChat } from '../app/chatsSlice'
+import { addChats, addNewChat, searchChats } from '../app/chatsSlice'
 import { addMessage } from '../app/messagesSlice'
 
 const useChats =()=>{
-    const chats = useSelector((state) => state.chats.chats)
+   const [searchInput,setSearchInput]  = useState('')
     const dispatch = useDispatch()
 
     useEffect(() => {
@@ -41,6 +41,11 @@ const useChats =()=>{
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
-    return chats
+    useEffect(()=>{
+        dispatch(searchChats(searchInput))
+        
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    },[searchInput])
+    return {searchInput,setSearchInput}
 }
 export default useChats

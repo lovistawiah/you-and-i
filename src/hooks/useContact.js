@@ -3,8 +3,8 @@ import { chatEvents } from "../utils/eventNames"
 import { socket } from "../socket"
 import {useDispatch} from "react-redux"
 import {searchContacts,updateContact} from "../app/contactsSlice"
-const useContact = () =>{
 
+const useContact = () =>{
     const [searchInput,setSearchInput] = useState('')
     const dispatch = useDispatch()
     useEffect(()=>{
