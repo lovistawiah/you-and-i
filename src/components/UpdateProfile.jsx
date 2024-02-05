@@ -1,28 +1,15 @@
 import { useEffect, useState } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
 import { faArrowRight, faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useNavigate } from 'react-router-dom'
-import { updateUserInfo } from '../account/User'
+
 import InfoContainer from './InfoContainer'
-import { setUserInfo } from '../app/userSlice'
+
+import useUpdateProfile from '../hooks/useUpdateProfile'
 
 const UpdateProfile = () => {
-    const user = useSelector((state) => state.user.value)
-    const navigate = useNavigate()
-    const [personInfo, setPersonInfo] = useState(user)
     const [usernameInput, setUsernameInput] = useState("")
-    const [info, setInfo] = useState({})
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-    const dispatch = useDispatch()
+    const { windowWidth, handleUserInfo, info, setInfo, user, navigate, personInfo } = useUpdateProfile()
 
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
-        window.addEventListener('resize', handleResize);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [window.innerWidth])
     useEffect(() => {
         if (!user) {
             window.location.hash = "#!"
@@ -33,46 +20,11 @@ const UpdateProfile = () => {
     const handleUsernameInput = (e) => {
         setUsernameInput(e.target.value)
     }
+
     const goBack = () => {
         navigate('/register')
     }
 
-    const handleUserInfo = async (e) => {
-        e.preventDefault()
-        const formData = new FormData(e.target)
-        const formObj = {
-            username: formData.get('username'),
-            userId: personInfo.userId
-        }
-        if (!formObj.userId) {
-            setInfo({ type: "error", message: "Unknown error, try again" })
-            return
-        }
-        if (formObj.username.length < 5) {
-
-            setInfo({ type: "error", message: "username should be 5 characters or more" })
-            return
-        }
-
-        const userObj = await updateUserInfo(formObj)
-        if (userObj.status === 200) {
-            setPersonInfo({
-                ...personInfo,
-                username: userObj.userInfo.username
-            })
-
-            dispatch(setUserInfo({
-                ...personInfo,
-                username: userObj.userInfo.username
-            }))
-        } else {
-            setInfo({
-                type: "ok",
-                message: userObj.message
-            })
-        }
-        navigate('/')
-    }
     const inputRegex = /^[a-zA-Z0-9.@_]*$/;
     return (
         <section className="w-screen h-screen">

@@ -1,67 +1,16 @@
 import { Link } from 'react-router-dom'
-import { setChatInfo } from '../app/chatSlice'
-import { useDispatch, useSelector } from 'react-redux'
-import { useEffect, useRef, useState } from 'react'
+import { useRef } from 'react'
 import { format } from 'date-fns'
-import { socket } from '../socket'
-import { usrEvents } from '../utils/eventNames'
-import { typing } from '../app/chatsSlice'
-import { clearMessages } from '../app/messagesSlice'
+import useChat from '../hooks/useChat'
 
 const Chat = ({ chatId, userId, username, avatarUrl, lastMessage, lstMsgDate }) => {
-    const dispatch = useDispatch()
-    const isTypingObj = useSelector((state) => state.chats.typingObj)
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+    const { isTypingObj, windowWidth, handleChat } = useChat()
     const chatRef = useRef(null)
 
     let chatDate;
     if (format(lstMsgDate, 'h:mm a')) {
         chatDate = format(lstMsgDate, 'h:mm a')
     }
-
-    const handleChat = ({ userId, chatId, avatarUrl, username }) => {
-        const chatObj = {
-            userId,
-            chatId,
-            avatarUrl,
-            username,
-        }
-        dispatch(clearMessages())
-        dispatch(setChatInfo(chatObj))
-    }
-
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
-        window.addEventListener('resize', handleResize);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [window.innerWidth])
-
-    useEffect(() => {
-        let noDataTimeout;
-        function startNoDataTimer() {
-            noDataTimeout = setTimeout(() => {
-                dispatch(typing(null))
-            }, 1100)
-        }
-        socket.on(usrEvents.typing, (data) => {
-            const { chatId } = data
-            if (chatId) {
-                clearTimeout(noDataTimeout)
-                dispatch(typing(data))
-            }
-            startNoDataTimer()
-        })
-        return () => {
-            socket.off(usrEvents.typing)
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
-    // when submitted turn typing should be null 
-
     return (
 
         // add messages page if page width less than 1000

@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faComments, faGear, faUserPlus } from '@fortawesome/free-solid-svg-icons'
 import { useSelector } from "react-redux"
@@ -8,50 +7,18 @@ import Chats from './Chats'
 import Menu from './Menu'
 import WelcomePage from './WelcomePage'
 import MessagePanel from './MessagePanel'
-import { socket } from '../socket'
+import useMain from '../hooks/useMain'
 
 const MainPage = () => {
-    const [isToken, setToken] = useState(true)
-    const [errMsg, setErrMsg] = useState("")
-    const [windowWidth, setWindowWidth] = useState(window.innerWidth)
-    const [activePage, setActivePage] = useState(3)
     const userAvatar = useSelector((state) => state.user.value?.avatarUrl) ?? ""
+    const { errMsg, isToken, windowWidth, activePage, pageSelector } = useMain()
+
     const icons = [
         { iconText: "Settings", iconName: faGear },
         { iconText: "Contacts", iconName: faUserPlus },
         { iconText: "Chats", iconName: faComments },
     ]
-    const pageSelector = (e) => {
-        setActivePage(+e.target.id)
 
-    }
-    useEffect(() => {
-        socket.on('connect_error', (data) => {
-            if (data) {
-                const message = data.message
-                setErrMsg(message)
-                setToken(false)
-            } else {
-                setToken(true)
-            }
-        })
-        const handleConnect = () => {
-            setToken(true)
-        }
-        socket.on("connect", handleConnect)
-        return () => {
-            socket.off('connect_error')
-            socket.off('connect', handleConnect)
-        }
-    }, [])
-
-    useEffect(() => {
-        const handleResize = () => {
-            setWindowWidth(window.innerWidth);
-        };
-        window.addEventListener('resize', handleResize);
-
-    }, [])
     return (
         !isToken ? (
             <WelcomePage message={errMsg} />

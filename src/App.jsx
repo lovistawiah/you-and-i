@@ -4,13 +4,11 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { PersistGate } from 'redux-persist/integration/react'
 
 import { store, persistor } from './app/store'
-// import ForgotPassword from './components/ForgotPassword'
 import Login from './components/Login'
 import MainPage from './components/MainPage'
 import MessagePanel from './components/MessagePanel'
 import UpdateProfile from './components/UpdateProfile'
 import Register from './components/Register'
-// import VerifyEmail from './components/VerifyEmail'
 import "./index.css"
 import { StrictMode } from 'react'
 

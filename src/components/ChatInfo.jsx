@@ -1,31 +1,13 @@
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { useEffect } from "react"
-import { useNavigate } from 'react-router-dom'
-import { socket } from "../socket"
-import { usrEvents } from "../utils/eventNames"
-import { useSelector, useDispatch } from "react-redux"
-import { updateStatus } from "../app/chatSlice"
-const ChatInfo = ({ windowWidth, /*userId*/ }) => {
+import { useSelector } from "react-redux"
+import useChatInfo from "../hooks/useChatInfo"
+
+const ChatInfo = ({ windowWidth }) => {
     const chatInfo = useSelector((state) => state.chat.value);
     const isTypingObj = useSelector((state) => state.chats.typingObj)
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
-    const goBack = () => {
-        navigate('/')
-    }
+    const { goBack } = useChatInfo({ userId: chatInfo?.userId })
 
-    useEffect(() => {
-        socket.emit(usrEvents.status, chatInfo?.userId)
-        socket.on(usrEvents.status, (userstatsOjb) => {
-            dispatch(updateStatus(userstatsOjb))
-        })
-        return () => {
-            socket.removeListener(usrEvents.status)
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [chatInfo])
     return (
         <section className=" flex justify-between items-center w-full absolute top-0 z-10 row-span-1 bg-white pl-2 border-b py-1">
             {   //show back arrow on mobile device
