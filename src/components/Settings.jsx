@@ -30,6 +30,8 @@ const Settings = () => {
                 type: "ok",
                 message: result.message
             })
+        } else {
+            setInfo({ type: 'error', message: result.message })
         }
     }
     return (

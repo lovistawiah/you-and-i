@@ -2,7 +2,6 @@ import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { setUserInfo } from '../app/userSlice'
-
 import { login } from '../account/User'
 import Logo from '../../public/logo.png'
 import WelcomeText from './WelcomeText'
@@ -14,6 +13,7 @@ import InfoContainer from './InfoContainer'
 const Login = () => {
     const [info, setInfo] = useState({})
     const dispatch = useDispatch()
+    localStorage.clear()
 
     const saveUserInfoAndNavigate = (userObj) => {
         if (!userObj) return

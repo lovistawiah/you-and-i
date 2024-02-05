@@ -52,7 +52,6 @@ const MainPage = () => {
         window.addEventListener('resize', handleResize);
 
     }, [])
-    console.log(isToken)
     return (
         !isToken ? (
             <WelcomePage message={errMsg} />

@@ -13,20 +13,20 @@ const Chat = ({ chatId, userId, username, avatarUrl, lastMessage, lstMsgDate }) 
     const isTypingObj = useSelector((state) => state.chats.typingObj)
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const chatRef = useRef(null)
+
     let chatDate;
     if (format(lstMsgDate, 'h:mm a')) {
         chatDate = format(lstMsgDate, 'h:mm a')
     }
+
     const handleChat = ({ userId, chatId, avatarUrl, username }) => {
         const chatObj = {
             userId,
             chatId,
             avatarUrl,
             username,
-
         }
         dispatch(clearMessages())
-        dispatch(setChatInfo({}))
         dispatch(setChatInfo(chatObj))
     }
 

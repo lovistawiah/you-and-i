@@ -5,12 +5,11 @@ import { chatEvents } from '../utils/eventNames'
 import { addChats } from '../app/chatsSlice'
 
 const useChats =()=>{
-      const chats = useSelector((state) => state.chats.chats)
+    const chats = useSelector((state) => state.chats.chats)
     const dispatch = useDispatch()
 
     useEffect(() => {
         const getChatData = (chatsData) => {
-            console.log(chatsData)
             if (typeof chatsData !== 'string') {
                 dispatch(addChats(chatsData))
             }

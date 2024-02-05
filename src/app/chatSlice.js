@@ -8,6 +8,7 @@ export const chatReducer = createSlice({
   },
   reducers: {
     setChatInfo: (state, action) => {
+      state.value = {}
       state.value = action.payload;
     },
     updateStatus: (state,action) => {

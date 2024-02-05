@@ -19,7 +19,6 @@ const ChatInfo = ({ windowWidth, /*userId*/ }) => {
         socket.emit(usrEvents.status, chatInfo?.userId)
         socket.on(usrEvents.status, (userstatsOjb) => {
             dispatch(updateStatus(userstatsOjb))
-
         })
         return () => {
             socket.removeListener(usrEvents.status)

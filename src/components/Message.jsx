@@ -65,8 +65,6 @@ const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
         socket.on(msgEvents.updateMsg, (msgObj) => {
             dispatch(modifyMsg(msgObj))
             //to update the chat last message if updated message is the last message in the messages
-            // TODO: update modified message time
-            console.log(msgObj)
             const msgId = msgObj.Id
             const idx = storedMessages.findIndex((stMsg) => stMsg.Id === msgId)
 
