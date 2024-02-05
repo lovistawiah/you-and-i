@@ -25,7 +25,7 @@ const UpdateProfile = () => {
     }, [window.innerWidth])
     useEffect(() => {
         if (!user) {
-            window.location.replace('/')
+            window.location.hash = "#!"
         }
 
     }, [navigate, user])

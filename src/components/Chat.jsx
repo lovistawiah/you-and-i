@@ -43,7 +43,7 @@ const Chat = ({ chatId, userId, username, avatarUrl, lastMessage, lstMsgDate }) 
         function startNoDataTimer() {
             noDataTimeout = setTimeout(() => {
                 dispatch(typing(null))
-            }, 3000)
+            }, 1100)
         }
         socket.on(usrEvents.typing, (data) => {
             const { chatId } = data

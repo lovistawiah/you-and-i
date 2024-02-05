@@ -16,6 +16,15 @@ export const chatsReducer = createSlice({
         state.chats.push(payload);
       }
    },
+   
+   addNewChat: (state,action)=>{
+    const {payload} = action
+    console.log(payload)
+      const chatExists = state.chats.some((chat) => chat.Id=== payload.Id);
+      if (!chatExists) {
+        state.chats = [payload,...state.chats]
+      }
+   },
 
    updateLastMessage: (state,action)=>{
     const {chatId,lastMessage,msgDate} = action.payload
@@ -24,7 +33,7 @@ export const chatsReducer = createSlice({
     if(findIdx !== -1){
       state.chats[findIdx].lastMessage = lastMessage
       state.chats[findIdx].lstMsgDate  = msgDate
-      state.chats.sort((chatA,chatB)=> new Date(chatB.createdAt) - new Date(chatA.createdAt))
+      state.chats.sort((chatA,chatB)=> new Date(chatB.lstMsgDate) - new Date(chatA.lstMsgDate))
     }
    },
 
@@ -36,7 +45,7 @@ export const chatsReducer = createSlice({
  * this accepts username
  *
  */
-   searchChats: (state,action) =>{
+   searchChats: (state,action) => {
     const {payload:username} = action
     state.searchChats = state.chats.filter((chat)=>chat.username.includes(username))
     state.searchChats.sort((chatA,chatB)=> chatB.username - chatA.username)
@@ -44,5 +53,5 @@ export const chatsReducer = createSlice({
   },
 });
 
-export const {addChats,updateLastMessage ,typing,searchChats } = chatsReducer.actions;
+export const {addChats,updateLastMessage ,typing,searchChats,addNewChat } = chatsReducer.actions;
 export default chatsReducer.reducer;

@@ -13,7 +13,6 @@ const Register = () => {
     const dispatch = useDispatch()
     const [info, setInfo] = useState({})
 
-    localStorage.removeItem('persist:root')
     const saveUserInfoAndNavigate = (userObj) => {
         if (!userObj) return
         dispatch(setUserInfo(userObj))

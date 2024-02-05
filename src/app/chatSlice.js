@@ -21,6 +21,7 @@ export const chatReducer = createSlice({
     updateNewChat: (state,action)=>{
       const {chatId,userId} = action.payload
       if(state.value.userId === userId && !state.value.chatId){
+        console.log('here')
         state.value.chatId = chatId
       }
     }
