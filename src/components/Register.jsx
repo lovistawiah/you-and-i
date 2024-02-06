@@ -3,11 +3,12 @@ import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { setUserInfo } from "../app/userSlice"
 import { signUp } from '../account/User'
-import Logo from "../../public/logo.png"
 import InputForm from './InputForm'
 import WelcomeText from './WelcomeText'
 import FormButton from './FormButton'
 import InfoContainer from './InfoContainer'
+import Transition from './Transition'
+import Logo from './Logo'
 const Register = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -21,12 +22,10 @@ const Register = () => {
         navigate('/update-profile')
     }
     return (
-        <>
+        <Transition>
             <InfoContainer info={info} setInfo={setInfo} />
-            <div className='w-screen h-screen py-[23px] px-[6px] flex flex-col items-center gap-5 justify-center'>
-                <section className="w-fit">
-                    <img src={Logo} alt="logo of you and I" className='w-[60px] h-[60px] md:w-[100px] md:h-[100px]' />
-                </section>
+            <div className='w-screen h-screen py-[20px] px-[6px] flex flex-col items-center gap-1 justify-center'>
+                <Logo />
                 <WelcomeText />
                 <form
                     className='flex flex-col items-center gap-[21px]'
@@ -63,7 +62,7 @@ const Register = () => {
                     </Link>
                 </section>
             </div>
-        </>
+        </Transition>
     )
 }
 export default Register
