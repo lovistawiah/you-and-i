@@ -12,49 +12,53 @@ import InfoContainer from './InfoContainer'
 
 const Login = () => {
     const [info, setInfo] = useState({})
+    const [spin, setSpin] = useState(false)
     const dispatch = useDispatch()
-    localStorage.clear()
 
     const saveUserInfoAndNavigate = (userObj) => {
         if (!userObj) return
+        setSpin(false)
         dispatch(setUserInfo(userObj))
         window.location.replace('/')
     }
     return (
         <div className='w-screen h-screen py-[23px] px-[6px] flex flex-col items-center gap-4 justify-center'>
             <InfoContainer info={info} setInfo={setInfo} />
-            <section className="logo">
-                <img src={Logo} alt="logo of you and I" />
+            <section className="w-fit">
+                <img src={Logo} alt="logo of you and I" className='w-[60px] h-[60px] md:w-[100px] md:h-[100px]' />
             </section>
             <WelcomeText />
             <form className='flex flex-col items-center gap-[21px]'
                 onSubmit={async (e) => {
                     e.preventDefault()
+                    setInfo(true)
                     const formData = new FormData(e.target)
                     const obj = {
                         usernameEmail: formData.get('username-email'),
                         password: formData.get('password')
                     }
                     const result = await login(obj)
-                    result?.status != 200 ? setInfo({ type: 'error', message: result?.message }) : saveUserInfoAndNavigate(result.userInfo)
+                    result?.status != 200 ? () => {
+                        setInfo({ type: 'error', message: result?.message })
+                        setSpin(false)
+                    } : saveUserInfoAndNavigate(result.userInfo)
                 }}
             >
                 <InputForm
                     name={"username-email"}
                     type={"text"}
-                    placeholder={"enter username or email"}
-                    id={""}
+                    placeholder={"Username or Email"}
+                    id={"username-email"}
                 />
                 <InputForm
                     name={"password"}
-                    placeholder={"password"}
-                    id={""}
+                    placeholder={"Password"}
+                    id={"password"}
                     type={"password"}
                 />
-                <FormButton btnText={"Login"} />
+                <FormButton btnText={"Login"} spin={spin} />
             </form>
-            {/* <Link className='text-blue-500 hover:underline md:text-lg' to='/forgot-password'>Forgot Password</Link> */}
-            <section className='h-9 px-[31px] py-[9px] bg-white justify-center items-center gap-1 inline-flex text-sm md:text-lg'>
+            <section className='h-9 px-[31px] py-[9px] bg-white justify-center items-center gap-1 inline-flex text-base md:text-lg'>
                 New Account? <Link to='/register' className='text-blue-500 hover:underline'>Register</Link>
             </section>
         </div>

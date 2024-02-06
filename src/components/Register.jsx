@@ -12,24 +12,27 @@ const Register = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [info, setInfo] = useState({})
+    const [spin, setSpin] = useState(false)
 
     const saveUserInfoAndNavigate = (userObj) => {
         if (!userObj) return
+        setSpin(false)
         dispatch(setUserInfo(userObj))
         navigate('/update-profile')
     }
     return (
         <>
             <InfoContainer info={info} setInfo={setInfo} />
-            <div className='w-screen h-screen py-[23px] px-[6px] flex flex-col items-center gap-4 justify-center'>
-                <section className="logo">
-                    <img src={Logo} alt="logo of you and I" />
+            <div className='w-screen h-screen py-[23px] px-[6px] flex flex-col items-center gap-5 justify-center'>
+                <section className="w-fit">
+                    <img src={Logo} alt="logo of you and I" className='w-[60px] h-[60px] md:w-[100px] md:h-[100px]' />
                 </section>
                 <WelcomeText />
                 <form
                     className='flex flex-col items-center gap-[21px]'
                     onSubmit={async (e) => {
                         e.preventDefault()
+                        setSpin(true)
                         const formData = new FormData(e.target)
                         const formObj = {
                             username: formData.get('username'),
@@ -39,20 +42,23 @@ const Register = () => {
                         }
                         //? return userInfo or error message if status > 200
                         const result = await signUp(formObj)
-                        result.status != 200 ? setInfo({ type: "error", message: result?.message }) : saveUserInfoAndNavigate(result.userInfo)
+                        result.status != 200 ? () => {
+                            setInfo({ type: "error", message: result?.message })
+                            setSpin(false)
+                        } : saveUserInfoAndNavigate(result.userInfo)
                     }}
                 >
-                    <InputForm type={"email"} name={"email"} placeholder={"Email"} id={""}
+                    <InputForm type={"email"} name={"email"} placeholder={"Email"} id={"email"}
                     />
-                    <InputForm type={"password"} name={"password"} placeholder={"Password"} id={""}
+                    <InputForm type={"password"} name={"password"} placeholder={"Password"} id={"password"}
                     />
-                    <InputForm type={"password"} name={"confirm-password"} placeholder={"confirm password"} id={""}
+                    <InputForm type={"password"} name={"confirm-password"} placeholder={"Confirm password"} id={"confirm-password"}
                     />
-                    <FormButton btnText={"Create account"} />
+                    <FormButton btnText={"Create account"} spin={spin} />
                 </form>
-                <section className='h-9 px-[31px] py-[9px] bg-white justify-center items-center gap-1 inline-flex text-sm md:text-lg'>
+                <section className='h-9 px-[31px] py-[9px] bg-white justify-center items-center gap-1 inline-flex text-base md:text-lg'>
                     Have an Account?
-                    <Link to='/login' className='text-blue-700 hover:underline md:text-lg'>
+                    <Link to='/login' className='text-blue-600 hover:underline md:text-lg'>
                         Login
                     </Link>
                 </section>
