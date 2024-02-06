@@ -21,6 +21,10 @@ const Login = () => {
         dispatch(setUserInfo(userObj))
         window.location.replace('/')
     }
+    const errorLogger = ({ message }) => {
+        setInfo({ type: 'error', message })
+        setSpin(false)
+    }
     return (
         <Transition>
             <InfoContainer info={info} setInfo={setInfo} />
@@ -30,17 +34,14 @@ const Login = () => {
                 <form className='flex flex-col items-center gap-[21px]'
                     onSubmit={async (e) => {
                         e.preventDefault()
-                        setInfo(true)
+                        setSpin(true)
                         const formData = new FormData(e.target)
                         const obj = {
                             usernameEmail: formData.get('username-email'),
                             password: formData.get('password')
                         }
                         const result = await login(obj)
-                        result?.status != 200 ? () => {
-                            setInfo({ type: 'error', message: result?.message })
-                            setSpin(false)
-                        } : saveUserInfoAndNavigate(result.userInfo)
+                        result?.status !== 200 ? errorLogger({ message: result?.message }) : saveUserInfoAndNavigate(result.userInfo)
                     }}
                 >
                     <InputForm

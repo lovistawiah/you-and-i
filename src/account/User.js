@@ -66,8 +66,8 @@ async function login({ usernameEmail, password }) {
   } catch (err) {
    if(err instanceof AxiosError){
       const status = err.response.status
-      const {message}  = err.response.data
-       return { status, message };
+      const message  = err.response.data.message
+      return { status, message };
     }
   }
 }

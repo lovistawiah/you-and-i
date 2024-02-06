@@ -21,6 +21,10 @@ const Register = () => {
         dispatch(setUserInfo(userObj))
         navigate('/update-profile')
     }
+    const errorLogger = ({ message }) => {
+        setInfo({ type: 'error', message })
+        setSpin(false)
+    }
     return (
         <Transition>
             <InfoContainer info={info} setInfo={setInfo} />
@@ -41,10 +45,7 @@ const Register = () => {
                         }
                         //? return userInfo or error message if status > 200
                         const result = await signUp(formObj)
-                        result.status != 200 ? () => {
-                            setInfo({ type: "error", message: result?.message })
-                            setSpin(false)
-                        } : saveUserInfoAndNavigate(result.userInfo)
+                        result.status != 200 ? errorLogger({ message: result?.message }) : saveUserInfoAndNavigate(result.userInfo)
                     }}
                 >
                     <InputForm type={"email"} name={"email"} placeholder={"Email"} id={"email"}
