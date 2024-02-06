@@ -41,6 +41,8 @@ const Register = () => {
                   <li>Contains at least one special character (such as !@#$%^&*())</li>
                   </ul>`
             })
+        } else {
+            setInfo({})
         }
     }, [isValid])
     return (

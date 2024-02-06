@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import{useSelector,useDispatch} from 'react-redux'
-import {useNavigate} from 'react-router-dom'
 import {setUserInfo} from '../app/userSlice'
 import {updateUserInfo} from '../account/User'
 
@@ -8,7 +7,7 @@ const useUpdateProfile = () => {
        const [windowWidth, setWindowWidth] = useState(window.innerWidth)
         const user = useSelector((state) => state.user.value)
          const [info, setInfo] = useState({})
-    const navigate = useNavigate()
+
     const [personInfo, setPersonInfo] = useState(user)
     const dispatch = useDispatch()
    useEffect(() => {
@@ -47,15 +46,15 @@ const useUpdateProfile = () => {
                 ...personInfo,
                 username: userObj.userInfo.username
             }))
+            location.href = location.origin + '/'
         } else {
             setInfo({
                 type: "ok",
                 message: userObj.message
             })
         }
-        navigate('/')
     }
-    return {windowWidth,handleUserInfo,info,setInfo,user,navigate,personInfo}
+    return {windowWidth,handleUserInfo,info,setInfo,user,personInfo}
 }
 
 export default useUpdateProfile
