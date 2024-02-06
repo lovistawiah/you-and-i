@@ -5,10 +5,11 @@ import { setUserInfo } from '../app/userSlice'
 import { login } from '../account/User'
 import WelcomeText from './WelcomeText'
 import InputForm from './InputForm'
-import FormButton from './FormButton'
 import InfoContainer from './InfoContainer'
 import Transition from './Transition'
 import Logo from './Logo'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faCircleNotch } from '@fortawesome/free-solid-svg-icons'
 
 const Login = () => {
     const [info, setInfo] = useState({})
@@ -56,7 +57,12 @@ const Login = () => {
                         id={"password"}
                         type={"password"}
                     />
-                    <FormButton btnText={"Login"} spin={spin} />
+                    <button className={`w-[200px] h-[33px] px-3.5 py-[7px] font-rale bg-blue-500 rounded-[5px] border flex items-center justify-center text-white text-base font-normal  hover:bg-blue-600 active:bg-blue-700 outline-none  md:w-[300px] md:text-lg disabled:cursor-not-allowed`} disabled={spin}
+                    >
+                        {
+                            spin ? <><FontAwesomeIcon icon={faCircleNotch} className="animate-spin" /> <span className="pl-1">Processing...</span></> : <>Login</>
+                        }
+                    </button>
                 </form>
                 <section className='h-9 px-[31px] py-[9px] bg-white justify-center items-center gap-1 inline-flex text-base md:text-lg'>
                     New Account? <Link to='/register' className='text-blue-500 hover:underline'>Register</Link>

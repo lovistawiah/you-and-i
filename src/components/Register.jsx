@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { setUserInfo } from "../app/userSlice"
@@ -9,11 +9,14 @@ import FormButton from './FormButton'
 import InfoContainer from './InfoContainer'
 import Transition from './Transition'
 import Logo from './Logo'
+import ConfirmPassInput from './ConfirmPass'
+import PasswordInput from './PasswordInput'
 const Register = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [info, setInfo] = useState({})
     const [spin, setSpin] = useState(false)
+    const [isValid, setIsValid] = useState(true)
 
     const saveUserInfoAndNavigate = (userObj) => {
         if (!userObj) return
@@ -25,6 +28,21 @@ const Register = () => {
         setInfo({ type: 'error', message })
         setSpin(false)
     }
+    useEffect(() => {
+        if (!isValid) {
+            setInfo({
+                type: 'error',
+                message: `<ul>
+                <li>Password should:</li>
+                  <li>At least 8 characters long</li>
+                  <li>Contains at least one uppercase letter</li>
+                  <li>Contains at least one lowercase letter</li>
+                  <li>Contains at least one digit</li>
+                  <li>Contains at least one special character (such as !@#$%^&*())</li>
+                  </ul>`
+            })
+        }
+    }, [isValid])
     return (
         <Transition>
             <InfoContainer info={info} setInfo={setInfo} />
@@ -50,11 +68,9 @@ const Register = () => {
                 >
                     <InputForm type={"email"} name={"email"} placeholder={"Email"} id={"email"}
                     />
-                    <InputForm type={"password"} name={"password"} placeholder={"Password"} id={"password"}
-                    />
-                    <InputForm type={"password"} name={"confirm-password"} placeholder={"Confirm password"} id={"confirm-password"}
-                    />
-                    <FormButton btnText={"Create account"} spin={spin} />
+                    <PasswordInput isValid={isValid} setIsValid={setIsValid} key={'password'} />
+                    <ConfirmPassInput />
+                    <FormButton btnText={"Create account"} isValid={isValid} spin={spin} />
                 </form>
                 <section className='h-9 px-[31px] py-[9px] bg-white justify-center items-center gap-1 inline-flex text-base md:text-lg'>
                     Have an Account?
