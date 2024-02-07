@@ -6,7 +6,6 @@ import useMessage from "../hooks/useMessage"
 
 
 const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
-    // console.table({ message, sender, msgDate, userId, msgId, info })
     const ulRef = useRef(null)
     const msgRef = useRef(null)
     const msgIdRef = useRef(null)
