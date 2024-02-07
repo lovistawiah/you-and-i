@@ -28,7 +28,7 @@ const AnimatedPage = () => {
 
 const App = () => {
     return (
-        <div className='p-0 m-0 bg-gray-50 box-border  w-screen'>
+        <div className='p-0 m-0 bg-gray-50 box-border w-screen overflow-hidden'>
             <BrowserRouter>
                 <Provider store={store}>
                     <PersistGate loading={null} persistor={persistor} >
