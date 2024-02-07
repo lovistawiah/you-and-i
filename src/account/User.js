@@ -1,6 +1,5 @@
 import axios, { AxiosError } from "axios";
-// const baseUrl = 'https://you-and-i-6d9db751f88a.herokuapp.com/api'
-const baseUrl ="http://localhost:5000/api"
+const baseUrl = 'https://you-and-i-6d9db751f88a.herokuapp.com/api'
 async function signUp({ email, password, confirmPassword }) {
   try {
     if (!email || !password || !confirmPassword) {
