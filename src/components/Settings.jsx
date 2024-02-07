@@ -41,10 +41,10 @@ const Settings = () => {
         }
     }
     return (
-        <section className='order-2  md:border-r md:w-[40%] relative w-full'>
+        <section className='order-2  md:border-r md:w-[70%] relative w-full'>
             <InfoContainer info={info} setInfo={setInfo} />
             <PageHeader pageName={"Settings"} />
-            <section className='flex absolute items-center flex-col m-auto w-full overflow-y-auto bottom-[50px] pb-[30px] top-[89px]'>
+            <section className='flex absolute items-start flex-col m-auto w-full overflow-y-auto bottom-[50px] pb-[30px] top-[89px]'>
                 {/* profile pic */}
                 <section className='w-[200px] flex justify-center items-center self-center'>
                     <section className="relative w-[80px] h-[80px] ">
@@ -60,8 +60,8 @@ const Settings = () => {
                 </section >
 
                 {/* user information */}
-                <section className="text-center font-rale text-l font-medium pt-2 w-fit m-auto">{userInfo?.username} </section>
-                <section className="text-center font-rale text-sm font-light text-gray-500 w-fit m-auto">{userInfo?.bio} </section>
+                <section className="font-rale text-l font-medium pt-2 w-fit self-center">{userInfo?.username} </section>
+                <section className="self-center font-rale text-sm font-light text-gray-500 w-fit">{userInfo?.bio} </section>
 
                 <form className="w-full flex mt-[20px] flex-col items-center gap-4" onSubmit={handleSubmit}>
 

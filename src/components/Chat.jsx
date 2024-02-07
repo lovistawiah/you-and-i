@@ -14,7 +14,7 @@ const Chat = ({ chatId, userId, username, avatarUrl, lastMessage, lstMsgDate }) 
     return (
 
         // add messages page if page width less than 1000
-        <Link to={`/${windowWidth < 1000 ? 'messages' : ''}`} className=" w-full justify-start items-center flex " ref={chatRef} id={chatId} key={chatId} onClick={() => handleChat({ userId, chatId, avatarUrl, username })}>
+        <Link to={`/${windowWidth < 768 ? 'messages' : ''}`} className=" w-full justify-start items-center flex " ref={chatRef} id={chatId} key={chatId} onClick={() => handleChat({ userId, chatId, avatarUrl, username })}>
             <section className="w-[70px] h-[65px] p-2.5 justify-center items-center flex shrink-0">
                 <img src={avatarUrl} alt="user dp" className='rounded-full' />
             </section>

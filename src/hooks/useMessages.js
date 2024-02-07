@@ -39,7 +39,7 @@ const useMessages = ({chatId,messagesRef,userId}) => {
 
  useEffect(() => {
         const handleSendMessage = (msg) => {
-            dispatch(updateLastMessage({ chatId: msg.chatId, lastMessage: msg.message, msgDate: msg.msgDate }))
+            dispatch(updateLastMessage({ chatId: msg.chatId, lastMessage: msg.message, msgDate: msg.createdAt }))
             dispatch(addMessage(msg))
             dispatch(updateNewChat({ chatId: msg.chatId, userId }))
         }

@@ -9,6 +9,7 @@ export const messageReducer = createSlice({
     },
     reducers:{
         addMessage:(state,action)=>{
+            console.log(action.payload)
             const { payload: message } =action
             const msgExist = state.messages.some((msg)=> msg.Id === message.Id)
             if(!msgExist){

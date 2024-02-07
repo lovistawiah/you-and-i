@@ -22,35 +22,29 @@ const Messages = () => {
         return false
     }
 
-
-
-
     useEffect(() => {
         setChatInfo(info)
         datesSet.clear()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [info])
 
-
-
-
     const memoizedMessages = useMemo(
-        () => messages.map((msg) => (
+        () => messages.map((message) => (
 
             <>
                 {
-                    addDateToSet(messageHeaderDate(msg.msgDate)) &&
+                    addDateToSet(messageHeaderDate(message.createdAt)) &&
                     <MessageHeaderDate
-                        messageDate={messageHeaderDate(msg.msgDate)}
+                        messageDate={messageHeaderDate(message.createdAt)}
                     />
                 }
                 < Message
-                    key={msg.Id}
-                    msgId={msg.Id}
-                    message={msg.message}
-                    sender={msg.sender}
-                    msgDate={msg.msgDate}
-                    info={msg.info}
+                    key={message.Id}
+                    msgId={message.Id}
+                    message={message.message}
+                    sender={message.sender}
+                    msgDate={new Date(message.updatedAt) > new Date(message.createdAt) ? message.updatedAt : message.createdAt}
+                    info={message.info}
                     userId={chatInfo?.userId}
                 />
             </>

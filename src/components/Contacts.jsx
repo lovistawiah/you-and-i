@@ -42,7 +42,7 @@ const Contacts = () => {
     const cachedContacts = useMemo(() => contacts, [contacts])
 
     return (
-        <section className='order-2 w-full md:w-[40%] relative'>
+        <section className='order-2 w-full md:w-[70%] relative'>
             <PageHeader pageName={"Contacts"} />
 
             <div className="h-[70px] px-2.5 flex-col justify-center items-center flex fixed top-[59px] bg-gray-50 w-full md:relative md:top-[10px]">

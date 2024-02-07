@@ -19,8 +19,16 @@ const useChats =()=>{
         socket.emit(chatEvents.chatLastMsg, {})
         socket.on(chatEvents.chatLastMsg, getChatData)
 
-        // new chats
-        socket.on(msgEvents.newChat,(data)=>{
+        return () => {
+            socket.off(chatEvents.chatLastMsg,getChatData)
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+    
+useEffect(()=>{
+// new chats
+const newChats = (data)=>{
            const {msgObj,newChat} = data
            const chatPayload = {
             Id: newChat.Id,
@@ -28,19 +36,15 @@ const useChats =()=>{
             username: newChat.username,
             avatarUrl: newChat.avatarUrl,
             lastMessage:msgObj.message,
-            lstMsgDate: msgObj.msgDate
+            lstMsgDate: msgObj.createdAt
            }
            dispatch(addNewChat(chatPayload))
            dispatch(addMessage(msgObj))
-        })
-
-        return () => {
-            socket.off(chatEvents.chatLastMsg)
-            socket.off(msgEvents.newChat)
         }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        socket.on(msgEvents.newChat,newChats)
+        
+// eslint-disable-next-line react-hooks/exhaustive-deps
+},[])
     useEffect(()=>{
         dispatch(searchChats(searchInput))
         

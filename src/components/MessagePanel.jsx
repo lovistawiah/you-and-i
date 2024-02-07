@@ -71,9 +71,7 @@ const MessagePanel = () => {
         window.addEventListener('resize', handleResize);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [window.innerWidth])
-    useEffect(() => {
 
-    })
     const handleShowEmoji = () => {
         setShowEmojis(showEmojis ? false : true)
     }
@@ -87,6 +85,7 @@ const MessagePanel = () => {
         setMessage('')
         dispatch(cancelUpdate(true))
     }
+    
     const handleOnChange = (e) => {
         setMessage(e.target.value)
         if (message) {

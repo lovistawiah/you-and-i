@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       fontFamily: {
         rale: ["Raleway", "sans-serif"],
+        roboto: ['Roboto','sans-serif']
       },
     },
   },

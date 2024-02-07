@@ -7,10 +7,9 @@ const useMain = () => {
       const [activePage, setActivePage] = useState(3)
           const [windowWidth, setWindowWidth] = useState(window.innerWidth)
 
-            const pageSelector = (e) => {
+        const pageSelector = (e) => {
         setActivePage(+e.target.id)
-
-    }
+        }
               useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);

@@ -6,10 +6,12 @@ import { modifyMsg, updateSingleMsg } from "../app/messagesSlice"
 import { updateLastMessage } from "../app/chatsSlice"
 
 const useMessage = ({msgIdRef,msgRef,ulRef}) => {
-     const chatId = useSelector((state) => state.chat.value.chatId)
+
+const chatId = useSelector((state) => state.chat.value.chatId)
 const dispatch = useDispatch()
+    const [showOps, setShowOps] = useState(false)
+
  const storedMessages = useSelector((state) => state.messages.messages)
-  const [showOps, setShowOps] = useState(false);
    useEffect(() => {
         socket.on(msgEvents.delMsg, (msgObj) => {
             dispatch(modifyMsg(msgObj))
@@ -17,18 +19,19 @@ const dispatch = useDispatch()
             const msgId = msgObj.Id
             const idx = storedMessages.findIndex((stMsg) => stMsg.Id === msgId)
             if (idx === storedMessages.length - 1) {
-                dispatch(updateLastMessage({ chatId: msgObj.chatId, lastMessage: msgObj.message, msgDate: msgObj.msgDate }))
+                dispatch(updateLastMessage({ chatId: msgObj.chatId, lastMessage: msgObj.message, msgDate: msgObj.updatedAt }))
             }
 
         })
         socket.on(msgEvents.updateMsg, (msgObj) => {
+            console.log(msgObj)
             dispatch(modifyMsg(msgObj))
             //to update the chat last message if updated message is the last message in the messages
             const msgId = msgObj.Id
             const idx = storedMessages.findIndex((stMsg) => stMsg.Id === msgId)
 
             if (idx === storedMessages.length - 1) {
-                dispatch(updateLastMessage({ chatId: msgObj.chatId, lastMessage: msgObj.message, msgDate: msgObj.msgDate }))
+                dispatch(updateLastMessage({ chatId: msgObj.chatId, lastMessage: msgObj.message, msgDate: msgObj.updatedAt }))
             }
 
         })
@@ -38,8 +41,9 @@ const dispatch = useDispatch()
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-        useEffect(() => {
+    }, []) 
+    useEffect(() => {
+        //clear Edit and Delete container on the page is selected
         const handleClickOutside = (event) => {
             if (ulRef.current && !ulRef.current.contains(event.target)) {
                 setShowOps(false);
@@ -49,14 +53,22 @@ const dispatch = useDispatch()
         return () => {
             document.removeEventListener('mousedown', handleClickOutside);
         };
-        
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [showOps]);
-
+    })
+    //to show Edit and Delete btn
+     const handleMsgOps = () => {
+        setShowOps(true)
+    }
+    /**
+     * when clicked outside the window hide message ops
+     */
+    const onBlurOps = ()=>{
+        setShowOps(false)
+    }
     const deleteMsg = () => {
         if (!msgIdRef.current) return;
         const msgId = msgIdRef.current.id
         if (!msgId && !chatId) return
+        setShowOps(false)
         socket.emit(msgEvents.delMsg, { msgId, chatId })
     }
 
@@ -68,13 +80,12 @@ const dispatch = useDispatch()
             msgId,
             message
         }
+        setShowOps(false)
         // turns updateMsg to true
         dispatch(updateSingleMsg(msgObj))
     }
-     function handleMsgOps() {
-        setShowOps(!showOps);
-    }
-    return {deleteMsg,editMsg,handleMsgOps,showOps}
+  
+    return {deleteMsg,editMsg,showOps,handleMsgOps,onBlurOps}
 
 }
 

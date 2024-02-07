@@ -19,10 +19,9 @@ export const chatsReducer = createSlice({
    
    addNewChat: (state,action)=>{
     const {payload} = action
-    console.log(payload)
       const chatExists = state.chats.some((chat) => chat.Id=== payload.Id);
       if (!chatExists) {
-        state.chats = [payload,...state.chats]
+        state.chats = [payload,...state.chats].sort((chatA,chatB)=> new Date(chatB.lstMsgDate) - new Date(chatA.lstMsgDate))
       }
    },
 

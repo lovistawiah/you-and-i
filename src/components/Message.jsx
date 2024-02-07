@@ -1,76 +1,69 @@
-import { faEllipsisVertical, faPencil, faTrash } from "@fortawesome/free-solid-svg-icons"
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { differenceInMinutes, format, parseISO } from "date-fns"
 import { useRef } from "react"
-
-
 import useMessage from "../hooks/useMessage"
 
 
 const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
+    // console.table({ message, sender, msgDate, userId, msgId, info })
     const ulRef = useRef(null)
     const msgRef = useRef(null)
     const msgIdRef = useRef(null)
 
-    const { deleteMsg, editMsg, handleMsgOps, showOps } = useMessage({ msgIdRef, msgRef, ulRef })
+    const { deleteMsg, editMsg, handleMsgOps, showOps, onBlurOps } = useMessage({ msgIdRef, msgRef, ulRef })
 
-    let msgColor, align, opsAlign, ellipsisOrder, margin, opsPosition;
+
+    let msgColor, align, margin;
     const msgStatus = format(msgDate, 'h:mm a');
 
     if (userId !== sender) {
-        msgColor = 'bg-blue-400';
+        msgColor = 'bg-blue-500';
         align = 'self-end';
-        margin = "mr-10";
-        opsPosition = 'right-0'
+        margin = "mr-5 m-3";
     } else {
         msgColor = 'bg-gray-300';
         align = 'self-start';
-        opsAlign = "order-3";
-        ellipsisOrder = "order-2";
-        margin = 'ml-10';
-        opsPosition = 'left-0'
+        margin = 'ml-5 m-3';
     }
 
     const minDiff = differenceInMinutes(new Date(), parseISO(msgDate))
+
+
     return (
+        <section ref={msgIdRef} className={`${align} ${msgColor} relative flex flex-col font-roboto text-base ${margin} rounded-lg p-1 font-thin`} id={msgId} key={msgId}>
 
-        <section ref={msgIdRef} className={`${align} relative`} id={msgId} key={msgId}>
-            {showOps && userId !== sender && (
-                <ul ref={ulRef} className={`absolute ${opsPosition} ${opsAlign} bg-white p-2 w-fit rounded text-gray-500 z-20`} onBlur={handleMsgOps}>
-
-                    <li className={`p-1 flex justify-between w-[100px] hover:bg-gray-100 rounded items-center cursor-pointer ${minDiff > 5 ? 'hidden' : ''} `}>
-                        <button onClick={editMsg} className="p-1 flex justify-between w-full items-center outline-none">
-                            <p>Edit</p> <FontAwesomeIcon icon={faPencil} />
-                        </button>
+            {
+                showOps && <ul ref={ulRef} className={`${userId === sender ? 'hidden' : ''}  absolute bg-red-500 right-0 top-0 p-2 rounded`} onBlur={onBlurOps}>
+                    <li className={`${minDiff > 5 ? 'hidden' : ''} hover:bg-green-300 z-40`}>
+                        <button onClick={editMsg}>Edit</button>
                     </li>
-                    <li className=' w-[100px] text-red-400  hover:bg-gray-100 rounded cursor-pointer'>
-                        <button onClick={deleteMsg} className="p-1 flex justify-between w-full items-center outline-none">
-                            <p>Delete</p> <FontAwesomeIcon icon={faTrash} />
-                        </button>
+                    <li className=" hover:bg-green-300 z-40 p-1 rounded">
+                        <button onClick={deleteMsg}>Delete</button>
                     </li>
                 </ul>
-            )}
+            }
 
-            <section className={`flex items-start gap-[5px]  ${margin}`}>
-                {
-                    message === "this message was deleted" || userId !== sender && <FontAwesomeIcon
-                        icon={faEllipsisVertical}
-                        onClick={handleMsgOps}
-                        className={`${ellipsisOrder} text-gray-500 text-sm cursor-pointer`}
-                    />
-                }
-
-                <section className={`w-fit flex flex-col`}>
-                    <section ref={msgRef} className={`${msgColor}`}>{message}</section>
+            <div className="flex">
+                <div ref={msgRef} className={` max-w-[250px] md:max-w-[400px] lg:max-w-[455px] ${info == 'deleted' ? 'italic' : ''} ${sender !== userId ? 'text-gray-50' : ''}`}>
+                    {message}
+                </div>
+                <span className=" px-1 self-start text-gray-400 text-center">
                     {
-                        info == 'created' ? <p>{msgStatus}</p> : <p>
-                            {/* make italics */}
-                            <span>{info}</span>
-                            {msgStatus}
-                        </p>
+                        sender !== userId ?
+                            info !== 'deleted' ?
+
+                                <FontAwesomeIcon icon={faChevronDown} onClick={handleMsgOps} className="text-base cursor-pointer" /> : null : null
                     }
-                </section>
-            </section>
+                </span>
+            </div>
+            <div className={`self-end text-[13px]`}>
+                {
+                    info !== 'created' ?
+                        <span className="italic  font-normal">{info} {msgStatus}</span>
+                        : <span>{msgStatus}</span>
+                }
+            </div>
         </section>
     );
 };
