@@ -85,7 +85,7 @@ const MessagePanel = () => {
         setMessage('')
         dispatch(cancelUpdate(true))
     }
-    
+
     const handleOnChange = (e) => {
         setMessage(e.target.value)
         if (message) {
@@ -101,7 +101,7 @@ const MessagePanel = () => {
     }, [updateMsg, msgToBeUpdated])
     return (
         // TODO: when window width > mobile width, show chat panel and settings if message panel is active page
-        <section className="h-screen w-full grid grid-rows-4 bg-gray-100 order-2  border-green-950 md:relative">
+        <section className="h-screen w-full grid bg-gray-100 order-2 md:relative">
             {
                 !chatInfo ? <section className='absolute shadow w-[300px] h-[100px] font-rale font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[25%]'>
                     Select chat to see messages
@@ -119,7 +119,7 @@ const MessagePanel = () => {
 
 
                     <form
-                        className="bg-white flex items-end py-2 justify-center px-2 border-t " onSubmit={sendMessage}>
+                        className="bg-white row-start-6 row-end-7 col-start-1 col-end-2 flex items-end py-2 justify-center px-2 border-t " onSubmit={sendMessage}>
                         <section className='bg-blue-500 w-full p-0 m-0 relative flex'>
 
                             <TextareaAutoResize className={`resize-none md:px-9 pl-2 pr-10 py-2 text-base text-zinc-700 w-[100%] h-full active:outline-none border outline-none bg-gray-100`}
