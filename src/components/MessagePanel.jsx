@@ -125,7 +125,7 @@ const MessagePanel = () => {
 
         <section className={`w-full grid grid-rows-[50px_auto_${formHeight}px] bg-gray-100 order-2 border-green-950 md:relative`}>
             {
-                !chatInfo ? <section className='absolute shadow w-[300px] h-[100px] font-rale font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[25%]'>
+                !chatInfo ? <section className='absolute shadow w-[300px] h-[100px] font-roboto font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[25%]'>
                     Select chat to see messages
                 </section> : <>
                     <ChatInfo

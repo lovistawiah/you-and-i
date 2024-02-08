@@ -67,7 +67,7 @@ const MainPage = () => {
                                 username={chat.username}
                             />
                         )) :
-                        <section className='text-center font-rale font-bold text-lg'>
+                        <section className='text-center font-roboto font-bold text-lg'>
                             No chats found
                         </section>
                 }
