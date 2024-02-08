@@ -21,8 +21,7 @@ const MainPage = () => {
     return (
 
         <section
-
-            className="order-2 w-full md:border-r md:w-[70%] relative">
+            className="order-2 w-full md:border-r md:w-[47%] relative">
             <PageHeader pageName={"Chats"} />
 
             <div className="h-[70px] px-2.5 flex-col justify-center items-center flex fixed top-[59px] bg-gray-50 w-full md:relative md:top-[10px]">

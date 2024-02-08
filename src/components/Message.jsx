@@ -44,7 +44,7 @@ const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
             }
 
             <div className="flex">
-                <div ref={msgRef} className={` max-w-[250px] md:max-w-[400px] lg:max-w-[455px] ${info == 'deleted' ? 'italic' : ''} ${sender !== userId ? 'text-gray-50' : ''}`}>
+                <div ref={msgRef} className={` max-w-[250px] md:max-w-[400px] lg:max-w-[455px] break-all ${info == 'deleted' ? 'italic' : ''} ${sender !== userId ? 'text-gray-50' : ''}`}>
                     {message}
                 </div>
                 <span className=" px-1 self-start text-gray-400 text-center">
