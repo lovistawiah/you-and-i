@@ -9,7 +9,7 @@ const ChatInfo = ({ windowWidth }) => {
     const { goBack } = useChatInfo({ userId: chatInfo?.userId })
 
     return (
-        <section className=" flex justify-between items-center w-full row-start-1 row-end-1 col-start-1 col-end-2 row-span-1 bg-white pl-2 border-b py-1">
+        <section className=" flex justify-between items-center w-full row-start-1 col-start-1 col-end-2 h-[50px] bg-white pl-2 border-b py-1">
             {   //show back arrow on mobile device
                 windowWidth < 768 && <FontAwesomeIcon icon={faChevronLeft} className="cursor-pointer hover:bg-gray-100 hover:rounded-full p-2 m-2" onClick={goBack} />
             }

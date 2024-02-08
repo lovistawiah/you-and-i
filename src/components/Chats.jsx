@@ -37,9 +37,9 @@ const MainPage = () => {
                     }
                     <input
                         type="text"
-                        name=""
+                        name="search"
                         placeholder="Search"
-                        id=""
+                        id="search"
                         className="w-full h-9 pl-6 bg-white border-b-[1px] border-zinc-500 justify-start items-center gap-1.5 inline-flex outline-none text-base font-normal"
                         value={searchInput}
                         onChange={handleSearch}
