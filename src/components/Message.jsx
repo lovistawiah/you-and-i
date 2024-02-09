@@ -17,34 +17,36 @@ const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
     const msgStatus = format(msgDate, 'h:mm a');
 
     if (userId !== sender) {
-        msgColor = 'bg-blue-500';
+        msgColor = 'bg-blue-600/100';
         align = 'self-end';
         margin = "mr-5 m-3";
     } else {
-        msgColor = 'bg-gray-300';
+        msgColor = 'bg-gray-200';
         align = 'self-start';
         margin = 'ml-5 m-3';
     }
 
     const minDiff = differenceInMinutes(new Date(), parseISO(msgDate))
 
-
     return (
         <section ref={msgIdRef} className={`${align} ${msgColor} relative flex flex-col font-roboto text-base ${margin} rounded-lg p-1 font-thin`} id={msgId} key={msgId}>
 
             {
-                showOps && <ul ref={ulRef} className={`${userId === sender ? 'hidden' : ''}  absolute bg-red-500 right-0 top-0 p-2 rounded`} onBlur={onBlurOps}>
-                    <li className={`${minDiff > 5 ? 'hidden' : ''} hover:bg-green-300 z-40`}>
+                showOps && <ul
+                    ref={ulRef} className={`${userId === sender ? 'hidden' : ''}  absolute bg-gray-400 right-[10px] top-[-40px] p-2 text-white rounded`} onBlur={onBlurOps}>
+                    <li className={`${minDiff > 5 ? 'hidden' : ''} hover:bg-gray-500 z-40`}>
                         <button onClick={editMsg}>Edit</button>
                     </li>
-                    <li className=" hover:bg-green-300 z-40 p-1 rounded">
+
+                    <li className=" hover:bg-gray-500 z-40 p-1 rounded">
                         <button onClick={deleteMsg}>Delete</button>
                     </li>
                 </ul>
             }
 
+
             <div className="flex">
-                <div ref={msgRef} className={` max-w-[250px] md:max-w-[400px] lg:max-w-[455px] break-all ${info == 'deleted' ? 'italic' : ''} ${sender !== userId ? 'text-gray-50' : ''}`}>
+                <div ref={msgRef} className={` max-w-[250px] md:max-w-[400px] lg:max-w-[455px] break-all ${info === 'deleted' ? 'italic font-rale' : ''} ${sender !== userId ? 'text-white' : ''}`}>
                     {message}
                 </div>
                 <span className=" px-1 self-start text-gray-400 text-center">
@@ -52,14 +54,14 @@ const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
                         sender !== userId ?
                             info !== 'deleted' ?
 
-                                <FontAwesomeIcon icon={faChevronDown} onClick={handleMsgOps} className="text-base cursor-pointer" /> : null : null
+                                <FontAwesomeIcon icon={faChevronDown} onClick={handleMsgOps} className="text-base text-gray-200 cursor-pointer" /> : null : null
                     }
                 </span>
             </div>
-            <div className={`self-end text-[13px]`}>
+            <div className={`self-end text-[12px] ${userId !== sender ? 'text-gray-200' : 'text-gray-500'}`}>
                 {
                     info !== 'created' ?
-                        <span className="italic  font-normal">{info} {msgStatus}</span>
+                        <span className="italic  font-light font-rale">{info} {msgStatus}</span>
                         : <span>{msgStatus}</span>
                 }
             </div>
