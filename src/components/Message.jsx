@@ -33,12 +33,12 @@ const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
 
             {
                 showOps && <ul
-                    ref={ulRef} className={`${userId === sender ? 'hidden' : ''}  absolute bg-gray-400 right-[10px] top-[-40px] p-2 text-white rounded`} onBlur={onBlurOps}>
-                    <li className={`${minDiff > 5 ? 'hidden' : ''} hover:bg-gray-500 z-40`}>
+                    ref={ulRef} className={`${userId === sender ? 'hidden' : ''}  absolute bg-blue-900 right-[0px] top-[-30px] w-[70px] h-fit text-white rounded-[2px] text-center font-roboto`} onBlur={onBlurOps}>
+                    <li className={`${minDiff > 5 ? 'hidden' : ''} hover:bg-blue-950 z-40 p-2 w-full`}>
                         <button onClick={editMsg}>Edit</button>
                     </li>
 
-                    <li className=" hover:bg-gray-500 z-40 p-1 rounded">
+                    <li className=" hover:bg-blue-950 z-40 p-2 w-full">
                         <button onClick={deleteMsg}>Delete</button>
                     </li>
                 </ul>
