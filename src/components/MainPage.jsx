@@ -10,7 +10,7 @@ import useMain from '../hooks/useMain'
 
 const MainPage = () => {
     const userAvatar = useSelector((state) => state.user.value?.avatarUrl) ?? ""
-    const { errMsg, isToken, windowWidth, activePage, pageSelector } = useMain()
+    const { errMsg, isToken, windowWidth, windowHeight, activePage, pageSelector } = useMain()
 
 
     return (
@@ -18,13 +18,13 @@ const MainPage = () => {
             <WelcomePage message={errMsg} />
         ) : (
             <section className="relative w-screen h-screen md:flex md:flex-row flex">
-                {activePage === 1 && <Settings />}
-                {activePage === 2 && <Contacts />}
-                {activePage === 3 && <Chats />}
+                {activePage === 1 && <Settings windowHeight={windowHeight} />}
+                {activePage === 2 && <Contacts windowHeight={windowHeight} />}
+                {activePage === 3 && <Chats windowHeight={windowHeight} />}
                 <Menu pageSelector={pageSelector} userAvatar={userAvatar} windowWidth={windowWidth} />
                 {
                     windowWidth > 768 ? (
-                        <MessagePanel />
+                        <MessagePanel windowHeight={windowHeight} />
                     ) : null
                 }
             </section>
