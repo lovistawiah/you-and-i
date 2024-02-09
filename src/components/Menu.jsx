@@ -14,7 +14,7 @@ const Menu = ({ pageSelector, windowWidth, userAvatar }) => {
             {
                 icons.map(({ iconName, iconText }, i) => (
                     // added one to id to make number more understandable
-                    <button className={`flex p-1 flex-col text-zinc-600 font-rale font-normal md:justify-center md:my-2 md:items-center ${iconText === "Chats" ? 'md:order-1' : iconText === 'Contacts' ? 'md:order-2' : 'md:order-3'} text-base focus:text-blue-500`} key={i} onClick={pageSelector} id={i + 1}>
+                    <button className={`flex p-1 flex-col text-zinc-600 font-roboto font-normal md:justify-center md:my-2 md:items-center ${iconText === "Chats" ? 'md:order-1' : iconText === 'Contacts' ? 'md:order-2' : 'md:order-3'} text-base focus:text-blue-500`} key={i} onClick={pageSelector} id={i + 1}>
                         <FontAwesomeIcon icon={iconName} className='pointer-events-none self-center' />
                         {iconText}
                     </button>

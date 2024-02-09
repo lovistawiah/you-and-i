@@ -2,7 +2,7 @@ import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { faFaceSmile, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import TextareaAutoResize from 'react-textarea-autosize'
 import { socket } from '../socket'
@@ -21,6 +21,9 @@ const MessagePanel = () => {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [showEmojis, setShowEmojis] = useState(false)
     const [message, setMessage] = useState('')
+    const [formHeight, setFormHeight] = useState(59)
+    const formRef = useRef(null)
+    const textAreaRef = useRef(null)
 
 
     const submitForm = (e) => {
@@ -62,6 +65,7 @@ const MessagePanel = () => {
 
     const sendMessage = (e) => {
         submitForm(e)
+
     }
 
     useEffect(() => {
@@ -93,6 +97,23 @@ const MessagePanel = () => {
         }
     }
 
+
+
+    useEffect(() => {
+        if (formRef.current) {
+            setFormHeight(+formRef.current.clientHeight)
+        }
+    }, [message])
+
+    useEffect(() => {
+        setMessage('')
+        if (formRef.current) {
+            setFormHeight(+formRef.current.clientHeight)
+        }
+    }, [chatInfo])
+    useEffect(() => {
+        setFormHeight(59)
+    }, [])
     useEffect(() => {
         if (updateMsg && msgToBeUpdated) {
             const message = msgToBeUpdated.message
@@ -101,9 +122,10 @@ const MessagePanel = () => {
     }, [updateMsg, msgToBeUpdated])
     return (
         // TODO: when window width > mobile width, show chat panel and settings if message panel is active page
-        <section className="h-screen w-full grid bg-gray-100 order-2 md:relative">
+        // grid minmax(auto,max-content) 
+        <section className={`w-full h-screen grid grid-rows-[50px_auto_minmax(auto,max-content)] bg-gray-100 order-2 md:relative`}>
             {
-                !chatInfo ? <section className='absolute shadow w-[300px] h-[100px] font-rale font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[25%]'>
+                !chatInfo ? <section className='absolute shadow w-[300px] h-[100px] font-roboto font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[25%]'>
                     Select chat to see messages
                 </section> : <>
                     <ChatInfo
@@ -112,22 +134,25 @@ const MessagePanel = () => {
                     />
                     <Messages />
                     {
-                        showEmojis && <section className={`absolute z-50 bottom-[90px] right-12`}>
+                        showEmojis && <section className={`absolute z-50 bottom-[${formHeight + 5}px] right-12`}>
                             <Picker data={data} onEmojiSelect={getEmoji} emojiSize={18} previewPosition={"none"} theme={"light"} />
                         </section>
                     }
 
 
-                    <form
-                        className="bg-white row-start-6 row-end-7 col-start-1 col-end-2 flex items-end py-2 justify-center px-2 border-t " onSubmit={sendMessage}>
-                        <section className='bg-blue-500 w-full p-0 m-0 relative flex'>
+                    <form ref={formRef}
+                        className={`flex items-end py-2 justify-center px-2 border-t `} onSubmit={sendMessage}>
 
-                            <TextareaAutoResize className={`resize-none md:px-9 pl-2 pr-10 py-2 text-base text-zinc-700 w-[100%] h-full active:outline-none border outline-none bg-gray-100`}
+                        <section className='w-full p-0 m-0 relative flex'>
+
+                            <TextareaAutoResize className={`resize-none md:px-9 pl-2 pr-10 py-2 text-base text-zinc-700 w-full active:outline-none border outline-none bg-gray-100`}
                                 value={message}
                                 maxRows={3}
                                 onChange={handleOnChange}
                                 onKeyDown={onKeyDown}
                                 placeholder='Write a message...'
+                                ref={textAreaRef}
+                                id='textarea'
                             />
                             {
                                 windowWidth > 1000 && <FontAwesomeIcon icon={faFaceSmile} className='absolute right-4 bottom-3 text-gray-400 cursor-pointer' onClick={handleShowEmoji} />

@@ -14,7 +14,7 @@ const Chat = ({ chatId, userId, username, avatarUrl, lastMessage, lstMsgDate }) 
     return (
 
         // add messages page if page width less than 1000
-        <Link to={`/${windowWidth < 768 ? 'messages' : ''}`} className=" w-full justify-start items-center flex " ref={chatRef} id={chatId} key={chatId} onClick={() => handleChat({ userId, chatId, avatarUrl, username })}>
+        <Link to={`/${windowWidth < 768 ? 'messages' : ''}`} className=" w-full justify-start items-center flex h-[70px]" ref={chatRef} id={chatId} key={chatId} onClick={() => handleChat({ userId, chatId, avatarUrl, username })}>
             <section className="w-[70px] h-[65px] p-2.5 justify-center items-center flex shrink-0">
                 <img src={avatarUrl} alt="user dp" className='rounded-full' />
             </section>
@@ -30,9 +30,9 @@ const Chat = ({ chatId, userId, username, avatarUrl, lastMessage, lstMsgDate }) 
                 </section>
 
                 {/* last message */}
-                <section className="text-neutral-400 text-sm font-normal line-clamp-1 text-ellipsis w-full flex-grow basis-0 pt-[4px] pr-0 pb-[20px] pl-1">
+                <section className="text-neutral-400 text-sm font-normal line-clamp-1 text-ellipsis w-full flex-grow basis-0 pt-[4px] pr-0 pb-[20px] pl-1 break-all">
                     {
-                        isTypingObj && isTypingObj.chatId === chatId ? <span>typing...</span> : <>{lastMessage}</>
+                        isTypingObj && isTypingObj.chatId === chatId ? <span className='tiea'>typing...</span> : <>{lastMessage}</>
                     }
                 </section>
             </section>

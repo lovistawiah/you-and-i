@@ -19,7 +19,7 @@ const rootReducer = combineReducers({
 const persistConfig = {
     key: "root",
     storage,
-    whitelist:['user','messages']
+    whitelist:['user','messages','chats','contacts']
 }
 const persistedReducer = persistReducer(persistConfig,rootReducer)
 

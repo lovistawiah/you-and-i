@@ -54,9 +54,9 @@ const Messages = () => {
     );
 
     return (
-        <section ref={messagesRef} className="flex w-full overflow-y-auto py-2 row-start-2 row-end-6 col-span-1 col-start-1 col-end-2 flex-col">
+        <section ref={messagesRef} className="flex w-full overflow-y-auto py-2 flex-col h-full">
             {
-                messages.length < 1 ? <section className='absolute shadow w-[300px] h-[100px] font-rale font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[15%]'>
+                messages.length < 1 ? <section className='absolute shadow w-[300px] h-[100px] font-roboto font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[15%]'>
                     No Messages found
                 </section> : memoizedMessages
             }

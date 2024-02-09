@@ -21,8 +21,7 @@ const MainPage = () => {
     return (
 
         <section
-
-            className="order-2 w-full md:border-r md:w-[70%] relative">
+            className="order-2 w-full md:border-r md:w-[47%] relative">
             <PageHeader pageName={"Chats"} />
 
             <div className="h-[70px] px-2.5 flex-col justify-center items-center flex fixed top-[59px] bg-gray-50 w-full md:relative md:top-[10px]">
@@ -37,9 +36,9 @@ const MainPage = () => {
                     }
                     <input
                         type="text"
-                        name=""
+                        name="search"
                         placeholder="Search"
-                        id=""
+                        id="search"
                         className="w-full h-9 pl-6 bg-white border-b-[1px] border-zinc-500 justify-start items-center gap-1.5 inline-flex outline-none text-base font-normal"
                         value={searchInput}
                         onChange={handleSearch}
@@ -68,7 +67,7 @@ const MainPage = () => {
                                 username={chat.username}
                             />
                         )) :
-                        <section className='text-center font-rale font-bold text-lg'>
+                        <section className='text-center font-roboto font-bold text-lg'>
                             No chats found
                         </section>
                 }
