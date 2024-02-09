@@ -6,16 +6,22 @@ const useMain = () => {
       const [isToken, setToken] = useState(true)
       const [activePage, setActivePage] = useState(3)
           const [windowWidth, setWindowWidth] = useState(window.innerWidth)
+          const [windowHeight,setWindowHeight] = useState(window.innerHeight)
 
         const pageSelector = (e) => {
         setActivePage(+e.target.id)
         }
-              useEffect(() => {
+
+        useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
+            setWindowHeight(window.innerHeight)
         };
-        window.addEventListener('resize', handleResize);
 
+        window.addEventListener('resize', handleResize);
+        return ()=>{
+            window.removeEventListener('resize',handleResize)
+        }
     }, [])
 useEffect(() => {
         socket.on('connect_error', (data) => {
@@ -36,7 +42,7 @@ useEffect(() => {
             socket.off('connect', handleConnect)
         }
     }, [])
-    return {errMsg,isToken,windowWidth,activePage,pageSelector}
+    return {errMsg,isToken,windowWidth,activePage,pageSelector,windowHeight}
 }
 
 export default useMain

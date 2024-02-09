@@ -4,8 +4,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useSelector } from 'react-redux'
 import { userSettings } from '../account/User';
 import { useState } from 'react';
+import { persistor } from '../app/store'
 import InfoContainer from './InfoContainer';
-const Settings = () => {
+const Settings = ({ windowHeight }) => {
     const [info, setInfo] = useState({})
     const userInfo = useSelector((state) => state.user.value)
     const [usernameInput, setUsernameInput] = useState("")
@@ -40,13 +41,22 @@ const Settings = () => {
             setInfo({ type: 'error', message: result.message })
         }
     }
+    const handleLogout = async () => {
+        await persistor.purge()
+        localStorage.clear()
+        location.href = location.origin + '/login'
+    }
     return (
-        <section className='order-2  md:border-r md:w-[70%] relative w-full'>
+        <section className={`order-2 h-[${windowHeight}px] md:border-r md:w-[55%] relative w-full`}>
             <InfoContainer info={info} setInfo={setInfo} />
             <PageHeader pageName={"Settings"} />
             <section className='flex absolute items-start flex-col m-auto w-full overflow-y-auto bottom-[50px] pb-[30px] top-[89px]'>
                 {/* profile pic */}
-                <button className='self-end border p-1 bg-red-50 text-red-700 mr-8 cursor-pointer rounded hover:bg-red-200 font-roboto'>Log out</button>
+
+                <button className='self-end border p-1 bg-red-50 text-red-700 mr-8 cursor-pointer rounded hover:bg-red-200 font-roboto' onClick={handleLogout}>
+                    Log out
+                </button>
+
                 <section className='w-[200px] flex justify-center items-center self-center'>
                     <section className="relative w-[80px] h-[80px] ">
                         <img src={userInfo?.avatarUrl} alt="" className='rounded-full object-contain border-[3px] border-blue-200 w-full h-full' />

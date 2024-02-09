@@ -9,7 +9,7 @@ import useContact from '../hooks/useContact'
 import { clearMessages } from '../app/messagesSlice'
 
 
-const Contacts = () => {
+const Contacts = ({ windowHeight }) => {
     const dispatch = useDispatch()
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const { searchInput, setSearchInput } = useContact()
@@ -42,7 +42,7 @@ const Contacts = () => {
     const cachedContacts = useMemo(() => contacts, [contacts])
 
     return (
-        <section className='order-2 w-full md:w-[70%] relative'>
+        <section className={`order-2 w-full md:w-[55%] h-[${windowHeight}px] relative`}>
             <PageHeader pageName={"Contacts"} />
 
             <div className="h-[70px] px-2.5 flex-col justify-center items-center flex fixed top-[59px] bg-gray-50 w-full md:relative md:top-[10px]">

@@ -48,7 +48,7 @@ const Register = () => {
     return (
         <Transition>
             <InfoContainer info={info} setInfo={setInfo} />
-            <div className='w-screen h-screen py-[20px] px-[6px] flex flex-col items-center gap-1 justify-center'>
+            <div className={`w-screen h-screen py-[20px] px-[6px] flex flex-col items-center gap-1 justify-center`}>
                 <Logo />
                 <WelcomeText />
                 <form

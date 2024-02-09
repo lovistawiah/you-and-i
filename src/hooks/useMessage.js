@@ -24,7 +24,6 @@ const dispatch = useDispatch()
 
         })
         socket.on(msgEvents.updateMsg, (msgObj) => {
-            console.log(msgObj)
             dispatch(modifyMsg(msgObj))
             //to update the chat last message if updated message is the last message in the messages
             const msgId = msgObj.Id

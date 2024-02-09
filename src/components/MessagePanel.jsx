@@ -12,7 +12,7 @@ import Messages from './Messages'
 import { cancelUpdate } from '../app/messagesSlice'
 
 
-const MessagePanel = () => {
+const MessagePanel = ({ windowHeight }) => {
     const chatInfo = useSelector((state) => state.chat.value);
     const msgToBeUpdated = useSelector((state) => state.messages.msgToBeUpdated)
     // ? a boolean to toggle the cancel button when updating
@@ -123,7 +123,7 @@ const MessagePanel = () => {
     return (
         // TODO: when window width > mobile width, show chat panel and settings if message panel is active page
         // grid minmax(auto,max-content) 
-        <section className={`w-full h-screen grid grid-rows-[50px_auto_minmax(auto,max-content)] bg-gray-100 order-2 md:relative`}>
+        <section className={`w-full h-[${windowHeight}px] grid grid-rows-[50px_auto_minmax(auto,max-content)] bg-gray-100 order-2 md:relative`}>
             {
                 !chatInfo ? <section className='absolute shadow w-[300px] h-[100px] font-roboto font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[25%]'>
                     Select chat to see messages
