@@ -29,7 +29,11 @@ const Login = () => {
     }
 
     useEffect(() => {
-        persistor.purge()
+        const handleLogout = async () => {
+            await persistor.purge()
+            localStorage.clear()
+        }
+        handleLogout()
     }, [])
     return (
         <Transition>

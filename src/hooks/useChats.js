@@ -4,6 +4,7 @@ import { socket } from '../socket'
 import { chatEvents, msgEvents } from '../utils/eventNames'
 import { addChats, addNewChat, searchChats } from '../app/chatsSlice'
 import { addMessage } from '../app/messagesSlice'
+import { updateContact } from '../app/contactsSlice'
 
 const useChats =()=>{
    const [searchInput,setSearchInput]  = useState('')
@@ -38,9 +39,15 @@ const newChats = (data)=>{
             lastMessage:msgObj.message,
             lstMsgDate: msgObj.createdAt
            }
+
            dispatch(addNewChat(chatPayload))
            dispatch(addMessage(msgObj))
-        }
+          
+           dispatch(updateContact({
+            Id: newChat.userId,
+            chatId: newChat.Id
+           }))
+         }
         socket.on(msgEvents.newChat,newChats)
         
 // eslint-disable-next-line react-hooks/exhaustive-deps

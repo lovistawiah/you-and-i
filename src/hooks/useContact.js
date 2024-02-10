@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { chatEvents } from "../utils/eventNames"
 import { socket } from "../socket"
 import {useDispatch} from "react-redux"
-import {searchContacts,updateContact} from "../app/contactsSlice"
+import {searchContacts,addContact} from "../app/contactsSlice"
 
 const useContact = () =>{
     const [searchInput,setSearchInput] = useState('')
@@ -14,7 +14,7 @@ const useContact = () =>{
 
     useEffect(()=>{
         const getChats = (data) => {
-            dispatch(updateContact(data)) //data is {_id,username,avatarUrl}
+            dispatch(addContact(data)) //data is {_id,username,avatarUrl}
         };
 
         socket.emit(chatEvents.contacts,{})

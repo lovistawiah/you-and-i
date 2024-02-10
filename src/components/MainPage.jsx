@@ -12,7 +12,6 @@ const MainPage = () => {
     const userAvatar = useSelector((state) => state.user.value?.avatarUrl) ?? ""
     const { errMsg, isToken, windowWidth, windowHeight, activePage, pageSelector } = useMain()
 
-
     return (
         !isToken ? (
             <WelcomePage message={errMsg} />
@@ -24,7 +23,7 @@ const MainPage = () => {
                 <Menu pageSelector={pageSelector} userAvatar={userAvatar} windowWidth={windowWidth} />
                 {
                     windowWidth > 768 ? (
-                        <MessagePanel windowHeight={windowHeight} />
+                        <MessagePanel />
                     ) : null
                 }
             </section>
