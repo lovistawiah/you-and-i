@@ -11,6 +11,7 @@ import Transition from './Transition'
 import Logo from './Logo'
 import ConfirmPassInput from './ConfirmPass'
 import PasswordInput from './PasswordInput'
+import { persistor } from '../app/store'
 const Register = () => {
     const navigate = useNavigate()
     const dispatch = useDispatch()
@@ -28,6 +29,13 @@ const Register = () => {
         setInfo({ type: 'error', message })
         setSpin(false)
     }
+    useEffect(() => {
+        const handleLogout = async () => {
+            await persistor.purge()
+            localStorage.clear()
+        }
+        handleLogout()
+    }, [])
     useEffect(() => {
         if (!isValid) {
             setInfo({

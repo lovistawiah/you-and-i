@@ -77,7 +77,7 @@ const Contacts = ({ windowHeight }) => {
             <section className='overflow-y-auto mt-[129px] absolute top-2 bottom-[56px] left-0 right-0 w-full md:bottom-1'>
                 {
                     cachedContacts?.map((contact) => (
-                        <Link to={`/${windowWidth < 768 ? 'messages' : ''}`} onClick={() => handleUserInfo({ userId: contact._id, username: contact.username, avatarUrl: contact.avatarUrl, status: contact.status, chatId: contact?.chatId })} className="w-full justify-start items-center flex" key={contact._id} >
+                        <Link to={`/${windowWidth < 768 ? 'messages' : ''}`} onClick={() => handleUserInfo({ userId: contact.Id, username: contact.username, avatarUrl: contact.avatarUrl, status: contact.status, chatId: contact?.chatId })} className="w-full justify-start items-center flex" key={contact.Id} >
                             <section className="w-[70px] h-[65px] p-2.5 justify-center items-center flex shrink-0">
                                 <img src={contact.avatarUrl} alt="user profile" className='rounded-full' />
                             </section>

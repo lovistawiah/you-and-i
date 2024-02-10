@@ -23,6 +23,7 @@ const useMain = () => {
             window.removeEventListener('resize',handleResize)
         }
     }, [])
+    
 useEffect(() => {
         socket.on('connect_error', (data) => {
             if (data) {

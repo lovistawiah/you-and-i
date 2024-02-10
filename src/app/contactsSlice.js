@@ -14,15 +14,22 @@ export const contactsReducer = createSlice({
       }
 
     },
-    updateContact: (state, action) => {
+    addContact: (state, action) => {
       const { payload } = action;
-      const chatExists = state.contacts.some((chat) => chat._id === payload._id);
-      if (!chatExists) {
+      const contactExist = state.contacts.some((chat) => chat.Id === payload.Id);
+      if (!contactExist) {
         state.contacts.push(payload);
       }
     },
+    updateContact: (state,action)=>{
+      const {payload: contactObj} = action
+      const idx = state.contacts.findIndex((contact)=>contact.Id === contactObj.Id)
+      if(idx !== -1){
+          state.contacts[idx]['chatId'] = contactObj.chatId
+      }
+    }
   },
 });
 
-export const { searchContacts, updateContact } = contactsReducer.actions;
+export const { searchContacts, addContact,updateContact} = contactsReducer.actions;
 export default contactsReducer.reducer;

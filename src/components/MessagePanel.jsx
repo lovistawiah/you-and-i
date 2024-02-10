@@ -2,7 +2,7 @@ import data from '@emoji-mart/data'
 import Picker from '@emoji-mart/react'
 import { faFaceSmile, faPaperPlane } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import TextareaAutoResize from 'react-textarea-autosize'
 import { socket } from '../socket'
@@ -12,8 +12,9 @@ import Messages from './Messages'
 import { cancelUpdate } from '../app/messagesSlice'
 
 
-const MessagePanel = ({ windowHeight }) => {
+const MessagePanel = () => {
     const chatInfo = useSelector((state) => state.chat.value);
+    const [windowHeight, setWindowHeight] = useState(window.innerHeight)
     const msgToBeUpdated = useSelector((state) => state.messages.msgToBeUpdated)
     // ? a boolean to toggle the cancel button when updating
     const updateMsg = useSelector((state) => state.messages.updateMsg)
@@ -21,9 +22,6 @@ const MessagePanel = ({ windowHeight }) => {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [showEmojis, setShowEmojis] = useState(false)
     const [message, setMessage] = useState('')
-    const [formHeight, setFormHeight] = useState(59)
-    const formRef = useRef(null)
-    const textAreaRef = useRef(null)
 
 
     const submitForm = (e) => {
@@ -97,23 +95,16 @@ const MessagePanel = ({ windowHeight }) => {
         }
     }
 
-
-
     useEffect(() => {
-        if (formRef.current) {
-            setFormHeight(+formRef.current.clientHeight)
+        const handleResize = () => {
+            setWindowHeight(window.innerHeight)
+        };
+        window.addEventListener('resize', handleResize);
+        return () => {
+            window.removeEventListener('resize', handleResize)
         }
-    }, [message])
-
-    useEffect(() => {
-        setMessage('')
-        if (formRef.current) {
-            setFormHeight(+formRef.current.clientHeight)
-        }
-    }, [chatInfo])
-    useEffect(() => {
-        setFormHeight(59)
     }, [])
+
     useEffect(() => {
         if (updateMsg && msgToBeUpdated) {
             const message = msgToBeUpdated.message
@@ -123,7 +114,7 @@ const MessagePanel = ({ windowHeight }) => {
     return (
         // TODO: when window width > mobile width, show chat panel and settings if message panel is active page
         // grid minmax(auto,max-content) 
-        <section className={`w-full h-[${windowHeight}px] grid grid-rows-[50px_auto_minmax(auto,max-content)] bg-gray-100 order-2 md:relative`}>
+        <section className={`w-full md:h-[${windowHeight}px] h-screen grid grid-rows-[50px_auto_minmax(auto,max-content)] bg-gray-100 md:order-2 md:relative`}>
             {
                 !chatInfo ? <section className='absolute shadow w-[300px] h-[100px] font-roboto font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[25%]'>
                     Select chat to see messages
@@ -134,13 +125,13 @@ const MessagePanel = ({ windowHeight }) => {
                     />
                     <Messages />
                     {
-                        showEmojis && <section className={`absolute z-50 bottom-[${formHeight + 5}px] right-12`}>
+                        showEmojis && <section className={`absolute z-50 right-12`}>
                             <Picker data={data} onEmojiSelect={getEmoji} emojiSize={18} previewPosition={"none"} theme={"light"} />
                         </section>
                     }
 
 
-                    <form ref={formRef}
+                    <form
                         className={`flex items-end py-2 justify-center px-2 border-t `} onSubmit={sendMessage}>
 
                         <section className='w-full p-0 m-0 relative flex'>
@@ -151,7 +142,6 @@ const MessagePanel = ({ windowHeight }) => {
                                 onChange={handleOnChange}
                                 onKeyDown={onKeyDown}
                                 placeholder='Write a message...'
-                                ref={textAreaRef}
                                 id='textarea'
                             />
                             {

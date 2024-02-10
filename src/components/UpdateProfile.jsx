@@ -5,6 +5,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import InfoContainer from './InfoContainer'
 import Transition from './Transition'
 import useUpdateProfile from '../hooks/useUpdateProfile'
+import { useEffect } from 'react'
+import { persistor } from '../app/store'
 
 const UpdateProfile = () => {
     const [usernameInput, setUsernameInput] = useState("")
@@ -13,7 +15,13 @@ const UpdateProfile = () => {
     const handleUsernameInput = (e) => {
         setUsernameInput(e.target.value)
     }
-
+    useEffect(() => {
+        const handleLogout = async () => {
+            await persistor.purge()
+            localStorage.clear()
+        }
+        handleLogout()
+    }, [])
     const goBack = () => {
         navigate('/register')
     }
