@@ -41,12 +41,12 @@ const Register = () => {
             setInfo({
                 type: 'error',
                 message: `<ul>
-                <li>Password should:</li>
-                  <li>At least 8 characters long</li>
-                  <li>Contains at least one uppercase letter</li>
-                  <li>Contains at least one lowercase letter</li>
-                  <li>Contains at least one digit</li>
-                  <li>Contains at least one special character (such as @$!%*?&,+><)</li>
+                <li class="text-lg mb-1 text-red-500">Password should:</li>
+                  <li>At least contain 8 characters long</li>
+                  <li>Contain at least one uppercase letter</li>
+                  <li>Contain at least one lowercase letter</li>
+                  <li>Contain at least one digit</li>
+                  <li>Contain at least one special character (such as @$!%*?&,+><)</li>
                   </ul>`
             })
         } else {
