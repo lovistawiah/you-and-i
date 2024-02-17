@@ -9,13 +9,13 @@ import { socket } from '../socket'
 import { msgEvents, usrEvents } from '../utils/eventNames'
 import ChatInfo from './ChatInfo'
 import Messages from './Messages'
-import { cancelUpdate } from '../app/messagesSlice'
+import { cancelUpdate, replyMessage } from '../app/messagesSlice'
 
 
 const MessagePanel = () => {
     const chatInfo = useSelector((state) => state.chat.value);
-    const [windowHeight, setWindowHeight] = useState(window.innerHeight)
     const msgToBeUpdated = useSelector((state) => state.messages.msgToBeUpdated)
+    const msgToBeReplied = useSelector((state) => state.messages.msgToBeReplied)
     // ? a boolean to toggle the cancel button when updating
     const updateMsg = useSelector((state) => state.messages.updateMsg)
     const dispatch = useDispatch()
@@ -35,6 +35,21 @@ const MessagePanel = () => {
             }
             socket.emit(msgEvents.updateMsg, update)
             handleCancelUpdate()
+            return
+        }
+
+        if (msgToBeReplied) {
+            const msgId = msgToBeReplied.msgId;
+            const { chatId } = chatInfo;
+            if (!msgId && !chatId) return
+            const replyObj = {
+                msgId,
+                chatId,
+                message
+            }
+            socket.emit(msgEvents.reply, replyObj)
+            setMessage('')
+            dispatch(replyMessage(null))
             return
         }
         const { userId, chatId } = chatInfo
@@ -96,16 +111,6 @@ const MessagePanel = () => {
     }
 
     useEffect(() => {
-        const handleResize = () => {
-            setWindowHeight(window.innerHeight)
-        };
-        window.addEventListener('resize', handleResize);
-        return () => {
-            window.removeEventListener('resize', handleResize)
-        }
-    }, [])
-
-    useEffect(() => {
         if (updateMsg && msgToBeUpdated) {
             const message = msgToBeUpdated.message
             setMessage(message)
@@ -114,7 +119,7 @@ const MessagePanel = () => {
     return (
         // TODO: when window width > mobile width, show chat panel and settings if message panel is active page
         // grid minmax(auto,max-content) 
-        <section className={`w-full md:h-[${windowHeight}px] h-screen grid grid-rows-[50px_auto_minmax(auto,max-content)] bg-gray-100 md:order-2 md:relative`}>
+        <section className={`w-full grid grid-rows-[50px_auto_minmax(auto,max-content)] bg-gray-100 md:order-2 md:relative`}>
             {
                 !chatInfo ? <section className='absolute shadow w-[300px] h-[100px] font-roboto font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[25%]'>
                     Select chat to see messages

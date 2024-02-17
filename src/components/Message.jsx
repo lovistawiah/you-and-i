@@ -10,7 +10,7 @@ const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
     const msgRef = useRef(null)
     const msgIdRef = useRef(null)
 
-    const { deleteMsg, editMsg, handleMsgOps, showOps, onBlurOps } = useMessage({ msgIdRef, msgRef, ulRef })
+    const { deleteMsg, editMsg, handleMsgOps, showOps, onBlurOps, replyMsg } = useMessage({ msgIdRef, msgRef, ulRef })
 
 
     let msgColor, align, margin;
@@ -33,28 +33,32 @@ const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
 
             {
                 showOps && <ul
-                    ref={ulRef} className={`${userId === sender ? 'hidden' : ''}  absolute bg-blue-900 right-[0px] top-[-30px] w-[70px] h-fit text-white rounded-[2px] text-center font-roboto`} onBlur={onBlurOps}>
-                    <li className={`${minDiff > 5 ? 'hidden' : ''} hover:bg-blue-950 z-40 p-2 w-full`}>
-                        <button onClick={editMsg}>Edit</button>
+                    ref={ulRef} className={`absolute bg-blue-900 right-[0px] top-[-30px] w-[70px] h-fit text-white rounded-[2px] text-center font-roboto`} onBlur={onBlurOps}>
+                    <li className={`hover:bg-blue-950 z-40 p-2 w-full`}>
+                        <button onClick={replyMsg}>Reply</button>
                     </li>
+                    {/* sender message ops */}
+                    <div className={`${userId === sender ? 'hidden' : ''}`}>
+                        <li className={`${minDiff > 5 ? 'hidden' : ''} hover:bg-blue-950 z-40 p-2 w-full`}>
+                            <button onClick={editMsg}>Edit</button>
+                        </li>
 
-                    <li className=" hover:bg-blue-950 z-40 p-2 w-full">
-                        <button onClick={deleteMsg}>Delete</button>
-                    </li>
+                        <li className=" hover:bg-blue-950 z-40 p-2 w-full">
+                            <button onClick={deleteMsg}>Delete</button>
+                        </li>
+                    </div>
+
                 </ul>
             }
-
 
             <div className="flex">
                 <div ref={msgRef} className={` max-w-[250px] md:max-w-[400px] lg:max-w-[455px] break-all ${info === 'deleted' ? 'italic font-rale' : ''} ${sender !== userId ? 'text-white' : ''}`}>
                     {message}
                 </div>
-                <span className=" px-1 self-start text-gray-400 text-center">
+                <span className=" px-1 self-start text-center">
                     {
-                        sender !== userId ?
-                            info !== 'deleted' ?
-
-                                <FontAwesomeIcon icon={faChevronDown} onClick={handleMsgOps} className="text-base text-gray-200 cursor-pointer" /> : null : null
+                        info !== 'deleted' ?
+                            <FontAwesomeIcon icon={faChevronDown} onClick={handleMsgOps} className="text-base  cursor-pointer" /> : null
                     }
                 </span>
             </div>

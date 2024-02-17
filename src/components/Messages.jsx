@@ -1,14 +1,20 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Message from "./Message";
 import { messageHeaderDate } from "../utils/compareDate";
 import MessageHeaderDate from "./MessageHeaderDate"
 import useMessages from "../hooks/useMessages";
+import Modal from "./Modal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClose } from "@fortawesome/free-solid-svg-icons";
+import { replyMessage } from "../app/messagesSlice";
 
 const Messages = () => {
     //info holds userId
+    const dispatch = useDispatch()
     const info = useSelector((state) => state.chat.value);
     const messages = useSelector((state) => state.messages.messages)
+    const msgToBeReplied = useSelector((state) => state.messages.msgToBeReplied)
 
     const [chatInfo, setChatInfo] = useState(info)
     const datesSet = new Set()
@@ -52,15 +58,27 @@ const Messages = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
         [messages]
     );
-
+    const clearModal = () => {
+        dispatch(replyMessage(null))
+    }
     return (
-        <section ref={messagesRef} className="flex w-full overflow-y-auto py-2 flex-col h-full">
+        <section ref={messagesRef} className={`overflow-y-auto relative`} id="messages">
+            {
+                msgToBeReplied && <Modal>
+                    <section className={`font-normal leading-normal font-roboto text-base w-full flex items-start justify-between p-1 bg-gray-300`}>
+                        <div>{msgToBeReplied.message}</div>
+                        <FontAwesomeIcon icon={faClose} onClick={clearModal} className="text-gray-600 hover:bg-gray-300 active:bg-gray-600 p-1 rounded border cursor-pointer text-lg" />
+                    </section >
+                </Modal >
+            }
             {
                 messages.length < 1 ? <section className='absolute shadow w-[300px] h-[100px] font-roboto font-base text-xl flex justify-center items-center md:top-[50%] md:left-[35%] top-[45%] left-[15%]'>
                     No Messages found
-                </section> : memoizedMessages
+                </section> : <div className={` ${msgToBeReplied ? 'blur-[2px]' : ''} flex w-full  py-2 flex-col`}>
+                    {memoizedMessages}
+                </div>
             }
-        </section>
+        </section >
     );
 };
 

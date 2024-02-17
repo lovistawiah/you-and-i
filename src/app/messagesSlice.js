@@ -5,7 +5,8 @@ export const messageReducer = createSlice({
     initialState:{
         messages: [],
         msgToBeUpdated : null,
-        updateMsg: false
+        updateMsg: false,
+        msgToBeReplied: null
     },
     reducers:{
         addMessage:(state,action)=>{
@@ -15,6 +16,7 @@ export const messageReducer = createSlice({
                 state.messages.push(message)
             }
         },
+
         modifyMsg: (state,action) =>{
             const {payload} = action
             const idx = state.messages.findIndex((message)=> message.Id ===payload.Id)
@@ -22,21 +24,27 @@ export const messageReducer = createSlice({
                 state.messages[idx] = payload
             }
         },
+
         updateSingleMsg: (state,action)=>{
             const {payload:msgObj} = action
             state.msgToBeUpdated = msgObj
             state.updateMsg = true
         },
+
         cancelUpdate: (state) =>{
             state.updateMsg = false
             state.msgToBeUpdated = null
         },
+
         clearMessages: (state) =>{
             state.messages = []
+        },
+        replyMessage: (state,action)=>{
+            state.msgToBeReplied = action.payload
         }
     }
     
 })
 
-export const {addMessage,modifyMsg,updateSingleMsg,cancelUpdate,clearMessages} = messageReducer.actions
+export const {addMessage,modifyMsg,updateSingleMsg,cancelUpdate,clearMessages,replyMessage} = messageReducer.actions
 export default messageReducer.reducer

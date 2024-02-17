@@ -17,7 +17,8 @@ const msgEvents = {
     updateMsg: "updateMsg",
     msgs: "msgs",
     errMsg: "errMsg",
-    newChat: 'newChat'
+    newChat: 'newChat',
+    reply: "reply"
 };
 
 export { usrEvents, chatEvents, msgEvents };

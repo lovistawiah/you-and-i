@@ -48,6 +48,12 @@ const useMessages = ({chatId,messagesRef,userId}) => {
             socket.off(msgEvents.sndMsg, handleSendMessage)
         }
     })
+
+    useEffect(()=>{
+        socket.on(msgEvents.reply,(data)=>{
+            console.log(data)
+        })
+    })
 }
 
 export default useMessages
