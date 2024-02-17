@@ -1,7 +1,4 @@
-import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import { setUserInfo } from "../app/userSlice"
+import { Link } from 'react-router-dom'
 import { signUp } from '../account/User'
 import InputForm from './InputForm'
 import WelcomeText from './WelcomeText'
@@ -11,48 +8,10 @@ import Transition from './Transition'
 import Logo from './Logo'
 import ConfirmPassInput from './ConfirmPass'
 import PasswordInput from './PasswordInput'
-import { persistor } from '../app/store'
-const Register = () => {
-    const navigate = useNavigate()
-    const dispatch = useDispatch()
-    const [info, setInfo] = useState({})
-    const [spin, setSpin] = useState(false)
-    const [isValid, setIsValid] = useState(true)
+import useRegister from '../hooks/useRegister'
 
-    const saveUserInfoAndNavigate = (userObj) => {
-        if (!userObj) return
-        setSpin(false)
-        dispatch(setUserInfo(userObj))
-        navigate('/update-profile')
-    }
-    const errorLogger = ({ message }) => {
-        setInfo({ type: 'error', message })
-        setSpin(false)
-    }
-    useEffect(() => {
-        const handleLogout = async () => {
-            await persistor.purge()
-            localStorage.clear()
-        }
-        handleLogout()
-    }, [])
-    useEffect(() => {
-        if (!isValid) {
-            setInfo({
-                type: 'error',
-                message: `<ul>
-                <li class="text-lg mb-1 text-red-500">Password should:</li>
-                  <li>At least contain 8 characters long</li>
-                  <li>Contain at least one uppercase letter</li>
-                  <li>Contain at least one lowercase letter</li>
-                  <li>Contain at least one digit</li>
-                  <li>Contain at least one special character (such as @$!%*?&,+><)</li>
-                  </ul>`
-            })
-        } else {
-            setInfo({})
-        }
-    }, [isValid])
+const Register = () => {
+    const { errorLogger, info, saveUserInfoAndNavigate, setInfo, setIsValid, spin, setSpin, isValid } = useRegister()
     return (
         <Transition>
             <InfoContainer info={info} setInfo={setInfo} />
