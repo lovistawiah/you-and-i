@@ -66,7 +66,7 @@ const Settings = () => {
     const handleLogout = async () => {
         await persistor.purge()
         localStorage.clear()
-        location.href = location.origin + '/login'
+        location.href = location.origin + '/'
     }
     return (
         <section className={`order-2 md:border-r md:w-[55%] relative w-full`}>
