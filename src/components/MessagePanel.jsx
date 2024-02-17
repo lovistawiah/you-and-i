@@ -59,7 +59,7 @@ const MessagePanel = () => {
                 chatId,
                 message
             }
-            console.log('here')
+
             socket.emit(msgEvents.sndMsg, messageObj)
 
         } else if (userId && !chatId) {
