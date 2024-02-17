@@ -78,7 +78,7 @@ const Register = () => {
                 >
                     <InputForm type={"email"} name={"email"} placeholder={"Email"} id={"email"}
                     />
-                    <PasswordInput isValid={isValid} setIsValid={setIsValid} key={'password'} />
+                    <PasswordInput isValid={isValid} setIsValid={setIsValid} key={'password'} label={'New Password'} />
                     <ConfirmPassInput />
                     <FormButton btnText={"Create account"} isValid={isValid} spin={spin} />
                 </form>

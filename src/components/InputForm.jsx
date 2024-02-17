@@ -10,7 +10,7 @@ const InputForm = ({ type, name, placeholder, id }) => {
     }
     return (
         <div className="flex flex-col w-fit">
-            <label htmlFor={id} className="text-gray-800 font-roboto font-medium text-base">
+            <label htmlFor={id} className="text-gray-800 font-roboto font-normal  text-base">
                 {placeholder}
             </label>
             <div className="relative">

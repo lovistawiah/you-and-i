@@ -11,7 +11,7 @@ const ConfirmPassInput = () => {
     }
     return (
         <div className="flex flex-col w-fit">
-            <label htmlFor='confirm-password' className="text-gray-800 font-roboto font-medium text-base">
+            <label htmlFor='confirm-password' className="text-gray-800 font-roboto font-normal  text-base">
                 Confirm Password
             </label>
             <div className="relative">
