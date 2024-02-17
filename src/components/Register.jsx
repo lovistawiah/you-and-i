@@ -46,7 +46,7 @@ const Register = () => {
                   <li>Contains at least one uppercase letter</li>
                   <li>Contains at least one lowercase letter</li>
                   <li>Contains at least one digit</li>
-                  <li>Contains at least one special character (such as !@#$%^&*())</li>
+                  <li>Contains at least one special character (such as @$!%*?&,+><)</li>
                   </ul>`
             })
         } else {

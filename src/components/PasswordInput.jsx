@@ -11,7 +11,7 @@ const PasswordInput = ({ setIsValid, isValid }) => {
     }
     const handleChange = (e) => {
         const passText = e.target.value
-        const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
+        const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&,+><_])[A-Za-z\d@$!%*?&,+><_]{8,}$/
         setIsValid(passRegex.test(passText))
     }
 
@@ -22,7 +22,7 @@ const PasswordInput = ({ setIsValid, isValid }) => {
             </label>
             <div className="relative">
                 <input type={showPass ? 'text' : 'password'
-                } name='password' className={`w-[275px] h-[36px] py-[1px] pr-0 pl-[4px] rounded-[5px] bg-white border ${!isValid ? 'focus:border-red-500' : 'focus:border-blue-500'} text-base font-normal placeholder:text-gray-400 text-gray-800 outline-none md:w-[350px]  md:text-lg  focus:border-[2px] font-roboto border-gray-500`} id='password' placeholder='Password' onChange={handleChange} required />
+                } name='password' className={`w-[275px] h-[36px] py-[1px] pr-0 pl-[4px] rounded-[5px] bg-white border ${!isValid ? 'border-red-500' : 'border-blue-500'} text-base font-normal placeholder:text-gray-400 text-gray-800 outline-none md:w-[350px]  md:text-lg  focus:border-[2px] font-roboto border-gray-500`} id='password' placeholder='Password' onBlur={handleChange} required />
                 {
                     <FontAwesomeIcon icon={showPass ? faEyeSlash : faEye} className="absolute top-[10px] right-2 text-gray-600" onClick={passVisibility} />
                 }
