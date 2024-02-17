@@ -1,7 +1,4 @@
-import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { setUserInfo } from '../app/userSlice'
 import { login } from '../account/User'
 import WelcomeText from './WelcomeText'
 import InputForm from './InputForm'
@@ -10,31 +7,10 @@ import Transition from './Transition'
 import Logo from './Logo'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleNotch } from '@fortawesome/free-solid-svg-icons'
-import { persistor } from '../app/store'
+import useLogin from '../hooks/useLogin'
 
 const Login = () => {
-    const [info, setInfo] = useState({})
-    const [spin, setSpin] = useState(false)
-    const dispatch = useDispatch()
-
-    const saveUserInfoAndNavigate = (userObj) => {
-        if (!userObj) return
-        setSpin(false)
-        dispatch(setUserInfo(userObj))
-        location.href = location.origin + '/'
-    }
-    const errorLogger = ({ message }) => {
-        setInfo({ type: 'error', message })
-        setSpin(false)
-    }
-
-    useEffect(() => {
-        const handleLogout = async () => {
-            await persistor.purge()
-            localStorage.clear()
-        }
-        handleLogout()
-    }, [])
+    const { errorLogger, info, saveUserInfoAndNavigate, setInfo, setSpin, spin } = useLogin()
     return (
         <Transition>
             <InfoContainer info={info} setInfo={setInfo} />
