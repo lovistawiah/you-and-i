@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch, faTimes } from '@fortawesome/free-solid-svg-icons'
 
 
-const MainPage = ({ windowHeight }) => {
+const MainPage = () => {
     const { searchInput, setSearchInput } = useChats()
     const chats = useSelector((state) => searchInput.length > 0 ? state.chats.searchChats : state.chats.chats)
 
@@ -21,7 +21,7 @@ const MainPage = ({ windowHeight }) => {
     return (
 
         <section
-            className={`order-2 h-[${windowHeight}px] w-full md:border-r md:w-[55%] relative`}>
+            className={`order-2  w-full md:border-r md:w-[55%] relative`}>
             <PageHeader pageName={"Chats"} />
 
             <div className="h-[70px] px-2.5 flex-col justify-center items-center flex fixed top-[59px] bg-gray-50 w-full md:relative md:top-[10px]">
