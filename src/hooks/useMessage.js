@@ -2,47 +2,15 @@ import { useEffect, useState } from "react"
 import {useDispatch,useSelector} from "react-redux"
 import { socket } from "../socket"
 import { msgEvents } from "../utils/eventNames"
-import { modifyMsg, replyMessage, updateSingleMsg } from "../app/messagesSlice"
-import { updateLastMessage } from "../app/chatsSlice"
+import { replyMessage, updateSingleMsg } from "../app/messagesSlice"
+
 
 const useMessage = ({msgIdRef,msgRef,ulRef}) => {
     const [showOps, setShowOps] = useState(false)
     const dispatch = useDispatch()
     const chatId = useSelector((state) => state.chat.value.chatId)
-    const storedMessages = useSelector((state) => state.messages.messages)
+ 
 
-   useEffect(() => {
-
-        socket.on(msgEvents.delMsg, (msgObj) => {
-            dispatch(modifyMsg(msgObj))
-            //to update the chat last message if deleted message is the last message in the messages
-            const msgId = msgObj.Id
-            const idx = storedMessages.findIndex((stMsg) => stMsg.Id === msgId)
-            if (idx === storedMessages.length - 1) {
-                dispatch(updateLastMessage({ chatId: msgObj.chatId, lastMessage: msgObj.message, msgDate: msgObj.updatedAt }))
-            }
-
-        })
-
-        socket.on(msgEvents.updateMsg, (msgObj) => {
-
-            dispatch(modifyMsg(msgObj))
-            //to update the chat last message if updated message is the last message in the messages
-            const msgId = msgObj.Id
-            const idx = storedMessages.findIndex((stMsg) => stMsg.Id === msgId)
-
-            if (idx === storedMessages.length - 1) {
-                dispatch(updateLastMessage({ chatId: msgObj.chatId, lastMessage: msgObj.message, msgDate: msgObj.updatedAt }))
-            }
-        })
-
-        return () => {
-            socket.off(msgEvents.updateMsg)
-            socket.off(msgEvents.delMsg)
-        }
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
     
     useEffect(() => {
         //clear Edit and Delete container on the page is selected

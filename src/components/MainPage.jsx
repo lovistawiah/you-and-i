@@ -7,11 +7,14 @@ import Menu from './Menu'
 import WelcomePage from './WelcomePage'
 import MessagePanel from './MessagePanel'
 import useMain from '../hooks/useMain'
+import useLastMessage from "../hooks/useLastMessage"
+import useModifyMessage from '../hooks/useModifyMessage'
 
 const MainPage = () => {
     const userAvatar = useSelector((state) => state.user.value?.avatarUrl) ?? ""
     const { errMsg, isToken, windowWidth, activePage, pageSelector } = useMain()
-
+    useLastMessage()
+    useModifyMessage()
     return (
         !isToken ? (
             <WelcomePage message={errMsg} />

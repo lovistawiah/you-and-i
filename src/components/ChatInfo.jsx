@@ -2,10 +2,11 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { useSelector } from "react-redux"
 import useChatInfo from "../hooks/useChatInfo"
+import useTyping from "../hooks/useTyping"
 
 const ChatInfo = ({ windowWidth }) => {
     const chatInfo = useSelector((state) => state.chat.value);
-    const isTypingObj = useSelector((state) => state.chats.typingObj)
+    const { isTypingObj } = useTyping()
     const { goBack } = useChatInfo({ userId: chatInfo?.userId })
 
     return (
@@ -21,7 +22,7 @@ const ChatInfo = ({ windowWidth }) => {
                 </section>
                 <section className="w-full h-[20px] px-[5px] pb-2.5 justify-start items-center  flex opacity-60  text-zinc-900 text-[13px] font-roboto">
                     {
-                        isTypingObj && isTypingObj.chatId === chatInfo?.chatId ? <span>typing...</span>
+                        isTypingObj && isTypingObj.chatId === chatInfo?.chatId ? <span className="italic font-rale text-gray-600 font-normal">typing...</span>
                             :
                             chatInfo.status ? chatInfo.status === "Online" ? chatInfo.status : <span className="font-roboto pr-[3px]">
                                 {`last seen ${chatInfo.status}`}

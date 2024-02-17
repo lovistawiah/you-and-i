@@ -2,9 +2,11 @@ import { Link } from 'react-router-dom'
 import { useRef } from 'react'
 import { format } from 'date-fns'
 import useChat from '../hooks/useChat'
+import useTyping from '../hooks/useTyping'
 
 const Chat = ({ chatId, userId, username, avatarUrl, lastMessage, lstMsgDate }) => {
-    const { isTypingObj, windowWidth, handleChat } = useChat()
+    const { windowWidth, handleChat } = useChat()
+    const { isTypingObj } = useTyping()
     const chatRef = useRef(null)
 
     let chatDate;
@@ -32,7 +34,7 @@ const Chat = ({ chatId, userId, username, avatarUrl, lastMessage, lstMsgDate }) 
                 {/* last message */}
                 <section className="text-neutral-400 text-sm font-normal line-clamp-1 text-ellipsis w-full flex-grow basis-0 pt-[4px] pr-0 pb-[20px] pl-1 break-all">
                     {
-                        isTypingObj && isTypingObj.chatId === chatId ? <span className='tiea'>typing...</span> : <>{lastMessage}</>
+                        isTypingObj && isTypingObj.chatId === chatId ? <span className='italic'>typing...</span> : <>{lastMessage}</>
                     }
                 </section>
             </section>

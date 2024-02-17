@@ -15,13 +15,15 @@ export const chatReducer = createSlice({
       const {userId,status} = action.payload
       if(state.value.userId === userId && status){
         state.value.status = lastSeen(status)
-
       }
     },
     updateNewChat: (state,action)=>{
       const {chatId,userId} = action.payload
-      if(state.value.userId === userId && !state.value.chatId){
-        state.value.chatId = chatId
+
+      if(userId){
+        if(state.value?.userId === userId && !state.value.chatId){
+          state.value.chatId = chatId
+        }
       }
     }
   },

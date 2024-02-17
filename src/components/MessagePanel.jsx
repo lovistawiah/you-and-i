@@ -10,6 +10,7 @@ import { msgEvents, usrEvents } from '../utils/eventNames'
 import ChatInfo from './ChatInfo'
 import Messages from './Messages'
 import { cancelUpdate, replyMessage } from '../app/messagesSlice'
+import useModifyMessage from '../hooks/useModifyMessage'
 
 
 const MessagePanel = () => {
@@ -22,7 +23,7 @@ const MessagePanel = () => {
     const [windowWidth, setWindowWidth] = useState(window.innerWidth)
     const [showEmojis, setShowEmojis] = useState(false)
     const [message, setMessage] = useState('')
-
+    useModifyMessage()
 
     const submitForm = (e) => {
         e.preventDefault()
@@ -58,6 +59,7 @@ const MessagePanel = () => {
                 chatId,
                 message
             }
+            console.log('here')
             socket.emit(msgEvents.sndMsg, messageObj)
 
         } else if (userId && !chatId) {

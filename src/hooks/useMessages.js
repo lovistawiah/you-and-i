@@ -3,10 +3,8 @@ import {useDispatch,useSelector} from 'react-redux'
 import { addMessage } from "../app/messagesSlice";
 import { socket } from "../socket";
 import { msgEvents } from "../utils/eventNames";
-import { updateLastMessage } from "../app/chatsSlice";
-import { updateNewChat } from "../app/chatSlice";
 
-const useMessages = ({chatId,messagesRef,userId}) => {
+const useMessages = ({chatId,messagesRef}) => {
     const dispatch = useDispatch()
     const messages = useSelector((state) => state.messages.messages)
     
@@ -28,6 +26,11 @@ const useMessages = ({chatId,messagesRef,userId}) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [chatId])
 
+    useEffect(()=>{
+        socket.on(msgEvents.sndMsg,(messageData)=>{
+        dispatch(addMessage(messageData))
+        })
+    })
 
     useEffect(() => {
         if (messagesRef.current) {
@@ -37,23 +40,7 @@ const useMessages = ({chatId,messagesRef,userId}) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [messages])
 
- useEffect(() => {
-        const handleSendMessage = (msg) => {
-            dispatch(updateLastMessage({ chatId: msg.chatId, lastMessage: msg.message, msgDate: msg.createdAt }))
-            dispatch(addMessage(msg))
-            dispatch(updateNewChat({ chatId: msg.chatId, userId }))
-        }
-        socket.on(msgEvents.sndMsg, handleSendMessage)
-        return () => {
-            socket.off(msgEvents.sndMsg, handleSendMessage)
-        }
-    })
 
-    useEffect(()=>{
-        socket.on(msgEvents.reply,(data)=>{
-            console.log(data)
-        })
-    })
 }
 
 export default useMessages
