@@ -5,7 +5,6 @@ import { useState } from "react"
 
 const PasswordInput = ({ setIsValid, isValid, label }) => {
     const [showPass, setShowPass] = useState(false)
-
     const passVisibility = () => {
         setShowPass(!showPass)
     }

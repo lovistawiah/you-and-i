@@ -46,7 +46,7 @@ const useRegister = () => {
             setInfo({})
         }
     }, [isValid])
-  return {info,saveUserInfoAndNavigate,errorLogger,setInfo,spin,setIsValid,setSpin}
+  return {info,saveUserInfoAndNavigate,errorLogger,setInfo,spin,setIsValid,setSpin,isValid}
 }
 
 export default useRegister
