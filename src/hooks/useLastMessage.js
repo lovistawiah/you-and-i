@@ -26,8 +26,8 @@ const useLastMessage = () => {
     })
 
     useEffect(()=>{
-        socket.on(msgEvents.reply,(data)=>{
-            console.log(data)
+        socket.on(msgEvents.reply,(msg)=>{
+            dispatch(updateLastMessage({ chatId: msg.chatId, lastMessage: msg.message, msgDate: msg.createdAt }))
         })
     })
   

@@ -9,11 +9,9 @@ const useMessage = ({msgIdRef,msgRef,ulRef}) => {
     const [showOps, setShowOps] = useState(false)
     const dispatch = useDispatch()
     const chatId = useSelector((state) => state.chat.value.chatId)
- 
 
-    
     useEffect(() => {
-        //clear Edit and Delete container on the page is selected
+        //removes Edit and Delete container on the page is selected
         const handleClickOutside = (event) => {
             if (ulRef.current && !ulRef.current.contains(event.target)) {
                 setShowOps(false);
@@ -42,7 +40,7 @@ const useMessage = ({msgIdRef,msgRef,ulRef}) => {
         setShowOps(false)
         // chatId is used to emit the chat back.
         socket.emit(msgEvents.delMsg, { msgId, chatId })
-         setShowOps(false)
+        setShowOps(false)
     }
 
     const editMsg = () => {
@@ -68,11 +66,11 @@ const useMessage = ({msgIdRef,msgRef,ulRef}) => {
             msgId,
             message
         }
+
         dispatch(replyMessage(msgObj))
-        // console.log(msgObj)
         setShowOps(false)
     }
-  
+    
     return {deleteMsg,editMsg,showOps,handleMsgOps,onBlurOps,replyMsg}
 
 }

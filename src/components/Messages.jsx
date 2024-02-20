@@ -52,6 +52,7 @@ const Messages = () => {
                     msgDate={new Date(message.updatedAt) > new Date(message.createdAt) ? message.updatedAt : message.createdAt}
                     info={message.info}
                     userId={chatInfo?.userId}
+                    reply={message.reply ? message.reply : ''}
                 />
             </>
         )),

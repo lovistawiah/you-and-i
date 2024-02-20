@@ -1,29 +1,34 @@
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { useSelector } from 'react-redux'
 import { differenceInMinutes, format, parseISO } from "date-fns"
 import { useRef } from "react"
 import useMessage from "../hooks/useMessage"
 
 
-const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
+const Message = ({ message, sender, msgDate, userId, msgId, info, reply }) => {
     const ulRef = useRef(null)
     const msgRef = useRef(null)
     const msgIdRef = useRef(null)
 
     const { deleteMsg, editMsg, handleMsgOps, showOps, onBlurOps, replyMsg } = useMessage({ msgIdRef, msgRef, ulRef })
+    const chatUsername = useSelector((state) => state.chat?.value?.username)
 
-
-    let msgColor, align, margin;
+    let msgColor, align, margin, replyColor, replyUserColor;
     const msgStatus = format(msgDate, 'h:mm a');
 
     if (userId !== sender) {
-        msgColor = 'bg-blue-600/100';
+        msgColor = 'bg-blue-500';
         align = 'self-end';
         margin = "mr-5 m-3";
+        replyColor = "bg-blue-600"
+        replyUserColor = 'text-blue-100'
     } else {
         msgColor = 'bg-gray-200';
         align = 'self-start';
         margin = 'ml-5 m-3';
+        replyColor = 'bg-gray-300 border-l-blue-700'
+        replyUserColor = "text-blue-600"
     }
 
     const minDiff = differenceInMinutes(new Date(), parseISO(msgDate))
@@ -53,6 +58,13 @@ const Message = ({ message, sender, msgDate, userId, msgId, info }) => {
 
             <div className="flex">
                 <div ref={msgRef} className={` max-w-[250px] md:max-w-[400px] lg:max-w-[455px] break-all ${info === 'deleted' ? 'italic font-rale' : ''} ${sender !== userId ? 'text-white' : ''}`}>
+
+                    {reply && <div className={`${replyColor} rounded p-1 border-l-[3px]`} id={reply.Id}>
+                        <div className={`${replyUserColor} mb-[3px] text-[15px]`}>{reply.sender !== userId ? "You" : chatUsername}</div>
+                        <div className="text-[13px] font-roboto">{reply.message}</div>
+                    </div>
+                    }
+
                     {message}
                 </div>
                 <span className=" px-1 self-start text-center">

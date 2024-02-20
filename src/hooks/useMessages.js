@@ -32,6 +32,13 @@ const useMessages = ({chatId,messagesRef}) => {
         })
     })
 
+      useEffect(()=>{
+        socket.on(msgEvents.reply,(msg)=>{
+            dispatch(addMessage(msg))
+        })
+    })
+  
+
     useEffect(() => {
         if (messagesRef.current) {
             messagesRef.current.scrollTop = messagesRef.current.scrollHeight
