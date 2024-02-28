@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { persistor } from "../app/store";
 import { setUserInfo } from "../app/userSlice";
 
 const useRegister = () => {
@@ -22,8 +21,7 @@ const useRegister = () => {
     setSpin(false);
   };
   useEffect(() => {
-    const handleLogout = async () => {
-      await persistor.purge();
+    const handleLogout = () => {
       localStorage.clear();
     };
     handleLogout();

@@ -6,7 +6,6 @@ import InfoContainer from "./InfoContainer";
 import Transition from "./Transition";
 import useUpdateProfile from "../hooks/useUpdateProfile";
 import { useEffect } from "react";
-import { persistor } from "../app/store";
 
 const UpdateProfile = () => {
   const [usernameInput, setUsernameInput] = useState("");
@@ -17,8 +16,7 @@ const UpdateProfile = () => {
     setUsernameInput(e.target.value);
   };
   useEffect(() => {
-    const handleLogout = async () => {
-      await persistor.purge();
+    const handleLogout = () => {
       localStorage.clear();
     };
     handleLogout();

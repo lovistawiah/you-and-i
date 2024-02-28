@@ -4,14 +4,14 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
 import { userSettings } from "../account/User.js";
 import { useEffect, useState } from "react";
-import { persistor } from "../app/store";
 import InfoContainer from "./InfoContainer";
 import PasswordInput from "./PasswordInput";
 import SettingsPassword from "./SettingsPassword";
+import { State } from "../interface/state";
 const Settings = () => {
   const [isPassValid, setIsPassValid] = useState(true);
   const [info, setInfo] = useState({});
-  const userInfo = useSelector((state) => state.user.value);
+  const userInfo = useSelector((state: State) => state.user.value);
   const [usernameInput, setUsernameInput] = useState("");
 
   const handleUsernameInput = (e) => {
@@ -63,8 +63,7 @@ const Settings = () => {
       setInfo({ type: "error", message: result.message });
     }
   };
-  const handleLogout = async () => {
-    await persistor.purge();
+  const handleLogout = () => {
     localStorage.clear();
     location.href = location.origin + "/";
   };
