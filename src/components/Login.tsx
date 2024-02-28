@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { login } from "../account/User.js";
+import { login } from "../account/user";
 import WelcomeText from "./WelcomeText";
 import InputForm from "./InputForm";
 import InfoContainer from "./InfoContainer";

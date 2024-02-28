@@ -2,7 +2,7 @@ import { faCameraAlt } from "@fortawesome/free-solid-svg-icons";
 import PageHeader from "./PageHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
-import { userSettings } from "../account/User.js";
+import { userSettings } from "../account/user.js";
 import { useEffect, useState } from "react";
 import InfoContainer from "./InfoContainer";
 import PasswordInput from "./PasswordInput";

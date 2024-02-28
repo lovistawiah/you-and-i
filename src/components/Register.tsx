@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { signUp } from "../account/User.js";
+import { signUp } from "../account/user";
 import InputForm from "./InputForm";
 import WelcomeText from "./WelcomeText";
 import FormButton from "./FormButton";
@@ -9,6 +9,7 @@ import Logo from "./Logo";
 import ConfirmPassInput from "./ConfirmPass";
 import PasswordInput from "./PasswordInput";
 import useRegister from "../hooks/useRegister";
+import React from "react";
 
 const Register = () => {
   const {
@@ -31,7 +32,7 @@ const Register = () => {
         <WelcomeText />
         <form
           className="flex flex-col items-center gap-[21px]"
-          onSubmit={async (e) => {
+          onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             setSpin(true);
             const formData = new FormData(e.target);

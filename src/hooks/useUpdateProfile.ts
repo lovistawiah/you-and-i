@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setUserInfo } from "../app/userSlice";
-import { updateUserInfo } from "../account/User.js";
+import { updateUserInfo } from "../account/user.js";
 import { State } from "../interface/state";
 
 const useUpdateProfile = () => {
