@@ -1,6 +1,6 @@
 import { isToday, format, formatDistanceToNow } from "date-fns";
 
-function lastSeen(lastSeen) {
+function lastSeen(lastSeen: string) {
   if (!lastSeen) return;
   if (!Date.parse(lastSeen)) {
     return lastSeen;
@@ -8,7 +8,7 @@ function lastSeen(lastSeen) {
   return formatDistanceToNow(lastSeen, { addSuffix: true });
 }
 
-function messageHeaderDate(messageDate) {
+function messageHeaderDate(messageDate: Date) {
   if (!messageDate) return;
   if (isToday(messageDate)) {
     return "Today";
