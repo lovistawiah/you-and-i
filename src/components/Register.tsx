@@ -9,7 +9,7 @@ import Logo from "./Logo";
 import ConfirmPassInput from "./ConfirmPass";
 import PasswordInput from "./PasswordInput";
 import useRegister from "../hooks/useRegister";
-import React from "react";
+import { FormEvent } from "react";
 
 const Register = () => {
   const {
@@ -32,7 +32,7 @@ const Register = () => {
         <WelcomeText />
         <form
           className="flex flex-col items-center gap-[21px]"
-          onSubmit={async (e: React.FormEvent<HTMLFormElement>) => {
+          onSubmit={async (e: FormEvent<HTMLFormElement>) => {
             e.preventDefault();
             setSpin(true);
             const formData = new FormData(e.target);
