@@ -38,7 +38,7 @@ async function signUp({ email, password, confirmPassword }: SignUpParams): Promi
   }
 }
 
-async function login({ usernameEmail, password }: LoginParams) {
+async function login({ usernameEmail, password }: LoginParams): Promise<{ status: number, userInfo: UserInfo } | { message: string, status: number } | undefined> {
   try {
     const result = await axios.post<LoginResponse>(
       baseUrl + "/login",
@@ -49,8 +49,8 @@ async function login({ usernameEmail, password }: LoginParams) {
         },
       },
     );
-    if (result.data) {
-      if (result.data && result.data.token != "") {
+    if (result.data && result.status === 200) {
+      if (result.data.token !== "") {
         const token = result.data.token;
         const { userInfo } = result.data;
         localStorage.setItem("Oh_vnyX", token);
@@ -64,6 +64,7 @@ async function login({ usernameEmail, password }: LoginParams) {
       return { status, message };
     }
   }
+  return { status: 500, message: "Internal Server Error" }
 }
 
 async function updateUserInfo(formData: UpdateUserInfoParams) {

@@ -8,10 +8,25 @@ import Logo from "./Logo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import useLogin from "../hooks/useLogin";
+import { FormEvent } from "react";
 
 const Login = () => {
   const { errorLogger, info, saveUserInfoAndNavigate, setInfo, setSpin, spin } =
     useLogin();
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSpin(true);
+    const formData = new FormData(e.currentTarget);
+    const obj = {
+      usernameEmail: formData.get("username-email") as string,
+      password: formData.get("password") as string,
+    };
+    const result = await login(obj);
+    if (!result) return;
+    "userInfo" in result
+      ? saveUserInfoAndNavigate(result.userInfo)
+      : errorLogger({ message: result?.message });
+  };
   return (
     <Transition>
       <InfoContainer info={info} setInfo={setInfo} />
@@ -20,19 +35,7 @@ const Login = () => {
         <WelcomeText />
         <form
           className="flex flex-col items-center gap-[21px]"
-          onSubmit={async (e) => {
-            e.preventDefault();
-            setSpin(true);
-            const formData = new FormData(e.target);
-            const obj = {
-              usernameEmail: formData.get("username-email"),
-              password: formData.get("password"),
-            };
-            const result = await login(obj);
-            result?.status !== 200
-              ? errorLogger({ message: result?.message })
-              : saveUserInfoAndNavigate(result.userInfo);
-          }}
+          onSubmit={handleLogin}
         >
           <InputForm
             name={"username-email"}
