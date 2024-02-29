@@ -16,7 +16,7 @@ const useRegister = () => {
     dispatch(setUserInfo(userObj));
     navigate("/update-profile");
   };
-  const errorLogger = ({ message }) => {
+  const errorLogger = ({ message }: { message: string }) => {
     setInfo({ type: "error", message });
     setSpin(false);
   };

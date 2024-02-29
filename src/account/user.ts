@@ -1,17 +1,13 @@
 import axios, { AxiosError, AxiosResponse } from "axios";
-import { SignUPResponse, SignUPParams, LoginParams, LoginResponse, UpdateUserInfoParams, UpdateUserInfoResponse, userSettingsParams, userSettingsResponse } from "../interface/account/user";
+import { SignUpResponse, SignUpParams, LoginParams, LoginResponse, UpdateUserInfoParams, UpdateUserInfoResponse, userSettingsParams, userSettingsResponse, UserInfo } from "../interface/account/user";
+
+
 // const baseUrl = 'https://you-and-i-6d9db751f88a.herokuapp.com/api'
 const baseUrl = "http://localhost:5000/api";
 
-async function signUp({ email, password, confirmPassword }: SignUPParams) {
+async function signUp({ email, password, confirmPassword }: SignUpParams): Promise<{ status: 200; userInfo: UserInfo } | { status: number; message: string } | undefined> {
   try {
-    if (!email || !password || !confirmPassword) {
-      return { code: 400, message: "all fields are required" };
-    }
-    if (password != confirmPassword) {
-      return { code: 400, message: "passwords do not match" };
-    }
-    const result = await axios.post<AxiosResponse, SignUPResponse>(
+    const result = await axios.post<SignUpResponse>(
       baseUrl + "/signup",
       {
         email,
@@ -20,36 +16,31 @@ async function signUp({ email, password, confirmPassword }: SignUPParams) {
       },
       {
         headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
+          "Content-Type": "application/json",
         },
       },
 
     );
-    if (result.status === 200) {
+    if (result.data && result.status === 200) {
       const { userInfo } = result.data
-
       return {
-        userInfo,
         status: result.status,
-      };
+        userInfo
+      }
     }
-
-    return {
-      message: result.data.message,
-      status: result.status,
-    };
   } catch (err) {
     if (err instanceof AxiosError) {
-      const status = err.status;
-      const message = err.message;
+      const status = err.response?.status ?? 500;
+      const message = err?.message ?? "Internal Server Error";
       return { status, message };
     }
+    return { status: 500, message: "Internal Server Error" }
   }
 }
 
 async function login({ usernameEmail, password }: LoginParams) {
   try {
-    const result = await axios.post<AxiosResponse, LoginResponse>(
+    const result = await axios.post<LoginResponse>(
       baseUrl + "/login",
       { usernameEmail, password },
       {
@@ -59,12 +50,11 @@ async function login({ usernameEmail, password }: LoginParams) {
       },
     );
     if (result.data) {
-      if (result.data.token && result.data.token != "") {
+      if (result.data && result.data.token != "") {
         const token = result.data.token;
         const { userInfo } = result.data;
         localStorage.setItem("Oh_vnyX", token);
-
-        return { status: 200, message: "ok", userInfo };
+        return { status: 200, userInfo };
       }
     }
   } catch (err) {
@@ -117,3 +107,5 @@ async function userSettings(formData: userSettingsParams) {
   }
 }
 export { signUp, login, updateUserInfo, userSettings };
+const hello = await signUp({ email: "Lovis", password: "flkadjflkad", confirmPassword: "dfldajfljdlfjad" })
+hello.

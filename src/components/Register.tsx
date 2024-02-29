@@ -22,6 +22,32 @@ const Register = () => {
     setSpin,
     isValid,
   } = useRegister();
+
+  const handleForm = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSpin(true);
+    const formData = new FormData(e.currentTarget);
+    const formObj = {
+      username: formData.get("username") as string,
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+      confirmPassword: formData.get("confirm-password") as string,
+    };
+    try {
+      const result = await signUp(formObj);
+
+      if (!result) return;
+      if ("userInfo" in result) {
+        saveUserInfoAndNavigate(result.userInfo);
+      } else {
+        errorLogger({ message: result.message });
+      }
+    } catch (err) {
+      setInfo({ type: "error", message: "Unknown Error" });
+    } finally {
+      setSpin(false);
+    }
+  };
   return (
     <Transition>
       <InfoContainer info={info} setInfo={setInfo} />
@@ -32,22 +58,7 @@ const Register = () => {
         <WelcomeText />
         <form
           className="flex flex-col items-center gap-[21px]"
-          onSubmit={async (e: FormEvent<HTMLFormElement>) => {
-            e.preventDefault();
-            setSpin(true);
-            const formData = new FormData(e.target);
-            const formObj = {
-              username: formData.get("username"),
-              email: formData.get("email"),
-              password: formData.get("password"),
-              confirmPassword: formData.get("confirm-password"),
-            };
-            //? return userInfo or error message if status > 200
-            const result = await signUp(formObj);
-            result.status != 200
-              ? errorLogger({ message: result?.message })
-              : saveUserInfoAndNavigate(result.userInfo);
-          }}
+          onSubmit={handleForm}
         >
           <InputForm
             type={"email"}

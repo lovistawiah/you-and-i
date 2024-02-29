@@ -1,21 +1,17 @@
 
-export type UserInfo = {
+export interface UserInfo {
     userId: string,
     username: string,
     avatarUrl?: string,
     bio?: string,
 }
 
-export type SignUPParams = {
+export type SignUpParams = {
     email: string, password: string, confirmPassword: string
 }
 
-export type SignUPResponse = {
-    status: 200
-    data: {
-        message: string
-        userInfo: UserInfo,
-    }
+export interface SignUpResponse {
+    userInfo: UserInfo
 }
 
 
@@ -27,12 +23,10 @@ export type LoginParams = {
 
 
 export type LoginResponse = {
-    data: {
-        token: string,
-        userInfo: UserInfo
-        message: string,
-        status: 200,
-    }
+    token: string,
+    userInfo: UserInfo
+    message: string,
+    status: 200,
 }
 
 export type UpdateUserInfoParams = {
@@ -41,12 +35,10 @@ export type UpdateUserInfoParams = {
 }
 
 export type UpdateUserInfoResponse = {
-    status: 200
-    data: {
-        userInfo: UserInfo,
-        message: string,
-        token: string,
-    }
+    userInfo: UserInfo,
+    message: string,
+    token: string,
+
 }
 
 export type userSettingsParams = {
@@ -60,9 +52,6 @@ export type userSettingsParams = {
 
 
 export type userSettingsResponse = {
-    status: 200
-    data: {
-        userInfo: UserInfo,
-        message: string
-    }
+    userInfo: UserInfo,
+    message: string
 }

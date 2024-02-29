@@ -1,18 +1,19 @@
 import { usrEvents } from "../utils/eventNames";
 import { socket } from "../socket";
 import { useEffect, useState } from "react";
+import { Typing } from "../interface/app/useTyping";
 
 const useTyping = () => {
   const [isTypingObj, setIsTypingObj] = useState(null);
 
   useEffect(() => {
-    let noDataTimeout;
+    let noDataTimeout: NodeJS.Timeout;
     function startNoDataTimer() {
       noDataTimeout = setTimeout(() => {
         setIsTypingObj(null);
       }, 1400);
     }
-    socket.on(usrEvents.typing, (data) => {
+    socket.on(usrEvents.typing, (data: Typing) => {
       const { chatId } = data;
       if (chatId) {
         clearTimeout(noDataTimeout);
