@@ -5,6 +5,11 @@ import { SignUpResponse, SignUpParams, LoginParams, LoginResponse, UpdateUserInf
 // const baseUrl = 'https://you-and-i-6d9db751f88a.herokuapp.com/api'
 const baseUrl = "http://localhost:5000/api";
 const serverError = { status: 500, message: "Internal Server Error" }
+const axiosError = (err: AxiosError) => {
+  const status = err.response?.status ?? err.status ?? 500;
+  const message: any = err.response?.data?.message ?? err.message ?? "Internal Server Error";
+  return { status, message };
+}
 async function signUp({ email, password, confirmPassword }: SignUpParams): Promise<{ userInfo: UserInfo } | ServerError | undefined> {
   try {
     const result = await axios.post<SignUpResponse>(
@@ -29,9 +34,7 @@ async function signUp({ email, password, confirmPassword }: SignUpParams): Promi
     }
   } catch (err) {
     if (err instanceof AxiosError) {
-      const status = err.response?.status ?? 500;
-      const message = err?.message ?? "Internal Server Error";
-      return { status, message };
+      axiosError(err)
     }
     return serverError;
   }
@@ -58,9 +61,7 @@ async function login({ usernameEmail, password }: LoginParams): Promise<{ status
     }
   } catch (err) {
     if (err instanceof AxiosError) {
-      const status = err.status ? err.status : 500;
-      const message = err.message;
-      return { status, message };
+      axiosError(err)
     }
   }
   return serverError
@@ -79,9 +80,7 @@ async function updateUserInfo(formData: UpdateUserInfoParams): Promise<{ userInf
     }
   } catch (err) {
     if (err instanceof AxiosError) {
-      const status = err.status ? err.status : 500;
-      const message = err.message;
-      return { status, message };
+      axiosError(err)
     }
     return serverError
   }
@@ -101,10 +100,9 @@ async function userSettings(formData: userSettingsParams): Promise<{ userInfo: U
     }
   } catch (err) {
     if (err instanceof AxiosError) {
-      const status = err.status ? err.status : 500;
-      const message = err.message;
-      return { status, message };
+      axiosError(err)
     }
+    return serverError
   }
 }
 export { signUp, login, updateUserInfo, userSettings };

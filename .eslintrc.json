@@ -16,7 +16,7 @@
     "@typescript-eslint/no-misused-promises": [
       "error",
       {
-        "checkVoidReturn": false
+        "checksConditionals": false
       }
     ]
   },

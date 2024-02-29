@@ -1,0 +1,7 @@
+tailwind.config.js
+postcss.config.js
+dist/**/*
+*.json
+.d.ts
+.vercel/**/*
+prettier.config.js

@@ -1,7 +1,6 @@
 import { isToday, format, formatDistanceToNow } from "date-fns";
 
 function lastSeen(lastSeen: string) {
-  if (!lastSeen) return;
   if (!Date.parse(lastSeen)) {
     return lastSeen;
   }

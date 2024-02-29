@@ -1,24 +1,30 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { lastSeen } from "../utils/compareDate";
+import { Chat, ChatValue } from "../interface/app/chatSlice";
 
+const initialState: Chat = {
+  value: null
+}
 export const chatReducer = createSlice({
   name: "chat",
-  initialState: {
-    value: null,
-  },
+  initialState
+  ,
   reducers: {
     setChatInfo: (state, action) => {
-      state.value = {};
-      state.value = action.payload;
+      state.value = null;
+      state.value = action.payload as ChatValue;
     },
     updateStatus: (state, action) => {
-      const { userId, status } = action.payload;
-      if (state.value.userId === userId && status) {
-        state.value.status = lastSeen(status);
+      const { userId, status } = action.payload as ChatValue;
+      if (state.value !== null) {
+        if (state.value?.userId === userId && status) {
+          state.value.status = lastSeen(status)
+        }
       }
     },
+
     updateNewChat: (state, action) => {
-      const { chatId, userId } = action.payload;
+      const { chatId, userId } = action.payload as ChatValue;
 
       if (userId) {
         if (state.value?.userId === userId && !state.value.chatId) {
