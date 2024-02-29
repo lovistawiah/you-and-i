@@ -1,11 +1,11 @@
-import axios, { AxiosError, AxiosResponse } from "axios";
-import { SignUpResponse, SignUpParams, LoginParams, LoginResponse, UpdateUserInfoParams, UpdateUserInfoResponse, userSettingsParams, userSettingsResponse, UserInfo } from "../interface/account/user";
+import axios, { AxiosError } from "axios";
+import { SignUpResponse, SignUpParams, LoginParams, LoginResponse, UpdateUserInfoParams, UpdateUserInfoResponse, userSettingsParams, userSettingsResponse, UserInfo, ServerError } from "../interface/account/user";
 
 
 // const baseUrl = 'https://you-and-i-6d9db751f88a.herokuapp.com/api'
 const baseUrl = "http://localhost:5000/api";
-
-async function signUp({ email, password, confirmPassword }: SignUpParams): Promise<{ status: 200; userInfo: UserInfo } | { status: number; message: string } | undefined> {
+const serverError = { status: 500, message: "Internal Server Error" }
+async function signUp({ email, password, confirmPassword }: SignUpParams): Promise<{ userInfo: UserInfo } | ServerError | undefined> {
   try {
     const result = await axios.post<SignUpResponse>(
       baseUrl + "/signup",
@@ -24,7 +24,6 @@ async function signUp({ email, password, confirmPassword }: SignUpParams): Promi
     if (result.data && result.status === 200) {
       const { userInfo } = result.data
       return {
-        status: result.status,
         userInfo
       }
     }
@@ -34,11 +33,11 @@ async function signUp({ email, password, confirmPassword }: SignUpParams): Promi
       const message = err?.message ?? "Internal Server Error";
       return { status, message };
     }
-    return { status: 500, message: "Internal Server Error" }
+    return serverError;
   }
 }
 
-async function login({ usernameEmail, password }: LoginParams): Promise<{ status: number, userInfo: UserInfo } | { message: string, status: number } | undefined> {
+async function login({ usernameEmail, password }: LoginParams): Promise<{ status: number, userInfo: UserInfo } | ServerError | undefined> {
   try {
     const result = await axios.post<LoginResponse>(
       baseUrl + "/login",
@@ -64,17 +63,16 @@ async function login({ usernameEmail, password }: LoginParams): Promise<{ status
       return { status, message };
     }
   }
-  return { status: 500, message: "Internal Server Error" }
+  return serverError
 }
 
-async function updateUserInfo(formData: UpdateUserInfoParams) {
+async function updateUserInfo(formData: UpdateUserInfoParams): Promise<{ userInfo: UserInfo, message: string } | ServerError | undefined> {
   try {
-    const result = await axios.patch<AxiosResponse, UpdateUserInfoResponse>(baseUrl + "/update-user", formData);
+    const result = await axios.patch<UpdateUserInfoResponse>(baseUrl + "/update-user", formData);
     if (result.data.message) {
       const token = result.data.token;
       localStorage.setItem("Oh_vnyX", token);
       return {
-        status: result.status,
         userInfo: result.data.userInfo,
         message: result.data.message,
       };
@@ -85,18 +83,20 @@ async function updateUserInfo(formData: UpdateUserInfoParams) {
       const message = err.message;
       return { status, message };
     }
+    return serverError
   }
 }
-async function userSettings(formData: userSettingsParams) {
+
+
+async function userSettings(formData: userSettingsParams): Promise<{ userInfo: UserInfo, message: string } | ServerError | undefined> {
   try {
-    const result = await axios.patch<AxiosResponse, userSettingsResponse>(baseUrl + "/user-settings", formData);
+    const result = await axios.patch<userSettingsResponse>(baseUrl + "/user-settings", formData);
     if (result.status === 200) {
       const userInfo = result.data.userInfo;
       const message = result.data.message;
       return {
         userInfo,
         message,
-        status: result.status,
       };
     }
   } catch (err) {
@@ -108,5 +108,3 @@ async function userSettings(formData: userSettingsParams) {
   }
 }
 export { signUp, login, updateUserInfo, userSettings };
-const hello = await signUp({ email: "Lovis", password: "flkadjflkad", confirmPassword: "dfldajfljdlfjad" })
-hello.

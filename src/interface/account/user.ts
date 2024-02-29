@@ -41,10 +41,7 @@ export type UpdateUserInfoResponse = {
 
 }
 
-export type userSettingsParams = {
-    userId: string,
-    username?: string,
-    bio?: string,
+export type userSettingsParams = UserInfo & {
     currentPassword: string,
     newPassword?: string,
     confirmPassword?: string,
@@ -53,5 +50,9 @@ export type userSettingsParams = {
 
 export type userSettingsResponse = {
     userInfo: UserInfo,
+    message: string
+}
+export type ServerError = {
+    status: number,
     message: string
 }
