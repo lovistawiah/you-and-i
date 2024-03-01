@@ -73,11 +73,7 @@ const Messages = () => {
     dispatch(replyMessage(null));
   };
   return (
-    <section
-      ref={messagesRef}
-      className={`relative overflow-y-auto`}
-      id="messages"
-    >
+    <div ref={messagesRef} className={`relative overflow-y-auto`} id="messages">
       {msgToBeReplied && (
         <Modal>
           <section
@@ -103,7 +99,7 @@ const Messages = () => {
           {memoizedMessages}
         </div>
       )}
-    </section>
+    </div>
   );
 };
 

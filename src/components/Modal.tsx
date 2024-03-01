@@ -1,13 +1,14 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, ReactNode } from "react";
 import { createPortal } from "react-dom";
 
-const Modal = ({ children }) => {
-  const elRef = useRef(null);
+const Modal = ({ children }: { children: ReactNode }) => {
+  const elRef = useRef<HTMLDivElement | null>(null);
   if (!elRef.current) {
     elRef.current = document.createElement("div");
   }
   useEffect(() => {
-    const modalRoot = document.getElementById("messages");
+    if (!elRef.current) return;
+    const modalRoot = document.getElementById("messages") as HTMLDivElement;
     modalRoot.appendChild(elRef.current);
     return () => {
       modalRoot.removeChild(elRef.current);
@@ -20,8 +21,5 @@ const Modal = ({ children }) => {
     elRef.current,
   );
 };
-// emit the reply to server
-// when reply message is set hide the reply button. let reply and update use the same modal
-// message ops on the message either reply or update.
 
 export default Modal;
