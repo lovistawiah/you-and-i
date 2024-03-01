@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUserInfo } from "../app/userSlice";
+import { UserInfo } from "../interface/account/user";
 
 const useRegister = () => {
   const navigate = useNavigate();
@@ -10,7 +11,7 @@ const useRegister = () => {
   const [spin, setSpin] = useState(false);
   const [isValid, setIsValid] = useState(true);
 
-  const saveUserInfoAndNavigate = (userObj) => {
+  const saveUserInfoAndNavigate = (userObj: UserInfo) => {
     if (!userObj) return;
     setSpin(false);
     dispatch(setUserInfo(userObj));
