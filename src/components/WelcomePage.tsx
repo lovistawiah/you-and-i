@@ -1,6 +1,6 @@
 import Logo from "../../public/logo.png";
 import LinkText from "./LinkText";
-const WelcomePage = ({ message }) => {
+const WelcomePage = ({ message }: { message: string }) => {
   return (
     <section className="flex h-screen w-screen items-center justify-center bg-gray-50">
       <section className="flex h-[250px] w-[300px] flex-col items-center justify-center  rounded bg-gray-200 shadow-sm md:h-[300px] md:w-[500px] ">

@@ -6,8 +6,7 @@ const WelcomeText = () => {
       </span>
       <div className="inline-flex h-[47px] w-[291px] items-center justify-end gap-[27px] px-[37px]">
         <span className="text-center text-[32px] font-normal text-blue-500 md:text-[48px] ">
-          {" "}
-          You and I{" "}
+          You and I
         </span>
       </div>
     </section>
