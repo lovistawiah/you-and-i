@@ -5,7 +5,7 @@ import { socket } from "../socket";
 import { usrEvents } from "../utils/eventNames";
 import { updateStatus } from "../app/chatSlice";
 
-const useChatInfo = ({ userId }) => {
+const useChatInfo = ({ userId }: { userId: string }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const goBack = () => {
