@@ -3,13 +3,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { addMessage } from "../app/messagesSlice";
 import { socket } from "../socket";
 import { msgEvents } from "../utils/eventNames";
+import { State } from "../interface/state";
+import { RepliedMessage } from "../interface/app/messagesSlice";
 
-const useMessages = ({ chatId, messagesRef }) => {
+const useMessages = ({ chatId, messagesRef }: { chatId: string, messagesRef: React.MutableRefObject<HTMLDivElement | null> }) => {
   const dispatch = useDispatch();
-  const messages = useSelector((state) => state.messages.messages);
+  const messages = useSelector((state: State) => state.messages.messages);
 
   useEffect(() => {
-    const getMessages = (messagesData) => {
+    const getMessages = (messagesData: RepliedMessage) => {
       dispatch(addMessage(messagesData));
     };
     socket.emit(msgEvents.msgs, chatId);
@@ -27,13 +29,13 @@ const useMessages = ({ chatId, messagesRef }) => {
   }, [chatId]);
 
   useEffect(() => {
-    socket.on(msgEvents.sndMsg, (messageData) => {
+    socket.on(msgEvents.sndMsg, (messageData: RepliedMessage) => {
       dispatch(addMessage(messageData));
     });
   });
 
   useEffect(() => {
-    socket.on(msgEvents.reply, (msg) => {
+    socket.on(msgEvents.reply, (msg: RepliedMessage) => {
       dispatch(addMessage(msg));
     });
   });

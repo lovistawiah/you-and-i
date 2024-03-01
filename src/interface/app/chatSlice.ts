@@ -6,7 +6,7 @@ export type ChatValue = {
     avatarUrl: string
 }
 export interface Chat {
-    value: ChatValue | null
+    value: ChatValue
 }
 
 export type SelectedChat = {

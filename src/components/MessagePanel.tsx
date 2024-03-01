@@ -98,7 +98,7 @@ const MessagePanel = () => {
     setShowEmojis(showEmojis ? false : true);
   };
 
-  const getEmoji = (emojiObj: { native: any }) => {
+  const getEmoji = (emojiObj: any) => {
     const emoji = emojiObj.native;
     setMessage(message + emoji);
   };

@@ -23,7 +23,7 @@ const Messages = () => {
   const datesSet = new Set();
   const messagesRef = useRef(null);
   useMessages({
-    chatId: chatInfo?.chatId,
+    chatId: chatInfo.chatId ? chatInfo.chatId : "",
     messagesRef: messagesRef,
   });
   const addDateToSet = (messageDate: string) => {
@@ -51,7 +51,7 @@ const Messages = () => {
           )}
           <Message
             key={message.Id}
-            Id={message.Id}
+            msgId={message.Id}
             message={message.message}
             sender={message.sender}
             msgDate={
