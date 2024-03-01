@@ -4,6 +4,7 @@ export type Contact = {
     avatarUrl: string,
     chatId?: string,
     bio: string
+    status?: string
 }
 
 export type ContactState = {

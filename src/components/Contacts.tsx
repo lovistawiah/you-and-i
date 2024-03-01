@@ -7,13 +7,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
 import useContact from "../hooks/useContact";
 import { clearMessages } from "../app/messagesSlice";
+import { State } from "../interface/state";
+import { Contact } from "../interface/app/contactsSlice";
 
 const Contacts = () => {
   const dispatch = useDispatch();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const { searchInput, setSearchInput } = useContact();
   // return search users else the original list
-  const contacts = useSelector((state) =>
+  const contacts = useSelector((state: State) =>
     searchInput.length > 0
       ? state.contacts.searchedContacts
       : state.contacts.contacts,
@@ -22,13 +24,21 @@ const Contacts = () => {
   const clearSearch = () => {
     setSearchInput("");
   };
-  const handleUserInfo = ({ userId, chatId, avatarUrl, username }) => {
+  const handleUserInfo = ({
+    Id,
+    chatId,
+    avatarUrl,
+    username,
+    status,
+    bio,
+  }: Contact) => {
     const chatObj = {
-      userId,
+      Id,
       chatId,
       avatarUrl,
       username,
       status,
+      bio,
     };
     dispatch(clearMessages());
     dispatch(setChatInfo({}));
@@ -80,11 +90,12 @@ const Contacts = () => {
             to={`/${windowWidth < 768 ? "messages" : ""}`}
             onClick={() =>
               handleUserInfo({
-                userId: contact.Id,
+                Id: contact.Id,
                 username: contact.username,
                 avatarUrl: contact.avatarUrl,
-                status: contact.status,
+                status: contact?.status,
                 chatId: contact?.chatId,
+                bio: contact?.bio,
               })
             }
             className="flex w-full items-center justify-start"
