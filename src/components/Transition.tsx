@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
+import { ReactNode } from "react";
 
-const Transition = ({ children }) => {
+const Transition = ({ children }: { children: ReactNode }) => {
   return (
     <motion.div
       initial={{ opacity: 0 }}
