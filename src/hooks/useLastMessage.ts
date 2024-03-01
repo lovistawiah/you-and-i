@@ -4,6 +4,8 @@ import { socket } from "../socket";
 import { msgEvents } from "../utils/eventNames";
 import { updateLastMessage } from "../app/chatsSlice";
 import { updateNewChat } from "../app/chatSlice";
+import { State } from "../interface/state";
+import { Message, RepliedMessage } from "../interface/app/messagesSlice";
 
 /**
  * Socket listens to incoming message.
@@ -12,10 +14,10 @@ import { updateNewChat } from "../app/chatSlice";
  */
 const useLastMessage = () => {
   const dispatch = useDispatch();
-  const info = useSelector((state) => state.chat.value);
+  const info = useSelector((state: State) => state.chat?.value);
   // const chats = useSelector((state)=>state.chats.chats)
   useEffect(() => {
-    const handleSendMessage = (msg) => {
+    const handleSendMessage = (msg: Message) => {
       dispatch(
         updateLastMessage({
           chatId: msg.chatId,
@@ -32,7 +34,7 @@ const useLastMessage = () => {
   });
 
   useEffect(() => {
-    socket.on(msgEvents.reply, (msg) => {
+    socket.on(msgEvents.reply, (msg: RepliedMessage) => {
       dispatch(
         updateLastMessage({
           chatId: msg.chatId,

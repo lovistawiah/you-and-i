@@ -1,63 +1,81 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { ChatsState, ChatsValue, Typing, UpdateLastMessage, Username } from "../interface/app/chatsSlice";
+
+const initialState: ChatsState = {
+  chats: [],
+  searchChats: [],
+  typing: null,
+}
 
 export const chatsReducer = createSlice({
   name: "chats",
-  initialState: {
-    chats: [],
-    typingObj: null,
-    searchChats: [],
-  },
+  initialState,
   reducers: {
-    addChats: (state, action) => {
+    addChats: (state, action: PayloadAction<ChatsValue>) => {
       const { payload } = action;
-      const chatExists = state.chats.some((chat) => chat.Id === payload.Id);
+      const chatExists = state.chats.some((chat: ChatsValue) => chat.Id === payload.Id);
       if (!chatExists) {
-        state.chats.push(payload);
+        state.chats.push(payload)
       }
     },
 
-    addNewChat: (state, action) => {
+    addNewChat: (state, action: PayloadAction<ChatsValue>) => {
       const { payload } = action;
-      const chatExists = state.chats.some((chat) => chat.Id === payload.Id);
+      const chatExists = state.chats.some((chat: ChatsValue) => chat.Id === payload.Id);
       if (!chatExists) {
         state.chats = [payload, ...state.chats].sort(
-          (chatA, chatB) =>
-            new Date(chatB.lstMsgDate) - new Date(chatA.lstMsgDate),
+          (chatA, chatB) => {
+            const timeA = new Date(chatA.lstMsgDate).getTime()
+            const timeB = new Date(chatB.lstMsgDate).getTime()
+            return timeB - timeA
+
+          }
         );
       }
     },
 
-    updateLastMessage: (state, action) => {
+    updateLastMessage: (state, action: PayloadAction<UpdateLastMessage>) => {
       const { chatId, lastMessage, msgDate } = action.payload;
       const findIdx = state.chats.findIndex((chat) => chat.Id === chatId);
 
       if (findIdx !== -1) {
         state.chats[findIdx].lastMessage = lastMessage;
         state.chats[findIdx].lstMsgDate = msgDate;
-        state.chats.sort(
-          (chatA, chatB) =>
-            new Date(chatB.lstMsgDate) - new Date(chatA.lstMsgDate),
-        );
+
+        state.chats.sort((chatA, chatB) => {
+          const timeA = new Date(chatA.lstMsgDate).getTime()
+          const timeB = new Date(chatB.lstMsgDate).getTime()
+          return timeB - timeA
+
+        })
       }
     },
 
-    typing: (state, action) => {
+    typing: (state, action: PayloadAction<Typing>) => {
       const { payload: typingObj } = action;
-      state.typingObj = typingObj;
+      state.typing = typingObj;
     },
     /**
      * this accepts username
      *
      */
-    searchChats: (state, action) => {
+    searchChats: (state, action: PayloadAction<Username>) => {
       const { payload: username } = action;
       if (username) {
         state.searchChats = state.chats.filter((chat) =>
           chat.username.includes(username),
         );
-        state.searchChats.sort(
-          (chatA, chatB) => chatB.username - chatA.username,
-        );
+        state.searchChats.sort((chatA, chatB) => {
+          const usernameA = chatA.username.toLowerCase();
+          const usernameB = chatB.username.toLowerCase();
+          if (usernameA < usernameB) {
+            return -1
+          } else if (usernameA > usernameB) {
+            return 1
+          } else {
+            return 0;
+          }
+        });
       }
     },
   },
