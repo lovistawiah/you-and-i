@@ -2,7 +2,15 @@ import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
-const SettingsPassword = ({ label, placeholder, name }) => {
+const SettingsPassword = ({
+  label,
+  placeholder,
+  name,
+}: {
+  label: string;
+  placeholder: string;
+  name: string;
+}) => {
   const [showPass, setShowPass] = useState(false);
 
   const passVisibility = () => {
