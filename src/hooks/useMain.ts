@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { MouseEvent, useEffect, useState } from "react";
 import { socket } from "../socket";
 
 const useMain = () => {
@@ -8,8 +8,8 @@ const useMain = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
 
-  const pageSelector = (e) => {
-    setActivePage(+e.target.id);
+  const pageSelector = (e: MouseEvent<HTMLButtonElement>) => {
+    setActivePage(+e.currentTarget.id);
   };
 
   useEffect(() => {

@@ -4,13 +4,14 @@ import {
   faGear,
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
+import { MouseEvent } from "react";
 
 const Menu = ({
   pageSelector,
   windowWidth,
   userAvatar,
 }: {
-  pageSelector: (e) => void;
+  pageSelector: (e: MouseEvent<HTMLButtonElement>) => void;
   windowWidth: number;
   userAvatar: string | undefined;
 }) => {
@@ -30,7 +31,7 @@ const Menu = ({
           className={`flex flex-col p-1 font-roboto font-normal text-zinc-600 md:my-2 md:items-center md:justify-center ${iconText === "Chats" ? "md:order-1" : iconText === "Contacts" ? "md:order-2" : "md:order-3"} text-base focus:text-blue-500`}
           key={i}
           onClick={pageSelector}
-          id={i + 1}
+          id={`${i + 1}`}
         >
           <FontAwesomeIcon
             icon={iconName}

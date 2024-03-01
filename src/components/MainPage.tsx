@@ -13,8 +13,10 @@ import { State } from "../interface/state";
 const MainPage = () => {
   const userAvatar = useSelector((state: State) => state.user.value?.avatarUrl);
   const { errMsg, isToken, windowWidth, activePage, pageSelector } = useMain();
+
   useLastMessage();
   useModifyMessage();
+
   return !isToken ? (
     <WelcomePage message={errMsg} />
   ) : (
