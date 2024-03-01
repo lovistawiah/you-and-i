@@ -5,12 +5,8 @@ import { SignUpResponse, SignUpParams, LoginParams, LoginResponse, UpdateUserInf
 // const baseUrl = 'https://you-and-i-6d9db751f88a.herokuapp.com/api'
 const baseUrl = "http://localhost:5000/api";
 const serverError = { status: 500, message: "Internal Server Error" }
-const axiosError = (err: AxiosError) => {
-  const status = err.response?.status ?? err.status ?? 500;
-  const message: any = err.response?.data?.message ?? err.message ?? "Internal Server Error";
-  return { status, message };
-}
-async function signUp({ email, password, confirmPassword }: SignUpParams): Promise<{ userInfo: UserInfo } | ServerError | undefined> {
+
+async function signUp({ email, password, confirmPassword }: SignUpParams): Promise<{ userInfo: UserInfo, message?: string } | ServerError | undefined> {
   try {
     const result = await axios.post<SignUpResponse>(
       baseUrl + "/signup",
@@ -32,6 +28,7 @@ async function signUp({ email, password, confirmPassword }: SignUpParams): Promi
         userInfo
       }
     }
+    customError(result.status, result.data.message)
   } catch (err) {
     if (err instanceof AxiosError) {
       axiosError(err)
@@ -59,6 +56,7 @@ async function login({ usernameEmail, password }: LoginParams): Promise<{ status
         return { status: 200, userInfo };
       }
     }
+    customError(result.status, result.data.message)
   } catch (err) {
     if (err instanceof AxiosError) {
       axiosError(err)
@@ -78,6 +76,7 @@ async function updateUserInfo(formData: UpdateUserInfoParams): Promise<{ userInf
         message: result.data.message,
       };
     }
+    customError(result.status, result.data.message)
   } catch (err) {
     if (err instanceof AxiosError) {
       axiosError(err)
@@ -99,6 +98,7 @@ async function userSettings(formData: userSettingsParams): Promise<{ userInfo: U
         status: result.status
       };
     }
+    customError(result.status, result.data.message)
   } catch (err) {
     if (err instanceof AxiosError) {
       axiosError(err)
@@ -106,4 +106,22 @@ async function userSettings(formData: userSettingsParams): Promise<{ userInfo: U
     return serverError
   }
 }
+
+
+const axiosError = (err: AxiosError) => {
+  const status = err.response?.status ?? err.status ?? 500;
+  const message = err.message ?? "Internal Server Error";
+  return { status, message };
+}
+
+const customError = (status: number, message: string | undefined) => {
+  if (status >= 400 && status < 500) {
+    return {
+      status,
+      message: message ?? "Internal Server Error"
+    }
+
+  }
+}
+
 export { signUp, login, updateUserInfo, userSettings };

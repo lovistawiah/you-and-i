@@ -11,7 +11,8 @@ export type SignUpParams = {
 }
 
 export interface SignUpResponse {
-    userInfo: UserInfo
+    userInfo: UserInfo,
+    message?: string
 }
 
 
