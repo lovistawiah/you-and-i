@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { faArrowRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
@@ -12,7 +12,7 @@ const UpdateProfile = () => {
   const { windowWidth, handleUserInfo, info, setInfo, navigate, personInfo } =
     useUpdateProfile();
 
-  const handleUsernameInput = (e) => {
+  const handleUsernameInput = (e: ChangeEvent<HTMLInputElement>) => {
     setUsernameInput(e.target.value);
   };
   useEffect(() => {
@@ -21,6 +21,7 @@ const UpdateProfile = () => {
     };
     handleLogout();
   }, []);
+
   const goBack = () => {
     navigate("/register");
   };

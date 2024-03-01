@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { setUserInfo } from "../app/userSlice";
 import { updateUserInfo } from "../account/user.js";
 import { State } from "../interface/state";
@@ -9,7 +10,7 @@ const useUpdateProfile = () => {
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const user = useSelector((state: State) => state.user.value);
   const [info, setInfo] = useState({});
-
+  const navigate = useNavigate()
   const [personInfo, setPersonInfo] = useState(user);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -39,29 +40,29 @@ const useUpdateProfile = () => {
       return;
     }
 
-    const userObj = await updateUserInfo(formObj);
-    if (!userObj) return
-    if (userObj.status === 200) {
+    const result = await updateUserInfo(formObj);
+    if (!result) return
+    if ("userInfo" in result) {
       setPersonInfo({
         ...personInfo as UserValue,
-        username: userObj.userInfo.username,
+        username: result.userInfo.username,
       });
 
       dispatch(
         setUserInfo({
           ...personInfo as UserValue,
-          username: userObj.userInfo.username as string,
+          username: result.userInfo.username,
         }),
       );
       location.href = location.origin + "/";
     } else {
       setInfo({
         type: "ok",
-        message: userObj.message as string,
+        message: result.message,
       });
     }
   };
-  return { windowWidth, handleUserInfo, info, setInfo, user, personInfo };
+  return { windowWidth, handleUserInfo, info, setInfo, user, personInfo, navigate };
 };
 
 export default useUpdateProfile;
