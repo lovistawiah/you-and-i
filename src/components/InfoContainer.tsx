@@ -3,7 +3,26 @@ import { faTimes } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { motion, AnimatePresence } from "framer-motion";
 
-const InfoContainer = ({ info, setInfo }) => {
+const InfoContainer = ({
+  info,
+  setInfo,
+}: {
+  info:
+    | Record<string, never>
+    | {
+        type: string;
+        message: string;
+      };
+  setInfo: React.Dispatch<
+    React.SetStateAction<
+      | Record<string, never>
+      | {
+          type: string;
+          message: string;
+        }
+    >
+  >;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
 
   function closeErrorContainer() {
