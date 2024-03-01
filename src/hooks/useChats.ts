@@ -5,13 +5,15 @@ import { chatEvents, msgEvents } from "../utils/eventNames";
 import { addChats, addNewChat, searchChats } from "../app/chatsSlice";
 import { addMessage } from "../app/messagesSlice";
 import { updateContact } from "../app/contactsSlice";
+import { ChatsValue } from "../interface/app/chatsSlice";
+import { NewChatAndMessage } from "../interface/app/messagesSlice";
 
 const useChats = () => {
   const [searchInput, setSearchInput] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const getChatData = (chatsData) => {
+    const getChatData = (chatsData: ChatsValue) => {
       if (typeof chatsData !== "string") {
         dispatch(addChats(chatsData));
       }
@@ -29,7 +31,7 @@ const useChats = () => {
 
   useEffect(() => {
     // new chats
-    const newChats = (data) => {
+    const newChats = (data: NewChatAndMessage) => {
       const { msgObj, newChat } = data;
       const chatPayload = {
         Id: newChat.Id,

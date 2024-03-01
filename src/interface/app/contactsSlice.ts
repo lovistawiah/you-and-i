@@ -11,3 +11,8 @@ export type ContactState = {
     contacts: Contact[],
     searchedContacts: Contact[]
 }
+
+export type UpdateContact = {
+    Id: string,
+    chatId: string,
+}

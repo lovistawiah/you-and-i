@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Contact, ContactState } from "../interface/app/contactsSlice";
+import { Contact, ContactState, UpdateContact } from "../interface/app/contactsSlice";
 import { Username } from "../interface/app/chatsSlice";
 const initialState: ContactState = {
   contacts: [],
@@ -27,7 +27,7 @@ export const contactsReducer = createSlice({
         state.contacts.push(payload);
       }
     },
-    updateContact: (state, action: PayloadAction<Contact>) => {
+    updateContact: (state, action: PayloadAction<UpdateContact>) => {
       const { payload: contactObj } = action;
       const idx = state.contacts.findIndex(
         (contact) => contact.Id === contactObj.Id,

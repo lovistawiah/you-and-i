@@ -35,3 +35,12 @@ export type MessagesState = {
     updateMsg: UpdateMsg,
     msgToBeReplied: MsgToBeReplied,
 }
+export type NewChatAndMessage = {
+    newChat: {
+        Id: string
+        userId: string,
+        username: string,
+        avatarUrl: string
+    }
+    msgObj: Message
+}

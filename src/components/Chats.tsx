@@ -5,14 +5,16 @@ import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { ChatsValue } from "../interface/app/chatsSlice";
+import { State } from "../interface/state";
+import { ChangeEvent } from "react";
 
 const MainPage = () => {
   const { searchInput, setSearchInput } = useChats();
-  const chats = useSelector((state) =>
+  const chats = useSelector((state: State) =>
     searchInput.length > 0 ? state.chats.searchChats : state.chats.chats,
   );
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   };
 
