@@ -3,9 +3,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
 import useChatInfo from "../hooks/useChatInfo";
 import useTyping from "../hooks/useTyping";
+import { State } from "../interface/state";
 
-const ChatInfo = ({ windowWidth }) => {
-  const chatInfo = useSelector((state) => state.chat.value);
+const ChatInfo = ({ windowWidth }: { windowWidth: number }) => {
+  const chatInfo = useSelector((state: State) => state.chat.value);
   const { isTypingObj } = useTyping();
   const { goBack } = useChatInfo({ userId: chatInfo?.userId });
 
@@ -37,7 +38,7 @@ const ChatInfo = ({ windowWidth }) => {
             <span className="font-rale font-normal italic text-gray-600">
               typing...
             </span>
-          ) : chatInfo.status ? (
+          ) : chatInfo?.status ? (
             chatInfo.status === "Online" ? (
               chatInfo.status
             ) : (

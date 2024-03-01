@@ -2,7 +2,7 @@ import data from "@emoji-mart/data";
 import Picker from "@emoji-mart/react";
 import { faFaceSmile, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TextareaAutoResize from "react-textarea-autosize";
 import { socket } from "../socket";
@@ -11,26 +11,32 @@ import ChatInfo from "./ChatInfo";
 import Messages from "./Messages";
 import { cancelUpdate, replyMessage } from "../app/messagesSlice";
 import useModifyMessage from "../hooks/useModifyMessage";
+import { State } from "../interface/state";
+import { ChatValue } from "../interface/app/chatSlice";
 
 const MessagePanel = () => {
-  const chatInfo = useSelector((state) => state.chat.value);
-  const msgToBeUpdated = useSelector((state) => state.messages.msgToBeUpdated);
-  const msgToBeReplied = useSelector((state) => state.messages.msgToBeReplied);
+  const chatInfo = useSelector((state: State) => state.chat.value);
+  const msgToBeUpdated = useSelector(
+    (state: State) => state.messages.msgToBeUpdated,
+  );
+  const msgToBeReplied = useSelector(
+    (state: State) => state.messages.msgToBeReplied,
+  );
   // ? a boolean to toggle the cancel button when updating
-  const updateMsg = useSelector((state) => state.messages.updateMsg);
+  const updateMsg = useSelector((state: State) => state.messages.updateMsg);
   const dispatch = useDispatch();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [showEmojis, setShowEmojis] = useState(false);
   const [message, setMessage] = useState("");
   useModifyMessage();
 
-  const submitForm = (e) => {
+  const submitForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!message) return;
     // updateMsg turns true if updateSingleMsg obj is set
     if (updateMsg) {
       const update = {
-        msgId: msgToBeUpdated.msgId,
+        msgId: msgToBeUpdated?.msgId,
         message,
       };
       socket.emit(msgEvents.updateMsg, update);
@@ -40,7 +46,7 @@ const MessagePanel = () => {
 
     if (msgToBeReplied) {
       const msgId = msgToBeReplied.msgId;
-      const { chatId } = chatInfo;
+      const { chatId } = chatInfo as ChatValue;
       if (!msgId && !chatId) return;
       const replyObj = {
         msgId,
@@ -52,7 +58,7 @@ const MessagePanel = () => {
       dispatch(replyMessage(null));
       return;
     }
-    const { userId, chatId } = chatInfo;
+    const { userId, chatId } = chatInfo as ChatValue;
     if (chatId && userId) {
       const messageObj = {
         chatId,
@@ -70,13 +76,13 @@ const MessagePanel = () => {
     setMessage("");
   };
 
-  const onKeyDown = (e) => {
+  const onKeyDown = (e: KeyboardEvent) => {
     if (e.key == "Enter" && !e.shiftKey) {
       submitForm(e);
     }
   };
 
-  const sendMessage = (e) => {
+  const sendMessage = (e: FormEvent<HTMLFormElement>) => {
     submitForm(e);
   };
 
@@ -92,17 +98,17 @@ const MessagePanel = () => {
     setShowEmojis(showEmojis ? false : true);
   };
 
-  const getEmoji = (emojiObj) => {
+  const getEmoji = (emojiObj: { native: any }) => {
     const emoji = emojiObj.native;
     setMessage(message + emoji);
   };
 
   const handleCancelUpdate = () => {
     setMessage("");
-    dispatch(cancelUpdate(true));
+    dispatch(cancelUpdate());
   };
 
-  const handleOnChange = (e) => {
+  const handleOnChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
     if (message) {
       socket.emit(usrEvents.typing, { chatId: chatInfo?.chatId });
@@ -127,7 +133,7 @@ const MessagePanel = () => {
         </section>
       ) : (
         <>
-          <ChatInfo windowWidth={windowWidth} userId={chatInfo?.userId} />
+          <ChatInfo windowWidth={windowWidth} />
           <Messages />
           {showEmojis && (
             <section className={`absolute right-12 z-50`}>

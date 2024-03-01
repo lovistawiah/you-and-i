@@ -8,7 +8,6 @@ export type Message = {
     chatId: string,
     info: MessageInfo
 }
-
 export type RepliedMessage = Message & {
     reply: {
         Id: string,
@@ -16,4 +15,23 @@ export type RepliedMessage = Message & {
         sender: string,
         info: MessageInfo,
     },
+}
+
+export type MsgToBeReplied = {
+    msgId: string,
+    message: string
+} | null
+
+export type MsgToBeUpdated = {
+    msgId: string,
+    message: string
+} | null
+
+export type UpdateMsg = boolean;
+
+export type MessagesState = {
+    messages: Message[],
+    msgToBeUpdated: MsgToBeUpdated,
+    updateMsg: UpdateMsg,
+    msgToBeReplied: MsgToBeReplied,
 }

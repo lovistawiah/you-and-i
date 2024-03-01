@@ -1,15 +1,17 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { Message, MessagesState, MsgToBeReplied, MsgToBeUpdated } from "../interface/app/messagesSlice";
 
+const initialState: MessagesState = {
+  messages: [],
+  msgToBeUpdated: null,
+  updateMsg: false,
+  msgToBeReplied: null,
+}
 export const messageReducer = createSlice({
   name: "messages",
-  initialState: {
-    messages: [],
-    msgToBeUpdated: null,
-    updateMsg: false,
-    msgToBeReplied: null,
-  },
+  initialState,
   reducers: {
-    addMessage: (state, action) => {
+    addMessage: (state, action: PayloadAction<Message>) => {
       const { payload: message } = action;
       const msgExist = state.messages.some((msg) => msg.Id === message.Id);
       if (!msgExist) {
@@ -17,7 +19,7 @@ export const messageReducer = createSlice({
       }
     },
 
-    modifyMsg: (state, action) => {
+    modifyMsg: (state, action: PayloadAction<Message>) => {
       const { payload } = action;
       const idx = state.messages.findIndex(
         (message) => message.Id === payload.Id,
@@ -27,7 +29,7 @@ export const messageReducer = createSlice({
       }
     },
 
-    updateSingleMsg: (state, action) => {
+    updateSingleMsg: (state, action: PayloadAction<MsgToBeUpdated>) => {
       const { payload: msgObj } = action;
       state.msgToBeUpdated = msgObj;
       state.updateMsg = true;
@@ -41,7 +43,7 @@ export const messageReducer = createSlice({
     clearMessages: (state) => {
       state.messages = [];
     },
-    replyMessage: (state, action) => {
+    replyMessage: (state, action: PayloadAction<MsgToBeReplied>) => {
       state.msgToBeReplied = action.payload;
     },
   },
