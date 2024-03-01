@@ -1,14 +1,22 @@
 import { faEyeSlash, faEye } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
+import { ChangeEvent, SetStateAction, useState } from "react";
 
-const PasswordInput = ({ setIsValid, isValid, label }) => {
+const PasswordInput = ({
+  setIsValid,
+  isValid,
+  label,
+}: {
+  isValid: boolean;
+  label: string;
+  setIsValid: React.Dispatch<SetStateAction<boolean>>;
+}) => {
   const [showPass, setShowPass] = useState(false);
   const passVisibility = () => {
     setShowPass(!showPass);
   };
 
-  const onBlur = (e) => {
+  const onBlur = (e: ChangeEvent<HTMLInputElement>) => {
     const passText = e.target.value;
     const passRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&,+><_])[A-Za-z\d@$!%*?&,+><_]{8,}$/;
