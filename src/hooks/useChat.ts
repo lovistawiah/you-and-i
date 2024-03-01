@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { clearMessages } from "../app/messagesSlice";
 import { setChatInfo } from "../app/chatSlice";
+import { SelectedChat } from "../interface/app/chatSlice";
 
 const useChat = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const dispatch = useDispatch();
 
-  const handleChat = ({ userId, chatId, avatarUrl, username }) => {
+  const handleChat = ({ userId, Id, avatarUrl, username }: SelectedChat) => {
     const chatObj = {
       userId,
-      chatId,
+      Id,
       avatarUrl,
       username,
     };

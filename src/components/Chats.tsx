@@ -4,6 +4,7 @@ import useChats from "../hooks/useChats";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { ChatsValue } from "../interface/app/chatsSlice";
 
 const MainPage = () => {
   const { searchInput, setSearchInput } = useChats();
@@ -52,10 +53,10 @@ const MainPage = () => {
 
       <div className="absolute bottom-[56px] left-0 right-0 top-2 mt-[129px] w-full overflow-y-auto md:bottom-1">
         {Array.isArray(chats) && chats.length > 0 ? (
-          chats.map((chat) => (
+          chats.map((chat: ChatsValue) => (
             <Chat
               key={chat.Id}
-              chatId={chat.Id}
+              Id={chat.Id}
               avatarUrl={chat.avatarUrl}
               lstMsgDate={chat.lstMsgDate}
               lastMessage={chat.lastMessage}
