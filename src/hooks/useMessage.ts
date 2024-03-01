@@ -1,18 +1,19 @@
-import { useEffect, useState } from "react";
+import { HtmlHTMLAttributes, MouseEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { socket } from "../socket";
 import { msgEvents } from "../utils/eventNames";
 import { replyMessage, updateSingleMsg } from "../app/messagesSlice";
+import { State } from "../interface/state";
 
-const useMessage = ({ msgIdRef, msgRef, ulRef }) => {
+const useMessage = ({ msgIdRef, msgRef, ulRef }: { msgIdRef: React.MutableRefObject<HTMLDivElement | null>, msgRef: React.MutableRefObject<HTMLDivElement | null>, ulRef: React.MutableRefObject<HtmlHTMLAttributes<HTMLUListElement>> }) => {
   const [showOps, setShowOps] = useState(false);
   const dispatch = useDispatch();
-  const chatId = useSelector((state) => state.chat.value.chatId);
+  const chatId = useSelector((state: State) => state.chat.value?.chatId);
 
   useEffect(() => {
     //removes Edit and Delete container on the page is selected
-    const handleClickOutside = (event) => {
-      if (ulRef.current && !ulRef.current.contains(event.target)) {
+    const handleClickOutside = (ev: MouseEvent<HTMLButtonElement>) => {
+      if (ulRef.current && !ulRef.current.contains(ev.target)) {
         setShowOps(false);
       }
     };
@@ -43,8 +44,8 @@ const useMessage = ({ msgIdRef, msgRef, ulRef }) => {
   };
 
   const editMsg = () => {
-    if (!msgIdRef.current && msgRef.current) return;
-    const msgId = msgIdRef.current.id;
+    if (!msgIdRef.current && !msgRef.current) return;
+    const msgId = msgIdRef?.current.id;
     const message = msgRef.current.textContent;
 
     const msgObj = {

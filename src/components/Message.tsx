@@ -22,6 +22,7 @@ const Message = ({
 
   const { deleteMsg, editMsg, handleMsgOps, showOps, onBlurOps, replyMsg } =
     useMessage({ msgIdRef, msgRef, ulRef });
+
   const chatUsername = useSelector(
     (state: State) => state.chat?.value?.username,
   );
@@ -46,7 +47,7 @@ const Message = ({
   const minDiff = differenceInMinutes(new Date(), parseISO(msgDate.toString()));
 
   return (
-    <section
+    <div
       ref={msgIdRef}
       className={`${align} ${msgColor} relative flex flex-col font-roboto text-base ${margin} rounded-lg p-1 font-thin`}
       id={msgId}
@@ -116,7 +117,7 @@ const Message = ({
           <span>{msgStatus}</span>
         )}
       </div>
-    </section>
+    </div>
   );
 };
 
