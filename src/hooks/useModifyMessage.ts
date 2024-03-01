@@ -4,6 +4,8 @@ import { socket } from "../socket";
 import { msgEvents } from "../utils/eventNames";
 import { modifyMsg } from "../app/messagesSlice";
 import { updateLastMessage } from "../app/chatsSlice";
+import { State } from "../interface/state";
+import { RepliedMessage } from "../interface/app/messagesSlice";
 /**
  * this modifies incoming updated message wether deleted or updated.
  *
@@ -11,10 +13,10 @@ import { updateLastMessage } from "../app/chatsSlice";
  */
 const useModifyMessage = () => {
   const dispatch = useDispatch();
-  const storedMessages = useSelector((state) => state.messages.messages);
+  const storedMessages = useSelector((state: State) => state.messages.messages);
 
   useEffect(() => {
-    socket.on(msgEvents.updateMsg, (msgObj) => {
+    socket.on(msgEvents.updateMsg, (msgObj: RepliedMessage) => {
       dispatch(modifyMsg(msgObj));
       //to update the chat last message if updated message is the last message in the messages
       const msgId = msgObj.Id;
@@ -36,7 +38,7 @@ const useModifyMessage = () => {
   });
 
   useEffect(() => {
-    socket.on(msgEvents.delMsg, (msgObj) => {
+    socket.on(msgEvents.delMsg, (msgObj: RepliedMessage) => {
       dispatch(modifyMsg(msgObj));
       //to update the chat last message if deleted message is the last message in the messages
       const msgId = msgObj.Id;
