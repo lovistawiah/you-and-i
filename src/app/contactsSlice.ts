@@ -1,21 +1,24 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { Contact, ContactState } from "../interface/app/contactsSlice";
+import { Username } from "../interface/app/chatsSlice";
+const initialState: ContactState = {
+  contacts: [],
+  searchedContacts: [],
+}
 
 export const contactsReducer = createSlice({
   name: "contacts",
-  initialState: {
-    contacts: [],
-    searchedContacts: [],
-  },
+  initialState,
   reducers: {
-    searchContacts: (state, action) => {
+    searchContacts: (state, action: PayloadAction<Username>) => {
       const { payload: username } = action;
       if (username.length > 0) {
         state.searchedContacts = state.contacts.filter((chat) =>
-          chat.username.includes(username),
+          chat.username.toLowerCase().includes(username.toLowerCase()),
         );
       }
     },
-    addContact: (state, action) => {
+    addContact: (state, action: PayloadAction<Contact>) => {
       const { payload } = action;
       const contactExist = state.contacts.some(
         (chat) => chat.Id === payload.Id,
@@ -24,7 +27,7 @@ export const contactsReducer = createSlice({
         state.contacts.push(payload);
       }
     },
-    updateContact: (state, action) => {
+    updateContact: (state, action: PayloadAction<Contact>) => {
       const { payload: contactObj } = action;
       const idx = state.contacts.findIndex(
         (contact) => contact.Id === contactObj.Id,
