@@ -96,6 +96,7 @@ async function userSettings(formData: userSettingsParams): Promise<{ userInfo: U
       return {
         userInfo,
         message,
+        status: result.status
       };
     }
   } catch (err) {

@@ -41,10 +41,13 @@ export type UpdateUserInfoResponse = {
 
 }
 
-export type userSettingsParams = UserInfo & {
+export type userSettingsParams = {
+    userId: string,
+    username: string,
+    bio: string,
     currentPassword: string,
-    newPassword?: string,
-    confirmPassword?: string,
+    newPassword: string,
+    confirmPassword: string,
 }
 
 

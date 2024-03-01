@@ -3,7 +3,7 @@ import PageHeader from "./PageHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
 import { userSettings } from "../account/user.js";
-import { useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import InfoContainer from "./InfoContainer";
 import PasswordInput from "./PasswordInput";
 import SettingsPassword from "./SettingsPassword";
@@ -14,8 +14,8 @@ const Settings = () => {
   const userInfo = useSelector((state: State) => state.user.value);
   const [usernameInput, setUsernameInput] = useState("");
 
-  const handleUsernameInput = (e) => {
-    setUsernameInput(e.target.value);
+  const handleUsernameInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setUsernameInput(e.currentTarget.value);
   };
   const inputRegex = /^[a-zA-Z0-9.@_]*$/;
 
@@ -37,16 +37,16 @@ const Settings = () => {
     }
   }, [isPassValid]);
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
-    const username = formData.get("username");
-    const bio = formData.get("bio");
-    const currentPassword = formData.get("password");
-    const newPassword = formData.get("new-password");
-    const confirmPassword = formData.get("confirm-password");
+    const formData = new FormData(e.currentTarget);
+    const username = formData.get("username") as string;
+    const bio = formData.get("bio") as string;
+    const currentPassword = formData.get("password") as string;
+    const newPassword = formData.get("new-password") as string;
+    const confirmPassword = formData.get("confirm-password") as string;
     const userObj = {
-      userId: userInfo?.userId,
+      userId: userInfo?.userId ?? "",
       username,
       bio,
       currentPassword,
@@ -54,7 +54,8 @@ const Settings = () => {
       confirmPassword,
     };
     const result = await userSettings(userObj);
-    if (result.status === 200) {
+    if (!result) return;
+    if ("userInfo" in result) {
       setInfo({
         type: "ok",
         message: result.message,
