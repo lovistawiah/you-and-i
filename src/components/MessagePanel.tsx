@@ -12,7 +12,6 @@ import Messages from "./Messages";
 import { cancelUpdate, replyMessage } from "../app/messagesSlice";
 import useModifyMessage from "../hooks/useModifyMessage";
 import { State } from "../interface/state";
-import { ChatValue } from "../interface/app/chatSlice";
 
 const MessagePanel = () => {
   const chatInfo = useSelector((state: State) => state.chat.value);
@@ -46,7 +45,7 @@ const MessagePanel = () => {
 
     if (msgToBeReplied) {
       const msgId = msgToBeReplied.msgId;
-      const { chatId } = chatInfo as ChatValue;
+      const chatId = chatInfo.chatId;
       if (!msgId && !chatId) return;
       const replyObj = {
         msgId,
@@ -58,7 +57,7 @@ const MessagePanel = () => {
       dispatch(replyMessage(null));
       return;
     }
-    const { userId, chatId } = chatInfo as ChatValue;
+    const { userId, chatId } = chatInfo;
     if (chatId && userId) {
       const messageObj = {
         chatId,
@@ -98,7 +97,7 @@ const MessagePanel = () => {
     setShowEmojis(showEmojis ? false : true);
   };
 
-  const getEmoji = (emojiObj: any) => {
+  const getEmoji = (emojiObj) => {
     const emoji = emojiObj.native;
     setMessage(message + emoji);
   };

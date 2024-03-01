@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const LinkText = ({ linkName }) => {
+const LinkText = ({ linkName }: { linkName: string }) => {
   return (
     <Link
       to={`/${linkName.toLowerCase()}`}
