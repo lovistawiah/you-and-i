@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { socket } from "../socket";
 import { msgEvents } from "../utils/eventNames";
@@ -45,44 +45,37 @@ const useMessage = ({ msgIdRef, msgRef, ulRef }: { msgIdRef: React.MutableRefObj
 
   const editMsg = () => {
     if (!msgIdRef.current && !msgRef.current) return;
-    const msgId = msgIdRef?.current.id;
-    const message = msgRef.current.textContent;
-
-    const msgObj = {
-      msgId,
-      message,
-    };
-    // turns updateMsg to true
-    dispatch(updateSingleMsg(msgObj));
-    setShowOps(false);
+    const msgId = msgIdRef.current?.id;
+    const message = msgRef.current?.textContent;
+    if (msgId && message) {
+      const msgObj = {
+        msgId,
+        message,
+      };
+      // turns updateMsg to true
+      dispatch(updateSingleMsg(msgObj));
+      setShowOps(false);
+    }
   };
 
   const replyMsg = () => {
     if (!msgIdRef.current && msgRef.current) return;
-    const msgId = msgIdRef.current.id;
-    const message = msgRef.current.textContent;
+    const msgId = msgIdRef.current?.id;
+    const message = msgRef.current?.textContent;
 
-    const msgObj = {
-      msgId,
-      message,
-    };
+    if (msgId && message) {
+      const msgObj = {
+        msgId,
+        message,
+      };
+      dispatch(replyMessage(msgObj));
+      setShowOps(false);
+    }
 
-    dispatch(replyMessage(msgObj));
-    setShowOps(false);
+
   };
 
   return { deleteMsg, editMsg, showOps, handleMsgOps, onBlurOps, replyMsg };
 };
 
 export default useMessage;
-
-// Reply feature
-// ul should appear on sent and received messages only reply should appear on received messages but reply delete edit should appear on sent message.
-// reply is a new message created with reply message
-
-// reply message {
-// sender Id
-// referenced message Id
-//}
-
-// message obj + reply obj {senderId, message}
