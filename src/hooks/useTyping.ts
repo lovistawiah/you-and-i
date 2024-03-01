@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Typing } from "../interface/app/useTyping";
 
 const useTyping = () => {
-  const [isTypingObj, setIsTypingObj] = useState(null);
+  const [isTypingObj, setIsTypingObj] = useState<Typing>(null);
 
   useEffect(() => {
     let noDataTimeout: NodeJS.Timeout;
@@ -14,7 +14,7 @@ const useTyping = () => {
       }, 1400);
     }
     socket.on(usrEvents.typing, (data: Typing) => {
-      const { chatId } = data;
+      const chatId = data?.chatId;
       if (chatId) {
         clearTimeout(noDataTimeout);
         setIsTypingObj(data);
