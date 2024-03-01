@@ -8,7 +8,6 @@ function lastSeen(lastSeen: string) {
 }
 
 function messageHeaderDate(messageDate: Date) {
-  if (!messageDate) return;
   if (isToday(messageDate)) {
     return "Today";
   } else {

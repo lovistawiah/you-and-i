@@ -4,15 +4,27 @@ import { useSelector } from "react-redux";
 import { differenceInMinutes, format, parseISO } from "date-fns";
 import { useRef } from "react";
 import useMessage from "../hooks/useMessage";
+import { State } from "../interface/state";
+import { MessageProps } from "../interface/app/messagesSlice";
 
-const Message = ({ message, sender, msgDate, userId, msgId, info, reply }) => {
+const Message = ({
+  message,
+  sender,
+  msgDate,
+  userId,
+  msgId,
+  info,
+  reply,
+}: MessageProps) => {
   const ulRef = useRef(null);
   const msgRef = useRef(null);
   const msgIdRef = useRef(null);
 
   const { deleteMsg, editMsg, handleMsgOps, showOps, onBlurOps, replyMsg } =
     useMessage({ msgIdRef, msgRef, ulRef });
-  const chatUsername = useSelector((state) => state.chat?.value?.username);
+  const chatUsername = useSelector(
+    (state: State) => state.chat?.value?.username,
+  );
 
   let msgColor, align, margin, replyColor, replyUserColor;
   const msgStatus = format(msgDate, "h:mm a");
@@ -31,7 +43,7 @@ const Message = ({ message, sender, msgDate, userId, msgId, info, reply }) => {
     replyUserColor = "text-blue-600";
   }
 
-  const minDiff = differenceInMinutes(new Date(), parseISO(msgDate));
+  const minDiff = differenceInMinutes(new Date(), parseISO(msgDate.toString()));
 
   return (
     <section

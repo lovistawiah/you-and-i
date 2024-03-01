@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Message from "./Message";
 import { messageHeaderDate } from "../utils/compareDate";
@@ -8,13 +8,16 @@ import Modal from "./Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { replyMessage } from "../app/messagesSlice";
+import { State } from "../interface/state";
 
 const Messages = () => {
   //info holds userId
   const dispatch = useDispatch();
-  const info = useSelector((state) => state.chat.value);
-  const messages = useSelector((state) => state.messages.messages);
-  const msgToBeReplied = useSelector((state) => state.messages.msgToBeReplied);
+  const info = useSelector((state: State) => state.chat.value);
+  const messages = useSelector((state: State) => state.messages.messages);
+  const msgToBeReplied = useSelector(
+    (state: State) => state.messages.msgToBeReplied,
+  );
 
   const [chatInfo, setChatInfo] = useState(info);
   const datesSet = new Set();
@@ -22,9 +25,8 @@ const Messages = () => {
   useMessages({
     chatId: chatInfo?.chatId,
     messagesRef: messagesRef,
-    userId: info?.userId,
   });
-  const addDateToSet = (messageDate) => {
+  const addDateToSet = (messageDate: string) => {
     if (!datesSet.has(messageDate)) {
       datesSet.add(messageDate);
       return true;
@@ -38,7 +40,7 @@ const Messages = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [info]);
 
-  const memoizedMessages = useMemo(
+  const memoizedMessages: ReactNode = useMemo(
     () =>
       messages.map((message) => (
         <>
@@ -49,17 +51,18 @@ const Messages = () => {
           )}
           <Message
             key={message.Id}
-            msgId={message.Id}
+            Id={message.Id}
             message={message.message}
             sender={message.sender}
             msgDate={
-              new Date(message.updatedAt) > new Date(message.createdAt)
+              new Date(message.updatedAt.getTime()) >
+              new Date(message.createdAt.getTime())
                 ? message.updatedAt
                 : message.createdAt
             }
             info={message.info}
             userId={chatInfo?.userId}
-            reply={message.reply ? message.reply : ""}
+            reply={message?.reply}
           />
         </>
       )),

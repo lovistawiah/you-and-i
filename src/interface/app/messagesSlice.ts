@@ -1,5 +1,5 @@
 type MessageInfo = "created" | "updated" | "deleted";
-export type Message = {
+export interface Message {
     Id: string,
     message: string,
     sender: string,
@@ -8,13 +8,15 @@ export type Message = {
     chatId: string,
     info: MessageInfo
 }
-export type RepliedMessage = Message & {
-    reply: {
-        Id: string,
-        message: string,
-        sender: string,
-        info: MessageInfo,
-    },
+type Reply = {
+    Id: string,
+    message: string,
+    sender: string,
+    info: MessageInfo,
+
+}
+export interface RepliedMessage extends Message {
+    reply: Reply
 }
 
 export type MsgToBeReplied = {
@@ -30,7 +32,7 @@ export type MsgToBeUpdated = {
 export type UpdateMsg = boolean;
 
 export type MessagesState = {
-    messages: Message[],
+    messages: RepliedMessage[],
     msgToBeUpdated: MsgToBeUpdated,
     updateMsg: UpdateMsg,
     msgToBeReplied: MsgToBeReplied,
@@ -43,4 +45,14 @@ export type NewChatAndMessage = {
         avatarUrl: string
     }
     msgObj: Message
+}
+
+export type MessageProps = {
+    message: string,
+    sender: string,
+    msgDate: string | Date,
+    userId: string,
+    msgId: string,
+    info: MessageInfo,
+    reply?: Reply,
 }
