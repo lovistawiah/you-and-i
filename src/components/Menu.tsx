@@ -5,7 +5,15 @@ import {
   faUserPlus,
 } from "@fortawesome/free-solid-svg-icons";
 
-const Menu = ({ pageSelector, windowWidth, userAvatar }) => {
+const Menu = ({
+  pageSelector,
+  windowWidth,
+  userAvatar,
+}: {
+  pageSelector: (e) => void;
+  windowWidth: number;
+  userAvatar: string | undefined;
+}) => {
   const icons = [
     { iconText: "Settings", iconName: faGear },
     { iconText: "Contacts", iconName: faUserPlus },
