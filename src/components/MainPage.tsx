@@ -8,9 +8,10 @@ import MessagePanel from "./MessagePanel";
 import useMain from "../hooks/useMain";
 import useLastMessage from "../hooks/useLastMessage";
 import useModifyMessage from "../hooks/useModifyMessage";
+import { State } from "../interface/state";
 
 const MainPage = () => {
-  const userAvatar = useSelector((state) => state.user.value?.avatarUrl) ?? "";
+  const userAvatar = useSelector((state: State) => state.user.value?.avatarUrl);
   const { errMsg, isToken, windowWidth, activePage, pageSelector } = useMain();
   useLastMessage();
   useModifyMessage();
