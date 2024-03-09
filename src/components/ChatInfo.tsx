@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useSelector } from "react-redux";
 import useChatInfo from "../hooks/useChatInfo";
 import useTyping from "../hooks/useTyping";
-import { State } from "../interface/state";
+import { State } from "../app/store";
 
 const ChatInfo = ({ windowWidth }: { windowWidth: number }) => {
   const chatInfo = useSelector((state: State) => state.chat.value);
