@@ -8,7 +8,7 @@ import MessagePanel from "./MessagePanel";
 import useMain from "../hooks/useMain";
 import useLastMessage from "../hooks/useLastMessage";
 import useModifyMessage from "../hooks/useModifyMessage";
-import { State } from "../interface/state";
+import { State } from "../app/store";
 
 const MainPage = () => {
   const userAvatar = useSelector((state: State) => state.user.value?.avatarUrl);
