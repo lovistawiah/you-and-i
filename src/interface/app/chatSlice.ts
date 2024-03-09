@@ -1,6 +1,6 @@
 export type ChatValue = {
     userId: string,
-    chatId?: string,
+    id?: string,
     username: string,
     status: string
     avatarUrl: string
@@ -11,7 +11,7 @@ export interface Chat {
 
 export type SelectedChat = {
     userId: string,
-    Id: string
+    id: string
     avatarUrl: string,
     username: string
 }
