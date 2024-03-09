@@ -3,10 +3,10 @@ import { useRef } from "react";
 import { format } from "date-fns";
 import useChat from "../hooks/useChat";
 import useTyping from "../hooks/useTyping";
-import { ChatsValue } from "../interface/app/chatsSlice";
+import { ChatsValue } from "../app/chatsSlice";
 
 const Chat = ({
-  Id,
+  id,
   userId,
   username,
   avatarUrl,
@@ -27,9 +27,9 @@ const Chat = ({
       to={`/${windowWidth < 768 ? "messages" : ""}`}
       className=" flex h-[70px] w-full items-center justify-start"
       ref={chatRef}
-      id={Id}
-      key={Id}
-      onClick={() => handleChat({ userId, Id, avatarUrl, username })}
+      id={id}
+      key={id}
+      onClick={() => handleChat({ userId, id, avatarUrl, username })}
     >
       <section className="flex h-[65px] w-[70px] shrink-0 items-center justify-center p-2.5">
         <img src={avatarUrl} alt="user dp" className="rounded-full" />
@@ -50,7 +50,7 @@ const Chat = ({
 
         {/* last message */}
         <section className="line-clamp-1 w-full flex-grow basis-0 text-ellipsis break-all pb-[20px] pl-1 pr-0 pt-[4px] text-sm font-normal text-neutral-400">
-          {isTypingObj && isTypingObj.chatId === Id ? (
+          {isTypingObj && isTypingObj.chatId === id ? (
             <span className="italic">typing...</span>
           ) : (
             <>{lastMessage}</>
