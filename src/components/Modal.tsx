@@ -11,7 +11,9 @@ const Modal = ({ children }: { children: ReactNode }) => {
     const modalRoot = document.getElementById("messages") as HTMLDivElement;
     modalRoot.appendChild(elRef.current);
     return () => {
-      modalRoot.removeChild(elRef.current);
+      if (elRef.current) {
+        modalRoot.removeChild(elRef.current);
+      }
     };
   }, []);
   return createPortal(
