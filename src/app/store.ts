@@ -1,17 +1,17 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { rootReducer } from './rootReducer'
+import { UserState } from "./userSlice";
+import { ChatState } from "./chatSlice";
+import { MessagesState } from "./messagesSlice";
+import { ContactState } from "./contactsSlice";
+import { ChatsState } from "./chatsSlice";
 
-import { Chat } from "./app/chatSlice";
-import { ChatsState } from "./app/chatsSlice";
-import { ContactState } from "./app/contactsSlice";
-import { MessagesState } from "./app/messagesSlice";
-import { UserState } from "./app/userSlice";
 
 export interface State {
-  user: UserState
-  chat: Chat
-  messages: MessagesState
-  contacts: ContactState
+  user: UserState,
+  chat: ChatState,
+  messages: MessagesState,
+  contacts: ContactState,
   chats: ChatsState
 }
 

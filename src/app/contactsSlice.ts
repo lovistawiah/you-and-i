@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { Username } from "./chatsSlice";
 
 export type Contact = {
   id: string,
@@ -39,7 +40,7 @@ export const contactsReducer = createSlice({
     addContact: (state, action: PayloadAction<Contact>) => {
       const { payload } = action;
       const contactExist = state.contacts.some(
-        (chat) => chat.Id === payload.Id,
+        (chat) => chat.id === payload.id,
       );
       if (!contactExist) {
         state.contacts.push(payload);
@@ -48,7 +49,7 @@ export const contactsReducer = createSlice({
     updateContact: (state, action: PayloadAction<UpdateContact>) => {
       const { payload: contactObj } = action;
       const idx = state.contacts.findIndex(
-        (contact) => contact.Id === contactObj.Id,
+        (contact) => contact.id === contactObj.id,
       );
       if (idx !== -1) {
         state.contacts[idx]["chatId"] = contactObj.chatId;

@@ -4,20 +4,16 @@ import { socket } from "../socket";
 import { msgEvents } from "../utils/eventNames";
 import { updateLastMessage } from "../app/chatsSlice";
 import { updateNewChat } from "../app/chatSlice";
-import { State } from "../interface/state";
-import { Message, RepliedMessage } from "../interface/app/messagesSlice";
+import { State } from "../app/store";
+import { IMessage } from "../app/messagesSlice";
 
-/**
- * Socket listens to incoming message.
- *
- * create an new chat if chat does not exist else update last message of chat
- */
+
 const useLastMessage = () => {
   const dispatch = useDispatch();
   const info = useSelector((state: State) => state.chat?.value);
   // const chats = useSelector((state)=>state.chats.chats)
   useEffect(() => {
-    const handleSendMessage = (msg: Message) => {
+    const handleSendMessage = (msg: IMessage) => {
       dispatch(
         updateLastMessage({
           chatId: msg.chatId,
@@ -34,7 +30,7 @@ const useLastMessage = () => {
   });
 
   useEffect(() => {
-    socket.on(msgEvents.reply, (msg: RepliedMessage) => {
+    socket.on(msgEvents.reply, (msg: IMessage) => {
       dispatch(
         updateLastMessage({
           chatId: msg.chatId,

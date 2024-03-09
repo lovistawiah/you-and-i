@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { chatEvents } from "../utils/eventNames";
 import { socket } from "../socket";
 import { useDispatch } from "react-redux";
-import { searchContacts, addContact } from "../app/contactsSlice";
-import { Contact } from "../interface/app/contactsSlice";
+import { searchContacts, addContact, Contact } from "../app/contactsSlice";
 
 const useContact = () => {
   const [searchInput, setSearchInput] = useState("");
