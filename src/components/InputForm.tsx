@@ -2,7 +2,17 @@ import { faEyeSlash, faEye } from "@fortawesome/free-regular-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useState } from "react";
 
-const InputForm = ({ type, name, placeholder, id }) => {
+const InputForm = ({
+  type,
+  name,
+  placeholder,
+  id,
+}: {
+  type: string;
+  name: string;
+  placeholder: string;
+  id: string;
+}) => {
   const [showPass, setShowPass] = useState(false);
   const passVisibility = () => {
     setShowPass(!showPass);
