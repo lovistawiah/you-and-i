@@ -1,10 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { lastSeen } from "../utils/compareDate";
-import { Chat, ChatValue } from "../interface/app/chatSlice";
+
+export type ChatValue = {
+  userId: string,
+  id?: string,
+  username: string,
+  status: string
+  avatarUrl: string
+}
+export interface Chat {
+  value: ChatValue
+}
+
+export type SelectedChat = {
+  userId: string,
+  id: string
+  avatarUrl: string,
+  username: string
+}
 
 const initialState: Chat = {
   value: null
 }
+
 export const chatReducer = createSlice({
   name: "chat",
   initialState

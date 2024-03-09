@@ -1,6 +1,18 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { UserState, UserValue } from "../interface/app/userSlice";
-import { UserInfo } from "../interface/account/user";
+
+export type Typing = {
+  chatId: string,
+  typing: "typing..."
+} | null
+export interface UserValue {
+  id: string,
+  username: string,
+  bio: string,
+  avatarUrl: string
+}
+export interface UserState {
+  value: UserValue | null
+}
 
 const initialState: UserState = {
   value: null,
