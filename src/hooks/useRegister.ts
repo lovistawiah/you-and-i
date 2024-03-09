@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUserInfo } from "../app/userSlice";
-import { UserInfo } from "../interface/account/user";
+import { UserInfo } from "../account/user";
+
 
 const useRegister = () => {
   const navigate = useNavigate();
