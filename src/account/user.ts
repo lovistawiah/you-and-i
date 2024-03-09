@@ -1,10 +1,10 @@
 import axios, { AxiosError } from "axios";
 
 export interface UserInfo {
-  userId: string,
+  id: string,
   username: string,
-  avatarUrl?: string,
-  bio?: string,
+  avatarUrl: string,
+  bio: string,
 }
 
 export type SignUpParams = {

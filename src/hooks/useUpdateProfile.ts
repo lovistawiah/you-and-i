@@ -1,10 +1,10 @@
 import { FormEvent, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setUserInfo } from "../app/userSlice";
+import { UserValue, setUserInfo } from "../app/userSlice";
 import { updateUserInfo } from "../account/user.js";
-import { State } from "../interface/state";
-import { UserValue } from "../interface/app/userSlice";
+import { State } from "../app/store";
+
 
 const useUpdateProfile = () => {
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
@@ -26,7 +26,7 @@ const useUpdateProfile = () => {
     const formData = new FormData(e.currentTarget);
     const formObj = {
       username: formData.get("username") as string,
-      userId: personInfo?.userId as string,
+      userId: personInfo?.id as string,
     };
     if (!formObj.userId) {
       setInfo({ type: "error", message: "Unknown error, try again" });

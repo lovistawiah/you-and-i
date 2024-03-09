@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { UserInfo } from "../account/user";
 
 export type Typing = {
   chatId: string,
