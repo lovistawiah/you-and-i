@@ -1,17 +1,16 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addMessage } from "../app/messagesSlice";
+import { IMessage, addMessage } from "../app/messagesSlice";
 import { socket } from "../socket";
 import { msgEvents } from "../utils/eventNames";
-import { State } from "../interface/state";
-import { RepliedMessage } from "../interface/app/messagesSlice";
+import { State } from "../app/store";
 
 const useMessages = ({ chatId, messagesRef }: { chatId: string, messagesRef: React.MutableRefObject<HTMLDivElement | null> }) => {
   const dispatch = useDispatch();
   const messages = useSelector((state: State) => state.messages.messages);
 
   useEffect(() => {
-    const getMessages = (messagesData: RepliedMessage) => {
+    const getMessages = (messagesData: IMessage) => {
       dispatch(addMessage(messagesData));
     };
     socket.emit(msgEvents.msgs, chatId);
@@ -29,13 +28,13 @@ const useMessages = ({ chatId, messagesRef }: { chatId: string, messagesRef: Rea
   }, [chatId]);
 
   useEffect(() => {
-    socket.on(msgEvents.sndMsg, (messageData: RepliedMessage) => {
+    socket.on(msgEvents.sndMsg, (messageData: IMessage) => {
       dispatch(addMessage(messageData));
     });
   });
 
   useEffect(() => {
-    socket.on(msgEvents.reply, (msg: RepliedMessage) => {
+    socket.on(msgEvents.reply, (msg: IMessage) => {
       dispatch(addMessage(msg));
     });
   });
