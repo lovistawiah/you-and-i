@@ -6,8 +6,6 @@ I created this project to chat my girlfriend nearby. She does not have phone and
 
 ## Technologies used
 
-### v1.0.0
-
 - node
 - express
 - socket.io
