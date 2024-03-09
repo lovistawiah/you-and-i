@@ -11,7 +11,7 @@ import ChatInfo from "./ChatInfo";
 import Messages from "./Messages";
 import { cancelUpdate, replyMessage } from "../app/messagesSlice";
 import useModifyMessage from "../hooks/useModifyMessage";
-import { State } from "../interface/state";
+import { State } from "../app/store";
 
 const MessagePanel = () => {
   const chatInfo = useSelector((state: State) => state.chat.value);
@@ -35,7 +35,7 @@ const MessagePanel = () => {
     // updateMsg turns true if updateSingleMsg obj is set
     if (updateMsg) {
       const update = {
-        msgId: msgToBeUpdated?.msgId,
+        msgId: msgToBeUpdated?.id,
         message,
       };
       socket.emit(msgEvents.updateMsg, update);
@@ -44,7 +44,7 @@ const MessagePanel = () => {
     }
 
     if (msgToBeReplied) {
-      const msgId = msgToBeReplied.msgId;
+      const msgId = msgToBeReplied.id;
       const chatId = chatInfo.chatId;
       if (!msgId && !chatId) return;
       const replyObj = {
