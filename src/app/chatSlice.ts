@@ -6,7 +6,8 @@ export type ChatValue = {
   id?: string,
   username: string,
   status: string
-  avatarUrl: string
+  avatarUrl: string,
+  chatId?: string
 }
 export interface ChatState {
   value: ChatValue

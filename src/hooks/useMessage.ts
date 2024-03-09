@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { socket } from "../socket";
 import { msgEvents } from "../utils/eventNames";
 import { replyMessage, updateSingleMsg } from "../app/messagesSlice";
-import { State } from "../interface/state";
+import { State } from "../app/store";
 
 const useMessage = ({ msgIdRef, msgRef, ulRef }: { msgIdRef: React.MutableRefObject<HTMLDivElement | null>, msgRef: React.MutableRefObject<HTMLDivElement | null>, ulRef: React.MutableRefObject<HTMLUListElement | null> }) => {
   const [showOps, setShowOps] = useState(false);
@@ -49,7 +49,7 @@ const useMessage = ({ msgIdRef, msgRef, ulRef }: { msgIdRef: React.MutableRefObj
     const message = msgRef.current?.textContent;
     if (msgId && message) {
       const msgObj = {
-        msgId,
+        id: msgId,
         message,
       };
       // turns updateMsg to true
@@ -65,7 +65,7 @@ const useMessage = ({ msgIdRef, msgRef, ulRef }: { msgIdRef: React.MutableRefObj
 
     if (msgId && message) {
       const msgObj = {
-        msgId,
+        id: msgId,
         message,
       };
       dispatch(replyMessage(msgObj));

@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setUserInfo } from "../app/userSlice";
-import { UserInfo } from "../interface/account/user";
+import { UserInfo } from "../account/user";
+
 const useLogin = () => {
   const [info, setInfo] = useState<{ type: string, message: string } | Record<string, never>>({});
   const [spin, setSpin] = useState(false);
