@@ -8,7 +8,7 @@ import Modal from "./Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
 import { replyMessage } from "../app/messagesSlice";
-import { State } from "../interface/state";
+import { State } from "../app/store";
 
 const Messages = () => {
   //info holds userId
@@ -50,8 +50,8 @@ const Messages = () => {
             />
           )}
           <Message
-            key={message.Id}
-            msgId={message.Id}
+            key={message.id}
+            id={message.id}
             message={message.message}
             sender={message.sender}
             msgDate={
