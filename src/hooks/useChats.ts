@@ -2,11 +2,9 @@ import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
 import { socket } from "../socket";
 import { chatEvents, msgEvents } from "../utils/eventNames";
-import { addChats, addNewChat, searchChats } from "../app/chatsSlice";
-import { addMessage } from "../app/messagesSlice";
+import { ChatsValue, addChats, addNewChat, searchChats } from "../app/chatsSlice";
+import { NewChatAndMessage, addMessage } from "../app/messagesSlice";
 import { updateContact } from "../app/contactsSlice";
-import { ChatsValue } from "../interface/app/chatsSlice";
-import { NewChatAndMessage } from "../interface/app/messagesSlice";
 
 const useChats = () => {
   const [searchInput, setSearchInput] = useState("");
@@ -34,7 +32,7 @@ const useChats = () => {
     const newChats = (data: NewChatAndMessage) => {
       const { msgObj, newChat } = data;
       const chatPayload = {
-        Id: newChat.Id,
+        Id: newChat.id,
         userId: newChat.userId,
         username: newChat.username,
         avatarUrl: newChat.avatarUrl,
@@ -47,8 +45,8 @@ const useChats = () => {
 
       dispatch(
         updateContact({
-          Id: newChat.userId,
-          chatId: newChat.Id,
+          id: newChat.userId,
+          chatId: newChat.id,
         }),
       );
     };

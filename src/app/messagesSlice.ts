@@ -42,7 +42,7 @@ export type MessagesState = {
 }
 export type NewChatAndMessage = {
   newChat: {
-    Id: string
+    id: string
     userId: string,
     username: string,
     avatarUrl: string
@@ -70,18 +70,18 @@ export const messageReducer = createSlice({
   name: "messages",
   initialState,
   reducers: {
-    addMessage: (state, action: PayloadAction<Message>) => {
+    addMessage: (state, action: PayloadAction<IMessage>) => {
       const { payload: message } = action;
-      const msgExist = state.messages.some((msg) => msg.Id === message.Id);
+      const msgExist = state.messages.some((msg) => msg.id === message.id);
       if (!msgExist) {
         state.messages.push(message);
       }
     },
 
-    modifyMsg: (state, action: PayloadAction<Message>) => {
+    modifyMsg: (state, action: PayloadAction<IMessage>) => {
       const { payload } = action;
       const idx = state.messages.findIndex(
-        (message) => message.Id === payload.Id,
+        (message) => message.id === payload.id,
       );
       if (idx !== -1) {
         state.messages[idx] = payload;
