@@ -7,8 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
 import useContact from "../hooks/useContact";
 import { clearMessages } from "../app/messagesSlice";
-import { State } from "../interface/state";
-import { Contact } from "../interface/app/contactsSlice";
+import { State } from "../app/store";
+import { Contact } from "../app/contactsSlice";
 
 const Contacts = () => {
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ const Contacts = () => {
     setSearchInput("");
   };
   const handleUserInfo = ({
-    Id,
+    id,
     chatId,
     avatarUrl,
     username,
@@ -33,7 +33,7 @@ const Contacts = () => {
     bio,
   }: Contact) => {
     const chatObj = {
-      Id,
+      id,
       chatId,
       avatarUrl,
       username,
@@ -90,7 +90,7 @@ const Contacts = () => {
             to={`/${windowWidth < 768 ? "messages" : ""}`}
             onClick={() =>
               handleUserInfo({
-                Id: contact.Id,
+                id: contact.id,
                 username: contact.username,
                 avatarUrl: contact.avatarUrl,
                 status: contact?.status,
@@ -99,7 +99,7 @@ const Contacts = () => {
               })
             }
             className="flex w-full items-center justify-start"
-            key={contact.Id}
+            key={contact.id}
           >
             <section className="flex h-[65px] w-[70px] shrink-0 items-center justify-center p-2.5">
               <img
