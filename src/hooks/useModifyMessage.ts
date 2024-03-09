@@ -2,25 +2,21 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { socket } from "../socket";
 import { msgEvents } from "../utils/eventNames";
-import { modifyMsg } from "../app/messagesSlice";
+import { IMessage, modifyMsg } from "../app/messagesSlice";
 import { updateLastMessage } from "../app/chatsSlice";
-import { State } from "../interface/state";
-import { RepliedMessage } from "../interface/app/messagesSlice";
-/**
- * this modifies incoming updated message wether deleted or updated.
- *
- * checks each chat's Id and update the last message with the latest message
- */
+import { State } from "../app/store";
+
+
 const useModifyMessage = () => {
   const dispatch = useDispatch();
   const storedMessages = useSelector((state: State) => state.messages.messages);
 
   useEffect(() => {
-    socket.on(msgEvents.updateMsg, (msgObj: RepliedMessage) => {
+    socket.on(msgEvents.updateMsg, (msgObj: IMessage) => {
       dispatch(modifyMsg(msgObj));
       //to update the chat last message if updated message is the last message in the messages
-      const msgId = msgObj.Id;
-      const idx = storedMessages.findIndex((stMsg) => stMsg.Id === msgId);
+      const msgId = msgObj.id;
+      const idx = storedMessages.findIndex((stMsg) => stMsg.id === msgId);
 
       if (idx === storedMessages.length - 1) {
         dispatch(
@@ -38,11 +34,11 @@ const useModifyMessage = () => {
   });
 
   useEffect(() => {
-    socket.on(msgEvents.delMsg, (msgObj: RepliedMessage) => {
+    socket.on(msgEvents.delMsg, (msgObj: IMessage) => {
       dispatch(modifyMsg(msgObj));
       //to update the chat last message if deleted message is the last message in the messages
-      const msgId = msgObj.Id;
-      const idx = storedMessages.findIndex((stMsg) => stMsg.Id === msgId);
+      const msgId = msgObj.id;
+      const idx = storedMessages.findIndex((stMsg) => stMsg.id === msgId);
       if (idx === storedMessages.length - 1) {
         dispatch(
           updateLastMessage({
