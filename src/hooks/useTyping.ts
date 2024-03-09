@@ -1,7 +1,7 @@
 import { usrEvents } from "../utils/eventNames";
 import { socket } from "../socket";
 import { useEffect, useState } from "react";
-import { Typing } from "../interface/app/useTyping";
+import { Typing } from "../app/userSlice";
 
 const useTyping = () => {
   const [isTypingObj, setIsTypingObj] = useState<Typing>(null);
