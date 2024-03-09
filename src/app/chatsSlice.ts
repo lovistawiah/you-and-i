@@ -2,7 +2,7 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 
 export type ChatsValue = {
-  Id: string,
+  id: string,
   userId: string,
   username: string,
   avatarUrl: string,
@@ -47,7 +47,7 @@ export const chatsReducer = createSlice({
   reducers: {
     addChats: (state, action: PayloadAction<ChatsValue>) => {
       const { payload } = action;
-      const chatExists = state.chats.some((chat: ChatsValue) => chat.Id === payload.Id);
+      const chatExists = state.chats.some((chat: ChatsValue) => chat.id === payload.id);
       if (!chatExists) {
         state.chats.push(payload)
       }
@@ -55,7 +55,7 @@ export const chatsReducer = createSlice({
 
     addNewChat: (state, action: PayloadAction<ChatsValue>) => {
       const { payload } = action;
-      const chatExists = state.chats.some((chat: ChatsValue) => chat.Id === payload.Id);
+      const chatExists = state.chats.some((chat: ChatsValue) => chat.id === payload.id);
       if (!chatExists) {
         state.chats = [payload, ...state.chats].sort(
           (chatA, chatB) => {
@@ -70,7 +70,7 @@ export const chatsReducer = createSlice({
 
     updateLastMessage: (state, action: PayloadAction<UpdateLastMessage>) => {
       const { chatId, lastMessage, msgDate } = action.payload;
-      const findIdx = state.chats.findIndex((chat) => chat.Id === chatId);
+      const findIdx = state.chats.findIndex((chat) => chat.id === chatId);
 
       if (findIdx !== -1) {
         state.chats[findIdx].lastMessage = lastMessage;

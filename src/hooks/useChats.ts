@@ -32,7 +32,7 @@ const useChats = () => {
     const newChats = (data: NewChatAndMessage) => {
       const { msgObj, newChat } = data;
       const chatPayload = {
-        Id: newChat.id,
+        id: newChat.id,
         userId: newChat.userId,
         username: newChat.username,
         avatarUrl: newChat.avatarUrl,
