@@ -7,7 +7,8 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import InfoContainer from "./InfoContainer";
 import PasswordInput from "./PasswordInput";
 import SettingsPassword from "./SettingsPassword";
-import { State } from "../interface/state";
+import { State } from "../app/store";
+
 const Settings = () => {
   const [isPassValid, setIsPassValid] = useState(true);
   const [info, setInfo] = useState({});
@@ -46,7 +47,7 @@ const Settings = () => {
     const newPassword = formData.get("new-password") as string;
     const confirmPassword = formData.get("confirm-password") as string;
     const userObj = {
-      userId: userInfo?.userId ?? "",
+      id: userInfo?.id ?? "",
       username,
       bio,
       currentPassword,

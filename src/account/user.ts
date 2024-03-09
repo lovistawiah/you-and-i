@@ -44,7 +44,7 @@ export type UpdateUserInfoResponse = {
 }
 
 export type userSettingsParams = {
-  userId: string,
+  id: string,
   username: string,
   bio: string,
   currentPassword: string,
