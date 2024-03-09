@@ -1,5 +1,5 @@
 export type Contact = {
-    Id: string,
+    id: string,
     username: string,
     avatarUrl: string,
     chatId?: string,
@@ -13,6 +13,6 @@ export type ContactState = {
 }
 
 export type UpdateContact = {
-    Id: string,
+    id: string,
     chatId: string,
 }
