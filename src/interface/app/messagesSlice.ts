@@ -1,6 +1,6 @@
 type MessageInfo = "created" | "updated" | "deleted";
-export interface Message {
-    Id: string,
+export interface IBaseMessage {
+    id: string,
     message: string,
     sender: string,
     updatedAt: Date,
@@ -15,24 +15,24 @@ type Reply = {
     info: MessageInfo,
 
 }
-export interface RepliedMessage extends Message {
-    reply: Reply
+export interface IMessage extends IBaseMessage {
+    reply?: Reply
 }
 
 export type MsgToBeReplied = {
-    msgId: string,
+    id: string,
     message: string
 } | null
 
 export type MsgToBeUpdated = {
-    msgId: string,
+    id: string,
     message: string
 } | null
 
 export type UpdateMsg = boolean;
 
 export type MessagesState = {
-    messages: RepliedMessage[],
+    messages: IMessage[],
     msgToBeUpdated: MsgToBeUpdated,
     updateMsg: UpdateMsg,
     msgToBeReplied: MsgToBeReplied,
@@ -44,7 +44,7 @@ export type NewChatAndMessage = {
         username: string,
         avatarUrl: string
     }
-    msgObj: Message
+    msgObj: IMessage
 }
 
 export type MessageProps = {
@@ -52,7 +52,7 @@ export type MessageProps = {
     sender: string,
     msgDate: string | Date,
     userId: string,
-    msgId: string,
+    id: string,
     info: MessageInfo,
     reply?: Reply,
 }
