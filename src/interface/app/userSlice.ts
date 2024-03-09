@@ -1,6 +1,6 @@
 
 export interface UserValue {
-    userId: string,
+    id: string,
     username: string,
     bio: string,
     avatarUrl: string
