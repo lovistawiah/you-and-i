@@ -4,15 +4,15 @@ import { useSelector } from "react-redux";
 import { differenceInMinutes, format, parseISO } from "date-fns";
 import { useRef } from "react";
 import useMessage from "../hooks/useMessage";
-import { State } from "../interface/state";
-import { MessageProps } from "../interface/app/messagesSlice";
+import { MessageProps } from "../app/messagesSlice";
+import { State } from "../app/store";
 
 const Message = ({
   message,
   sender,
   msgDate,
   userId,
-  msgId,
+  id,
   info,
   reply,
 }: MessageProps) => {
@@ -50,8 +50,8 @@ const Message = ({
     <div
       ref={msgIdRef}
       className={`${align} ${msgColor} relative flex flex-col font-roboto text-base ${margin} rounded-lg p-1 font-thin`}
-      id={msgId}
-      key={msgId}
+      id={id}
+      key={id}
     >
       {showOps && (
         <ul
