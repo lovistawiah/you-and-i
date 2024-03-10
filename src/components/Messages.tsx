@@ -13,7 +13,7 @@ import { State } from "../app/store";
 const Messages = () => {
   //info holds userId
   const dispatch = useDispatch();
-  const info = useSelector((state: State) => state.chat.value);
+  const info = useSelector((state: State) => state.chat?.value);
   const messages = useSelector((state: State) => state.messages.messages);
   const msgToBeReplied = useSelector(
     (state: State) => state.messages.msgToBeReplied,
@@ -23,7 +23,7 @@ const Messages = () => {
   const datesSet = new Set();
   const messagesRef = useRef(null);
   useMessages({
-    chatId: chatInfo.chatId ? chatInfo.chatId : "",
+    chatId: chatInfo?.chatId ? chatInfo.chatId : "",
     messagesRef: messagesRef,
   });
   const addDateToSet = (messageDate: string) => {
@@ -61,7 +61,7 @@ const Messages = () => {
                 : message.createdAt
             }
             info={message.info}
-            userId={chatInfo?.userId}
+            userId={chatInfo?.userId ?? ""}
             reply={message?.reply}
           />
         </>

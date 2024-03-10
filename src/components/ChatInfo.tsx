@@ -6,9 +6,9 @@ import useTyping from "../hooks/useTyping";
 import { State } from "../app/store";
 
 const ChatInfo = ({ windowWidth }: { windowWidth: number }) => {
-  const chatInfo = useSelector((state: State) => state.chat.value);
+  const chatInfo = useSelector((state: State) => state?.chat?.value);
   const { isTypingObj } = useTyping();
-  const { goBack } = useChatInfo({ userId: chatInfo?.userId });
+  const { goBack } = useChatInfo({ userId: chatInfo?.userId ?? "" });
 
   return (
     <section className="col-start-1 col-end-2 row-start-1 flex h-[50px] w-full items-center justify-between border-b bg-white py-1 pl-2">

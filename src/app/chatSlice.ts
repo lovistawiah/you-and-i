@@ -10,14 +10,15 @@ export type ChatValue = {
   chatId?: string
 }
 export interface ChatState {
-  value: ChatValue
+  value: ChatValue | null
 }
 
 export type SelectedChat = {
   userId: string,
   id: string
   avatarUrl: string,
-  username: string
+  username: string,
+  chatId?: string
 }
 
 const initialState: ChatState = {
