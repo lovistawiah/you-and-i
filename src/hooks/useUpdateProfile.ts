@@ -26,9 +26,10 @@ const useUpdateProfile = () => {
     const formData = new FormData(e.currentTarget);
     const formObj = {
       username: formData.get("username") as string,
-      userId: personInfo?.id as string,
+      id: personInfo?.id as string,
     };
-    if (!formObj.userId) {
+    console.log(formData)
+    if (!formObj.id) {
       setInfo({ type: "error", message: "Unknown error, try again" });
       return;
     }
@@ -41,6 +42,7 @@ const useUpdateProfile = () => {
     }
 
     const result = await updateUserInfo(formObj);
+    console.log(result)
     if (!result) return;
     if ("userInfo" in result) {
       setPersonInfo({

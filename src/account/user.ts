@@ -31,7 +31,7 @@ export type LoginResponse = {
 };
 
 export type UpdateUserInfoParams = {
-  userId: string;
+  id: string;
   username: string;
 };
 
@@ -90,7 +90,6 @@ async function signUp({
         },
       },
     );
-    console.log(result)
     if (result.status === 200) {
       const { userInfo } = result.data;
       return {
