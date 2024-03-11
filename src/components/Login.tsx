@@ -3,7 +3,6 @@ import { login } from "../account/user";
 import WelcomeText from "./WelcomeText";
 import InputForm from "./InputForm";
 import InfoContainer from "./InfoContainer";
-import Transition from "./Transition";
 import Logo from "./Logo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
@@ -28,7 +27,7 @@ const Login = () => {
       : errorLogger({ message: result.message });
   };
   return (
-    <Transition>
+    <div>
       <InfoContainer info={info} setInfo={setInfo} />
       <div className="flex h-screen w-screen flex-col items-center justify-center gap-4 px-[6px] py-[23px]">
         <Logo />
@@ -73,7 +72,7 @@ const Login = () => {
           </Link>
         </section>
       </div>
-    </Transition>
+    </div>
   );
 };
 
