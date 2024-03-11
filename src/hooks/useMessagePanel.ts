@@ -1,11 +1,19 @@
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../app/store";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import useModifyMessage from "./useModifyMessage";
 import { msgEvents, usrEvents } from "../utils/eventNames";
 import { socket } from "../socket";
 import { cancelUpdate, replyMessage } from "../app/messagesSlice";
 
+interface IEmoji {
+    id: string,
+    keywords: Array<string>,
+    name: string,
+    native: string,
+    shortcode: string,
+    unified: string
+}
 
 const useMessagePanel = () => {
     const chatInfo = useSelector((state: State) => state.chat.value);
@@ -23,26 +31,15 @@ const useMessagePanel = () => {
     const [message, setMessage] = useState("");
     useModifyMessage();
 
-    const submitForm = (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (!message) return;
-        updateMessage()
-        reply()
-        sendMessage()
+    const handleCancelUpdate = () => {
         setMessage("");
+        dispatch(cancelUpdate());
     };
-
-    const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-        if (e.key === "Enter") {
-            e.preventDefault()
-            submitForm(e)
-        }
-    }
 
     const updateMessage = () => {
         if (updateMsg) {
             const update = {
-                msgId: msgToBeUpdated?.id,
+                id: msgToBeUpdated?.id,
                 message,
             };
             socket.emit(msgEvents.updateMsg, update);
@@ -50,13 +47,14 @@ const useMessagePanel = () => {
             return;
         }
     }
+
     const reply = () => {
         if (msgToBeReplied) {
-            const msgId = msgToBeReplied.id;
+            const id = msgToBeReplied.id;
             const chatId = chatInfo?.chatId;
-            if (!msgId && !chatId) return;
+            if (!id && !chatId) return;
             const replyObj = {
-                msgId,
+                id,
                 chatId,
                 message,
             };
@@ -65,8 +63,8 @@ const useMessagePanel = () => {
             dispatch(replyMessage(null));
             return;
         }
-
     }
+
     const sendMessage = () => {
         const chatId = chatInfo?.chatId;
         const userId = chatInfo?.userId;
@@ -86,6 +84,27 @@ const useMessagePanel = () => {
         }
     }
 
+    const submitForm = (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        if (!message) return;
+        updateMessage()
+        reply()
+        sendMessage()
+        setMessage("");
+    };
+
+    const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === "Enter") {
+            e.preventDefault()
+            if (!message) return;
+            updateMessage()
+            reply()
+            sendMessage()
+            setMessage("");
+        }
+    }
+
+
     useEffect(() => {
         const handleResize = () => {
             setWindowWidth(window.innerWidth);
@@ -98,14 +117,9 @@ const useMessagePanel = () => {
         setShowEmojis(showEmojis ? false : true);
     };
 
-    const getEmoji = (emojiObj) => {
-        const emoji = emojiObj.native;
+    const getEmoji = (emojiObj: IEmoji) => {
+        const emoji = emojiObj.native
         setMessage(message + emoji);
-    };
-
-    const handleCancelUpdate = () => {
-        setMessage("");
-        dispatch(cancelUpdate());
     };
 
     const handleOnChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -123,7 +137,7 @@ const useMessagePanel = () => {
         }
     }, [updateMsg, msgToBeUpdated]);
 
-    return { windowWidth, handleOnChange, handleCancelUpdate, handleShowEmoji, getEmoji, showEmojis, message, chatInfo, updateMsg, onKeyDown }
+    return { windowWidth, handleOnChange, handleCancelUpdate, handleShowEmoji, getEmoji, showEmojis, message, chatInfo, updateMsg, onKeyDown, submitForm }
 }
 
 export default useMessagePanel

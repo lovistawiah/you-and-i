@@ -1,5 +1,6 @@
 // eslint-disable-next-line import/default
 import data from "@emoji-mart/data";
+import { init } from "emoji-mart";
 import Picker from "@emoji-mart/react";
 import { faFaceSmile, faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -21,8 +22,10 @@ const MessagePanel = () => {
     message,
     chatInfo,
     updateMsg,
+    submitForm,
   } = useMessagePanel();
 
+  void init({ data });
   return (
     <section
       className={`grid w-full grid-rows-[50px_auto_minmax(auto,max-content)] bg-gray-100 md:relative md:order-2`}
@@ -48,7 +51,10 @@ const MessagePanel = () => {
           )}
 
           <form className={`flex items-end justify-center border-t px-2 py-2 `}>
-            <section className="relative m-0 flex w-full p-0">
+            <section
+              className="relative m-0 flex w-full p-0"
+              onSubmit={submitForm}
+            >
               <TextareaAutoResize
                 className={`w-full resize-none border bg-gray-100 py-2 pl-2 pr-10 text-base text-zinc-700 outline-none active:outline-none md:px-9`}
                 value={message}

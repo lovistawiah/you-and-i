@@ -9,7 +9,6 @@ const useLogin = () => {
   const dispatch = useDispatch();
 
   const saveUserInfoAndNavigate = (userObj: UserInfo) => {
-    if (!userObj) return;
     setSpin(false);
     dispatch(setUserInfo(userObj));
     location.href = location.origin + "/";

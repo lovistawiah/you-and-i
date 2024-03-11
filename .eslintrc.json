@@ -18,7 +18,8 @@
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": "error",
     "no-use-before-define": "off",
-    "@typescript-eslint/no-use-before-define": "error"
+    "@typescript-eslint/no-use-before-define": "error",
+    "@typescript-eslint/no-unsafe-call": "error"
   },
   "plugins": ["react", "import", "jsx-a11y", "@typescript-eslint"],
   "parser": "@typescript-eslint/parser",

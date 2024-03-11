@@ -13,7 +13,6 @@ const useRegister = () => {
   const [isValid, setIsValid] = useState(true);
 
   const saveUserInfoAndNavigate = (userObj: UserInfo) => {
-    if (!userObj) return;
     setSpin(false);
     dispatch(setUserInfo(userObj));
     navigate("/update-profile");

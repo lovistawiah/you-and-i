@@ -66,6 +66,23 @@ export type ServerError = {
 const baseUrl = "http://localhost:5000/api";
 const serverError = { status: 500, message: "Internal Server Error" }
 
+const axiosError = (err: AxiosError) => {
+  const status = err.response?.status ?? err.status ?? 500;
+  const message = err.message
+  return { status, message };
+}
+
+const customError = (status: number, message: string | undefined) => {
+  if (status >= 400 && status < 500) {
+    return {
+      status,
+      message: message ?? "Internal Server Error"
+    }
+
+  }
+}
+
+
 async function signUp({ email, password, confirmPassword }: SignUpParams): Promise<{ userInfo: UserInfo, message?: string } | ServerError | undefined> {
   try {
     const result = await axios.post<SignUpResponse>(
@@ -82,7 +99,7 @@ async function signUp({ email, password, confirmPassword }: SignUpParams): Promi
       },
 
     );
-    if (result.data && result.status === 200) {
+    if (result.status === 200) {
       const { userInfo } = result.data
       return {
         userInfo
@@ -108,7 +125,7 @@ async function login({ usernameEmail, password }: LoginParams): Promise<{ status
         },
       },
     );
-    if (result.data && result.status === 200) {
+    if (result.status === 200) {
       if (result.data.token !== "") {
         const token = result.data.token;
         const { userInfo } = result.data;
@@ -168,20 +185,5 @@ async function userSettings(formData: userSettingsParams): Promise<{ userInfo: U
 }
 
 
-const axiosError = (err: AxiosError) => {
-  const status = err.response?.status ?? err.status ?? 500;
-  const message = err.message ?? "Internal Server Error";
-  return { status, message };
-}
-
-const customError = (status: number, message: string | undefined) => {
-  if (status >= 400 && status < 500) {
-    return {
-      status,
-      message: message ?? "Internal Server Error"
-    }
-
-  }
-}
 
 export { signUp, login, updateUserInfo, userSettings };

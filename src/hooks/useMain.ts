@@ -26,13 +26,9 @@ const useMain = () => {
 
   useEffect(() => {
     socket.on("connect_error", (data) => {
-      if (data) {
-        const message = data.message;
-        setErrMsg(message);
-        setToken(false);
-      } else {
-        setToken(true);
-      }
+      const message = data.message;
+      setErrMsg(message);
+      setToken(false)
     });
     const handleConnect = () => {
       setToken(true);
