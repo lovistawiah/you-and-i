@@ -3,7 +3,6 @@ import { faArrowRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import InfoContainer from "./InfoContainer";
-import Transition from "./Transition";
 import useUpdateProfile from "../hooks/useUpdateProfile";
 import { useEffect } from "react";
 
@@ -28,7 +27,7 @@ const UpdateProfile = () => {
 
   const inputRegex = /^[a-zA-Z0-9.@_]*$/;
   return (
-    <Transition>
+    <div>
       <section className="w-screen">
         <InfoContainer info={info} setInfo={setInfo} />
         <section className="mt-2 flex w-full justify-between md:block">
@@ -87,7 +86,7 @@ const UpdateProfile = () => {
           </button>
         </form>
       </section>
-    </Transition>
+    </div>
   );
 };
 

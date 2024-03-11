@@ -4,7 +4,6 @@ import InputForm from "./InputForm";
 import WelcomeText from "./WelcomeText";
 import FormButton from "./FormButton";
 import InfoContainer from "./InfoContainer";
-import Transition from "./Transition";
 import Logo from "./Logo";
 import ConfirmPassInput from "./ConfirmPass";
 import PasswordInput from "./PasswordInput";
@@ -49,7 +48,7 @@ const Register = () => {
     }
   };
   return (
-    <Transition>
+    <div>
       <InfoContainer info={info} setInfo={setInfo} />
       <div
         className={`flex h-screen w-screen flex-col items-center justify-center gap-1 px-[6px] py-[20px]`}
@@ -89,7 +88,7 @@ const Register = () => {
           </Link>
         </section>
       </div>
-    </Transition>
+    </div>
   );
 };
 export default Register;
