@@ -1,34 +1,21 @@
-import { ChangeEvent, useState } from "react";
 import { faArrowRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-
-import InfoContainer from "./InfoContainer";
 import useUpdateProfile from "../hooks/useUpdateProfile";
-import { useEffect } from "react";
 
 const UpdateProfile = () => {
-  const [usernameInput, setUsernameInput] = useState("");
-  const { windowWidth, handleUserInfo, info, setInfo, navigate, personInfo } = useUpdateProfile();
+  const {
+    windowWidth,
+    handleUserInfo,
+    personInfo,
+    goBack,
+    handleUsernameInput,
+    inputRegex,
+    usernameInput,
+  } = useUpdateProfile();
 
-  const handleUsernameInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setUsernameInput(e.target.value);
-  };
-  useEffect(() => {
-    const handleLogout = () => {
-      localStorage.clear();
-    };
-    handleLogout();
-  }, []);
-
-  const goBack = () => {
-    navigate("/register");
-  };
-
-  const inputRegex = /^[a-zA-Z0-9.@_]*$/;
   return (
     <div>
       <section className="w-screen">
-        <InfoContainer info={info} setInfo={setInfo} />
         <section className="mt-2 flex w-full justify-between md:block">
           {
             //show back arrow on mobile device

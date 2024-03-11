@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { UserValue, setUserInfo } from "../app/userSlice";
@@ -7,6 +7,7 @@ import { State } from "../app/store";
 
 const useUpdateProfile = () => {
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+  const [usernameInput, setUsernameInput] = useState("");
   const user = useSelector((state: State) => state.user.value);
   const [info, setInfo] = useState({});
   const navigate = useNavigate();
@@ -61,7 +62,24 @@ const useUpdateProfile = () => {
       });
     }
   };
-  return { windowWidth, handleUserInfo, info, setInfo, user, personInfo, navigate };
+
+  const handleUsernameInput = (e: ChangeEvent<HTMLInputElement>) => {
+    setUsernameInput(e.target.value);
+  };
+  useEffect(() => {
+    const handleLogout = () => {
+      localStorage.clear();
+    };
+    handleLogout();
+  }, []);
+
+  const goBack = () => {
+    navigate("/register");
+  };
+
+  const inputRegex = /^[a-zA-Z0-9.@_]*$/;
+
+  return { windowWidth, handleUserInfo, info, setInfo, user, personInfo, navigate, handleUsernameInput, usernameInput, goBack, inputRegex };
 };
 
 export default useUpdateProfile;

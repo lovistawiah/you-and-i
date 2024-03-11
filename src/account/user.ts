@@ -65,18 +65,11 @@ const serverError = { status: 500, message: "Internal Server Error" };
 
 const axiosError = (err: AxiosError) => {
   const status = err.response?.status ?? err.status ?? 500;
-  const message = err.message;
+  const message = err.response?.data as string;
   return { status, message };
 };
 
-const customError = (status: number, message: string | undefined) => {
-  if (status >= 400 && status < 500) {
-    return {
-      status,
-      message: message ?? "Internal Server Error",
-    };
-  }
-};
+
 
 async function signUp({
   email,
@@ -97,16 +90,16 @@ async function signUp({
         },
       },
     );
+    console.log(result)
     if (result.status === 200) {
       const { userInfo } = result.data;
       return {
         userInfo,
       };
     }
-    customError(result.status, result.data.message);
   } catch (err) {
     if (err instanceof AxiosError) {
-      axiosError(err);
+      return axiosError(err);
     }
     return serverError;
   }
@@ -134,10 +127,9 @@ async function login({
         return { status: 200, userInfo };
       }
     }
-    customError(result.status, result.data.message);
   } catch (err) {
     if (err instanceof AxiosError) {
-      axiosError(err);
+      return axiosError(err);
     }
   }
   return serverError;
@@ -156,10 +148,9 @@ async function updateUserInfo(
         message: result.data.message,
       };
     }
-    customError(result.status, result.data.message);
   } catch (err) {
     if (err instanceof AxiosError) {
-      axiosError(err);
+      return axiosError(err);
     }
     return serverError;
   }
@@ -179,10 +170,9 @@ async function userSettings(
         status: result.status,
       };
     }
-    customError(result.status, result.data.message);
   } catch (err) {
     if (err instanceof AxiosError) {
-      axiosError(err);
+      return axiosError(err);
     }
     return serverError;
   }
