@@ -2,33 +2,32 @@ import { createSlice } from "@reduxjs/toolkit";
 import { lastSeen } from "../utils/compareDate";
 
 export type ChatValue = {
-  userId: string,
-  id?: string,
-  username: string,
-  status: string
-  avatarUrl: string,
-  chatId?: string
-}
+  userId: string;
+  id?: string;
+  username: string;
+  status: string;
+  avatarUrl: string;
+  chatId?: string;
+};
 export interface ChatState {
-  value: ChatValue | null
+  value: ChatValue | null;
 }
 
 export type SelectedChat = {
-  userId: string,
-  id: string
-  avatarUrl: string,
-  username: string,
-  chatId?: string
-}
+  userId: string;
+  id: string;
+  avatarUrl: string;
+  username: string;
+  chatId?: string;
+};
 
 const initialState: ChatState = {
-  value: null
-}
+  value: null,
+};
 
 export const chatReducer = createSlice({
   name: "chat",
-  initialState
-  ,
+  initialState,
   reducers: {
     setChatInfo: (state, action) => {
       state.value = null;
@@ -38,7 +37,7 @@ export const chatReducer = createSlice({
       const { userId, status } = action.payload as ChatValue;
       if (state.value !== null) {
         if (state.value.userId === userId && status) {
-          state.value.status = lastSeen(status)
+          state.value.status = lastSeen(status);
         }
       }
     },

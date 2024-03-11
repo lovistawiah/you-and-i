@@ -6,7 +6,6 @@ import { IMessage, modifyMsg } from "../app/messagesSlice";
 import { updateLastMessage } from "../app/chatsSlice";
 import { State } from "../app/store";
 
-
 const useModifyMessage = () => {
   const dispatch = useDispatch();
   const storedMessages = useSelector((state: State) => state.messages.messages);

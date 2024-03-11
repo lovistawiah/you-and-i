@@ -5,7 +5,15 @@ import { msgEvents } from "../utils/eventNames";
 import { replyMessage, updateSingleMsg } from "../app/messagesSlice";
 import { State } from "../app/store";
 
-const useMessage = ({ msgIdRef, msgRef, ulRef }: { msgIdRef: React.MutableRefObject<HTMLDivElement | null>, msgRef: React.MutableRefObject<HTMLDivElement | null>, ulRef: React.MutableRefObject<HTMLUListElement | null> }) => {
+const useMessage = ({
+  msgIdRef,
+  msgRef,
+  ulRef,
+}: {
+  msgIdRef: React.MutableRefObject<HTMLDivElement | null>;
+  msgRef: React.MutableRefObject<HTMLDivElement | null>;
+  ulRef: React.MutableRefObject<HTMLUListElement | null>;
+}) => {
   const [showOps, setShowOps] = useState(false);
   const dispatch = useDispatch();
   const chatId = useSelector((state: State) => state.chat.value?.chatId);
@@ -71,8 +79,6 @@ const useMessage = ({ msgIdRef, msgRef, ulRef }: { msgIdRef: React.MutableRefObj
       dispatch(replyMessage(msgObj));
       setShowOps(false);
     }
-
-
   };
 
   return { deleteMsg, editMsg, showOps, handleMsgOps, onBlurOps, replyMsg };

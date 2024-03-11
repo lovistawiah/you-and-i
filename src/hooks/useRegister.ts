@@ -4,7 +4,6 @@ import { useDispatch } from "react-redux";
 import { setUserInfo } from "../app/userSlice";
 import { UserInfo, signUp } from "../account/user";
 
-
 const useRegister = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -82,7 +81,7 @@ const useRegister = () => {
     setIsValid,
     setSpin,
     isValid,
-    handleForm
+    handleForm,
   };
 };
 

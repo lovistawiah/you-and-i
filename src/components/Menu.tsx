@@ -1,9 +1,5 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faComments,
-  faGear,
-  faUserPlus,
-} from "@fortawesome/free-solid-svg-icons";
+import { faComments, faGear, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import { MouseEvent } from "react";
 
 const Menu = ({
@@ -33,10 +29,7 @@ const Menu = ({
           onClick={pageSelector}
           id={`${i + 1}`}
         >
-          <FontAwesomeIcon
-            icon={iconName}
-            className="pointer-events-none self-center"
-          />
+          <FontAwesomeIcon icon={iconName} className="pointer-events-none self-center" />
           {iconText}
         </button>
       ))}

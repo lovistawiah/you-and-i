@@ -16,22 +16,13 @@ const Contacts = () => {
   const { searchInput, setSearchInput } = useContact();
   // return search users else the original list
   const contacts = useSelector((state: State) =>
-    searchInput.length > 0
-      ? state.contacts.searchedContacts
-      : state.contacts.contacts,
+    searchInput.length > 0 ? state.contacts.searchedContacts : state.contacts.contacts,
   );
 
   const clearSearch = () => {
     setSearchInput("");
   };
-  const handleUserInfo = ({
-    id,
-    chatId,
-    avatarUrl,
-    username,
-    status,
-    bio,
-  }: Contact) => {
+  const handleUserInfo = ({ id, chatId, avatarUrl, username, status, bio }: Contact) => {
     const chatObj = {
       id,
       chatId,
@@ -60,10 +51,7 @@ const Contacts = () => {
       <div className="fixed top-[59px] flex h-[70px] w-full flex-col items-center justify-center bg-gray-50 px-2.5 md:relative md:top-[10px]">
         <section className="relative w-[90%]">
           {!searchInput && (
-            <FontAwesomeIcon
-              icon={faSearch}
-              className="absolute left-1 top-[10px] text-zinc-500"
-            />
+            <FontAwesomeIcon icon={faSearch} className="absolute left-1 top-[10px] text-zinc-500" />
           )}
           <input
             type="text"
@@ -102,11 +90,7 @@ const Contacts = () => {
             key={contact.id}
           >
             <section className="flex h-[65px] w-[70px] shrink-0 items-center justify-center p-2.5">
-              <img
-                src={contact.avatarUrl}
-                alt="user profile"
-                className="rounded-full"
-              />
+              <img src={contact.avatarUrl} alt="user profile" className="rounded-full" />
             </section>
             <section className="flex w-full flex-col gap-[0px] border-b border-neutral-400 py-1">
               <h4 className="h-[24.50px] pt-1 text-base font-medium text-zinc-950">

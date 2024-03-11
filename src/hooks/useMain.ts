@@ -28,7 +28,7 @@ const useMain = () => {
     socket.on("connect_error", (data) => {
       const message = data.message;
       setErrMsg(message);
-      setToken(false)
+      setToken(false);
     });
     const handleConnect = () => {
       setToken(true);

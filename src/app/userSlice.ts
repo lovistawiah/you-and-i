@@ -2,22 +2,22 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { UserInfo } from "../account/user";
 
 export type Typing = {
-  chatId: string,
-  typing: "typing..."
-} | null
+  chatId: string;
+  typing: "typing...";
+} | null;
 export interface UserValue {
-  id: string,
-  username: string,
-  bio: string,
-  avatarUrl: string
+  id: string;
+  username: string;
+  bio: string;
+  avatarUrl: string;
 }
 export interface UserState {
-  value: UserValue | null
+  value: UserValue | null;
 }
 
 const initialState: UserState = {
   value: null,
-}
+};
 
 export const userReducer = createSlice({
   name: "user",

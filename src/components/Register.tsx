@@ -9,8 +9,7 @@ import PasswordInput from "./PasswordInput";
 import useRegister from "../hooks/useRegister";
 
 const Register = () => {
-  const { info, setInfo, setIsValid, spin, handleForm, isValid } =
-    useRegister();
+  const { info, setInfo, setIsValid, spin, handleForm, isValid } = useRegister();
 
   return (
     <div>
@@ -20,16 +19,8 @@ const Register = () => {
       >
         <Logo />
         <WelcomeText />
-        <form
-          className="flex flex-col items-center gap-[21px]"
-          onSubmit={handleForm}
-        >
-          <InputForm
-            type={"email"}
-            name={"email"}
-            placeholder={"Email"}
-            id={"email"}
-          />
+        <form className="flex flex-col items-center gap-[21px]" onSubmit={handleForm}>
+          <InputForm type={"email"} name={"email"} placeholder={"Email"} id={"email"} />
           <PasswordInput
             isValid={isValid}
             setIsValid={setIsValid}
@@ -37,18 +28,11 @@ const Register = () => {
             label={"New Password"}
           />
           <ConfirmPassInput />
-          <FormButton
-            btnText={"Create account"}
-            isValid={isValid}
-            spin={spin}
-          />
+          <FormButton btnText={"Create account"} isValid={isValid} spin={spin} />
         </form>
         <section className="inline-flex h-9 items-center justify-center gap-1 bg-white px-[31px] py-[9px] text-base md:text-lg">
           Have an Account?
-          <Link
-            to="/login"
-            className="text-blue-600 hover:underline md:text-lg"
-          >
+          <Link to="/login" className="text-blue-600 hover:underline md:text-lg">
             Login
           </Link>
         </section>

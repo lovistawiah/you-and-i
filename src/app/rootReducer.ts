@@ -6,7 +6,6 @@ import chatsReducer from "./chatsSlice";
 import contactsReducer from "./contactsSlice";
 import messageReducer from "./messagesSlice";
 
-
 export const rootReducer = combineReducers({
   user: userReducer,
   chat: chatReducer,
@@ -14,4 +13,3 @@ export const rootReducer = combineReducers({
   contacts: contactsReducer,
   messages: messageReducer,
 });
-

@@ -8,8 +8,7 @@ import { useEffect } from "react";
 
 const UpdateProfile = () => {
   const [usernameInput, setUsernameInput] = useState("");
-  const { windowWidth, handleUserInfo, info, setInfo, navigate, personInfo } =
-    useUpdateProfile();
+  const { windowWidth, handleUserInfo, info, setInfo, navigate, personInfo } = useUpdateProfile();
 
   const handleUsernameInput = (e: ChangeEvent<HTMLInputElement>) => {
     setUsernameInput(e.target.value);

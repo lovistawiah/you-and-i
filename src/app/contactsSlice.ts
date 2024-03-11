@@ -2,28 +2,28 @@ import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Username } from "./chatsSlice";
 
 export type Contact = {
-  id: string,
-  username: string,
-  avatarUrl: string,
-  chatId?: string,
-  bio: string
-  status?: string
-}
+  id: string;
+  username: string;
+  avatarUrl: string;
+  chatId?: string;
+  bio: string;
+  status?: string;
+};
 
 export type ContactState = {
-  contacts: Contact[],
-  searchedContacts: Contact[]
-}
+  contacts: Contact[];
+  searchedContacts: Contact[];
+};
 
 export type UpdateContact = {
-  id: string,
-  chatId: string,
-}
+  id: string;
+  chatId: string;
+};
 
 const initialState: ContactState = {
   contacts: [],
   searchedContacts: [],
-}
+};
 
 export const contactsReducer = createSlice({
   name: "contacts",
@@ -39,18 +39,14 @@ export const contactsReducer = createSlice({
     },
     addContact: (state, action: PayloadAction<Contact>) => {
       const { payload } = action;
-      const contactExist = state.contacts.some(
-        (chat) => chat.id === payload.id,
-      );
+      const contactExist = state.contacts.some((chat) => chat.id === payload.id);
       if (!contactExist) {
         state.contacts.push(payload);
       }
     },
     updateContact: (state, action: PayloadAction<UpdateContact>) => {
       const { payload: contactObj } = action;
-      const idx = state.contacts.findIndex(
-        (contact) => contact.id === contactObj.id,
-      );
+      const idx = state.contacts.findIndex((contact) => contact.id === contactObj.id);
       if (idx !== -1) {
         state.contacts[idx]["chatId"] = contactObj.chatId;
       }
@@ -58,6 +54,5 @@ export const contactsReducer = createSlice({
   },
 });
 
-export const { searchContacts, addContact, updateContact } =
-  contactsReducer.actions;
+export const { searchContacts, addContact, updateContact } = contactsReducer.actions;
 export default contactsReducer.reducer;

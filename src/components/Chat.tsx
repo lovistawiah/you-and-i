@@ -5,14 +5,7 @@ import useChat from "../hooks/useChat";
 import useTyping from "../hooks/useTyping";
 import { ChatsValue } from "../app/chatsSlice";
 
-const Chat = ({
-  id,
-  userId,
-  username,
-  avatarUrl,
-  lastMessage,
-  lstMsgDate,
-}: ChatsValue) => {
+const Chat = ({ id, userId, username, avatarUrl, lastMessage, lstMsgDate }: ChatsValue) => {
   const { windowWidth, handleChat } = useChat();
   const { isTypingObj } = useTyping();
   const chatRef = useRef(null);
@@ -37,10 +30,7 @@ const Chat = ({
 
       <section className="flex w-full flex-col gap-[0px] border-b border-neutral-400 py-1">
         <section className="flex h-[32px] shrink-0 items-end justify-between px-[4px]">
-          <section
-            className=" h-[24.50px] pt-1 text-base font-medium text-zinc-950"
-            id={userId}
-          >
+          <section className=" h-[24.50px] pt-1 text-base font-medium text-zinc-950" id={userId}>
             {username}
           </section>
           <div className="h-[24.50px] items-center justify-end pb-[3px] pr-4 pt-1 text-xs font-light text-neutral-400">

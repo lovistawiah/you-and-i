@@ -18,10 +18,7 @@ const SettingsPassword = ({
   };
   return (
     <div className="flex w-fit flex-col">
-      <label
-        htmlFor="password"
-        className="font-roboto text-base font-normal text-gray-800"
-      >
+      <label htmlFor="password" className="font-roboto text-base font-normal text-gray-800">
         {label}
       </label>
       <div className="relative">

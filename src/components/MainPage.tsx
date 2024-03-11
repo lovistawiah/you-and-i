@@ -24,11 +24,7 @@ const MainPage = () => {
       {activePage === 1 && <Settings />}
       {activePage === 2 && <Contacts />}
       {activePage === 3 && <Chats />}
-      <Menu
-        pageSelector={pageSelector}
-        userAvatar={userAvatar}
-        windowWidth={windowWidth}
-      />
+      <Menu pageSelector={pageSelector} userAvatar={userAvatar} windowWidth={windowWidth} />
       {windowWidth > 768 ? <MessagePanel /> : null}
     </section>
   );

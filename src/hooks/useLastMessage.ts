@@ -7,7 +7,6 @@ import { updateNewChat } from "../app/chatSlice";
 import { State } from "../app/store";
 import { IMessage } from "../app/messagesSlice";
 
-
 const useLastMessage = () => {
   const dispatch = useDispatch();
   const info = useSelector((state: State) => state.chat.value);

@@ -15,9 +15,7 @@ const Messages = () => {
   const dispatch = useDispatch();
   const info = useSelector((state: State) => state.chat.value);
   const messages = useSelector((state: State) => state.messages.messages);
-  const msgToBeReplied = useSelector(
-    (state: State) => state.messages.msgToBeReplied,
-  );
+  const msgToBeReplied = useSelector((state: State) => state.messages.msgToBeReplied);
 
   const [chatInfo, setChatInfo] = useState(info);
   const datesSet = new Set();
@@ -45,9 +43,7 @@ const Messages = () => {
       messages.map((message) => (
         <>
           {addDateToSet(messageHeaderDate(message.createdAt)) && (
-            <MessageHeaderDate
-              messageDate={messageHeaderDate(message.createdAt)}
-            />
+            <MessageHeaderDate messageDate={messageHeaderDate(message.createdAt)} />
           )}
           <Message
             key={message.id}
@@ -55,8 +51,7 @@ const Messages = () => {
             message={message.message}
             sender={message.sender}
             msgDate={
-              new Date(message.updatedAt.getTime()) >
-              new Date(message.createdAt.getTime())
+              new Date(message.updatedAt.getTime()) > new Date(message.createdAt.getTime())
                 ? message.updatedAt
                 : message.createdAt
             }
@@ -93,9 +88,7 @@ const Messages = () => {
           No Messages found
         </section>
       ) : (
-        <div
-          className={` ${msgToBeReplied ? "blur-[2px]" : ""} flex w-full  flex-col py-2`}
-        >
+        <div className={` ${msgToBeReplied ? "blur-[2px]" : ""} flex w-full  flex-col py-2`}>
           {memoizedMessages}
         </div>
       )}

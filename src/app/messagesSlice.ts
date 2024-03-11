@@ -1,71 +1,69 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-
 type MessageInfo = "created" | "updated" | "deleted";
 export interface IBaseMessage {
-  id: string,
-  message: string,
-  sender: string,
-  updatedAt: Date,
-  createdAt: Date,
-  chatId: string,
-  info: MessageInfo
+  id: string;
+  message: string;
+  sender: string;
+  updatedAt: Date;
+  createdAt: Date;
+  chatId: string;
+  info: MessageInfo;
 }
 type Reply = {
-  Id: string,
-  message: string,
-  sender: string,
-  info: MessageInfo,
-
-}
+  Id: string;
+  message: string;
+  sender: string;
+  info: MessageInfo;
+};
 export interface IMessage extends IBaseMessage {
-  reply?: Reply
+  reply?: Reply;
 }
 
 export type MsgToBeReplied = {
-  id: string,
-  message: string
-} | null
+  id: string;
+  message: string;
+} | null;
 
 export type MsgToBeUpdated = {
-  id: string,
-  message: string
-} | null
+  id: string;
+  message: string;
+} | null;
 
 export type UpdateMsg = boolean;
 
 export type MessagesState = {
-  messages: IMessage[],
-  msgToBeUpdated: MsgToBeUpdated,
-  updateMsg: UpdateMsg,
-  msgToBeReplied: MsgToBeReplied,
-}
+  messages: IMessage[];
+  msgToBeUpdated: MsgToBeUpdated;
+  updateMsg: UpdateMsg;
+  msgToBeReplied: MsgToBeReplied;
+};
 export type NewChatAndMessage = {
   newChat: {
-    id: string
-    userId: string,
-    username: string,
-    avatarUrl: string
-  }
-  msgObj: IMessage
-}
+    id: string;
+    userId: string;
+    username: string;
+    avatarUrl: string;
+  };
+  msgObj: IMessage;
+};
 
 export type MessageProps = {
-  message: string,
-  sender: string,
-  msgDate: string | Date,
-  userId: string,
-  id: string,
-  info: MessageInfo,
-  reply?: Reply,
-}
+  message: string;
+  sender: string;
+  msgDate: string | Date;
+  userId: string;
+  id: string;
+  info: MessageInfo;
+  reply?: Reply;
+};
 
 const initialState: MessagesState = {
   messages: [],
   msgToBeUpdated: null,
   updateMsg: false,
   msgToBeReplied: null,
-}
+};
 export const messageReducer = createSlice({
   name: "messages",
   initialState,
@@ -80,9 +78,7 @@ export const messageReducer = createSlice({
 
     modifyMsg: (state, action: PayloadAction<IMessage>) => {
       const { payload } = action;
-      const idx = state.messages.findIndex(
-        (message) => message.id === payload.id,
-      );
+      const idx = state.messages.findIndex((message) => message.id === payload.id);
       if (idx !== -1) {
         state.messages[idx] = payload;
       }
@@ -108,12 +104,6 @@ export const messageReducer = createSlice({
   },
 });
 
-export const {
-  addMessage,
-  modifyMsg,
-  updateSingleMsg,
-  cancelUpdate,
-  clearMessages,
-  replyMessage,
-} = messageReducer.actions;
+export const { addMessage, modifyMsg, updateSingleMsg, cancelUpdate, clearMessages, replyMessage } =
+  messageReducer.actions;
 export default messageReducer.reducer;

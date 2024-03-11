@@ -1,89 +1,88 @@
 import axios, { AxiosError } from "axios";
 
 export interface UserInfo {
-  id: string,
-  username: string,
-  avatarUrl: string,
-  bio: string,
+  id: string;
+  username: string;
+  avatarUrl: string;
+  bio: string;
 }
 
 export type SignUpParams = {
-  email: string, password: string, confirmPassword: string
-}
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
 
 export interface SignUpResponse {
-  userInfo: UserInfo,
-  message?: string
+  userInfo: UserInfo;
+  message?: string;
 }
-
 
 export type LoginParams = {
-  usernameEmail: string,
-  password: string
-
-}
-
+  usernameEmail: string;
+  password: string;
+};
 
 export type LoginResponse = {
-  token: string,
-  userInfo: UserInfo
-  message: string,
-  status: 200,
-}
+  token: string;
+  userInfo: UserInfo;
+  message: string;
+  status: 200;
+};
 
 export type UpdateUserInfoParams = {
-  userId: string,
-  username: string
-}
+  userId: string;
+  username: string;
+};
 
 export type UpdateUserInfoResponse = {
-  userInfo: UserInfo,
-  message: string,
-  token: string,
-
-}
+  userInfo: UserInfo;
+  message: string;
+  token: string;
+};
 
 export type userSettingsParams = {
-  id: string,
-  username: string,
-  bio: string,
-  currentPassword: string,
-  newPassword: string,
-  confirmPassword: string,
-}
-
+  id: string;
+  username: string;
+  bio: string;
+  currentPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
 
 export type userSettingsResponse = {
-  userInfo: UserInfo,
-  message: string
-}
+  userInfo: UserInfo;
+  message: string;
+};
 export type ServerError = {
-  status: number,
-  message: string
-}
+  status: number;
+  message: string;
+};
 
 // const baseUrl = 'https://you-and-i-6d9db751f88a.herokuapp.com/api'
 const baseUrl = "http://localhost:5000/api";
-const serverError = { status: 500, message: "Internal Server Error" }
+const serverError = { status: 500, message: "Internal Server Error" };
 
 const axiosError = (err: AxiosError) => {
   const status = err.response?.status ?? err.status ?? 500;
-  const message = err.message
+  const message = err.message;
   return { status, message };
-}
+};
 
 const customError = (status: number, message: string | undefined) => {
   if (status >= 400 && status < 500) {
     return {
       status,
-      message: message ?? "Internal Server Error"
-    }
-
+      message: message ?? "Internal Server Error",
+    };
   }
-}
+};
 
-
-async function signUp({ email, password, confirmPassword }: SignUpParams): Promise<{ userInfo: UserInfo, message?: string } | ServerError | undefined> {
+async function signUp({
+  email,
+  password,
+  confirmPassword,
+}: SignUpParams): Promise<{ userInfo: UserInfo; message?: string } | ServerError | undefined> {
   try {
     const result = await axios.post<SignUpResponse>(
       baseUrl + "/signup",
@@ -97,24 +96,26 @@ async function signUp({ email, password, confirmPassword }: SignUpParams): Promi
           "Content-Type": "application/json",
         },
       },
-
     );
     if (result.status === 200) {
-      const { userInfo } = result.data
+      const { userInfo } = result.data;
       return {
-        userInfo
-      }
+        userInfo,
+      };
     }
-    customError(result.status, result.data.message)
+    customError(result.status, result.data.message);
   } catch (err) {
     if (err instanceof AxiosError) {
-      axiosError(err)
+      axiosError(err);
     }
     return serverError;
   }
 }
 
-async function login({ usernameEmail, password }: LoginParams): Promise<{ status: number, userInfo: UserInfo } | ServerError | undefined> {
+async function login({
+  usernameEmail,
+  password,
+}: LoginParams): Promise<{ status: number; userInfo: UserInfo } | ServerError | undefined> {
   try {
     const result = await axios.post<LoginResponse>(
       baseUrl + "/login",
@@ -133,16 +134,18 @@ async function login({ usernameEmail, password }: LoginParams): Promise<{ status
         return { status: 200, userInfo };
       }
     }
-    customError(result.status, result.data.message)
+    customError(result.status, result.data.message);
   } catch (err) {
     if (err instanceof AxiosError) {
-      axiosError(err)
+      axiosError(err);
     }
   }
-  return serverError
+  return serverError;
 }
 
-async function updateUserInfo(formData: UpdateUserInfoParams): Promise<{ userInfo: UserInfo, message: string } | ServerError | undefined> {
+async function updateUserInfo(
+  formData: UpdateUserInfoParams,
+): Promise<{ userInfo: UserInfo; message: string } | ServerError | undefined> {
   try {
     const result = await axios.patch<UpdateUserInfoResponse>(baseUrl + "/update-user", formData);
     if (result.data.message) {
@@ -153,17 +156,18 @@ async function updateUserInfo(formData: UpdateUserInfoParams): Promise<{ userInf
         message: result.data.message,
       };
     }
-    customError(result.status, result.data.message)
+    customError(result.status, result.data.message);
   } catch (err) {
     if (err instanceof AxiosError) {
-      axiosError(err)
+      axiosError(err);
     }
-    return serverError
+    return serverError;
   }
 }
 
-
-async function userSettings(formData: userSettingsParams): Promise<{ userInfo: UserInfo, message: string } | ServerError | undefined> {
+async function userSettings(
+  formData: userSettingsParams,
+): Promise<{ userInfo: UserInfo; message: string } | ServerError | undefined> {
   try {
     const result = await axios.patch<userSettingsResponse>(baseUrl + "/user-settings", formData);
     if (result.status === 200) {
@@ -172,18 +176,16 @@ async function userSettings(formData: userSettingsParams): Promise<{ userInfo: U
       return {
         userInfo,
         message,
-        status: result.status
+        status: result.status,
       };
     }
-    customError(result.status, result.data.message)
+    customError(result.status, result.data.message);
   } catch (err) {
     if (err instanceof AxiosError) {
-      axiosError(err)
+      axiosError(err);
     }
-    return serverError
+    return serverError;
   }
 }
-
-
 
 export { signUp, login, updateUserInfo, userSettings };

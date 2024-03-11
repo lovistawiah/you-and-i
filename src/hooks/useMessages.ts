@@ -5,7 +5,13 @@ import { socket } from "../socket";
 import { msgEvents } from "../utils/eventNames";
 import { State } from "../app/store";
 
-const useMessages = ({ chatId, messagesRef }: { chatId: string, messagesRef: React.MutableRefObject<HTMLDivElement | null> }) => {
+const useMessages = ({
+  chatId,
+  messagesRef,
+}: {
+  chatId: string;
+  messagesRef: React.MutableRefObject<HTMLDivElement | null>;
+}) => {
   const dispatch = useDispatch();
   const messages = useSelector((state: State) => state.messages.messages);
 

@@ -29,10 +29,7 @@ const MainPage = () => {
       <div className="fixed top-[59px] flex h-[70px] w-full flex-col items-center justify-center bg-gray-50 px-2.5 md:relative md:top-[10px]">
         <section className="relative w-[90%]">
           {!searchInput && (
-            <FontAwesomeIcon
-              icon={faSearch}
-              className="absolute left-1 top-[10px] text-zinc-500"
-            />
+            <FontAwesomeIcon icon={faSearch} className="absolute left-1 top-[10px] text-zinc-500" />
           )}
           <input
             type="text"
@@ -67,9 +64,7 @@ const MainPage = () => {
             />
           ))
         ) : (
-          <section className="text-center font-roboto text-lg font-bold">
-            No chats found
-          </section>
+          <section className="text-center font-roboto text-lg font-bold">No chats found</section>
         )}
       </div>
     </section>

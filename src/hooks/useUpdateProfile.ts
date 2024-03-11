@@ -5,12 +5,11 @@ import { UserValue, setUserInfo } from "../app/userSlice";
 import { updateUserInfo } from "../account/user.js";
 import { State } from "../app/store";
 
-
 const useUpdateProfile = () => {
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const user = useSelector((state: State) => state.user.value);
   const [info, setInfo] = useState({});
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [personInfo, setPersonInfo] = useState(user);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -41,16 +40,16 @@ const useUpdateProfile = () => {
     }
 
     const result = await updateUserInfo(formObj);
-    if (!result) return
+    if (!result) return;
     if ("userInfo" in result) {
       setPersonInfo({
-        ...personInfo as UserValue,
+        ...(personInfo as UserValue),
         username: result.userInfo.username,
       });
 
       dispatch(
         setUserInfo({
-          ...personInfo as UserValue,
+          ...(personInfo as UserValue),
           username: result.userInfo.username,
         }),
       );

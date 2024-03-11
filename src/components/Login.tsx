@@ -10,8 +10,7 @@ import useLogin from "../hooks/useLogin";
 import { FormEvent } from "react";
 
 const Login = () => {
-  const { errorLogger, info, saveUserInfoAndNavigate, setInfo, setSpin, spin } =
-    useLogin();
+  const { errorLogger, info, saveUserInfoAndNavigate, setInfo, setSpin, spin } = useLogin();
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSpin(true);
@@ -32,32 +31,21 @@ const Login = () => {
       <div className="flex h-screen w-screen flex-col items-center justify-center gap-4 px-[6px] py-[23px]">
         <Logo />
         <WelcomeText />
-        <form
-          className="flex flex-col items-center gap-[21px]"
-          onSubmit={handleLogin}
-        >
+        <form className="flex flex-col items-center gap-[21px]" onSubmit={handleLogin}>
           <InputForm
             name={"username-email"}
             type={"text"}
             placeholder={"Username or Email"}
             id={"username-email"}
           />
-          <InputForm
-            name={"password"}
-            placeholder={"Password"}
-            id={"password"}
-            type={"password"}
-          />
+          <InputForm name={"password"} placeholder={"Password"} id={"password"} type={"password"} />
           <button
             className={`flex h-[33px] w-[200px] items-center justify-center rounded-[5px] border bg-blue-500 px-3.5 py-[7px] font-roboto text-base font-normal text-white  outline-none hover:bg-blue-600 active:bg-blue-700  disabled:cursor-not-allowed md:w-[300px] md:text-lg`}
             disabled={spin}
           >
             {spin ? (
               <>
-                <FontAwesomeIcon
-                  icon={faCircleNotch}
-                  className="animate-spin"
-                />{" "}
+                <FontAwesomeIcon icon={faCircleNotch} className="animate-spin" />{" "}
                 <span className="pl-1">Processing...</span>
               </>
             ) : (
