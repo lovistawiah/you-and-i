@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setUserInfo } from "../app/userSlice";
-import { UserInfo } from "../account/user";
+import { UserInfo, signUp } from "../account/user";
 
 
 const useRegister = () => {
@@ -17,10 +17,12 @@ const useRegister = () => {
     dispatch(setUserInfo(userObj));
     navigate("/update-profile");
   };
+
   const errorLogger = ({ message }: { message: string }) => {
     setInfo({ type: "error", message });
     setSpin(false);
   };
+
   useEffect(() => {
     const handleLogout = () => {
       localStorage.clear();
@@ -45,6 +47,32 @@ const useRegister = () => {
       setInfo({});
     }
   }, [isValid]);
+
+  const handleForm = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSpin(true);
+    const formData = new FormData(e.currentTarget);
+    const formObj = {
+      username: formData.get("username") as string,
+      email: formData.get("email") as string,
+      password: formData.get("password") as string,
+      confirmPassword: formData.get("confirm-password") as string,
+    };
+    try {
+      const result = await signUp(formObj);
+
+      if (!result) return;
+      if ("userInfo" in result) {
+        saveUserInfoAndNavigate(result.userInfo);
+      } else {
+        errorLogger({ message: result.message });
+      }
+    } catch (err) {
+      setInfo({ type: "error", message: "Unknown Error" });
+    } finally {
+      setSpin(false);
+    }
+  };
   return {
     info,
     saveUserInfoAndNavigate,
@@ -54,6 +82,7 @@ const useRegister = () => {
     setIsValid,
     setSpin,
     isValid,
+    handleForm
   };
 };
 

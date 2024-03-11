@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { signUp } from "../account/user";
 import InputForm from "./InputForm";
 import WelcomeText from "./WelcomeText";
 import FormButton from "./FormButton";
@@ -8,45 +7,11 @@ import Logo from "./Logo";
 import ConfirmPassInput from "./ConfirmPass";
 import PasswordInput from "./PasswordInput";
 import useRegister from "../hooks/useRegister";
-import { FormEvent } from "react";
 
 const Register = () => {
-  const {
-    errorLogger,
-    info,
-    saveUserInfoAndNavigate,
-    setInfo,
-    setIsValid,
-    spin,
-    setSpin,
-    isValid,
-  } = useRegister();
+  const { info, setInfo, setIsValid, spin, handleForm, isValid } =
+    useRegister();
 
-  const handleForm = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSpin(true);
-    const formData = new FormData(e.currentTarget);
-    const formObj = {
-      username: formData.get("username") as string,
-      email: formData.get("email") as string,
-      password: formData.get("password") as string,
-      confirmPassword: formData.get("confirm-password") as string,
-    };
-    try {
-      const result = await signUp(formObj);
-
-      if (!result) return;
-      if ("userInfo" in result) {
-        saveUserInfoAndNavigate(result.userInfo);
-      } else {
-        errorLogger({ message: result.message });
-      }
-    } catch (err) {
-      setInfo({ type: "error", message: "Unknown Error" });
-    } finally {
-      setSpin(false);
-    }
-  };
   return (
     <div>
       <InfoContainer info={info} setInfo={setInfo} />
