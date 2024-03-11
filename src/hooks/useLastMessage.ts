@@ -10,7 +10,7 @@ import { IMessage } from "../app/messagesSlice";
 
 const useLastMessage = () => {
   const dispatch = useDispatch();
-  const info = useSelector((state: State) => state.chat?.value);
+  const info = useSelector((state: State) => state.chat.value);
   // const chats = useSelector((state)=>state.chats.chats)
   useEffect(() => {
     const handleSendMessage = (msg: IMessage) => {

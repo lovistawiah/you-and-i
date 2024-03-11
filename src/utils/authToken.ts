@@ -1,4 +1,4 @@
-function getAuthToken() {
+function getAuthToken(): string | undefined {
   const token = localStorage.getItem("Oh_vnyX");
   if (token && typeof token == "string") {
     return token;

@@ -6,7 +6,7 @@ import useTyping from "../hooks/useTyping";
 import { State } from "../app/store";
 
 const ChatInfo = ({ windowWidth }: { windowWidth: number }) => {
-  const chatInfo = useSelector((state: State) => state?.chat?.value);
+  const chatInfo = useSelector((state: State) => state.chat.value);
   const { isTypingObj } = useTyping();
   const { goBack } = useChatInfo({ userId: chatInfo?.userId ?? "" });
 

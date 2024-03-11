@@ -37,7 +37,7 @@ export const chatReducer = createSlice({
     updateStatus: (state, action) => {
       const { userId, status } = action.payload as ChatValue;
       if (state.value !== null) {
-        if (state.value?.userId === userId && status) {
+        if (state.value.userId === userId && status) {
           state.value.status = lastSeen(status)
         }
       }

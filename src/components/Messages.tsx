@@ -13,7 +13,7 @@ import { State } from "../app/store";
 const Messages = () => {
   //info holds userId
   const dispatch = useDispatch();
-  const info = useSelector((state: State) => state.chat?.value);
+  const info = useSelector((state: State) => state.chat.value);
   const messages = useSelector((state: State) => state.messages.messages);
   const msgToBeReplied = useSelector(
     (state: State) => state.messages.msgToBeReplied,
@@ -62,7 +62,7 @@ const Messages = () => {
             }
             info={message.info}
             userId={chatInfo?.userId ?? ""}
-            reply={message?.reply}
+            reply={message.reply}
           />
         </>
       )),

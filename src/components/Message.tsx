@@ -24,7 +24,7 @@ const Message = ({
     useMessage({ msgIdRef, msgRef, ulRef });
 
   const chatUsername = useSelector(
-    (state: State) => state.chat?.value?.username,
+    (state: State) => state.chat.value?.username,
   );
 
   let msgColor, align, margin, replyColor, replyUserColor;

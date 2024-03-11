@@ -25,7 +25,7 @@ const Login = () => {
     if (!result) return;
     "userInfo" in result
       ? saveUserInfoAndNavigate(result.userInfo)
-      : errorLogger({ message: result?.message });
+      : errorLogger({ message: result.message });
   };
   return (
     <Transition>

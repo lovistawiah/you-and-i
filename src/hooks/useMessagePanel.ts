@@ -35,7 +35,7 @@ const useMessagePanel = () => {
     const onKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === "Enter") {
             e.preventDefault()
-            submitForm(e as unknown)
+            submitForm(e)
         }
     }
 

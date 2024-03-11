@@ -85,7 +85,7 @@ const Contacts = () => {
       </div>
 
       <section className="absolute bottom-[56px] left-0 right-0 top-2 mt-[129px] w-full overflow-y-auto md:bottom-1">
-        {cachedContacts?.map((contact) => (
+        {cachedContacts.map((contact) => (
           <Link
             to={`/${windowWidth < 768 ? "messages" : ""}`}
             onClick={() =>
@@ -93,9 +93,9 @@ const Contacts = () => {
                 id: contact.id,
                 username: contact.username,
                 avatarUrl: contact.avatarUrl,
-                status: contact?.status,
-                chatId: contact?.chatId,
-                bio: contact?.bio,
+                status: contact.status,
+                chatId: contact.chatId,
+                bio: contact.bio,
               })
             }
             className="flex w-full items-center justify-start"
