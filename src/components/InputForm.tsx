@@ -35,7 +35,7 @@ const InputForm = ({
           className="h-[36px] w-[275px] rounded-[5px] border border-gray-500 bg-white py-[1px] pl-[4px] pr-0 font-roboto text-base font-normal text-gray-800 outline-none placeholder:text-gray-400  focus:border-[2px] focus:border-blue-400 md:w-[350px] md:text-lg"
           id={id}
           placeholder={placeholder}
-          required
+          required={true}
         />
         {type.includes("password") ? (
           <FontAwesomeIcon

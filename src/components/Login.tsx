@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import { login } from "../account/user";
 import WelcomeText from "./WelcomeText";
 import InputForm from "./InputForm";
-import InfoContainer from "./InfoContainer";
 import Logo from "./Logo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
@@ -10,7 +9,7 @@ import useLogin from "../hooks/useLogin";
 import { FormEvent } from "react";
 
 const Login = () => {
-  const { errorLogger, info, saveUserInfoAndNavigate, setInfo, setSpin, spin } = useLogin();
+  const { errorLogger, saveUserInfoAndNavigate, setSpin, spin } = useLogin();
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSpin(true);
@@ -27,7 +26,6 @@ const Login = () => {
   };
   return (
     <div>
-      <InfoContainer info={info} setInfo={setInfo} />
       <div className="flex h-screen w-screen flex-col items-center justify-center gap-4 px-[6px] py-[23px]">
         <Logo />
         <WelcomeText />
