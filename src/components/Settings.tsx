@@ -1,77 +1,26 @@
 import { faCameraAlt } from "@fortawesome/free-solid-svg-icons";
 import PageHeader from "./PageHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSelector } from "react-redux";
-import { userSettings } from "../account/user.js";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import InfoContainer from "./InfoContainer";
 import PasswordInput from "./PasswordInput";
 import SettingsPassword from "./SettingsPassword";
-import { State } from "../app/store";
+import useSetting from "../hooks/useSetting";
 
 const Settings = () => {
-  const [isPassValid, setIsPassValid] = useState(true);
-  const [info, setInfo] = useState({});
-  const userInfo = useSelector((state: State) => state.user.value);
-  const [usernameInput, setUsernameInput] = useState("");
+  const {
+    handleLogout,
+    handleSubmit,
+    handleUsernameInput,
+    inputRegex,
+    isPassValid,
+    setIsPassValid,
+    userInfo,
+    usernameInput,
+  } = useSetting();
 
-  const handleUsernameInput = (e: ChangeEvent<HTMLInputElement>) => {
-    setUsernameInput(e.currentTarget.value);
-  };
-  const inputRegex = /^[a-zA-Z0-9.@_]*$/;
+  if (!userInfo) return;
 
-  useEffect(() => {
-    if (!isPassValid) {
-      setInfo({
-        type: "error",
-        message: `<ul>
-                <li class="text-lg mb-1 text-red-500">Password should:</li>
-                  <li>At least contain 8 characters long</li>
-                  <li>Contain at least one uppercase letter</li>
-                  <li>Contain at least one lowercase letter</li>
-                  <li>Contain at least one digit</li>
-                  <li>Contain at least one special character (such as @$!%*?&,+><)</li>
-                  </ul>`,
-      });
-    } else {
-      setInfo({});
-    }
-  }, [isPassValid]);
-
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const formData = new FormData(e.currentTarget);
-    const username = formData.get("username") as string;
-    const bio = formData.get("bio") as string;
-    const currentPassword = formData.get("password") as string;
-    const newPassword = formData.get("new-password") as string;
-    const confirmPassword = formData.get("confirm-password") as string;
-    const userObj = {
-      id: userInfo?.id ?? "",
-      username,
-      bio,
-      currentPassword,
-      newPassword,
-      confirmPassword,
-    };
-    const result = await userSettings(userObj);
-    if (!result) return;
-    if ("userInfo" in result) {
-      setInfo({
-        type: "ok",
-        message: result.message,
-      });
-    } else {
-      setInfo({ type: "error", message: result.message });
-    }
-  };
-  const handleLogout = () => {
-    localStorage.clear();
-    location.href = location.origin + "/";
-  };
   return (
     <section className={`relative order-2 w-full md:w-[55%] md:border-r`}>
-      <InfoContainer info={info} setInfo={setInfo} />
       <PageHeader pageName={"Settings"} />
       <section className="absolute bottom-[60px] top-[60px] m-auto flex w-full flex-col items-start overflow-y-auto pb-[40px]">
         {/* profile pic */}
@@ -86,7 +35,7 @@ const Settings = () => {
         <section className="flex w-[200px] items-center justify-center self-center font-roboto">
           <section className="relative h-[80px] w-[80px] ">
             <img
-              src={userInfo?.avatarUrl}
+              src={userInfo.avatarUrl}
               alt=""
               className="h-full w-full rounded-full border-[3px] border-blue-200 object-contain"
             />
@@ -105,10 +54,10 @@ const Settings = () => {
 
         {/* user information */}
         <section className="text-l w-fit self-center pt-2 font-roboto font-medium">
-          {userInfo?.username}{" "}
+          {userInfo.username}{" "}
         </section>
         <section className="w-fit self-center font-roboto text-sm font-light text-gray-500">
-          {userInfo?.bio}{" "}
+          {userInfo.bio}{" "}
         </section>
 
         <form
