@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { IUserValue, setUserInfo } from "../app/userSlice";
+import { IUserValue } from "../app/userSlice";
 import { updateUserInfo } from "../account/user.js";
 import { getUser } from "../db/user";
 
@@ -11,7 +10,6 @@ const useUpdateProfile = () => {
   const [, setInfo] = useState({});
   const navigate = useNavigate();
   const [personInfo, setPersonInfo] = useState<IUserValue>();
-  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleResize = () => {
@@ -61,12 +59,6 @@ const useUpdateProfile = () => {
           username: result.userInfo.username,
         });
 
-        dispatch(
-          setUserInfo({
-            ...(personInfo),
-            username: result.userInfo.username,
-          }),
-        );
         location.href = location.origin + "/";
       } else {
         setInfo({

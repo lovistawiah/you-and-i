@@ -21,7 +21,10 @@ const userDb = async () => {
             user.createIndex('id', 'id', {
                 unique: true,
             })
-            db.createObjectStore('token')
+            db.createObjectStore('token', {
+                autoIncrement: true
+            })
+
         }
     })
 }
@@ -47,11 +50,6 @@ const addUser = async (value: IUserValue) => {
     const db = await userDb()
     return await db.add('user', value, value.id)
 }
-
-const addToken = async (token: string) => {
-    const db = await userDb()
-    return await db.add('token', token)
-}
 const removeToken = async () => {
     const db = await userDb()
     return await db.clear('token')
@@ -60,5 +58,12 @@ const getToken = async () => {
     const db = await userDb()
     console.log(await db.get('token', 'token'))
 }
+
+const addToken = async (token: string) => {
+    await removeToken()
+    const db = await userDb()
+    return await db.add('token', token, 'token')
+}
+
 
 export { getUser, addUser, deleteUser, clearUsers, addToken, removeToken, getToken }
