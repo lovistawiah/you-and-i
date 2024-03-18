@@ -1,9 +1,9 @@
-function getAuthToken(): string | undefined {
-  const token = localStorage.getItem("Oh_vnyX");
-  if (token && typeof token == "string") {
-    return token;
-  }
-  return undefined;
+import { getToken } from "../db/user";
+
+
+async function getAuthToken() {
+  const token = await getToken()
+  return token
 }
 
 export default getAuthToken;

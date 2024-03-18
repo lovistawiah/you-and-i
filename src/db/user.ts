@@ -56,7 +56,7 @@ const removeToken = async () => {
 }
 const getToken = async () => {
     const db = await userDb()
-    console.log(await db.get('token', 'token'))
+    return await db.get('token', 'token')
 }
 
 const addToken = async (token: string) => {
