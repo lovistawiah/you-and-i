@@ -12,7 +12,7 @@ const UpdateProfile = () => {
     inputRegex,
     usernameInput,
   } = useUpdateProfile();
-
+  if (!personInfo) return;
   return (
     <div>
       <section className="w-screen">
@@ -32,7 +32,7 @@ const UpdateProfile = () => {
         <section className="m-auto mt-[70px] flex w-[200px] items-center justify-center">
           <section className="relative h-[100px] w-[100px] ">
             <img
-              src={personInfo?.avatarUrl}
+              src={personInfo.avatarUrl}
               alt=""
               className="h-full w-full rounded-full border-[2px] border-blue-200 object-cover"
             />
@@ -41,10 +41,10 @@ const UpdateProfile = () => {
 
         {/* user information */}
         <section className="m-auto w-fit pt-4 text-center font-roboto text-lg font-medium">
-          {personInfo?.username}
+          {personInfo.username}
         </section>
         <section className="m-auto w-fit text-center font-roboto text-sm font-light text-gray-500">
-          {personInfo?.bio}
+          {personInfo.bio}
         </section>
 
         <form
@@ -56,7 +56,7 @@ const UpdateProfile = () => {
             name="username"
             className={`h-[36px] w-[275px] border-b border-zinc-500 bg-white py-[1px] pl-[4px] pr-0 text-base font-normal text-neutral-700 outline-none active:border-zinc-800 md:w-[400px] ${!inputRegex.test(usernameInput) ? "bg-red-500 text-red-500" : ""}`}
             id="username"
-            placeholder={personInfo?.username}
+            placeholder={personInfo.username}
             required
             onChange={handleUsernameInput}
           />
