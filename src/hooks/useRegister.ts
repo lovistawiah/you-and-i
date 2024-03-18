@@ -1,33 +1,23 @@
 import { FormEvent, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { setUserInfo } from "../app/userSlice";
-import { UserInfo, signUp } from "../account/user";
+import { IUserValue } from "../app/userSlice";
+import { signUp } from "../account/user";
+import { addUser } from "../db/user";
 
 const useRegister = () => {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const [info, setInfo] = useState({});
+  const [, setInfo] = useState({});
   const [spin, setSpin] = useState(false);
   const [isValid, setIsValid] = useState(true);
 
-  const saveUserInfoAndNavigate = (userObj: UserInfo) => {
+  const saveUserInfoAndNavigate = async (userObj: IUserValue) => {
     setSpin(false);
-    dispatch(setUserInfo(userObj));
-    navigate("/update-profile");
+    await addUser(userObj)
+    location.href = location.origin + '/update-profile'
   };
 
   const errorLogger = ({ message }: { message: string }) => {
     setInfo({ type: "error", message });
     setSpin(false);
   };
-
-  useEffect(() => {
-    const handleLogout = () => {
-      localStorage.clear();
-    };
-    handleLogout();
-  }, []);
 
   useEffect(() => {
     if (!isValid) {
@@ -47,6 +37,7 @@ const useRegister = () => {
     }
   }, [isValid]);
 
+
   const handleForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSpin(true);
@@ -57,26 +48,28 @@ const useRegister = () => {
       password: formData.get("password") as string,
       confirmPassword: formData.get("confirm-password") as string,
     };
+
     try {
       const result = await signUp(formObj);
 
       if (!result) return;
       if ("userInfo" in result) {
-        saveUserInfoAndNavigate(result.userInfo);
+        await saveUserInfoAndNavigate(result.userInfo);
       } else {
         errorLogger({ message: result.message });
       }
+
     } catch (err) {
       setInfo({ type: "error", message: "Unknown Error" });
     } finally {
       setSpin(false);
     }
+
   };
+
+
   return {
-    info,
-    saveUserInfoAndNavigate,
     errorLogger,
-    setInfo,
     spin,
     setIsValid,
     setSpin,

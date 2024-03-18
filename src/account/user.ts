@@ -1,4 +1,5 @@
 import axios, { AxiosError } from "axios";
+import { addToken } from "../db/user";
 
 export interface UserInfo {
   id: string;
@@ -141,7 +142,7 @@ async function updateUserInfo(
     const result = await axios.patch<UpdateUserInfoResponse>(baseUrl + "/update-user", formData);
     if (result.data.message) {
       const token = result.data.token;
-      localStorage.setItem("Oh_vnyX", token);
+      await addToken(token)
       return {
         userInfo: result.data.userInfo,
         message: result.data.message,

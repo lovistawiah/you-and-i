@@ -5,17 +5,17 @@ export type Typing = {
   chatId: string;
   typing: "typing...";
 } | null;
-export interface UserValue {
+export interface IUserValue {
   id: string;
   username: string;
   bio: string;
   avatarUrl: string;
 }
-export interface UserState {
-  value: UserValue | null;
+export interface IUserState {
+  value: IUserValue | null;
 }
 
-const initialState: UserState = {
+const initialState: IUserState = {
   value: null,
 };
 

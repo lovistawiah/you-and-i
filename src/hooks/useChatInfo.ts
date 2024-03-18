@@ -14,8 +14,8 @@ const useChatInfo = ({ userId }: { userId: string }) => {
 
   useEffect(() => {
     socket.emit(usrEvents.status, userId);
-    socket.on(usrEvents.status, (userstatsOjb) => {
-      dispatch(updateStatus(userstatsOjb));
+    socket.on(usrEvents.status, (userStats) => {
+      dispatch(updateStatus(userStats));
     });
     return () => {
       socket.removeListener(usrEvents.status);

@@ -9,7 +9,7 @@ export type ChatValue = {
   avatarUrl: string;
   chatId?: string;
 };
-export interface ChatState {
+export interface IChatState {
   value: ChatValue | null;
 }
 
@@ -21,7 +21,7 @@ export type SelectedChat = {
   chatId?: string;
 };
 
-const initialState: ChatState = {
+const initialState: IChatState = {
   value: null,
 };
 

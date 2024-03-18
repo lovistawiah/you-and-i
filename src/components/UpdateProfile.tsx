@@ -17,16 +17,13 @@ const UpdateProfile = () => {
     <div>
       <section className="w-screen">
         <section className="mt-2 flex w-full justify-between md:block">
-          {
-            //show back arrow on mobile device
-            windowWidth < 640 && (
-              <FontAwesomeIcon
-                icon={faChevronLeft}
-                className="ml-2 cursor-pointer p-2 hover:rounded-full hover:bg-gray-100"
-                onClick={goBack}
-              />
-            )
-          }
+          {windowWidth < 640 && (
+            <FontAwesomeIcon
+              icon={faChevronLeft}
+              className="ml-2 cursor-pointer p-2 hover:rounded-full hover:bg-gray-100"
+              onClick={goBack}
+            />
+          )}
           <section className="w-full p-1 text-center font-roboto text-xl font-medium">
             User Profile
           </section>
