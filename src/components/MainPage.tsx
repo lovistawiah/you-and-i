@@ -1,4 +1,3 @@
-import { useSelector } from "react-redux";
 import Settings from "./Settings";
 import Contacts from "./Contacts";
 import Chats from "./Chats";
@@ -8,15 +7,13 @@ import MessagePanel from "./MessagePanel";
 import useMain from "../hooks/useMain";
 import useLastMessage from "../hooks/useLastMessage";
 import useModifyMessage from "../hooks/useModifyMessage";
-import { State } from "../app/store";
 
 const MainPage = () => {
-  const userAvatar = useSelector((state: State) => state.user.value?.avatarUrl);
-  const { errMsg, isToken, windowWidth, activePage, pageSelector } = useMain();
+  const { errMsg, isToken, windowWidth, activePage, pageSelector, avatarUrl } = useMain();
 
   useLastMessage();
   useModifyMessage();
-
+  if (!avatarUrl) return;
   return !isToken ? (
     <WelcomePage message={errMsg} />
   ) : (
@@ -24,7 +21,7 @@ const MainPage = () => {
       {activePage === 1 && <Settings />}
       {activePage === 2 && <Contacts />}
       {activePage === 3 && <Chats />}
-      <Menu pageSelector={pageSelector} userAvatar={userAvatar} windowWidth={windowWidth} />
+      <Menu pageSelector={pageSelector} userAvatar={avatarUrl} windowWidth={windowWidth} />
       {windowWidth > 768 ? <MessagePanel /> : null}
     </section>
   );

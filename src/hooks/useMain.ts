@@ -1,5 +1,6 @@
 import { MouseEvent, useEffect, useState } from "react";
 import { socket } from "../socket";
+import { getUser } from "../db/user";
 
 const useMain = () => {
   const [errMsg, setErrMsg] = useState("");
@@ -7,6 +8,7 @@ const useMain = () => {
   const [activePage, setActivePage] = useState(3);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
+  const [avatarUrl, setAvatarUrl] = useState<string | undefined>()
 
   const pageSelector = (e: MouseEvent<HTMLButtonElement>) => {
     setActivePage(+e.currentTarget.id);
@@ -39,6 +41,16 @@ const useMain = () => {
       socket.off("connect", handleConnect);
     };
   }, []);
+  useEffect(() => {
+    getUser().then((cursor) => {
+      if (cursor?.value) {
+        setAvatarUrl(cursor.value.avatarUrl)
+      }
+    }).catch((reason) => {
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+      return reason
+    })
+  }, [])
   return {
     errMsg,
     isToken,
@@ -46,6 +58,7 @@ const useMain = () => {
     activePage,
     pageSelector,
     windowHeight,
+    avatarUrl
   };
 };
 
