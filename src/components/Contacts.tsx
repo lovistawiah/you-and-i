@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import PageHeader from "./PageHeader";
 import { setChatInfo } from "../app/chatSlice";
 import { Link } from "react-router-dom";
@@ -7,17 +6,29 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
 import useContact from "../hooks/useContact";
 import { clearMessages } from "../app/messagesSlice";
-import { State } from "../app/store";
-import { Contact } from "../app/contactsSlice";
+import { Contact, getContacts, searchContacts } from "../db/contact";
 
 const Contacts = () => {
-  const dispatch = useDispatch();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [contacts, setContacts] = useState<Contact[]>();
   const { searchInput, setSearchInput } = useContact();
-  // return search users else the original list
-  const contacts = useSelector((state: State) =>
-    searchInput.length > 0 ? state.contacts.searchedContacts : state.contacts.contacts,
-  );
+
+  useEffect(() => {
+    const fetchContacts = async () => {
+      const contacts = await getContacts();
+      setContacts(contacts);
+    };
+
+    void fetchContacts();
+  }, []);
+
+  useEffect(() => {
+    const filteredContacts = async () => {
+      const contacts = await searchContacts(searchInput);
+      setContacts(contacts);
+    };
+    void filteredContacts();
+  });
 
   const clearSearch = () => {
     setSearchInput("");
@@ -42,6 +53,7 @@ const Contacts = () => {
     window.addEventListener("resize", handleResize);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.innerWidth]);
+
   const cachedContacts = useMemo(() => contacts, [contacts]);
 
   return (
@@ -73,7 +85,7 @@ const Contacts = () => {
       </div>
 
       <section className="absolute bottom-[56px] left-0 right-0 top-2 mt-[129px] w-full overflow-y-auto md:bottom-1">
-        {cachedContacts.map((contact) => (
+        {cachedContacts?.map((contact) => (
           <Link
             to={`/${windowWidth < 768 ? "messages" : ""}`}
             onClick={() =>

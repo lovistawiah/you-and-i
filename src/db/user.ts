@@ -12,7 +12,6 @@ interface IUserDB extends DBSchema {
         value: string
     }
 }
-export type UserDB = 'user' | 'token'
 
 const userDb = async () => {
     return await openDB<IUserDB>('you-and-i', 1, {

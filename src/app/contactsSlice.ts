@@ -1,14 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { Username } from "./chatsSlice";
 
-export type Contact = {
-  id: string;
-  username: string;
-  avatarUrl: string;
-  chatId?: string;
-  bio: string;
-  status?: string;
-};
 
 export type ContactState = {
   contacts: Contact[];
