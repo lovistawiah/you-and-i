@@ -1,31 +1,67 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { chatEvents } from "../utils/eventNames";
 import { socket } from "../socket";
-import { useDispatch } from "react-redux";
-import { searchContacts, addContact, Contact } from "../app/contactsSlice";
-
+import { Contact, addContact, getContacts, searchContacts } from "../db/contact";
 const useContact = () => {
   const [searchInput, setSearchInput] = useState("");
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(searchContacts(searchInput));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchInput]);
+
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [contacts, setContacts] = useState<Contact[]>();
 
   useEffect(() => {
-    const getContacts = (data: Contact) => {
-      dispatch(addContact(data)); //data is {_id,username,avatarUrl}
+    const fetchContacts = async () => {
+      const contacts = await getContacts();
+      setContacts(contacts);
     };
 
+    void fetchContacts();
+  }, []);
+
+  useEffect(() => {
+    const filteredContacts = async () => {
+      const contacts = await searchContacts(searchInput);
+      setContacts(contacts);
+    };
+    void filteredContacts();
+  });
+
+  const clearSearch = () => {
+    setSearchInput("");
+  };
+  const handleUserInfo = ({ id, chatId, avatarUrl, username, status, bio }: Contact) => {
+    const chatObj = {
+      id,
+      chatId,
+      avatarUrl,
+      username,
+      status,
+      bio,
+    };
+    dispatch(clearMessages());
+    dispatch(setChatInfo({}));
+    dispatch(setChatInfo(chatObj));
+  };
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener("resize", handleResize);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [window.innerWidth]);
+
+  const cachedContacts = useMemo(() => contacts, [contacts]);
+
+  useEffect(() => {
+    const getContacts = async (data: Contact) => {
+      await addContact(data)
+    };
     socket.emit(chatEvents.contacts, {});
     socket.on(chatEvents.contacts, getContacts);
     return () => {
       socket.off(chatEvents.contacts, getContacts);
     };
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  return { searchInput, setSearchInput };
+  return { searchInput, setSearchInput, clearSearch, cachedContacts, windowWidth, handleUserInfo };
 };
 export default useContact;

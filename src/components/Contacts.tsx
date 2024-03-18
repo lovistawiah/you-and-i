@@ -1,61 +1,12 @@
-import { useEffect, useMemo, useState } from "react";
 import PageHeader from "./PageHeader";
-import { setChatInfo } from "../app/chatSlice";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
 import useContact from "../hooks/useContact";
-import { clearMessages } from "../app/messagesSlice";
-import { Contact, getContacts, searchContacts } from "../db/contact";
 
 const Contacts = () => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [contacts, setContacts] = useState<Contact[]>();
-  const { searchInput, setSearchInput } = useContact();
-
-  useEffect(() => {
-    const fetchContacts = async () => {
-      const contacts = await getContacts();
-      setContacts(contacts);
-    };
-
-    void fetchContacts();
-  }, []);
-
-  useEffect(() => {
-    const filteredContacts = async () => {
-      const contacts = await searchContacts(searchInput);
-      setContacts(contacts);
-    };
-    void filteredContacts();
-  });
-
-  const clearSearch = () => {
-    setSearchInput("");
-  };
-  const handleUserInfo = ({ id, chatId, avatarUrl, username, status, bio }: Contact) => {
-    const chatObj = {
-      id,
-      chatId,
-      avatarUrl,
-      username,
-      status,
-      bio,
-    };
-    dispatch(clearMessages());
-    dispatch(setChatInfo({}));
-    dispatch(setChatInfo(chatObj));
-  };
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-    window.addEventListener("resize", handleResize);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [window.innerWidth]);
-
-  const cachedContacts = useMemo(() => contacts, [contacts]);
-
+  const { searchInput, setSearchInput, clearSearch, cachedContacts, windowWidth, handleUserInfo } =
+    useContact();
   return (
     <section className={`relative order-2 w-full  md:w-[55%]`}>
       <PageHeader pageName={"Contacts"} />
