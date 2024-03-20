@@ -40,7 +40,7 @@ const Chat = ({ id, userId, username, avatarUrl, lastMessage, lstMsgDate }: Chat
         {/* last message */}
         <section className="line-clamp-1 w-full flex-grow basis-0 text-ellipsis break-all pb-[20px] pl-1 pr-0 pt-[4px] text-sm font-normal text-neutral-400">
           {isTypingObj && isTypingObj.chatId === id ? (
-            <span className="italic">typing...</span>
+            <span className="italic">{isTypingObj.typing}</span>
           ) : (
             <>{lastMessage}</>
           )}

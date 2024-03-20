@@ -1,10 +1,13 @@
 import { usrEvents } from "../utils/eventNames";
 import { socket } from "../socket";
 import { useEffect, useState } from "react";
-import { Typing } from "../app/userSlice";
+interface ITyping {
+  chatId?: string,
+  typing: 'typing...'
+}
 
 const useTyping = () => {
-  const [isTypingObj, setIsTypingObj] = useState<Typing>(null);
+  const [isTypingObj, setIsTypingObj] = useState<ITyping | null>(null);
 
   useEffect(() => {
     let noDataTimeout: NodeJS.Timeout;
@@ -13,8 +16,8 @@ const useTyping = () => {
         setIsTypingObj(null);
       }, 1400);
     }
-    socket.on(usrEvents.typing, (data: Typing) => {
-      const chatId = data?.chatId;
+    socket.on(usrEvents.typing, (data: ITyping) => {
+      const chatId = data.chatId;
       if (chatId) {
         clearTimeout(noDataTimeout);
         setIsTypingObj(data);
@@ -27,6 +30,7 @@ const useTyping = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   });
+
   return { isTypingObj };
 };
 
