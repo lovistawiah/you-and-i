@@ -8,6 +8,13 @@ export type Chat = {
     avatarUrl: string;
     chatId?: string;
 };
+export interface IChatInfo {
+    userId: string,
+    avatarUrl: string,
+    username: string,
+    status?: string
+    chatId?: string
+}
 
 interface IChatDb extends DBSchema {
     chat: {
@@ -40,5 +47,18 @@ const addChat = async (value: Chat) => {
     return (await chatDb()).add('chat', value, value.userId)
 }
 
+const updateStatus = async (value: { userId: string, status: Date | string }) => {
+    const tx = (await chatDb()).transaction('chat', 'readwrite')
+    const store = tx.objectStore('chat')
+    const chat = await store.get(value.userId)
+    if (!chat) return
+    const updateChat = {
+        ...chat,
+        value
+    }
+    await store.put(updateChat, updateChat.userId)
 
-export { getChat, clearChat, addChat }
+}
+
+
+export { getChat, clearChat, addChat, updateStatus }
