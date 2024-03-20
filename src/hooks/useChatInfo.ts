@@ -1,12 +1,10 @@
 import { useEffect } from "react";
-import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../socket";
 import { usrEvents } from "../utils/eventNames";
 import { updateStatus } from "../app/chatSlice";
 
 const useChatInfo = ({ userId }: { userId: string }) => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const goBack = () => {
     navigate("/");

@@ -59,7 +59,7 @@ const useContact = () => {
     socket.emit(chatEvents.contacts, {});
     socket.on(chatEvents.contacts, getContacts);
     return () => {
-      socket.off(chatEvents.contacts, getContacts);
+      socket.removeListener(chatEvents.contacts, getContacts);
     };
   }, []);
 

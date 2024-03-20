@@ -37,8 +37,8 @@ const useMain = () => {
     };
     socket.on("connect", handleConnect);
     return () => {
-      socket.off("connect_error");
-      socket.off("connect", handleConnect);
+      socket.removeListener("connect_error");
+      socket.removeListener("connect", handleConnect);
     };
   }, []);
   useEffect(() => {

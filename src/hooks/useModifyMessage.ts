@@ -28,7 +28,7 @@ const useModifyMessage = () => {
       }
     });
     return () => {
-      socket.off(msgEvents.updateMsg);
+      socket.removeListener(msgEvents.updateMsg);
     };
   });
 
@@ -49,7 +49,7 @@ const useModifyMessage = () => {
       }
     });
     return () => {
-      socket.off(msgEvents.delMsg);
+      socket.removeListener(msgEvents.delMsg);
     };
   });
 };

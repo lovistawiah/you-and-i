@@ -24,7 +24,7 @@ const useLastMessage = () => {
     };
     socket.on(msgEvents.sndMsg, handleSendMessage);
     return () => {
-      socket.off(msgEvents.sndMsg, handleSendMessage);
+      socket.removeListener(msgEvents.sndMsg, handleSendMessage);
     };
   });
 

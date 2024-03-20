@@ -27,8 +27,8 @@ const useMessages = ({
     });
 
     return () => {
-      socket.off(msgEvents.msgs, getMessages);
-      socket.off("error");
+      socket.removeListener(msgEvents.msgs, getMessages);
+      socket.removeListener("error");
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chatId]);

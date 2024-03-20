@@ -25,7 +25,7 @@ const useTyping = () => {
       startNoDataTimer();
     });
     return () => {
-      socket.off(usrEvents.typing);
+      socket.removeListener(usrEvents.typing);
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -27,7 +27,7 @@ const useChats = () => {
     socket.on(chatEvents.chatLastMsg, getChatData);
 
     return () => {
-      socket.off(chatEvents.chatLastMsg, getChatData);
+      socket.removeListener(chatEvents.chatLastMsg, getChatData);
     };
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -70,7 +70,7 @@ const useChats = () => {
     };
     socket.on(msgEvents.newChat, newChats);
     return () => {
-      socket.off(msgEvents.newChat, newChats)
+      socket.removeListener(msgEvents.newChat, newChats)
     }
   }, []);
 
