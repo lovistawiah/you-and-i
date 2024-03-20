@@ -2,6 +2,8 @@ import { useEffect, useMemo, useState } from "react";
 import { chatEvents } from "../utils/eventNames";
 import { socket } from "../socket";
 import { Contact, addContact, getContacts, searchContacts } from "../db/contact";
+import { clearMessages } from "../db/messages";
+import { addChat, clearChat } from "../db/chat";
 const useContact = () => {
   const [searchInput, setSearchInput] = useState("");
 
@@ -28,19 +30,19 @@ const useContact = () => {
   const clearSearch = () => {
     setSearchInput("");
   };
-  const handleUserInfo = ({ id, chatId, avatarUrl, username, status, bio }: Contact) => {
+  const handleUserInfo = async ({ id, chatId, avatarUrl, username, status }: Contact) => {
     const chatObj = {
-      id,
+      userId: id,
       chatId,
       avatarUrl,
       username,
       status,
-      bio,
+
     };
 
-    dispatch(clearMessages());
-    dispatch(setChatInfo({}));
-    dispatch(setChatInfo(chatObj));
+    await clearMessages()
+    await clearChat()
+    await addChat(chatObj)
   };
   useEffect(() => {
     const handleResize = () => {
