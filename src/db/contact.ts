@@ -21,7 +21,6 @@ const contactDb = async () => {
     return await openDB<IContactDB>('you-and-i', 1, {
         upgrade(db) {
             const contact = db.createObjectStore('contacts')
-
             contact.createIndex('id', 'id', {
                 unique: true
             })
@@ -39,6 +38,11 @@ const addContact = async (value: Contact) => {
     return await db.add('contacts', value, value.id)
 }
 
+const updateContact = async (value: Contact) => {
+    const db = await contactDb()
+    return await db.put('contacts', value, value.id)
+}
+
 const clearContacts = async () => {
     return (await contactDb()).clear('contacts')
 }
@@ -52,4 +56,4 @@ const searchContacts = async (search: string) => {
         }
     })
 }
-export { getContacts, addContact, clearContacts, searchContacts }
+export { getContacts, addContact, clearContacts, searchContacts, updateContact }

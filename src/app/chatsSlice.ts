@@ -1,13 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
-export type ChatsValue = {
-  id: string;
-  userId: string;
-  username: string;
-  avatarUrl: string;
-  lastMessage: string;
-  lstMsgDate: Date;
-};
+
 
 export interface TypingObj {
   chatId: string;
@@ -25,11 +18,7 @@ export type ChatsState = {
   searchChats: SearchChats;
 };
 
-export type UpdateLastMessage = {
-  chatId: string;
-  lastMessage: string;
-  msgDate: Date;
-};
+
 
 export type Username = string;
 

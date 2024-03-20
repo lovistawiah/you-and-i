@@ -1,19 +1,25 @@
-import { useDispatch } from "react-redux";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { socket } from "../socket";
 import { chatEvents, msgEvents } from "../utils/eventNames";
-import { ChatsValue, addChats, addNewChat, searchChats } from "../app/chatsSlice";
-import { NewChatAndMessage, addMessage } from "../app/messagesSlice";
-import { updateContact } from "../app/contactsSlice";
+import { updateContact } from "../db/contact";
+import { ChatsValue, addChat, searchChats, updateChat } from "../db/chats";
+import { NewChatAndMessage, addMessage } from "../db/messages";
 
 const useChats = () => {
   const [searchInput, setSearchInput] = useState("");
-  const dispatch = useDispatch();
+  const [chats, setChats] = useState<ChatsValue[]>()
 
   useEffect(() => {
-    const getChatData = (chatsData: ChatsValue) => {
+    const getChatData = async (chatsData: ChatsValue) => {
       if (typeof chatsData !== "string") {
-        dispatch(addChats(chatsData));
+
+        if (typeof chats === 'undefined') {
+          setChats([chatsData])
+        } else {
+          setChats([...chats, chatsData])
+        }
+
+        await updateChat(chatsData)
       }
     };
     //old chats
@@ -27,38 +33,54 @@ const useChats = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
+    setSearchInput(e.target.value);
+  };
+
+  const clearSearch = () => {
+    setSearchInput("");
+  };
+
   useEffect(() => {
     // new chats
-    const newChats = (data: NewChatAndMessage) => {
+    const newChats = async (data: NewChatAndMessage) => {
       const { msgObj, newChat } = data;
+
       const chatPayload = {
         id: newChat.id,
         userId: newChat.userId,
+        chatId: msgObj.chatId,
         username: newChat.username,
         avatarUrl: newChat.avatarUrl,
         lastMessage: msgObj.message,
         lstMsgDate: msgObj.createdAt,
       };
 
-      dispatch(addNewChat(chatPayload));
-      dispatch(addMessage(msgObj));
+      await addChat(chatPayload)
+      await addMessage(msgObj)
+      await updateContact({
+        id: newChat.userId,
+        chatId: newChat.id,
+        username: newChat.username,
+        avatarUrl: newChat.avatarUrl,
+        bio: newChat.bio,
+        status: newChat.status
+      })
 
-      dispatch(
-        updateContact({
-          id: newChat.userId,
-          chatId: newChat.id,
-        }),
-      );
     };
     socket.on(msgEvents.newChat, newChats);
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    return () => {
+      socket.off(msgEvents.newChat, newChats)
+    }
   }, []);
-  useEffect(() => {
-    dispatch(searchChats(searchInput));
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    const fetchChats = async () => {
+      await searchChats(searchInput)
+    }
+    void fetchChats()
   }, [searchInput]);
-  return { searchInput, setSearchInput };
+
+  return { searchInput, setSearchInput, handleSearch, clearSearch, chats };
 };
 export default useChats;

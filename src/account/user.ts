@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { addToken } from "../db/user";
 
-export interface UserInfo {
+export interface IUserInfo {
   id: string;
   username: string;
   avatarUrl: string;
@@ -15,7 +15,7 @@ export type SignUpParams = {
 };
 
 export interface SignUpResponse {
-  userInfo: UserInfo;
+  userInfo: IUserInfo;
   message?: string;
 }
 
@@ -26,7 +26,7 @@ export type LoginParams = {
 
 export type LoginResponse = {
   token: string;
-  userInfo: UserInfo;
+  userInfo: IUserInfo;
   message: string;
   status: 200;
 };
@@ -37,7 +37,7 @@ export type UpdateUserInfoParams = {
 };
 
 export type UpdateUserInfoResponse = {
-  userInfo: UserInfo;
+  userInfo: IUserInfo;
   message: string;
   token: string;
 };
@@ -52,7 +52,7 @@ export type userSettingsParams = {
 };
 
 export type userSettingsResponse = {
-  userInfo: UserInfo;
+  userInfo: IUserInfo;
   message: string;
 };
 export type ServerError = {
@@ -76,7 +76,7 @@ async function signUp({
   email,
   password,
   confirmPassword,
-}: SignUpParams): Promise<{ userInfo: UserInfo; message?: string } | ServerError | undefined> {
+}: SignUpParams): Promise<{ userInfo: IUserInfo; message?: string } | ServerError | undefined> {
   try {
     const result = await axios.post<SignUpResponse>(
       baseUrl + "/signup",
@@ -108,7 +108,7 @@ async function signUp({
 async function login({
   usernameEmail,
   password,
-}: LoginParams): Promise<{ status: number; userInfo: UserInfo } | ServerError | undefined> {
+}: LoginParams): Promise<{ status: number; userInfo: IUserInfo } | ServerError | undefined> {
   try {
     const result = await axios.post<LoginResponse>(
       baseUrl + "/login",
@@ -137,7 +137,7 @@ async function login({
 
 async function updateUserInfo(
   formData: UpdateUserInfoParams,
-): Promise<{ userInfo: UserInfo; message: string } | ServerError | undefined> {
+): Promise<{ userInfo: IUserInfo; message: string } | ServerError | undefined> {
   try {
     const result = await axios.patch<UpdateUserInfoResponse>(baseUrl + "/update-user", formData);
     if (result.data.message) {
@@ -158,7 +158,7 @@ async function updateUserInfo(
 
 async function userSettings(
   formData: userSettingsParams,
-): Promise<{ userInfo: UserInfo; message: string } | ServerError | undefined> {
+): Promise<{ userInfo: IUserInfo; message: string } | ServerError | undefined> {
   try {
     const result = await axios.patch<userSettingsResponse>(baseUrl + "/user-settings", formData);
     if (result.status === 200) {

@@ -1,10 +1,9 @@
 import { DBSchema, openDB, } from 'idb'
-import { IUserValue } from '../app/userSlice'
-
+import { IUserInfo } from '../account/user'
 interface IUserDB extends DBSchema {
     user: {
         key: string,
-        value: IUserValue
+        value: IUserInfo
         indexes: { id: string }
     },
     token: {
@@ -44,7 +43,7 @@ const clearUsers = async () => {
     return (await userDb()).clear('user')
 }
 
-const addUser = async (value: IUserValue) => {
+const addUser = async (value: IUserInfo) => {
     await clearUsers()
     const db = await userDb()
     return await db.add('user', value, value.id)

@@ -37,6 +37,7 @@ const useContact = () => {
       status,
       bio,
     };
+
     dispatch(clearMessages());
     dispatch(setChatInfo({}));
     dispatch(setChatInfo(chatObj));

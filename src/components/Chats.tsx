@@ -1,26 +1,11 @@
 import PageHeader from "./PageHeader";
 import Chat from "./Chat";
 import useChats from "../hooks/useChats";
-import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
-import { ChangeEvent } from "react";
-import { State } from "../app/store";
-import { ChatsValue } from "../app/chatsSlice";
 
 const MainPage = () => {
-  const { searchInput, setSearchInput } = useChats();
-  const chats = useSelector((state: State) =>
-    searchInput.length > 0 ? state.chats.searchChats : state.chats.chats,
-  );
-
-  const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
-    setSearchInput(e.target.value);
-  };
-
-  const clearSearch = () => {
-    setSearchInput("");
-  };
+  const { searchInput, handleSearch, clearSearch, chats } = useChats();
 
   return (
     <section className={`relative  order-2 w-full md:w-[55%] md:border-r`}>
@@ -52,7 +37,7 @@ const MainPage = () => {
 
       <div className="absolute bottom-[56px] left-0 right-0 top-2 mt-[129px] w-full overflow-y-auto md:bottom-1">
         {Array.isArray(chats) && chats.length > 0 ? (
-          chats.map((chat: ChatsValue) => (
+          chats.map((chat) => (
             <Chat
               key={chat.id}
               id={chat.id}

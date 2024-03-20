@@ -1,29 +1,14 @@
 import { Link } from "react-router-dom";
-import { login } from "../account/user";
 import WelcomeText from "./WelcomeText";
 import InputForm from "./InputForm";
 import Logo from "./Logo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import useLogin from "../hooks/useLogin";
-import { FormEvent } from "react";
 
 const Login = () => {
-  const { errorLogger, saveUserInfoAndNavigate, setSpin, spin } = useLogin();
-  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSpin(true);
-    const formData = new FormData(e.currentTarget);
-    const obj = {
-      usernameEmail: formData.get("username-email") as string,
-      password: formData.get("password") as string,
-    };
-    const result = await login(obj);
-    if (!result) return;
-    "userInfo" in result
-      ? saveUserInfoAndNavigate(result.userInfo)
-      : errorLogger({ message: result.message });
-  };
+  const { spin, handleLogin } = useLogin();
+
   return (
     <div>
       <div className="flex h-screen w-screen flex-col items-center justify-center gap-4 px-[6px] py-[23px]">
