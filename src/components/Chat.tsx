@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { format } from "date-fns";
 import useChat from "../hooks/useChat";
 import useTyping from "../hooks/useTyping";
-import { ChatsValue } from "../app/chatsSlice";
+import { ChatsValue } from "../db/chats";
 
 const Chat = ({ id, userId, username, avatarUrl, lastMessage, lstMsgDate }: ChatsValue) => {
   const { windowWidth, handleChat } = useChat();
@@ -15,7 +15,6 @@ const Chat = ({ id, userId, username, avatarUrl, lastMessage, lstMsgDate }: Chat
     chatDate = format(lstMsgDate, "h:mm a");
   }
   return (
-    // add messages page if page width less than 1000
     <Link
       to={`/${windowWidth < 768 ? "messages" : ""}`}
       className=" flex h-[70px] w-full items-center justify-start"

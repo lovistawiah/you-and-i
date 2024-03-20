@@ -1,21 +1,24 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { clearMessages } from "../app/messagesSlice";
-import { SelectedChat, setChatInfo } from "../app/chatSlice";
+
+import { Chat, clearChat } from "../db/chat";
+import { addChat } from "../db/chat";
+import { clearMessages } from "../db/messages";
 
 const useChat = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const dispatch = useDispatch();
 
-  const handleChat = ({ userId, id, avatarUrl, username }: SelectedChat) => {
-    const chatObj = {
-      userId,
-      id,
+  const handleChat = async ({ userId, id, avatarUrl, username }: { userId: string, id: string, avatarUrl: string, username: string }) => {
+
+    const chatObj: Chat = {
       avatarUrl,
+      userId,
       username,
+      id
     };
-    dispatch(clearMessages());
-    dispatch(setChatInfo(chatObj));
+    await clearChat()
+    //handle selected chat.
+    await addChat(chatObj)
+    await clearMessages()
   };
 
   useEffect(() => {
@@ -25,6 +28,7 @@ const useChat = () => {
     window.addEventListener("resize", handleResize);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.innerWidth]);
+
   return { windowWidth, handleChat };
 };
 

@@ -1,14 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { lastSeen } from "../utils/compareDate";
 
-export type ChatValue = {
-  userId: string;
-  id?: string;
-  username: string;
-  status: string;
-  avatarUrl: string;
-  chatId?: string;
-};
+
 export interface IChatState {
   value: ChatValue | null;
 }
