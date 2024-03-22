@@ -1,10 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
 import { lastSeen } from "../utils/compareDate";
 
-
-export interface IChatState {
-  value: ChatValue | null;
-}
 
 export type SelectedChat = {
   userId: string;

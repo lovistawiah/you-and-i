@@ -1,11 +1,9 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { socket } from "../socket";
 import { msgEvents } from "../utils/eventNames";
 import { updateLastMessage } from "../app/chatsSlice";
 import { updateNewChat } from "../app/chatSlice";
-import { State } from "../app/store";
-import { IMessage } from "../app/messagesSlice";
+import { IMessage } from "../db/messages";
 
 const useLastMessage = () => {
   const dispatch = useDispatch();
@@ -13,6 +11,7 @@ const useLastMessage = () => {
   // const chats = useSelector((state)=>state.chats.chats)
   useEffect(() => {
     const handleSendMessage = (msg: IMessage) => {
+
       dispatch(
         updateLastMessage({
           chatId: msg.chatId,
@@ -20,6 +19,7 @@ const useLastMessage = () => {
           msgDate: msg.createdAt,
         }),
       );
+
       dispatch(updateNewChat({ chatId: msg.chatId, userId: info?.userId }));
     };
     socket.on(msgEvents.sndMsg, handleSendMessage);

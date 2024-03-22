@@ -1,10 +1,8 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { socket } from "../socket";
 import { msgEvents } from "../utils/eventNames";
-import { IMessage, modifyMsg } from "../app/messagesSlice";
+import { modifyMsg } from "../app/messagesSlice";
 import { updateLastMessage } from "../app/chatsSlice";
-import { State } from "../app/store";
 
 const useModifyMessage = () => {
   const dispatch = useDispatch();

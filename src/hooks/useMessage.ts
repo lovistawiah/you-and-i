@@ -1,9 +1,7 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { socket } from "../socket";
 import { msgEvents } from "../utils/eventNames";
 import { replyMessage, updateSingleMsg } from "../app/messagesSlice";
-import { State } from "../app/store";
 
 const useMessage = ({
   msgIdRef,

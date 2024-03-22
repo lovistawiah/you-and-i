@@ -1,9 +1,7 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { IMessage, addMessage } from "../app/messagesSlice";
+import { addMessage } from "../app/messagesSlice";
 import { socket } from "../socket";
 import { msgEvents } from "../utils/eventNames";
-import { State } from "../app/store";
 
 const useMessages = ({
   chatId,

@@ -1,5 +1,4 @@
 import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import Message from "./Message";
 import { messageHeaderDate } from "../utils/compareDate";
 import MessageHeaderDate from "./MessageHeaderDate";

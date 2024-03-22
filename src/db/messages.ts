@@ -88,4 +88,12 @@ const clearMessages = async () => {
     return (await MessagesDB()).clear('messages')
 }
 
+// const updateLastMessage = async () => {
+//     const tx = (await MessagesDB()).transaction('messages', 'readonly')
+//     const store = tx.objectStore('messages')
+//     const object = (await store.getAll()).pop()
+
+// }
+
+
 export { getMessages, getMessage, addMessage, searchMessage, updateMessage, clearMessages }

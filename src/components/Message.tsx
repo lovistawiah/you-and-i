@@ -1,11 +1,8 @@
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useSelector } from "react-redux";
 import { differenceInMinutes, format, parseISO } from "date-fns";
 import { useRef } from "react";
 import useMessage from "../hooks/useMessage";
-import { MessageProps } from "../app/messagesSlice";
-import { State } from "../app/store";
 
 const Message = ({ message, sender, msgDate, userId, id, info, reply }: MessageProps) => {
   const ulRef = useRef(null);
