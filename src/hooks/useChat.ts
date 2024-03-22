@@ -7,18 +7,27 @@ import { clearMessages } from "../db/messages";
 const useChat = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  const handleChat = async ({ userId, id, avatarUrl, username }: { userId: string, id: string, avatarUrl: string, username: string }) => {
-
+  const handleChat = async ({
+    userId,
+    id,
+    avatarUrl,
+    username,
+  }: {
+    userId: string;
+    id: string;
+    avatarUrl: string;
+    username: string;
+  }) => {
     const chatObj: Chat = {
       avatarUrl,
       userId,
       username,
-      id
+      id,
     };
-    await clearChat()
+    await clearChat();
     //handle selected chat.
-    await addChat(chatObj)
-    await clearMessages()
+    await addChat(chatObj);
+    await clearMessages();
   };
 
   useEffect(() => {

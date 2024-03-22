@@ -17,25 +17,26 @@ const useUpdateProfile = () => {
     };
     window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize)
-    }
-
+      window.removeEventListener("resize", handleResize);
+    };
   }, []);
 
   useEffect(() => {
-    getUser().then((cursor) => {
-      if (cursor?.value) {
-        setPersonInfo(cursor.value)
-      }
-    }).catch((reason) => {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      return reason
-    })
-  }, [])
+    getUser()
+      .then((cursor) => {
+        if (cursor?.value) {
+          setPersonInfo(cursor.value);
+        }
+      })
+      .catch((reason) => {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
+        return reason;
+      });
+  }, []);
 
   const handleUserInfo = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!personInfo) return
+    if (!personInfo) return;
 
     const formData = new FormData(e.currentTarget);
     const formObj = {
@@ -49,13 +50,12 @@ const useUpdateProfile = () => {
         message: "username should be 5 characters or more",
       });
       return;
-
     } else {
       const result = await updateUserInfo(formObj);
       if (!result) return;
       if ("userInfo" in result) {
         setPersonInfo({
-          ...(personInfo),
+          ...personInfo,
           username: result.userInfo.username,
         });
 
@@ -66,9 +66,8 @@ const useUpdateProfile = () => {
           message: result.message,
         });
       }
-    };
-  }
-
+    }
+  };
 
   const handleUsernameInput = (e: ChangeEvent<HTMLInputElement>) => {
     setUsernameInput(e.target.value);
@@ -86,7 +85,15 @@ const useUpdateProfile = () => {
 
   const inputRegex = /^[a-zA-Z0-9.@_]*$/;
 
-  return { windowWidth, handleUserInfo, personInfo, handleUsernameInput, usernameInput, goBack, inputRegex };
+  return {
+    windowWidth,
+    handleUserInfo,
+    personInfo,
+    handleUsernameInput,
+    usernameInput,
+    goBack,
+    inputRegex,
+  };
 };
 
 export default useUpdateProfile;

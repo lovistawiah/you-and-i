@@ -10,8 +10,8 @@ const useRegister = () => {
 
   const saveUserInfoAndNavigate = async (userObj: IUserValue) => {
     setSpin(false);
-    await addUser(userObj)
-    location.href = location.origin + '/update-profile'
+    await addUser(userObj);
+    location.href = location.origin + "/update-profile";
   };
 
   const errorLogger = ({ message }: { message: string }) => {
@@ -37,7 +37,6 @@ const useRegister = () => {
     }
   }, [isValid]);
 
-
   const handleForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSpin(true);
@@ -58,15 +57,12 @@ const useRegister = () => {
       } else {
         errorLogger({ message: result.message });
       }
-
     } catch (err) {
       setInfo({ type: "error", message: "Unknown Error" });
     } finally {
       setSpin(false);
     }
-
   };
-
 
   return {
     errorLogger,

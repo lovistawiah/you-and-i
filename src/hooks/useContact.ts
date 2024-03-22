@@ -37,12 +37,11 @@ const useContact = () => {
       avatarUrl,
       username,
       status,
-
     };
 
-    await clearMessages()
-    await clearChat()
-    await addChat(chatObj)
+    await clearMessages();
+    await clearChat();
+    await addChat(chatObj);
   };
   useEffect(() => {
     const handleResize = () => {
@@ -56,7 +55,7 @@ const useContact = () => {
 
   useEffect(() => {
     const getContacts = async (data: Contact) => {
-      await addContact(data)
+      await addContact(data);
     };
     socket.emit(chatEvents.contacts, {});
     socket.on(chatEvents.contacts, getContacts);

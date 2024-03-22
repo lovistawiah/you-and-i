@@ -11,7 +11,6 @@ const useLastMessage = () => {
   // const chats = useSelector((state)=>state.chats.chats)
   useEffect(() => {
     const handleSendMessage = (msg: IMessage) => {
-
       dispatch(
         updateLastMessage({
           chatId: msg.chatId,

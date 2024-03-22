@@ -70,8 +70,6 @@ const axiosError = (err: AxiosError) => {
   return { status, message };
 };
 
-
-
 async function signUp({
   email,
   password,
@@ -142,7 +140,7 @@ async function updateUserInfo(
     const result = await axios.patch<UpdateUserInfoResponse>(baseUrl + "/update-user", formData);
     if (result.data.message) {
       const token = result.data.token;
-      await addToken(token)
+      await addToken(token);
       return {
         userInfo: result.data.userInfo,
         message: result.data.message,

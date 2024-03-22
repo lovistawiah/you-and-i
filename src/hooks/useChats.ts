@@ -7,19 +7,18 @@ import { NewChatAndMessage, addMessage } from "../db/messages";
 
 const useChats = () => {
   const [searchInput, setSearchInput] = useState("");
-  const [chats, setChats] = useState<ChatsValue[]>()
+  const [chats, setChats] = useState<ChatsValue[]>();
 
   useEffect(() => {
     const getChatData = async (chatsData: ChatsValue) => {
       if (typeof chatsData !== "string") {
-
-        if (typeof chats === 'undefined') {
-          setChats([chatsData])
+        if (typeof chats === "undefined") {
+          setChats([chatsData]);
         } else {
-          setChats([...chats, chatsData])
+          setChats([...chats, chatsData]);
         }
 
-        await updateChat(chatsData)
+        await updateChat(chatsData);
       }
     };
     //old chats
@@ -56,29 +55,28 @@ const useChats = () => {
         lstMsgDate: msgObj.createdAt,
       };
 
-      await addChat(chatPayload)
-      await addMessage(msgObj)
+      await addChat(chatPayload);
+      await addMessage(msgObj);
       await updateContact({
         id: newChat.userId,
         chatId: newChat.id,
         username: newChat.username,
         avatarUrl: newChat.avatarUrl,
         bio: newChat.bio,
-        status: newChat.status
-      })
-
+        status: newChat.status,
+      });
     };
     socket.on(msgEvents.newChat, newChats);
     return () => {
-      socket.removeListener(msgEvents.newChat, newChats)
-    }
+      socket.removeListener(msgEvents.newChat, newChats);
+    };
   }, []);
 
   useEffect(() => {
     const fetchChats = async () => {
-      await searchChats(searchInput)
-    }
-    void fetchChats()
+      await searchChats(searchInput);
+    };
+    void fetchChats();
   }, [searchInput]);
 
   return { searchInput, setSearchInput, handleSearch, clearSearch, chats };

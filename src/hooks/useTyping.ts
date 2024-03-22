@@ -2,8 +2,8 @@ import { usrEvents } from "../utils/eventNames";
 import { socket } from "../socket";
 import { useEffect, useState } from "react";
 interface ITyping {
-  chatId?: string,
-  typing: 'typing...'
+  chatId?: string;
+  typing: "typing...";
 }
 
 const useTyping = () => {
