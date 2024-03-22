@@ -4,7 +4,7 @@ import useChats from "../hooks/useChats";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
 
-const MainPage = () => {
+const ChatList = () => {
   const { searchInput, handleSearch, clearSearch, chats } = useChats();
 
   return (
@@ -55,4 +55,4 @@ const MainPage = () => {
     </section>
   );
 };
-export default MainPage;
+export default ChatList;
