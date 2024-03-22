@@ -1,28 +1,17 @@
-import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import { ReactNode, useMemo, useRef } from "react";
 import Message from "./Message";
 import { messageHeaderDate } from "../utils/compareDate";
 import MessageHeaderDate from "./MessageHeaderDate";
-import useMessages from "../hooks/useMessages";
 import Modal from "./Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
-import { replyMessage } from "../app/messagesSlice";
-import { State } from "../app/store";
+import { IMessage } from "../db/messages";
 
 const Messages = () => {
-  //info holds userId
-  const dispatch = useDispatch();
-  const info = useSelector((state: State) => state.chat.value);
-  const messages = useSelector((state: State) => state.messages.messages);
-  const msgToBeReplied = useSelector((state: State) => state.messages.msgToBeReplied);
-
-  const [chatInfo, setChatInfo] = useState(info);
   const datesSet = new Set();
   const messagesRef = useRef(null);
-  useMessages({
-    chatId: chatInfo?.chatId ? chatInfo.chatId : "",
-    messagesRef: messagesRef,
-  });
+  const messages: IMessage[] = [];
+
   const addDateToSet = (messageDate: string) => {
     if (!datesSet.has(messageDate)) {
       datesSet.add(messageDate);
@@ -30,12 +19,6 @@ const Messages = () => {
     }
     return false;
   };
-
-  useEffect(() => {
-    setChatInfo(info);
-    datesSet.clear();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [info]);
 
   const memoizedMessages: ReactNode = useMemo(
     () =>
@@ -49,13 +32,10 @@ const Messages = () => {
             id={message.id}
             message={message.message}
             sender={message.sender}
-            msgDate={
-              new Date(message.updatedAt.getTime()) > new Date(message.createdAt.getTime())
-                ? message.updatedAt
-                : message.createdAt
-            }
+            createdAt={message.createdAt}
+            updatedAt={message.updatedAt}
             info={message.info}
-            userId={chatInfo?.userId ?? ""}
+            // userId={chatInfo?.userId}
             reply={message.reply}
           />
         </>
@@ -63,9 +43,6 @@ const Messages = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     [messages],
   );
-  const clearModal = () => {
-    dispatch(replyMessage(null));
-  };
   return (
     <div ref={messagesRef} className={`relative overflow-y-auto`} id="messages">
       {msgToBeReplied && (
@@ -73,7 +50,7 @@ const Messages = () => {
           <section
             className={`flex w-full items-start justify-between bg-gray-300 p-1 font-roboto text-base font-normal leading-normal`}
           >
-            <div>{msgToBeReplied.message}</div>
+            <div>{/*{message to be replied} */}</div>
             <FontAwesomeIcon
               icon={faClose}
               onClick={clearModal}
@@ -87,9 +64,7 @@ const Messages = () => {
           No Messages found
         </section>
       ) : (
-        <div className={` ${msgToBeReplied ? "blur-[2px]" : ""} flex w-full  flex-col py-2`}>
-          {memoizedMessages}
-        </div>
+        <div className={` ${"blur-[2px]"} flex w-full  flex-col py-2`}>{memoizedMessages}</div>
       )}
     </div>
   );

@@ -1,8 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import useModifyMessage from "./useModifyMessage";
-import { msgEvents, usrEvents } from "../utils/eventNames";
+import { usrEvents } from "../utils/eventNames";
 import { socket } from "../socket";
-import { cancelUpdate, replyMessage } from "../app/messagesSlice";
 
 interface IEmoji {
   id: string;
@@ -14,12 +13,6 @@ interface IEmoji {
 }
 
 const useMessagePanel = () => {
-  const chatInfo = useSelector((state: State) => state.chat.value);
-  const msgToBeUpdated = useSelector((state: State) => state.messages.msgToBeUpdated);
-  const msgToBeReplied = useSelector((state: State) => state.messages.msgToBeReplied);
-  // ? a boolean to toggle the cancel button when updating
-  const updateMsg = useSelector((state: State) => state.messages.updateMsg);
-  const dispatch = useDispatch();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [showEmojis, setShowEmojis] = useState(false);
   const [message, setMessage] = useState("");
@@ -27,55 +20,17 @@ const useMessagePanel = () => {
 
   const handleCancelUpdate = () => {
     setMessage("");
-    dispatch(cancelUpdate());
   };
 
   const updateMessage = () => {
-    if (updateMsg) {
-      const update = {
-        id: msgToBeUpdated?.id,
-        message,
-      };
-      socket.emit(msgEvents.updateMsg, update);
-      handleCancelUpdate();
-      return;
-    }
   };
 
   const reply = () => {
-    if (msgToBeReplied) {
-      const id = msgToBeReplied.id;
-      const chatId = chatInfo?.chatId;
-      if (!id && !chatId) return;
-      const replyObj = {
-        id,
-        chatId,
-        message,
-      };
-      socket.emit(msgEvents.reply, replyObj);
-      setMessage("");
-      dispatch(replyMessage(null));
-      return;
-    }
+    return;
   };
 
   const sendMessage = () => {
-    const chatId = chatInfo?.chatId;
-    const userId = chatInfo?.userId;
-    if (chatId && userId) {
-      const messageObj = {
-        chatId,
-        message,
-      };
 
-      socket.emit(msgEvents.sndMsg, messageObj);
-    } else if (userId && !chatId) {
-      const messageObj = {
-        userId,
-        message,
-      };
-      socket.emit(msgEvents.newChat, messageObj);
-    }
   };
 
   const submitForm = (e: FormEvent<HTMLFormElement>) => {
@@ -118,16 +73,10 @@ const useMessagePanel = () => {
   const handleOnChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setMessage(e.target.value);
     if (message) {
-      socket.emit(usrEvents.typing, { chatId: chatInfo?.chatId });
+      socket.emit(usrEvents.typing);
     }
   };
 
-  useEffect(() => {
-    if (updateMsg && msgToBeUpdated) {
-      const message = msgToBeUpdated.message;
-      setMessage(message);
-    }
-  }, [updateMsg, msgToBeUpdated]);
 
   return {
     windowWidth,
@@ -137,8 +86,6 @@ const useMessagePanel = () => {
     getEmoji,
     showEmojis,
     message,
-    chatInfo,
-    updateMsg,
     onKeyDown,
     submitForm,
   };

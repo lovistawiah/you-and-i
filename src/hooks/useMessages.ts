@@ -1,21 +1,18 @@
 import { useEffect } from "react";
-import { addMessage } from "../app/messagesSlice";
 import { socket } from "../socket";
 import { msgEvents } from "../utils/eventNames";
+import { IMessage } from "../db/messages";
 
 const useMessages = ({
   chatId,
-  messagesRef,
 }: {
   chatId: string;
   messagesRef: React.MutableRefObject<HTMLDivElement | null>;
 }) => {
-  const dispatch = useDispatch();
-  const messages = useSelector((state: State) => state.messages.messages);
 
   useEffect(() => {
     const getMessages = (messagesData: IMessage) => {
-      dispatch(addMessage(messagesData));
+      messagesData
     };
     socket.emit(msgEvents.msgs, chatId);
     socket.on(msgEvents.msgs, getMessages);
@@ -33,23 +30,16 @@ const useMessages = ({
 
   useEffect(() => {
     socket.on(msgEvents.sndMsg, (messageData: IMessage) => {
-      dispatch(addMessage(messageData));
+      messageData
     });
   });
 
   useEffect(() => {
     socket.on(msgEvents.reply, (msg: IMessage) => {
-      dispatch(addMessage(msg));
+      msg
     });
   });
 
-  useEffect(() => {
-    if (messagesRef.current) {
-      messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
-    }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [messages]);
 };
 
 export default useMessages;

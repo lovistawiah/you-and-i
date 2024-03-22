@@ -1,10 +1,20 @@
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { differenceInMinutes, format, parseISO } from "date-fns";
+import { differenceInMinutes, format } from "date-fns";
 import { useRef } from "react";
 import useMessage from "../hooks/useMessage";
+import { MessageProps } from "../db/messages";
 
-const Message = ({ message, sender, msgDate, userId, id, info, reply }: MessageProps) => {
+const Message = ({
+  message,
+  sender,
+  createdAt,
+  updatedAt,
+  userId,
+  id,
+  info,
+  reply,
+}: MessageProps) => {
   const ulRef = useRef(null);
   const msgRef = useRef(null);
   const msgIdRef = useRef(null);
@@ -15,10 +25,8 @@ const Message = ({ message, sender, msgDate, userId, id, info, reply }: MessageP
     ulRef,
   });
 
-  const chatUsername = useSelector((state: State) => state.chat.value?.username);
-
   let msgColor, align, margin, replyColor, replyUserColor;
-  const msgStatus = format(msgDate, "h:mm a");
+  const msgStatus = format(createdAt, "h:mm a");
 
   if (userId !== sender) {
     msgColor = "bg-blue-500";
@@ -34,7 +42,7 @@ const Message = ({ message, sender, msgDate, userId, id, info, reply }: MessageP
     replyUserColor = "text-blue-600";
   }
 
-  const minDiff = differenceInMinutes(new Date(), parseISO(msgDate.toString()));
+  const minDiff = differenceInMinutes(createdAt, updatedAt);
 
   return (
     <div
@@ -71,9 +79,9 @@ const Message = ({ message, sender, msgDate, userId, id, info, reply }: MessageP
           className={` max-w-[250px] break-all md:max-w-[400px] lg:max-w-[455px] ${info === "deleted" ? "font-rale italic" : ""} ${sender !== userId ? "text-white" : ""}`}
         >
           {reply && (
-            <div className={`${replyColor} rounded border-l-[3px] p-1`} id={reply.Id}>
+            <div className={`${replyColor} rounded border-l-[3px] p-1`} id={reply.id}>
               <div className={`${replyUserColor} mb-[3px] text-[15px]`}>
-                {reply.sender !== userId ? "You" : chatUsername}
+                {/* {FIXME: logged in user or other user} */}
               </div>
               <div className="font-roboto text-[13px]">{reply.message}</div>
             </div>

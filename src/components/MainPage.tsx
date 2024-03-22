@@ -1,5 +1,5 @@
 import Settings from "./Settings";
-import Contacts from "./Contacts";
+import ContactList from "./ContactList";
 import ChatList from "./ChatList";
 import MenuList from "./MenuList";
 import WelcomePage from "./WelcomePage";
@@ -19,7 +19,7 @@ const MainPage = () => {
   ) : (
     <section className="relative flex h-screen w-screen md:flex md:flex-row">
       {activePage === 1 && <Settings />}
-      {activePage === 2 && <Contacts />}
+      {activePage === 2 && <ContactList />}
       {activePage === 3 && <ChatList />}
       <MenuList pageSelector={pageSelector} userAvatar={avatarUrl} windowWidth={windowWidth} />
       {windowWidth > 768 ? <MessagePanel /> : null}

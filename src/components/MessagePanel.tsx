@@ -7,7 +7,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import TextareaAutoResize from "react-textarea-autosize";
 import ChatInfo from "./ChatInfo";
 import Messages from "./Messages";
-
 import useMessagePanel from "../hooks/useMessagePanel";
 
 const MessagePanel = () => {

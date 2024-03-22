@@ -36,8 +36,9 @@ export type NewChatAndMessage = {
 export type MessageProps = {
   message: string;
   sender: string;
-  msgDate: string | Date;
   userId: string;
+  createdAt: string | Date,
+  updatedAt: string | Date,
   id: string;
   info: MessageInfo;
   reply?: Reply;

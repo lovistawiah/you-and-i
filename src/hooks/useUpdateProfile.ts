@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { IUserValue } from "../app/userSlice";
-import { updateUserInfo } from "../account/user.js";
+import { IUserInfo, updateUserInfo } from "../account/user.js";
 import { getUser } from "../db/user";
 
 const useUpdateProfile = () => {
@@ -9,7 +8,7 @@ const useUpdateProfile = () => {
   const [usernameInput, setUsernameInput] = useState("");
   const [, setInfo] = useState({});
   const navigate = useNavigate();
-  const [personInfo, setPersonInfo] = useState<IUserValue>();
+  const [personInfo, setPersonInfo] = useState<IUserInfo>();
 
   useEffect(() => {
     const handleResize = () => {
