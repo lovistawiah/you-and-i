@@ -3,9 +3,9 @@ import InputForm from "./InputForm";
 import WelcomeText from "./WelcomeText";
 import FormButton from "./FormButton";
 import Logo from "./Logo";
-import ConfirmPassInput from "./ConfirmPass";
 import useRegister from "../hooks/useRegister";
 import PassWithRegex from "./PassWithRegex";
+import PasswordInput from "./PasswordInput";
 
 const Register = () => {
   const { setIsValid, spin, handleForm, isValid } = useRegister();
@@ -19,7 +19,12 @@ const Register = () => {
       <form className="flex flex-col items-center gap-[21px]" onSubmit={handleForm}>
         <InputForm type={"email"} name={"email"} placeholder={"Email"} id={"email"} />
         <PassWithRegex isValid={isValid} setIsValid={setIsValid} />
-        <ConfirmPassInput />
+        <PasswordInput
+          name="confirm-password"
+          id="confirm-password"
+          label="Confirm Password"
+          placeholder="confirm password"
+        />
         <FormButton btnText={"Create account"} isValid={isValid} spin={spin} />
       </form>
 
