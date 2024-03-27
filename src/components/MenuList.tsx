@@ -1,4 +1,8 @@
-import { faComments, faGear, faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import {
+  faComments,
+  faGear,
+  faUserPlus,
+} from "@fortawesome/free-solid-svg-icons";
 import { MouseEvent } from "react";
 import MenuItem from "./MenuItem";
 

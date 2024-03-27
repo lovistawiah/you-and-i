@@ -19,11 +19,12 @@ const Message = ({
   const msgRef = useRef(null);
   const msgIdRef = useRef(null);
 
-  const { deleteMsg, editMsg, handleMsgOps, showOps, onBlurOps, replyMsg } = useMessage({
-    msgIdRef,
-    msgRef,
-    ulRef,
-  });
+  const { deleteMsg, editMsg, handleMsgOps, showOps, onBlurOps, replyMsg } =
+    useMessage({
+      msgIdRef,
+      msgRef,
+      ulRef,
+    });
 
   let msgColor, align, margin, replyColor, replyUserColor;
   const msgStatus = format(createdAt, "h:mm a");
@@ -62,7 +63,9 @@ const Message = ({
           </li>
           {/* sender message ops */}
           <div className={`${userId === sender ? "hidden" : ""}`}>
-            <li className={`${minDiff > 5 ? "hidden" : ""} z-40 w-full p-2 hover:bg-blue-950`}>
+            <li
+              className={`${minDiff > 5 ? "hidden" : ""} z-40 w-full p-2 hover:bg-blue-950`}
+            >
               <button onClick={editMsg}>Edit</button>
             </li>
 
@@ -79,7 +82,10 @@ const Message = ({
           className={` max-w-[250px] break-all md:max-w-[400px] lg:max-w-[455px] ${info === "deleted" ? "font-rale italic" : ""} ${sender !== userId ? "text-white" : ""}`}
         >
           {reply && (
-            <div className={`${replyColor} rounded border-l-[3px] p-1`} id={reply.id}>
+            <div
+              className={`${replyColor} rounded border-l-[3px] p-1`}
+              id={reply.id}
+            >
               <div className={`${replyUserColor} mb-[3px] text-[15px]`}>
                 {/* {FIXME: logged in user or other user} */}
               </div>

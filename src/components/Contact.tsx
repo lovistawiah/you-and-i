@@ -7,7 +7,13 @@ const Contact = ({
   contact,
 }: {
   windowWidth: number;
-  handleUserInfo: ({ id, chatId, avatarUrl, username, status }: Contact) => Promise<void>;
+  handleUserInfo: ({
+    id,
+    chatId,
+    avatarUrl,
+    username,
+    status,
+  }: Contact) => Promise<void>;
   contact: Contact;
 }) => {
   return (
@@ -27,10 +33,16 @@ const Contact = ({
       key={contact.id}
     >
       <section className="flex h-[65px] w-[70px] shrink-0 items-center justify-center p-2.5">
-        <img src={contact.avatarUrl} alt="user profile" className="rounded-full" />
+        <img
+          src={contact.avatarUrl}
+          alt="user profile"
+          className="rounded-full"
+        />
       </section>
       <section className="flex w-full flex-col gap-[0px] border-b border-neutral-400 py-1">
-        <h4 className="h-[24.50px] pt-1 text-base font-medium text-zinc-950">{contact.username}</h4>
+        <h4 className="h-[24.50px] pt-1 text-base font-medium text-zinc-950">
+          {contact.username}
+        </h4>
         <section className="line-clamp-2 w-full flex-grow basis-0 text-ellipsis pb-[40px] pl-1 pr-0 pt-[4px] text-sm font-normal text-neutral-400">
           {contact.bio}
         </section>

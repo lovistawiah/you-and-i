@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { addToken } from "../db/user";
 
-export interface IUserInfo {
+export interface IUser {
   id: string;
   username: string;
   avatarUrl: string;
@@ -15,7 +15,7 @@ export type SignUpParams = {
 };
 
 export interface SignUpResponse {
-  userInfo: IUserInfo;
+  userInfo: IUser;
   message?: string;
 }
 
@@ -26,7 +26,7 @@ export type LoginParams = {
 
 export type LoginResponse = {
   token: string;
-  userInfo: IUserInfo;
+  userInfo: IUser;
   message: string;
   status: 200;
 };
@@ -37,7 +37,7 @@ export type UpdateUserInfoParams = {
 };
 
 export type UpdateUserInfoResponse = {
-  userInfo: IUserInfo;
+  userInfo: IUser;
   message: string;
   token: string;
 };
@@ -52,7 +52,7 @@ export type userSettingsParams = {
 };
 
 export type userSettingsResponse = {
-  userInfo: IUserInfo;
+  userInfo: IUser;
   message: string;
 };
 export type ServerError = {
@@ -74,7 +74,9 @@ async function signUp({
   email,
   password,
   confirmPassword,
-}: SignUpParams): Promise<{ userInfo: IUserInfo; message?: string } | ServerError | undefined> {
+}: SignUpParams): Promise<
+  { userInfo: IUser; message?: string } | ServerError | undefined
+> {
   try {
     const result = await axios.post<SignUpResponse>(
       baseUrl + "/signup",
@@ -106,7 +108,9 @@ async function signUp({
 async function login({
   usernameEmail,
   password,
-}: LoginParams): Promise<{ status: number; userInfo: IUserInfo } | ServerError | undefined> {
+}: LoginParams): Promise<
+  { status: number; userInfo: IUser } | ServerError | undefined
+> {
   try {
     const result = await axios.post<LoginResponse>(
       baseUrl + "/login",
@@ -135,9 +139,12 @@ async function login({
 
 async function updateUserInfo(
   formData: UpdateUserInfoParams,
-): Promise<{ userInfo: IUserInfo; message: string } | ServerError | undefined> {
+): Promise<{ userInfo: IUser; message: string } | ServerError | undefined> {
   try {
-    const result = await axios.patch<UpdateUserInfoResponse>(baseUrl + "/update-user", formData);
+    const result = await axios.patch<UpdateUserInfoResponse>(
+      baseUrl + "/update-user",
+      formData,
+    );
     if (result.data.message) {
       const token = result.data.token;
       await addToken(token);
@@ -156,9 +163,12 @@ async function updateUserInfo(
 
 async function userSettings(
   formData: userSettingsParams,
-): Promise<{ userInfo: IUserInfo; message: string } | ServerError | undefined> {
+): Promise<{ userInfo: IUser; message: string } | ServerError | undefined> {
   try {
-    const result = await axios.patch<userSettingsResponse>(baseUrl + "/user-settings", formData);
+    const result = await axios.patch<userSettingsResponse>(
+      baseUrl + "/user-settings",
+      formData,
+    );
     if (result.status === 200) {
       const userInfo = result.data.userInfo;
       const message = result.data.message;

@@ -32,16 +32,11 @@ const useMessage = ({
     setShowOps(false);
   };
 
-  const deleteMsg = () => {
+  const deleteMsg = () => {};
 
-  };
+  const editMsg = () => {};
 
-  const editMsg = () => {
-
-  };
-
-  const replyMsg = () => {
-  };
+  const replyMsg = () => {};
 
   return { deleteMsg, editMsg, showOps, handleMsgOps, onBlurOps, replyMsg };
 };

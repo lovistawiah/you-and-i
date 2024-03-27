@@ -22,16 +22,13 @@ const useMessagePanel = () => {
     setMessage("");
   };
 
-  const updateMessage = () => {
-  };
+  const updateMessage = () => {};
 
   const reply = () => {
     return;
   };
 
-  const sendMessage = () => {
-
-  };
+  const sendMessage = () => {};
 
   const submitForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -76,7 +73,6 @@ const useMessagePanel = () => {
       socket.emit(usrEvents.typing);
     }
   };
-
 
   return {
     windowWidth,

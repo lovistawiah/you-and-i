@@ -20,7 +20,10 @@ const MenuItem = ({
       onClick={pageSelector}
       id={`${idx + 1}`}
     >
-      <FontAwesomeIcon icon={iconName} className="pointer-events-none self-center" />
+      <FontAwesomeIcon
+        icon={iconName}
+        className="pointer-events-none self-center"
+      />
       {iconText}
     </button>
   );

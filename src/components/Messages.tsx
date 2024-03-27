@@ -25,7 +25,9 @@ const Messages = () => {
       messages.map((message) => (
         <>
           {addDateToSet(messageHeaderDate(message.createdAt)) && (
-            <MessageHeaderDate messageDate={messageHeaderDate(message.createdAt)} />
+            <MessageHeaderDate
+              messageDate={messageHeaderDate(message.createdAt)}
+            />
           )}
           <Message
             key={message.id}
@@ -64,7 +66,9 @@ const Messages = () => {
           No Messages found
         </section>
       ) : (
-        <div className={` ${"blur-[2px]"} flex w-full  flex-col py-2`}>{memoizedMessages}</div>
+        <div className={` ${"blur-[2px]"} flex w-full  flex-col py-2`}>
+          {memoizedMessages}
+        </div>
       )}
     </div>
   );

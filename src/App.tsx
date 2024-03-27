@@ -4,6 +4,7 @@ import Login from "./components/Login";
 import MainPage from "./components/MainPage";
 import UpdateProfile from "./components/UpdateProfile";
 import Register from "./components/Register";
+import { UserProvider } from "./provider/UserProvider";
 // eslint-disable-next-line import/no-unresolved
 import "/index.css";
 import MessagePanel from "./components/MessagePanel";
@@ -26,9 +27,11 @@ const RoutePages = () => {
 const App = () => {
   return (
     <div className="m-0 box-border w-screen bg-gray-50 p-0 font-roboto">
-      <BrowserRouter>
-        <RoutePages />
-      </BrowserRouter>
+      <UserProvider>
+        <BrowserRouter>
+          <RoutePages />
+        </BrowserRouter>
+      </UserProvider>
     </div>
   );
 };

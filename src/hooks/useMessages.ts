@@ -9,10 +9,9 @@ const useMessages = ({
   chatId: string;
   messagesRef: React.MutableRefObject<HTMLDivElement | null>;
 }) => {
-
   useEffect(() => {
     const getMessages = (messagesData: IMessage) => {
-      messagesData
+      messagesData;
     };
     socket.emit(msgEvents.msgs, chatId);
     socket.on(msgEvents.msgs, getMessages);
@@ -30,16 +29,15 @@ const useMessages = ({
 
   useEffect(() => {
     socket.on(msgEvents.sndMsg, (messageData: IMessage) => {
-      messageData
+      messageData;
     });
   });
 
   useEffect(() => {
     socket.on(msgEvents.reply, (msg: IMessage) => {
-      msg
+      msg;
     });
   });
-
 };
 
 export default useMessages;

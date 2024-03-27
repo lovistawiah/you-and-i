@@ -1,12 +1,12 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
-import { IUserInfo, userSettings } from "../account/user";
+import { IUser, userSettings } from "../account/user";
 import { getUser } from "../db/user";
 
 const useSetting = () => {
   const [isPassValid, setIsPassValid] = useState(true);
   const [info, setInfo] = useState({});
   const [usernameInput, setUsernameInput] = useState("");
-  const [userInfo, setUserInfo] = useState<IUserInfo>();
+  const [userInfo, setUserInfo] = useState<IUser>();
 
   const handleUsernameInput = (e: ChangeEvent<HTMLInputElement>) => {
     setUsernameInput(e.currentTarget.value);

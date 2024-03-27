@@ -1,9 +1,9 @@
 import { DBSchema, openDB } from "idb";
-import { IUserInfo } from "../account/user";
+import { IUser } from "../account/user";
 interface IUserDB extends DBSchema {
   user: {
     key: string;
-    value: IUserInfo;
+    value: IUser;
     indexes: { id: string };
   };
   token: {
@@ -41,7 +41,7 @@ const clearUsers = async () => {
   return (await userDb()).clear("user");
 };
 
-const addUser = async (value: IUserInfo) => {
+const addUser = async (value: IUser) => {
   await clearUsers();
   const db = await userDb();
   return await db.add("user", value, value.id);
@@ -61,4 +61,12 @@ const addToken = async (token: string) => {
   return await db.add("token", token, "token");
 };
 
-export { getUser, addUser, deleteUser, clearUsers, addToken, removeToken, getToken };
+export {
+  getUser,
+  addUser,
+  deleteUser,
+  clearUsers,
+  addToken,
+  removeToken,
+  getToken,
+};

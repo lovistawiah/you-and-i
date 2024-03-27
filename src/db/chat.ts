@@ -47,7 +47,10 @@ const addChat = async (value: Chat) => {
   return (await chatDb()).add("chat", value, value.userId);
 };
 
-const updateStatus = async (value: { userId: string; status: Date | string }) => {
+const updateStatus = async (value: {
+  userId: string;
+  status: Date | string;
+}) => {
   const tx = (await chatDb()).transaction("chat", "readwrite");
   const store = tx.objectStore("chat");
   const chat = await store.get(value.userId);

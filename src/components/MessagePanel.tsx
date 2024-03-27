@@ -50,7 +50,10 @@ const MessagePanel = () => {
           )}
 
           <form className={`flex items-end justify-center border-t px-2 py-2 `}>
-            <section className="relative m-0 flex w-full p-0" onSubmit={submitForm}>
+            <section
+              className="relative m-0 flex w-full p-0"
+              onSubmit={submitForm}
+            >
               <TextareaAutoResize
                 className={`w-full resize-none border bg-gray-100 py-2 pl-2 pr-10 text-base text-zinc-700 outline-none active:outline-none md:px-9`}
                 value={message}

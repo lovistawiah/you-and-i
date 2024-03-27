@@ -1,12 +1,14 @@
 import { FormEvent, useState } from "react";
-import { IUserInfo, login } from "../account/user";
+import { IUser, login } from "../account/user";
 import { addUser } from "../db/user";
 
 const useLogin = () => {
-  const [info, setInfo] = useState<{ type: string; message: string } | Record<string, never>>({});
+  const [info, setInfo] = useState<
+    { type: string; message: string } | Record<string, never>
+  >({});
   const [spin, setSpin] = useState(false);
 
-  const saveUserInfoAndNavigate = async (userObj: IUserInfo) => {
+  const saveUserInfoAndNavigate = async (userObj: IUser) => {
     setSpin(false);
 
     await addUser(userObj);
@@ -32,6 +34,14 @@ const useLogin = () => {
       : errorLogger({ message: result.message });
   };
 
-  return { info, spin, saveUserInfoAndNavigate, errorLogger, setInfo, setSpin, handleLogin };
+  return {
+    info,
+    spin,
+    saveUserInfoAndNavigate,
+    errorLogger,
+    setInfo,
+    setSpin,
+    handleLogin,
+  };
 };
 export default useLogin;

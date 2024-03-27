@@ -9,7 +9,8 @@ import useLastMessage from "../hooks/useLastMessage";
 import useModifyMessage from "../hooks/useModifyMessage";
 
 const MainPage = () => {
-  const { errMsg, isToken, windowWidth, activePage, pageSelector, avatarUrl } = useMain();
+  const { errMsg, isToken, windowWidth, activePage, pageSelector, avatarUrl } =
+    useMain();
 
   useLastMessage();
   useModifyMessage();
@@ -21,7 +22,11 @@ const MainPage = () => {
       {activePage === 1 && <Settings />}
       {activePage === 2 && <ContactList />}
       {activePage === 3 && <ChatList />}
-      <MenuList pageSelector={pageSelector} userAvatar={avatarUrl} windowWidth={windowWidth} />
+      <MenuList
+        pageSelector={pageSelector}
+        userAvatar={avatarUrl}
+        windowWidth={windowWidth}
+      />
       {windowWidth > 768 ? <MessagePanel /> : null}
     </section>
   );

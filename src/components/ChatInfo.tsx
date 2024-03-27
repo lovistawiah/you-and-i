@@ -32,7 +32,9 @@ const ChatInfo = ({ windowWidth }: { windowWidth: number }) => {
         </section>
         <section className="flex h-[20px] w-full items-center justify-start px-[5px]  pb-2.5 font-roboto  text-[13px] text-zinc-900 opacity-60">
           {isTypingObj && isTypingObj.chatId === chatInfo?.chatId ? (
-            <span className="font-rale font-normal italic text-gray-600">typing...</span>
+            <span className="font-rale font-normal italic text-gray-600">
+              typing...
+            </span>
           ) : chatInfo?.status ? (
             chatInfo.status === "Online" ? (
               chatInfo.status

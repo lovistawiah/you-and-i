@@ -1,7 +1,12 @@
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { chatEvents } from "../utils/eventNames";
 import { socket } from "../socket";
-import { Contact, addContact, getContacts, searchContacts } from "../db/contact";
+import {
+  Contact,
+  addContact,
+  getContacts,
+  searchContacts,
+} from "../db/contact";
 import { clearMessages } from "../db/messages";
 import { addChat, clearChat } from "../db/chat";
 const useContact = () => {
@@ -34,7 +39,13 @@ const useContact = () => {
   const handleSearch = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchInput(e.target.value);
   };
-  const handleUserInfo = async ({ id, chatId, avatarUrl, username, status }: Contact) => {
+  const handleUserInfo = async ({
+    id,
+    chatId,
+    avatarUrl,
+    username,
+    status,
+  }: Contact) => {
     const chatObj = {
       userId: id,
       chatId,
@@ -68,6 +79,13 @@ const useContact = () => {
     };
   }, []);
 
-  return { searchInput, handleSearch, clearSearch, cachedContacts, windowWidth, handleUserInfo };
+  return {
+    searchInput,
+    handleSearch,
+    clearSearch,
+    cachedContacts,
+    windowWidth,
+    handleUserInfo,
+  };
 };
 export default useContact;

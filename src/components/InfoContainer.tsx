@@ -1,10 +1,18 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
-const InfoContainer = () => {
+const InfoContainer = ({
+  type,
+  message,
+}: {
+  type: "error" | "success";
+  message: string;
+}) => {
+  console.log(type, message);
   const elRef = useRef<HTMLDivElement | null>(null);
+  const [isClose, setIsClose] = useState(false);
   if (!elRef.current) {
     elRef.current = document.createElement("div");
   }
@@ -18,15 +26,30 @@ const InfoContainer = () => {
       }
     };
   }, []);
+
+  useEffect(() => {
+    if (message) {
+      setIsClose(true);
+    }
+  }, [message]);
   return createPortal(
-    <div className="absolute left-2 right-2 top-0 rounded border">
-      <div className="h-[50px] w-full bg-red-500 ">
-        <FontAwesomeIcon
-          icon={faTimes}
-          className="md:text-[16px absolute right-2 top-2 cursor-pointer rounded border p-2 font-roboto text-[18px] font-light text-white transition duration-300 ease-in-out hover:bg-white hover:text-red-500"
-        />
+    isClose && (
+      <div
+        className={`flex ${type === "error" ? "bg-red-500" : "bg-green-500"} p-1`}
+      >
+        <div
+          className="self-center  font-roboto text-[16px] leading-normal text-white md:text-[17px]"
+          dangerouslySetInnerHTML={{ __html: message }}
+        ></div>
+
+        <button className="mb-auto ml-auto" onClick={() => setIsClose(false)}>
+          <FontAwesomeIcon
+            icon={faTimes}
+            className="ml-1 cursor-pointer rounded border p-2 font-roboto text-[18px] font-light text-white transition duration-300 ease-in-out hover:bg-white hover:text-red-500 md:text-[16px]"
+          />
+        </button>
       </div>
-    </div>,
+    ),
     elRef.current,
   );
 };

@@ -37,8 +37,8 @@ export type MessageProps = {
   message: string;
   sender: string;
   userId: string;
-  createdAt: string | Date,
-  updatedAt: string | Date,
+  createdAt: string | Date;
+  updatedAt: string | Date;
   id: string;
   info: MessageInfo;
   reply?: Reply;
@@ -97,4 +97,11 @@ const clearMessages = async () => {
 
 // }
 
-export { getMessages, getMessage, addMessage, searchMessage, updateMessage, clearMessages };
+export {
+  getMessages,
+  getMessage,
+  addMessage,
+  searchMessage,
+  updateMessage,
+  clearMessages,
+};

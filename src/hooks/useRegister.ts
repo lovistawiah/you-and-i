@@ -1,5 +1,5 @@
 import { FormEvent, useEffect, useState } from "react";
-import { IUserInfo, signUp } from "../account/user";
+import { IUser, signUp } from "../account/user";
 import { addUser } from "../db/user";
 
 const useRegister = () => {
@@ -7,7 +7,7 @@ const useRegister = () => {
   const [spin, setSpin] = useState(false);
   const [isValid, setIsValid] = useState(true);
 
-  const saveUserInfoAndNavigate = async (userObj: IUserInfo) => {
+  const saveUserInfoAndNavigate = async (userObj: IUser) => {
     setSpin(false);
     await addUser(userObj);
     location.href = location.origin + "/update-profile";

@@ -4,11 +4,10 @@ import { msgEvents } from "../utils/eventNames";
 import { IMessage } from "../db/messages";
 
 const useLastMessage = () => {
-
   // const chats = useSelector((state)=>state.chats.chats)
   useEffect(() => {
     const handleSendMessage = (msg: IMessage) => {
-      msg
+      msg;
     };
     socket.on(msgEvents.sndMsg, handleSendMessage);
     return () => {
@@ -18,7 +17,7 @@ const useLastMessage = () => {
 
   useEffect(() => {
     socket.on(msgEvents.reply, (msg: IMessage) => {
-      msg
+      msg;
     });
   });
 };

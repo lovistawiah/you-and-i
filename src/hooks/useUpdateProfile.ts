@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { IUserInfo, updateUserInfo } from "../account/user.js";
+import { IUser, updateUserInfo } from "../account/user.js";
 import { getUser } from "../db/user";
 
 const useUpdateProfile = () => {
@@ -8,7 +8,7 @@ const useUpdateProfile = () => {
   const [usernameInput, setUsernameInput] = useState("");
   const [, setInfo] = useState({});
   const navigate = useNavigate();
-  const [personInfo, setPersonInfo] = useState<IUserInfo>();
+  const [personInfo, setPersonInfo] = useState<IUser>();
 
   useEffect(() => {
     const handleResize = () => {
@@ -71,12 +71,6 @@ const useUpdateProfile = () => {
   const handleUsernameInput = (e: ChangeEvent<HTMLInputElement>) => {
     setUsernameInput(e.target.value);
   };
-  useEffect(() => {
-    const handleLogout = () => {
-      localStorage.clear();
-    };
-    handleLogout();
-  }, []);
 
   const goBack = () => {
     navigate("/register");

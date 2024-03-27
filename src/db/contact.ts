@@ -54,4 +54,10 @@ const searchContacts = async (search: string) => {
     }
   });
 };
-export { getContacts, addContact, clearContacts, searchContacts, updateContact };
+export {
+  getContacts,
+  addContact,
+  clearContacts,
+  searchContacts,
+  updateContact,
+};

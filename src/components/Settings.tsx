@@ -46,7 +46,12 @@ const Settings = () => {
                   icon={faCameraAlt}
                   className="rounded-full bg-blue-400 p-[8px] text-lg text-white "
                 />
-                <input type="file" name="" id="fileInput" className="invisible w-0" />
+                <input
+                  type="file"
+                  name=""
+                  id="fileInput"
+                  className="invisible w-0"
+                />
               </span>
             </label>
           </section>
