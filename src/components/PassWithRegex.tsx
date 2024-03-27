@@ -14,13 +14,13 @@ const PassWithRegex = ({
   const passVisibility = () => {
     setShowPass(!showPass);
   };
-  const passRegex =
-    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&,+><_])[A-Za-z\d@$!%*?&,+><_]{8,}$/;
+  const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/;
 
   const onBlur = (e: ChangeEvent<HTMLInputElement>) => {
     const passText = e.target.value;
     setIsValid(passRegex.test(passText));
   };
+
   useEffect(() => {
     if (pass.length > 4) {
       setIsValid(passRegex.test(pass));
