@@ -21,12 +21,12 @@ const UpdateProfile = () => {
           {windowWidth < 640 && (
             <FontAwesomeIcon
               icon={faChevronLeft}
-              className="ml-2 cursor-pointer p-2 hover:rounded-full hover:bg-gray-100"
+              className="ml-2 h-[16px] w-[16px]  cursor-pointer rounded-full p-2 transition duration-300 ease-in-out hover:bg-gray-200"
               onClick={goBack}
             />
           )}
           <section className="w-full p-1 text-center font-roboto text-xl font-medium">
-            User Profile
+            Update User Profile
           </section>
         </section>
         {/* profile pic */}
@@ -61,17 +61,17 @@ const UpdateProfile = () => {
             required
             onChange={handleUsernameInput}
           />
-          <div className="flex w-[270px] items-center justify-end">
+          <div className="flex w-[270px] items-center justify-end ">
             {usernameInput.length < 1 ? (
               <Link
                 to="/"
-                className="w-[60px] rounded-full border border-blue-500 px-2 py-1 text-center font-roboto text-base hover:bg-blue-500 hover:text-white"
+                className="w-[60px] rounded-full border border-blue-500 px-2 py-1 text-center font-roboto text-base transition duration-300 ease-in-out hover:bg-blue-500 hover:text-white"
               >
                 Skip
               </Link>
             ) : (
               <button
-                className={`flex h-[33px] w-[100px] items-center justify-center  rounded-[5px] border bg-blue-500 px-3.5 py-[7px] font-roboto text-base font-normal text-white outline-none hover:bg-blue-600 active:bg-blue-700 disabled:cursor-not-allowed disabled:bg-red-500 md:w-[250px] md:text-lg`}
+                className={`flex h-[33px] w-[100px] items-center justify-center  rounded-[5px] border bg-blue-500 px-3.5 py-[7px] font-roboto text-base font-normal text-white outline-none transition duration-300 ease-in-out hover:bg-blue-600 active:bg-blue-700 disabled:cursor-not-allowed disabled:bg-red-500 md:w-[250px] md:text-lg`}
                 disabled={!inputRegex.test(usernameInput)}
               >
                 Next <FontAwesomeIcon icon={faArrowRight} className="pl-1" />
