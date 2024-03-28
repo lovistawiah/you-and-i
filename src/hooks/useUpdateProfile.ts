@@ -1,10 +1,12 @@
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { IUser, updateUserInfo } from "../account/user.js";
 import { getUser } from "../db/user";
+import { UserContext } from "../context/UserContext.js";
 
 const useUpdateProfile = () => {
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
+  const { setUser } = useContext(UserContext)
   const [usernameInput, setUsernameInput] = useState("");
   const [, setInfo] = useState({});
   const navigate = useNavigate();
@@ -32,6 +34,12 @@ const useUpdateProfile = () => {
         return reason;
       });
   }, []);
+
+  useEffect(() => {
+    if (personInfo) {
+      setUser(personInfo)
+    }
+  }, [personInfo, setUser])
 
 
   const handleUserInfo = async (e: FormEvent<HTMLFormElement>) => {
