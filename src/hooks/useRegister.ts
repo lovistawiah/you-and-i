@@ -2,8 +2,10 @@ import { FormEvent, useEffect, useState } from "react";
 import { IUser, signUp } from "../account/user";
 import { addUser } from "../db/user";
 
+export type infoObj = { type: "error" | "success"; message: string } | null;
+
 const useRegister = () => {
-  const [, setInfo] = useState({});
+  const [info, setInfo] = useState<infoObj>(null);
   const [spin, setSpin] = useState(false);
   const [isValid, setIsValid] = useState(true);
 
@@ -22,8 +24,8 @@ const useRegister = () => {
     if (!isValid) {
       setInfo({
         type: "error",
-        message: `<ul>
-                <li class="text-lg mb-1 text-red-500">Password should:</li>
+        message: `<ul class="ml-1 text-sm md:text-base leading-normal">
+                <li class="text-lg font-semibold">Password should:</li>
                   <li>At least contain 8 characters long</li>
                   <li>Contain at least one uppercase letter</li>
                   <li>Contain at least one lowercase letter</li>
@@ -32,7 +34,7 @@ const useRegister = () => {
                   </ul>`,
       });
     } else {
-      setInfo({});
+      setInfo(null);
     }
   }, [isValid]);
 
@@ -70,6 +72,8 @@ const useRegister = () => {
     setSpin,
     isValid,
     handleForm,
+    info,
+    setInfo
   };
 };
 

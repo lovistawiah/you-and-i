@@ -18,15 +18,11 @@ const PassWithRegex = ({
 
   const onBlur = (e: ChangeEvent<HTMLInputElement>) => {
     const passText = e.target.value;
-    setIsValid(passRegex.test(passText));
+    if (passText.length > 1) {
+      setIsValid(passRegex.test(passText));
+    }
   };
 
-  useEffect(() => {
-    if (pass.length > 4) {
-      setIsValid(passRegex.test(pass));
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [pass]);
   useEffect(() => {
     if (pass.length < 1) {
       setIsValid(true);
@@ -37,7 +33,10 @@ const PassWithRegex = ({
 
   return (
     <div className="flex w-fit flex-col">
-      <label htmlFor="password" className="font-roboto text-base font-normal  text-gray-800">
+      <label
+        htmlFor="password"
+        className="font-roboto text-base font-normal  text-gray-800"
+      >
         Password
       </label>
       <div className="relative">
