@@ -33,6 +33,7 @@ const useUpdateProfile = () => {
       });
   }, []);
 
+
   const handleUserInfo = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!personInfo) return;

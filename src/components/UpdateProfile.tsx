@@ -1,6 +1,7 @@
 import { faArrowRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useUpdateProfile from "../hooks/useUpdateProfile";
+import { Link } from "react-router-dom";
 
 const UpdateProfile = () => {
   const {
@@ -60,13 +61,23 @@ const UpdateProfile = () => {
             required
             onChange={handleUsernameInput}
           />
-
-          <button
-            className={`flex h-[33px] w-[100px] items-center justify-center  rounded-[5px] border bg-blue-500 px-3.5 py-[7px] font-roboto text-base font-normal text-white outline-none hover:bg-blue-600 active:bg-blue-700 disabled:cursor-not-allowed disabled:bg-red-500 md:w-[250px] md:text-lg ${usernameInput == "" ? "cursor-not-allowed bg-gray-400 hover:bg-gray-600" : ""}`}
-            disabled={!inputRegex.test(usernameInput)}
-          >
-            Next <FontAwesomeIcon icon={faArrowRight} className="pl-1" />
-          </button>
+          <div className="flex w-[270px] items-center justify-end">
+            {usernameInput.length < 1 ? (
+              <Link
+                to="/"
+                className="w-[60px] rounded-full border border-blue-500 px-2 py-1 text-center font-roboto text-base hover:bg-blue-500 hover:text-white"
+              >
+                Skip
+              </Link>
+            ) : (
+              <button
+                className={`flex h-[33px] w-[100px] items-center justify-center  rounded-[5px] border bg-blue-500 px-3.5 py-[7px] font-roboto text-base font-normal text-white outline-none hover:bg-blue-600 active:bg-blue-700 disabled:cursor-not-allowed disabled:bg-red-500 md:w-[250px] md:text-lg`}
+                disabled={!inputRegex.test(usernameInput)}
+              >
+                Next <FontAwesomeIcon icon={faArrowRight} className="pl-1" />
+              </button>
+            )}
+          </div>
         </form>
       </section>
     </div>
