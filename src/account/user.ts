@@ -1,5 +1,4 @@
 import axios, { AxiosError } from "axios";
-import { addToken } from "../db/user";
 
 export interface IUser {
   id: string;
@@ -109,7 +108,7 @@ async function login({
   usernameEmail,
   password,
 }: LoginParams): Promise<
-  { status: number; userInfo: IUser } | ServerError | undefined
+  { status: number; userInfo: IUser, token: string } | ServerError | undefined
 > {
   try {
     const result = await axios.post<LoginResponse>(
@@ -125,8 +124,7 @@ async function login({
       if (result.data.token !== "") {
         const token = result.data.token;
         const { userInfo } = result.data;
-        localStorage.setItem("Oh_vnyX", token);
-        return { status: 200, userInfo };
+        return { status: 200, userInfo, token };
       }
     }
   } catch (err) {
@@ -139,7 +137,7 @@ async function login({
 
 async function updateUserInfo(
   formData: UpdateUserInfoParams,
-): Promise<{ userInfo: IUser; message: string } | ServerError | undefined> {
+): Promise<{ userInfo: IUser; message: string, token: string } | ServerError | undefined> {
   try {
     const result = await axios.patch<UpdateUserInfoResponse>(
       baseUrl + "/update-user",
@@ -147,10 +145,10 @@ async function updateUserInfo(
     );
     if (result.data.message) {
       const token = result.data.token;
-      await addToken(token);
       return {
         userInfo: result.data.userInfo,
         message: result.data.message,
+        token
       };
     }
   } catch (err) {

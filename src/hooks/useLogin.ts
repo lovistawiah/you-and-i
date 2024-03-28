@@ -1,6 +1,6 @@
 import { FormEvent, useContext, useState } from "react";
 import { IUser, login } from "../account/user";
-import { addUser } from "../db/user";
+import { addToken, addUser } from "../db/user";
 import { infoObj } from "./useRegister";
 import { UserContext } from "../context/UserContext";
 
@@ -9,10 +9,11 @@ const useLogin = () => {
   const [spin, setSpin] = useState(false);
   const { setUser } = useContext(UserContext)
 
-  const saveUserInfoAndNavigate = async (userObj: IUser) => {
+  const saveUserInfoAndNavigate = async (userObj: IUser, token: string) => {
     setSpin(false);
     setUser(userObj)
     await addUser(userObj);
+    await addToken(token)
     location.href = location.origin + "/";
   };
 
@@ -32,7 +33,7 @@ const useLogin = () => {
     const result = await login(obj);
     if (!result) return;
     "userInfo" in result
-      ? await saveUserInfoAndNavigate(result.userInfo)
+      ? await saveUserInfoAndNavigate(result.userInfo, result.token)
       : errorLogger({ message: result.message });
   };
 
