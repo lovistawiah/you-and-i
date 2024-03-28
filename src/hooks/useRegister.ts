@@ -1,6 +1,8 @@
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { IUser, signUp } from "../account/user";
-import { addUser } from "../db/user";
+import { addUser, clearUsers } from "../db/user";
+import { UserContext } from "../context/UserContext";
+
 
 export type infoObj = { type: "error" | "success"; message: string } | null;
 
@@ -8,10 +10,13 @@ const useRegister = () => {
   const [info, setInfo] = useState<infoObj>(null);
   const [spin, setSpin] = useState(false);
   const [isValid, setIsValid] = useState(true);
+  const { setUser } = useContext(UserContext)
 
   const saveUserInfoAndNavigate = async (userObj: IUser) => {
     setSpin(false);
+    await clearUsers()
     await addUser(userObj);
+    setUser(userObj)
     location.href = location.origin + "/update-profile";
   };
 
@@ -37,6 +42,7 @@ const useRegister = () => {
       setInfo(null);
     }
   }, [isValid]);
+
 
   const handleForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import useLogin from "../hooks/useLogin";
 import InfoContainer from "./InfoContainer";
+import PasswordInput from "./PasswordInput";
 
 const Login = () => {
   const { spin, handleLogin, info, setInfo } = useLogin();
@@ -26,11 +27,11 @@ const Login = () => {
             placeholder={"Username or Email"}
             id={"username-email"}
           />
-          <InputForm
-            name={"password"}
-            placeholder={"Password"}
-            id={"password"}
-            type={"password"}
+          <PasswordInput
+            id="password"
+            label="Password"
+            placeholder="password"
+            name="password"
           />
           <button
             className={`flex h-[33px] w-[200px] items-center justify-center rounded-[5px] border bg-blue-500 px-3.5 py-[7px] font-roboto text-base font-normal text-white  outline-none hover:bg-blue-600 active:bg-blue-700  disabled:cursor-not-allowed md:w-[300px] md:text-lg`}

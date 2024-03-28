@@ -12,7 +12,6 @@ const InfoContainer = ({
   setInfo: React.Dispatch<SetStateAction<infoObj>>;
 }) => {
   const elRef = useRef<HTMLDivElement | null>(null);
-  const [isClose, setIsClose] = useState(true);
   const [showModal, setShowModal] = useState(false);
 
   if (!elRef.current) {
@@ -32,17 +31,17 @@ const InfoContainer = ({
 
   useEffect(() => {
     if (info?.message) {
-      setIsClose(true);
+      setShowModal(true);
     }
   }, [info?.message]);
 
   return createPortal(
-    isClose && info && (
+    info && (
       <div
-        className={`flex ${info.type === "error" ? "bg-red-500" : "bg-green-500"} p-1 ${showModal ? "-translate-y-full" : "translate-y-0"} absolute left-0 right-0 top-0`}
+        className={`flex ${info.type === "error" ? "bg-red-500" : "bg-green-500"} p-1 ${showModal ? "translate-y-0" : "-translate-y-full "} absolute left-0 right-0 top-0`}
       >
         <div
-          className="w-full self-center font-roboto text-[16px] leading-normal text-white md:text-[17px]"
+          className="flex w-full items-center justify-center font-roboto text-[16px] leading-normal text-white md:text-[17px]"
           dangerouslySetInnerHTML={{
             __html: info.message ? info.message : "",
           }}
@@ -51,8 +50,7 @@ const InfoContainer = ({
         <button
           className="mb-auto ml-auto"
           onClick={() => {
-            setIsClose(false);
-            setShowModal(true);
+            setShowModal(false);
             setInfo(null);
           }}
         >
