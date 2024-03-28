@@ -1,19 +1,21 @@
-import { FormEvent, useState } from "react";
+import { FormEvent, useContext, useState } from "react";
 import { IUser, login } from "../account/user";
 import { addUser } from "../db/user";
+import { infoObj } from "./useRegister";
+import { UserContext } from "../context/UserContext";
 
 const useLogin = () => {
-  const [info, setInfo] = useState<
-    { type: string; message: string } | Record<string, never>
-  >({});
+  const [info, setInfo] = useState<infoObj>(null);
   const [spin, setSpin] = useState(false);
+  const { setUser } = useContext(UserContext)
 
   const saveUserInfoAndNavigate = async (userObj: IUser) => {
     setSpin(false);
-
+    setUser(userObj)
     await addUser(userObj);
     location.href = location.origin + "/";
   };
+
   const errorLogger = ({ message }: { message: string }) => {
     setInfo({ type: "error", message });
     setSpin(false);
@@ -37,10 +39,7 @@ const useLogin = () => {
   return {
     info,
     spin,
-    saveUserInfoAndNavigate,
-    errorLogger,
     setInfo,
-    setSpin,
     handleLogin,
   };
 };

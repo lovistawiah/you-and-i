@@ -5,12 +5,14 @@ import Logo from "./Logo";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleNotch } from "@fortawesome/free-solid-svg-icons";
 import useLogin from "../hooks/useLogin";
+import InfoContainer from "./InfoContainer";
 
 const Login = () => {
-  const { spin, handleLogin } = useLogin();
+  const { spin, handleLogin, info, setInfo } = useLogin();
 
   return (
     <div>
+      <InfoContainer info={info} setInfo={setInfo} />
       <div className="flex h-screen w-screen flex-col items-center justify-center gap-4 px-[6px] py-[23px]">
         <Logo />
         <WelcomeText />
