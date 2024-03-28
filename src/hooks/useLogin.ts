@@ -1,6 +1,6 @@
 import { FormEvent, useContext, useState } from "react";
 import { IUser, login } from "../account/user";
-import { addToken, addUser } from "../db/user";
+import { addToken, addUser, clearUsers } from "../db/user";
 import { infoObj } from "./useRegister";
 import { UserContext } from "../context/UserContext";
 
@@ -12,6 +12,7 @@ const useLogin = () => {
   const saveUserInfoAndNavigate = async (userObj: IUser, token: string) => {
     setSpin(false);
     setUser(userObj)
+    await clearUsers()
     await addUser(userObj);
     await addToken(token)
     location.href = location.origin + "/";
