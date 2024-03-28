@@ -29,7 +29,14 @@ const Register = () => {
           placeholder={"Email"}
           id={"email"}
         />
-        <PassWithRegex isValid={isValid} setIsValid={setIsValid} />
+        <PassWithRegex
+          isValid={isValid}
+          setIsValid={setIsValid}
+          id="password"
+          label="New Password"
+          name="password"
+          placeholder="New Password"
+        />
         <PasswordInput
           name="confirm-password"
           id="confirm-password"

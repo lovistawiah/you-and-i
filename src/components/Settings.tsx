@@ -2,8 +2,8 @@ import { faCameraAlt } from "@fortawesome/free-solid-svg-icons";
 import PageHeader from "./PageHeader";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PasswordInput from "./PasswordInput";
-import SettingsPassword from "./SettingsPassword";
 import useSetting from "../hooks/useSetting";
+import PassWithRegex from "./PassWithRegex";
 
 const Settings = () => {
   const {
@@ -90,23 +90,25 @@ const Settings = () => {
           <section className="mt-3 flex flex-col gap-3">
             <section className="my-1 text-xl">Passwords</section>
             <PasswordInput
+              id="password"
+              label="Current Password"
+              name="password"
+              placeholder="Current Password"
+            />
+            <PassWithRegex
+              id="new-password"
               isValid={isPassValid}
               setIsValid={setIsPassValid}
-              label={"Current Password"}
-              key={"current-password"}
+              label="New Password"
+              name="new-password"
+              placeholder="New Password"
             />
 
-            <SettingsPassword
-              label={"New Password"}
-              name={"new-password"}
-              placeholder={"New password"}
-              key={"new-password"}
-            />
-
-            <SettingsPassword
-              label={"Confirm Password"}
-              name={"confirm-password"}
-              placeholder={"Confirm password"}
+            <PasswordInput
+              id="confirm-password"
+              placeholder="Confirm Password"
+              label="Confirm Password"
+              name="confirm-password"
             />
           </section>
           <button className="flex h-[33px] w-[128px] items-center justify-center  rounded-[5px] border border-neutral-500 bg-blue-600 px-3.5 py-[7px] font-roboto text-base font-normal text-white outline-none hover:bg-blue-700 active:bg-blue-800  ">

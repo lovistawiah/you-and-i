@@ -5,9 +5,17 @@ import { ChangeEvent, useEffect, useState } from "react";
 const PassWithRegex = ({
   setIsValid,
   isValid,
+  name,
+  label,
+  id,
+  placeholder,
 }: {
   isValid: boolean;
   setIsValid: React.Dispatch<React.SetStateAction<boolean>>;
+  name: string;
+  label: string;
+  id: string;
+  placeholder: string;
 }) => {
   const [showPass, setShowPass] = useState(false);
   const [pass, setPass] = useState("");
@@ -37,15 +45,15 @@ const PassWithRegex = ({
         htmlFor="password"
         className="font-roboto text-base font-normal  text-gray-800"
       >
-        Password
+        {label}
       </label>
       <div className="relative">
         <input
           type={showPass ? "text" : "password"}
-          name="password"
+          name={name}
           className={`h-[36px] w-[275px] rounded-[5px] border bg-white py-[1px] pl-[4px] pr-0 ${!isValid ? "border-red-500" : " border-gray-500"} font-roboto text-base font-normal text-gray-800 outline-none placeholder:text-gray-400  focus:border-[2px] focus:border-blue-400 md:w-[350px] md:text-lg`}
-          id="password"
-          placeholder="Password"
+          id={id}
+          placeholder={placeholder}
           onBlur={onBlur}
           required
           onChange={(e) => setPass(e.target.value)}
