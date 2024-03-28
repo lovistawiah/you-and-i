@@ -10,12 +10,13 @@ const InfoContainer = ({
   type: "error" | "success";
   message: string;
 }) => {
-  console.log(type, message);
   const elRef = useRef<HTMLDivElement | null>(null);
   const [isClose, setIsClose] = useState(false);
+  const [closeModal, setCloseModal] = useState(false);
   if (!elRef.current) {
     elRef.current = document.createElement("div");
   }
+
   useEffect(() => {
     if (!elRef.current) return;
     const modalRoot = document.getElementById("modal") as HTMLDivElement;
@@ -35,14 +36,20 @@ const InfoContainer = ({
   return createPortal(
     isClose && (
       <div
-        className={`flex ${type === "error" ? "bg-red-500" : "bg-green-500"} p-1`}
+        className={`flex ${type === "error" ? "bg-red-500" : "bg-green-500"} p-1 ${closeModal ? "-translate-y-full" : "translate-y-0"}`}
       >
         <div
           className="self-center  font-roboto text-[16px] leading-normal text-white md:text-[17px]"
           dangerouslySetInnerHTML={{ __html: message }}
         ></div>
 
-        <button className="mb-auto ml-auto" onClick={() => setIsClose(false)}>
+        <button
+          className="mb-auto ml-auto"
+          onClick={() => {
+            setIsClose(false);
+            setCloseModal(true);
+          }}
+        >
           <FontAwesomeIcon
             icon={faTimes}
             className="ml-1 cursor-pointer rounded border p-2 font-roboto text-[18px] font-light text-white transition duration-300 ease-in-out hover:bg-white hover:text-red-500 md:text-[16px]"
