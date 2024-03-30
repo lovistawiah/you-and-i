@@ -22,6 +22,27 @@ export type Contact = {
     status?: string;
 };
 
+export type ChatsValue = {
+    id: string;
+    userId: string;
+    username: string;
+    avatarUrl: string;
+    lastMessage: string;
+    lstMsgDate: Date;
+};
+interface IChatsDB extends DBSchema {
+    chats: {
+        key: string;
+        value: ChatsValue;
+        indexes: { id: string };
+    };
+}
+export type UpdateLastMessage = {
+    chatId: string;
+    lastMessage: string;
+    msgDate: Date;
+};
+
 export interface IContactDB extends DBSchema {
     contacts: {
         key: string;
@@ -84,23 +105,31 @@ interface IMessageDB extends DBSchema {
     };
 }
 
-type IDB = IUserDB | IContactDB | IMessageDB
+type IDB = IUserDB | IContactDB | IMessageDB | IChatsDB
 
 export const db = async () => {
     return await openDB<IDB>("you-and-i", 1, {
         upgrade(db) {
+            //contacts
             const contact = db.createObjectStore("contacts", { keyPath: 'id' });
             contact.createIndex("id", "id", {
                 unique: true,
             });
-
+            // user
             const user = db.createObjectStore("user", { keyPath: 'id' });
             user.createIndex("id", "id", {
                 unique: true,
             });
 
+            // token
             db.createObjectStore("token", {
                 autoIncrement: true,
+            });
+
+            //chats
+            const chats = db.createObjectStore("chats");
+            chats.createIndex("id", "id", {
+                unique: true,
             });
 
             const messages = db.createObjectStore("messages", { keyPath: 'id' });

@@ -7,7 +7,6 @@ const getContacts = async () => {
 
 const addContact = async (value: Contact) => {
   const db = await contactDb();
-  console.log(db.objectStoreNames)
   await db.add("contacts", value, value.id);
 };
 
