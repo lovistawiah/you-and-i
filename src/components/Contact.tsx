@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import type { Contact } from "../db";
-;
+import type { Contact } from "../db/contact";
 
 const Contact = ({
   windowWidth,
