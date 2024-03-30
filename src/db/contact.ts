@@ -1,4 +1,13 @@
-import { Contact, db as contactDb } from './index'
+import { db as contactDb } from './index'
+
+export type Contact = {
+  id: string;
+  username: string;
+  avatarUrl: string;
+  chatId?: string;
+  bio: string;
+  status?: string;
+};
 
 const getContacts = async () => {
   const db = await contactDb();

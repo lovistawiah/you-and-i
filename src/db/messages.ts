@@ -1,4 +1,56 @@
-import { IMessage, db as MessagesDB } from ".";
+import { db as MessagesDB } from ".";
+
+type MessageInfo = "created" | "updated" | "deleted";
+
+export interface IBaseMessage {
+  id: string;
+  message: string;
+  sender: string;
+  updatedAt: Date;
+  createdAt: Date;
+  chatId: string;
+  info: MessageInfo;
+}
+
+type Reply = {
+  id: string;
+  message: string;
+  sender: string;
+  info: MessageInfo;
+};
+
+export type IMessage = IBaseMessage & {
+  reply?: Reply;
+}
+
+export type NewChatAndMessage = {
+  newChat: {
+    id: string;
+    userId: string;
+    username: string;
+    avatarUrl: string;
+    bio: string;
+    status: string;
+  };
+  msgObj: IMessage;
+};
+
+export type MessageProps = {
+  message: string;
+  sender: string;
+  userId: string;
+  createdAt: string | Date;
+  updatedAt: string | Date;
+  id: string;
+  info: MessageInfo;
+  reply?: Reply;
+};
+
+export type UpdateLastMessage = {
+  chatId: string;
+  lastMessage: string;
+  msgDate: Date;
+};
 
 const addMessage = async (message: IMessage) => {
   const db = await MessagesDB();

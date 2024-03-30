@@ -1,4 +1,13 @@
-import { db as chatsDb, ChatsValue } from ".";
+import { db as chatsDb, } from ".";
+
+export type ChatsValue = {
+  id: string;
+  userId: string;
+  username: string;
+  avatarUrl: string;
+  lastMessage: string;
+  lstMsgDate: Date;
+};
 
 const updateChat = async (chat: ChatsValue) => {
   return (await chatsDb()).put("chats", chat, chat.id);

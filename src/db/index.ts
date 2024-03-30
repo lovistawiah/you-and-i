@@ -1,7 +1,10 @@
 import { DBSchema, openDB } from "idb";
 import { IUser } from "../account/user";
+import { ChatsValue } from "./chats";
+import { Contact } from "./contact";
+import { IMessage } from "./messages";
 
-export interface IUserDB extends DBSchema {
+interface IUserDB extends DBSchema {
     user: {
         key: string;
         value: IUser;
@@ -12,24 +15,6 @@ export interface IUserDB extends DBSchema {
         value: string;
     };
 }
-
-export type Contact = {
-    id: string;
-    username: string;
-    avatarUrl: string;
-    chatId?: string;
-    bio: string;
-    status?: string;
-};
-
-export type ChatsValue = {
-    id: string;
-    userId: string;
-    username: string;
-    avatarUrl: string;
-    lastMessage: string;
-    lstMsgDate: Date;
-};
 interface IChatsDB extends DBSchema {
     chats: {
         key: string;
@@ -37,13 +22,8 @@ interface IChatsDB extends DBSchema {
         indexes: { id: string };
     };
 }
-export type UpdateLastMessage = {
-    chatId: string;
-    lastMessage: string;
-    msgDate: Date;
-};
 
-export interface IContactDB extends DBSchema {
+interface IContactDB extends DBSchema {
     contacts: {
         key: string;
         value: Contact;
@@ -51,51 +31,7 @@ export interface IContactDB extends DBSchema {
     };
 }
 
-type MessageInfo = "created" | "updated" | "deleted";
 
-export interface IBaseMessage {
-    id: string;
-    message: string;
-    sender: string;
-    updatedAt: Date;
-    createdAt: Date;
-    chatId: string;
-    info: MessageInfo;
-}
-
-type Reply = {
-    id: string;
-    message: string;
-    sender: string;
-    info: MessageInfo;
-};
-
-export interface IMessage extends IBaseMessage {
-    reply?: Reply;
-}
-
-export type NewChatAndMessage = {
-    newChat: {
-        id: string;
-        userId: string;
-        username: string;
-        avatarUrl: string;
-        bio: string;
-        status: string;
-    };
-    msgObj: IMessage;
-};
-
-export type MessageProps = {
-    message: string;
-    sender: string;
-    userId: string;
-    createdAt: string | Date;
-    updatedAt: string | Date;
-    id: string;
-    info: MessageInfo;
-    reply?: Reply;
-};
 
 interface IMessageDB extends DBSchema {
     messages: {
@@ -110,6 +46,7 @@ type IDB = IUserDB | IContactDB | IMessageDB | IChatsDB
 export const db = async () => {
     return await openDB<IDB>("you-and-i", 1, {
         upgrade(db) {
+
             //contacts
             const contact = db.createObjectStore("contacts", { keyPath: 'id' });
             contact.createIndex("id", "id", {
@@ -132,6 +69,7 @@ export const db = async () => {
                 unique: true,
             });
 
+            //messages
             const messages = db.createObjectStore("messages", { keyPath: 'id' });
             messages.createIndex("id", "id");
         },
