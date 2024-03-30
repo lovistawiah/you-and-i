@@ -14,6 +14,13 @@ const useMain = () => {
     setActivePage(+e.currentTarget.id);
   };
 
+  const getUserData = async () => {
+    const user = await getUser()
+    if (user) {
+      setAvatarUrl(user.avatarUrl)
+    }
+  }
+
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
@@ -27,11 +34,12 @@ const useMain = () => {
   }, []);
 
   useEffect(() => {
-    socket.on("connect_error", (data) => {
-      const message = data.message;
+    socket.on("connect_error", (error) => {
+      const message = error.message;
       setErrMsg(message);
       setToken(false);
     });
+
     const handleConnect = () => {
       setToken(true);
     };
@@ -41,18 +49,11 @@ const useMain = () => {
       socket.removeListener("connect", handleConnect);
     };
   }, []);
+
   useEffect(() => {
-    getUser()
-      .then((cursor) => {
-        if (cursor?.value) {
-          setAvatarUrl(cursor.value.avatarUrl);
-        }
-      })
-      .catch((reason) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        return reason;
-      });
+    void getUserData()
   }, []);
+
   return {
     errMsg,
     isToken,

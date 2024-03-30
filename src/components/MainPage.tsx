@@ -11,10 +11,9 @@ import useModifyMessage from "../hooks/useModifyMessage";
 const MainPage = () => {
   const { errMsg, isToken, windowWidth, activePage, pageSelector, avatarUrl } =
     useMain();
-
   useLastMessage();
   useModifyMessage();
-  if (!avatarUrl) return;
+
   return !isToken ? (
     <WelcomePage message={errMsg} />
   ) : (
