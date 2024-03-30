@@ -8,7 +8,7 @@ const Contacts = () => {
     searchInput,
     handleSearch,
     clearSearch,
-    cachedContacts,
+    contacts,
     windowWidth,
     handleUserInfo,
   } = useContact();
@@ -21,7 +21,7 @@ const Contacts = () => {
         searchInput={searchInput}
       />
       <section className="absolute bottom-[56px] left-0 right-0 top-2 mt-[129px] w-full overflow-y-auto md:bottom-1">
-        {cachedContacts?.map((contact, i) => (
+        {contacts?.map((contact, i) => (
           <Contact
             contact={contact}
             handleUserInfo={handleUserInfo}

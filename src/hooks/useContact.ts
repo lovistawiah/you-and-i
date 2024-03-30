@@ -1,36 +1,65 @@
-import { ChangeEvent, useEffect, useMemo, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { chatEvents } from "../utils/eventNames";
 import { socket } from "../socket";
 import {
-  Contact,
   addContact,
   getContacts,
   searchContacts,
 } from "../db/contact";
 import { clearMessages } from "../db/messages";
 import { addChat, clearChat } from "../db/chat";
+import { Contact } from "../db";
+
 const useContact = () => {
   const [searchInput, setSearchInput] = useState("");
-
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [contacts, setContacts] = useState<Contact[]>();
 
-  useEffect(() => {
-    const fetchContacts = async () => {
-      const contacts = await getContacts();
-      setContacts(contacts);
-    };
+  const getContactsFromServer = (data: Contact) => {
+    setContacts(contacts => {
+      return contacts ? [...contacts, data] : [data]
+    })
+  };
 
-    void fetchContacts();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        socket.emit(chatEvents.contacts, {});
+        socket.on(chatEvents.contacts, getContactsFromServer);
+
+      } catch (e) {
+        const cachedData = await getContacts()
+        setContacts(cachedData)
+      }
+    }
+    void fetchData()
+    return () => {
+      socket.removeListener(chatEvents.contacts, getContacts);
+    };
   }, []);
 
   useEffect(() => {
+    const addContacts = () => {
+      if (contacts) {
+        contacts.forEach(async contact => {
+          const str = await addContact(contact)
+          console.log(str)
+        })
+      }
+    }
+    void addContacts()
+  }, [contacts])
+
+  useEffect(() => {
     const filteredContacts = async () => {
-      const contacts = await searchContacts(searchInput);
-      setContacts(contacts);
+      if (searchInput) {
+        const contacts = await searchContacts(searchInput);
+        setContacts(contacts);
+      }
     };
     void filteredContacts();
-  });
+  }, [searchInput]);
 
   const clearSearch = () => {
     setSearchInput("");
@@ -66,26 +95,15 @@ const useContact = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.innerWidth]);
 
-  const cachedContacts = useMemo(() => contacts, [contacts]);
-
-  useEffect(() => {
-    const getContacts = async (data: Contact) => {
-      await addContact(data);
-    };
-    socket.emit(chatEvents.contacts, {});
-    socket.on(chatEvents.contacts, getContacts);
-    return () => {
-      socket.removeListener(chatEvents.contacts, getContacts);
-    };
-  }, []);
 
   return {
     searchInput,
     handleSearch,
     clearSearch,
-    cachedContacts,
+    contacts,
     windowWidth,
     handleUserInfo,
   };
 };
+
 export default useContact;

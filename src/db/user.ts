@@ -1,30 +1,5 @@
-import { DBSchema, openDB } from "idb";
+import { db as userDb } from ".";
 import { IUser } from "../account/user";
-interface IUserDB extends DBSchema {
-  user: {
-    key: string;
-    value: IUser;
-    indexes: { id: string };
-  };
-  token: {
-    key: string;
-    value: string;
-  };
-}
-
-const userDb = async () => {
-  return await openDB<IUserDB>("you-and-i", 1, {
-    upgrade(db) {
-      const user = db.createObjectStore("user");
-      user.createIndex("id", "id", {
-        unique: true,
-      });
-      db.createObjectStore("token", {
-        autoIncrement: true,
-      });
-    },
-  });
-};
 
 const getUser = async () => {
   const db = await userDb();
@@ -50,9 +25,10 @@ const removeToken = async () => {
   const db = await userDb();
   return await db.clear("token");
 };
+
 const getToken = async () => {
   const db = await userDb();
-  return await db.get("token", "token");
+  return await db.get("token", "token") as string;
 };
 
 const addToken = async (token: string) => {

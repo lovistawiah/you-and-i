@@ -1,65 +1,4 @@
-import { DBSchema, openDB } from "idb";
-
-type MessageInfo = "created" | "updated" | "deleted";
-7;
-export interface IBaseMessage {
-  id: string;
-  message: string;
-  sender: string;
-  updatedAt: Date;
-  createdAt: Date;
-  chatId: string;
-  info: MessageInfo;
-}
-type Reply = {
-  id: string;
-  message: string;
-  sender: string;
-  info: MessageInfo;
-};
-export interface IMessage extends IBaseMessage {
-  reply?: Reply;
-}
-
-export type NewChatAndMessage = {
-  newChat: {
-    id: string;
-    userId: string;
-    username: string;
-    avatarUrl: string;
-    bio: string;
-    status: string;
-  };
-  msgObj: IMessage;
-};
-
-export type MessageProps = {
-  message: string;
-  sender: string;
-  userId: string;
-  createdAt: string | Date;
-  updatedAt: string | Date;
-  id: string;
-  info: MessageInfo;
-  reply?: Reply;
-};
-
-interface IMessageDB extends DBSchema {
-  messages: {
-    key: string;
-    value: IMessage;
-    indexes: { id: string };
-  };
-}
-
-const MessagesDB = async () => {
-  return await openDB<IMessageDB>("you-and-i", 1, {
-    upgrade(db) {
-      const messages = db.createObjectStore("messages");
-      messages.createIndex("id", "id");
-    },
-  });
-};
+import { IMessage, db as MessagesDB } from ".";
 
 const addMessage = async (message: IMessage) => {
   const db = await MessagesDB();
@@ -76,9 +15,8 @@ const getMessages = async () => {
 
 const searchMessage = async (search: string) => {
   const db = await MessagesDB();
-  const messages = db.getAll("messages");
-
-  return (await messages).filter((message) => {
+  const messages = await db.getAll("messages") as IMessage[]
+  return messages.filter((message) => {
     return message.message.includes(search);
   });
 };
