@@ -3,12 +3,13 @@ import { chatEvents } from "../utils/eventNames";
 import { socket } from "../socket";
 import {
   addContact,
+  Contact,
   getContacts,
   searchContacts,
 } from "../db/contact";
 import { clearMessages } from "../db/messages";
 import { addChat, clearChat } from "../db/chat";
-import { Contact } from "../db";
+
 
 const useContact = () => {
   const [searchInput, setSearchInput] = useState("");

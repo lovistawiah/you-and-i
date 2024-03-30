@@ -21,12 +21,12 @@ const Contacts = () => {
         searchInput={searchInput}
       />
       <section className="absolute bottom-[56px] left-0 right-0 top-2 mt-[129px] w-full overflow-y-auto md:bottom-1">
-        {contacts?.map((contact, i) => (
+        {contacts?.map((contact) => (
           <Contact
             contact={contact}
             handleUserInfo={handleUserInfo}
             windowWidth={windowWidth}
-            key={i}
+            key={contact.id}
           />
         ))}
       </section>

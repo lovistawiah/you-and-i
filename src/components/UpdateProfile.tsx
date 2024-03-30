@@ -2,6 +2,7 @@ import { faArrowRight, faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import useUpdateProfile from "../hooks/useUpdateProfile";
 import { Link } from "react-router-dom";
+import InfoContainer from "./InfoContainer";
 
 const UpdateProfile = () => {
   const {
@@ -9,6 +10,8 @@ const UpdateProfile = () => {
     handleUserInfo,
     personInfo,
     goBack,
+    info,
+    setInfo,
     handleUsernameInput,
     inputRegex,
     usernameInput,
@@ -17,6 +20,7 @@ const UpdateProfile = () => {
   return (
     <div>
       <section className="w-screen">
+        <InfoContainer info={info} setInfo={setInfo} />
         <section className="mt-2 flex w-full justify-between md:block">
           {windowWidth < 640 && (
             <FontAwesomeIcon

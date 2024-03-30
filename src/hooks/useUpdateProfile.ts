@@ -3,14 +3,22 @@ import { useNavigate } from "react-router-dom";
 import { IUser, updateUserInfo } from "../account/user.js";
 import { getUser } from "../db/user";
 import { UserContext } from "../context/UserContext.js";
+import { infoObj } from "./useRegister.js";
 
 const useUpdateProfile = () => {
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
   const { setUser } = useContext(UserContext)
   const [usernameInput, setUsernameInput] = useState("");
-  const [, setInfo] = useState({});
+  const [info, setInfo] = useState<infoObj>(null);
   const navigate = useNavigate();
   const [personInfo, setPersonInfo] = useState<IUser>();
+
+  const fetchData = async () => {
+    const user = await getUser()
+    if (user) {
+      setUser(user)
+    }
+  }
 
   useEffect(() => {
     const handleResize = () => {
@@ -23,16 +31,7 @@ const useUpdateProfile = () => {
   }, []);
 
   useEffect(() => {
-    getUser()
-      .then((cursor) => {
-        if (cursor?.value) {
-          setPersonInfo(cursor.value);
-        }
-      })
-      .catch((reason) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        return reason;
-      });
+    void fetchData()
   }, []);
 
   useEffect(() => {
@@ -70,7 +69,7 @@ const useUpdateProfile = () => {
         location.href = location.origin + "/";
       } else {
         setInfo({
-          type: "ok",
+          type: 'success',
           message: result.message,
         });
       }
@@ -94,6 +93,8 @@ const useUpdateProfile = () => {
     handleUsernameInput,
     usernameInput,
     goBack,
+    info,
+    setInfo,
     inputRegex,
   };
 };

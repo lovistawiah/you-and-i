@@ -3,9 +3,8 @@ import { IUser } from "../account/user";
 
 const getUser = async () => {
   const db = await userDb();
-  const tx = db.transaction("user", "readonly");
-  const cursor = tx.objectStore("user").openCursor();
-  return await cursor;
+  const users = await db.getAll('user') as IUser[]
+  return users.pop()
 };
 
 const deleteUser = async (id: string) => {
