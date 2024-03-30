@@ -20,6 +20,11 @@ const addUser = async (value: IUser) => {
   const db = await userDb();
   return await db.add("user", value, value.id);
 };
+const updateUser = async (value: IUser) => {
+  const db = await userDb();
+  return await db.put("user", value, value.id);
+};
+
 const removeToken = async () => {
   const db = await userDb();
   return await db.clear("token");
@@ -44,4 +49,5 @@ export {
   addToken,
   removeToken,
   getToken,
+  updateUser
 };

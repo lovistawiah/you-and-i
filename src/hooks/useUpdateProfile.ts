@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { IUser, updateUserInfo } from "../account/user.js";
-import { getUser } from "../db/user";
+import { updateUser } from "../db/user";
 import { UserContext } from "../context/UserContext.js";
 import { infoObj } from "./useRegister.js";
 
@@ -13,12 +13,7 @@ const useUpdateProfile = () => {
   const navigate = useNavigate();
   const [personInfo, setPersonInfo] = useState<IUser>();
 
-  const fetchData = async () => {
-    const user = await getUser()
-    if (user) {
-      setUser(user)
-    }
-  }
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -31,8 +26,13 @@ const useUpdateProfile = () => {
   }, []);
 
   useEffect(() => {
-    void fetchData()
-  }, []);
+    const updateData = async () => {
+      if (personInfo) {
+        await updateUser(personInfo)
+      }
+    }
+    void updateData()
+  }, [personInfo])
 
   useEffect(() => {
     if (personInfo) {
