@@ -52,9 +52,25 @@ export type UpdateLastMessage = {
   msgDate: Date;
 };
 
-const addMessage = async (message: IMessage) => {
+const addMessages = async (messages: IMessage[]) => {
   const db = await MessagesDB();
-  return await db.add("messages", message, message.id);
+  const tx = db.transaction('messages', 'readwrite');
+  const store = tx.store;
+
+  try {
+    await Promise.all(
+      messages.map(async message => {
+        try {
+          await store.put(message, message.id);
+        } catch (error) {
+          console.error('Error adding contact:', error);
+        }
+      })
+    );
+    await tx.done;
+  } catch (error) {
+    console.error('Transaction error:', error);
+  }
 };
 const updateMessage = async (message: IMessage) => {
   const db = await MessagesDB();
@@ -90,7 +106,7 @@ const clearMessages = async () => {
 export {
   getMessages,
   getMessage,
-  addMessage,
+  addMessages,
   searchMessage,
   updateMessage,
   clearMessages,

@@ -1,17 +1,45 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { socket } from "../socket";
 import { msgEvents } from "../utils/eventNames";
-import { IMessage } from "../db/messages";
+import { addMessages, IMessage } from "../db/messages";
+import { getChat } from "../db/chat";
 
-const useMessages = ({
-  chatId,
-}: {
-  chatId: string;
-  messagesRef: React.MutableRefObject<HTMLDivElement | null>;
-}) => {
+const useMessages = () => {
+  const [chatId, setChatId] = useState<string>()
+  const [messages, setMessages] = useState<IMessage[]>()
+  const [msgToBeReplied, setMsgToBeReplied] = useState<{ id: string, message: string }>()
+  const messagesRef = useRef(null);
+
+  const datesSet = new Set();
+
+  const addDateToSet = (messageDate: string) => {
+    if (!datesSet.has(messageDate)) {
+      datesSet.add(messageDate);
+      return true;
+    }
+    return false;
+  };
+
+  const clearModal = () => {
+    setMsgToBeReplied(undefined)
+  }
+
+  useEffect(() => {
+    const fetchChatId = async () => {
+      const chat = await getChat()
+      const chatId = chat?.chatId
+      if (chatId) {
+        setChatId(chatId)
+      }
+    }
+    void fetchChatId();
+  }, [])
+
   useEffect(() => {
     const getMessages = (messagesData: IMessage) => {
-      messagesData;
+      setMessages((prev) => {
+        return prev ? [...prev, messagesData] : [messagesData]
+      })
     };
     socket.emit(msgEvents.msgs, chatId);
     socket.on(msgEvents.msgs, getMessages);
@@ -28,6 +56,15 @@ const useMessages = ({
   }, [chatId]);
 
   useEffect(() => {
+    const addMessage = async () => {
+      if (messages) {
+        await addMessages(messages)
+      }
+    }
+    void addMessage()
+  }, [messages])
+
+  useEffect(() => {
     socket.on(msgEvents.sndMsg, (messageData: IMessage) => {
       messageData;
     });
@@ -38,6 +75,8 @@ const useMessages = ({
       msg;
     });
   });
+
+  return { messages, addDateToSet, datesSet, messagesRef, msgToBeReplied, clearModal }
 };
 
 export default useMessages;

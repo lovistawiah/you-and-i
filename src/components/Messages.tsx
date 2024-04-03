@@ -1,28 +1,19 @@
-import { ReactNode, useMemo, useRef } from "react";
+import { ReactNode, useMemo } from "react";
 import Message from "./Message";
 import { messageHeaderDate } from "../utils/compareDate";
 import MessageHeaderDate from "./MessageHeaderDate";
 import Modal from "./Modal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faClose } from "@fortawesome/free-solid-svg-icons";
-import { IMessage } from "../db/messages";
+import useMessages from "../hooks/useMessages";
 
 const Messages = () => {
-  const datesSet = new Set();
-  const messagesRef = useRef(null);
-  const messages: IMessage[] = [];
-
-  const addDateToSet = (messageDate: string) => {
-    if (!datesSet.has(messageDate)) {
-      datesSet.add(messageDate);
-      return true;
-    }
-    return false;
-  };
+  const { addDateToSet, messages, messagesRef, msgToBeReplied, clearModal } =
+    useMessages();
 
   const memoizedMessages: ReactNode = useMemo(
     () =>
-      messages.map((message) => (
+      messages?.map((message) => (
         <>
           {addDateToSet(messageHeaderDate(message.createdAt)) && (
             <MessageHeaderDate
