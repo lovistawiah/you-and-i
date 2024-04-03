@@ -2,6 +2,7 @@ import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import useModifyMessage from "./useModifyMessage";
 import { usrEvents } from "../utils/eventNames";
 import { socket } from "../socket";
+import { getChat, IChatInfo } from "../db/chat";
 
 interface IEmoji {
   id: string;
@@ -14,21 +15,26 @@ interface IEmoji {
 
 const useMessagePanel = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [chatInfo, setChatInfo] = useState<IChatInfo>()
   const [showEmojis, setShowEmojis] = useState(false);
   const [message, setMessage] = useState("");
+  const [updateMsg, setUpdateMsg] = useState(false)
   useModifyMessage();
 
   const handleCancelUpdate = () => {
+    setUpdateMsg(false)
     setMessage("");
   };
 
-  const updateMessage = () => {};
+  const updateMessage = () => {
+    setUpdateMsg(true)
+  };
 
   const reply = () => {
     return;
   };
 
-  const sendMessage = () => {};
+  const sendMessage = () => { };
 
   const submitForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -58,6 +64,15 @@ const useMessagePanel = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [window.innerWidth]);
 
+  useEffect(() => {
+    const fetchChatInfo = async () => {
+      const chat = await getChat()
+      if (!chat) return
+      setChatInfo(chat)
+    }
+    void fetchChatInfo();
+  }, [])
+
   const handleShowEmoji = () => {
     setShowEmojis(showEmojis ? false : true);
   };
@@ -84,6 +99,8 @@ const useMessagePanel = () => {
     message,
     onKeyDown,
     submitForm,
+    chatInfo,
+    updateMsg
   };
 };
 
