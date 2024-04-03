@@ -27,12 +27,12 @@ const useChatInfo = () => {
   useEffect(() => {
     const fetchChatInfo = async () => {
       const chat = await getChat();
-      if (!chat?.value) return;
+      if (!chat) return;
       setChatInfo({
-        userId: chat.value.userId,
-        avatarUrl: chat.value.avatarUrl,
-        status: chat.value.status,
-        username: chat.value.username,
+        userId: chat.userId,
+        avatarUrl: chat.avatarUrl,
+        status: chat.status,
+        username: chat.username,
       });
     };
     void fetchChatInfo();

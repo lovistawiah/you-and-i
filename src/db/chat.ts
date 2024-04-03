@@ -18,9 +18,8 @@ export interface IChatInfo {
 
 const getChat = async () => {
   const db = await chatDb();
-  const tx = db.transaction("chat", "readonly");
-  const cursor = tx.objectStore("chat").openCursor();
-  return await cursor;
+  const chats = await db.getAll('chat') as Chat[]
+  return chats.pop()
 };
 const clearChat = async () => {
   return (await chatDb()).clear("chat");

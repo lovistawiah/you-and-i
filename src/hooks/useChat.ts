@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-
 import { Chat, clearChat } from "../db/chat";
 import { addChat } from "../db/chat";
 import { clearMessages } from "../db/messages";
