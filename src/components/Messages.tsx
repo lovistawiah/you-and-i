@@ -52,7 +52,7 @@ const Messages = () => {
           </section>
         </Modal>
       )}
-      {messages.length < 1 ? (
+      {messages && messages.length < 1 ? (
         <section className="font-base absolute left-[15%] top-[45%] flex h-[100px] w-[300px] items-center justify-center font-roboto text-xl shadow md:left-[35%] md:top-[50%]">
           No Messages found
         </section>
