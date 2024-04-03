@@ -51,6 +51,10 @@ export type UpdateLastMessage = {
   lastMessage: string;
   msgDate: Date;
 };
+const addMessage = async (message: IMessage) => {
+  const db = await MessagesDB()
+  await db.add('messages', message, message.id)
+}
 
 const addMessages = async (messages: IMessage[]) => {
   const db = await MessagesDB();
@@ -72,6 +76,7 @@ const addMessages = async (messages: IMessage[]) => {
     console.error('Transaction error:', error);
   }
 };
+
 const updateMessage = async (message: IMessage) => {
   const db = await MessagesDB();
   await db.put("messages", message, message.id);
@@ -107,7 +112,9 @@ export {
   getMessages,
   getMessage,
   addMessages,
+  addMessage,
   searchMessage,
   updateMessage,
   clearMessages,
+
 };
