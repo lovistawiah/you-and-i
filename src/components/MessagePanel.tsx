@@ -27,7 +27,7 @@ const MessagePanel = () => {
   void init({ data });
   return (
     <section
-      className={`grid w-full grid-rows-[50px_auto_minmax(auto,max-content)] bg-gray-100 md:relative md:order-2`}
+      className={`grid h-full w-full grid-rows-[50px_auto_minmax(auto,max-content)] bg-gray-100 md:relative md:order-2`}
     >
       {!chatInfo ? (
         <section className="font-base absolute left-[25%] top-[45%] flex h-[100px] w-[300px] items-center justify-center font-roboto text-xl shadow md:left-[35%] md:top-[50%]">

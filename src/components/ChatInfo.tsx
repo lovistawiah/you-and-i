@@ -4,8 +4,8 @@ import useChatInfo from "../hooks/useChatInfo";
 import useTyping from "../hooks/useTyping";
 
 const ChatInfo = ({ windowWidth }: { windowWidth: number }) => {
-  const { isTypingObj } = useTyping();
   const { goBack, chatInfo } = useChatInfo();
+  const { isTypingObj } = useTyping();
 
   return (
     <section className="col-start-1 col-end-2 row-start-1 flex h-[50px] w-full items-center justify-between border-b bg-white py-1 pl-2">

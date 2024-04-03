@@ -2,41 +2,56 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { socket } from "../socket";
 import { usrEvents } from "../utils/eventNames";
-import { IChatInfo, getChat, updateStatus } from "../db/chat";
+import { IChatInfo, clearChat, getChat, updateStatus } from "../db/chat";
 
 const useChatInfo = () => {
   const [chatInfo, setChatInfo] = useState<IChatInfo>();
   const navigate = useNavigate();
-  const goBack = () => {
+
+  const goBack = async () => {
+    await clearChat();
     navigate("/");
   };
 
-  useEffect(() => {
-    socket.emit(usrEvents.status, chatInfo?.userId);
-    socket.on(
-      usrEvents.status,
-      async (userStats: { userId: string; status: string }) => {
-        await updateStatus(userStats);
-      },
-    );
-    return () => {
-      socket.removeListener(usrEvents.status);
-    };
-  });
+  const fetchChatInfo = async () => {
+    try {
+      const chat = await getChat();
+
+      if (chat) {
+        setChatInfo({
+          avatarUrl: chat.avatarUrl,
+          userId: chat.userId,
+          username: chat.username,
+          chatId: chat.chatId,
+          status: chat.status
+        });
+      }
+
+    } catch (error) {
+      console.error("Error fetching chat information:", error);
+    }
+  };
 
   useEffect(() => {
-    const fetchChatInfo = async () => {
-      const chat = await getChat();
-      if (!chat) return;
-      setChatInfo({
-        userId: chat.userId,
-        avatarUrl: chat.avatarUrl,
-        status: chat.status,
-        username: chat.username,
-      });
-    };
     void fetchChatInfo();
   }, []);
+
+  useEffect(() => {
+    const handleStatusUpdate = async (userStats: { userId: string; status: string }) => {
+      try {
+        await updateStatus(userStats);
+      } catch (error) {
+        console.error("Error updating status:", error);
+      }
+    };
+
+    socket.emit(usrEvents.status, chatInfo?.userId);
+    socket.on(usrEvents.status, handleStatusUpdate);
+
+    return () => {
+      socket.removeListener(usrEvents.status, handleStatusUpdate);
+    };
+  }, [chatInfo]);
 
   return { goBack, chatInfo };
 };
