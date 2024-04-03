@@ -1,4 +1,4 @@
-import { DBSchema, openDB } from "idb";
+import { db as chatDb } from '.'
 
 export type Chat = {
   userId: string;
@@ -15,22 +15,6 @@ export interface IChatInfo {
   status?: string;
   chatId?: string;
 }
-
-interface IChatDb extends DBSchema {
-  chat: {
-    key: string;
-    value: Chat;
-  };
-}
-export type ChatDB = "chat";
-
-const chatDb = async () => {
-  return await openDB<IChatDb>("you-and-i", 1, {
-    upgrade(db) {
-      db.createObjectStore("chat");
-    },
-  });
-};
 
 const getChat = async () => {
   const db = await chatDb();
@@ -53,8 +37,7 @@ const updateStatus = async (value: {
 }) => {
   const tx = (await chatDb()).transaction("chat", "readwrite");
   const store = tx.objectStore("chat");
-  const chat = await store.get(value.userId);
-  if (!chat) return;
+  const chat = await store.get(value.userId) as Chat;
   const updateChat = {
     ...chat,
     value,

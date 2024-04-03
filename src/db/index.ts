@@ -3,6 +3,7 @@ import { IUser } from "../account/user";
 import { ChatsValue } from "./chats";
 import { Contact } from "./contact";
 import { IMessage } from "./messages";
+import { Chat } from "./chat";
 
 interface IUserDB extends DBSchema {
     user: {
@@ -31,6 +32,14 @@ interface IContactDB extends DBSchema {
     };
 }
 
+interface IChatDb extends DBSchema {
+    chat: {
+        key: string;
+        value: Chat;
+        indexes: { userId: string }
+    };
+}
+
 
 
 interface IMessageDB extends DBSchema {
@@ -41,7 +50,7 @@ interface IMessageDB extends DBSchema {
     };
 }
 
-type IDB = IUserDB | IContactDB | IMessageDB | IChatsDB
+type IDB = IUserDB | IContactDB | IMessageDB | IChatsDB | IChatDb
 
 export const db = async () => {
     return await openDB<IDB>("you-and-i", 1, {
@@ -68,6 +77,12 @@ export const db = async () => {
             chats.createIndex("id", "id", {
                 unique: true,
             });
+
+            //chat
+            const chat = db.createObjectStore("chat");
+            chat.createIndex('userId', 'userId', {
+                unique: true
+            })
 
             //messages
             const messages = db.createObjectStore("messages");
