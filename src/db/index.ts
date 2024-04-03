@@ -48,12 +48,12 @@ export const db = async () => {
         upgrade(db) {
 
             //contacts
-            const contact = db.createObjectStore("contacts", { keyPath: 'id' });
+            const contact = db.createObjectStore("contacts");
             contact.createIndex("id", "id", {
                 unique: true,
             });
             // user
-            const user = db.createObjectStore("user", { keyPath: 'id' });
+            const user = db.createObjectStore("user");
             user.createIndex("id", "id", {
                 unique: true,
             });
@@ -70,8 +70,11 @@ export const db = async () => {
             });
 
             //messages
-            const messages = db.createObjectStore("messages", { keyPath: 'id' });
-            messages.createIndex("id", "id");
+            const messages = db.createObjectStore("messages");
+            messages.createIndex("id", "id",
+                {
+                    unique: true
+                });
         },
     });
 };

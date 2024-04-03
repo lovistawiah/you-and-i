@@ -14,9 +14,25 @@ const getContacts = async () => {
   return await db.getAll("contacts") as Contact[]
 };
 
-const addContact = async (value: Contact) => {
+const addContact = async (contacts: Contact[]) => {
   const db = await contactDb();
-  await db.add("contacts", value, value.id);
+  const tx = db.transaction('contacts', 'readwrite');
+  const store = tx.store;
+
+  try {
+    await Promise.all(
+      contacts.map(async contact => {
+        try {
+          await store.put(contact, contact.id);
+        } catch (error) {
+          console.error('Error adding contact:', error);
+        }
+      })
+    );
+    await tx.done;
+  } catch (error) {
+    console.error('Transaction error:', error);
+  }
 };
 
 const updateContact = async (value: Contact) => {

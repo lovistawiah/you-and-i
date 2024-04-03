@@ -41,13 +41,11 @@ const useContact = () => {
   }, []);
 
   useEffect(() => {
-    const addContacts = () => {
+    const addContacts = async () => {
       if (contacts) {
-        contacts.forEach(async contact => {
-          const str = await addContact(contact)
-          console.log(str)
-        })
+        await addContact(contacts)
       }
+
     }
     void addContacts()
   }, [contacts])
