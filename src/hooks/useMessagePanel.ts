@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import useModifyMessage from "./useModifyMessage";
-import { usrEvents } from "../utils/eventNames";
+import { msgEvents, usrEvents } from "../utils/eventNames";
 import { socket } from "../socket";
 import { getChat, IChatInfo } from "../db/chat";
 
@@ -26,21 +26,42 @@ const useMessagePanel = () => {
     setMessage("");
   };
 
-  const updateMessage = () => {
-    setUpdateMsg(true)
-  };
+  // const updateMessage = () => {
+  //   setUpdateMsg(true)
+  // };
 
-  const reply = () => {
-    return;
-  };
+  // const reply = () => {
+  //   return;
+  // };
 
-  const sendMessage = () => { };
+  const sendMessage = () => {
+    const userId = chatInfo?.userId
+    const chatId = chatInfo?.chatId
+    if (userId && chatId) {
+      const messageObj = {
+        chatId,
+        message
+      }
+      socket.emit(msgEvents.sndMsg, messageObj)
+      return
+    }
+    if (userId && !chatId) {
+      const messageObj = {
+        userId,
+        message
+      }
+      socket.emit(msgEvents.newChat, messageObj)
+      return
+    }
+
+  };
 
   const submitForm = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    console.log(message)
     if (!message) return;
-    updateMessage();
-    reply();
+    // updateMessage();
+    // reply();
     sendMessage();
     setMessage("");
   };
@@ -49,8 +70,9 @@ const useMessagePanel = () => {
     if (e.key === "Enter") {
       e.preventDefault();
       if (!message) return;
-      updateMessage();
-      reply();
+      console.log(message)
+      // updateMessage();
+      // reply();
       sendMessage();
       setMessage("");
     }

@@ -66,7 +66,7 @@ const useMessages = () => {
 
   useEffect(() => {
     socket.on(msgEvents.sndMsg, (messageData: IMessage) => {
-      messageData;
+      console.log(messageData)
     });
   });
 
