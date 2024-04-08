@@ -29,14 +29,18 @@ const useRegister = () => {
     if (!isValid) {
       setInfo({
         type: "error",
-        message: `<ul class="ml-1 text-sm md:text-base leading-normal">
-                <li class="text-lg font-semibold">Password should:</li>
-                  <li>At least contain 8 characters long</li>
-                  <li>Contain at least one uppercase letter</li>
-                  <li>Contain at least one lowercase letter</li>
-                  <li>Contain at least one digit</li>
-                  <li>Contain at least one special character (such as @$!%*?&,+><)</li>
-                  </ul>`,
+        message:
+          `<div>
+        <h3 class="text-lg font-semibold">Password should:</h3>
+        <ul class="ml-1 text-sm md:text-base leading-normal">
+          <li>At least contain <strong>8 characters</strong> long</li>
+          <li>Contain at least <strong>one uppercase</strong> letter</li>
+          <li>Contain at least <strong>one lowercase</strong> letter</li>
+          <li>Contain at least <strong>one digit</strong></li>
+          <li>Contain at least <strong>one special character</strong> such as <strong> @$!%*?&,+>< </strong> </li>
+        </ul>
+        </div>
+        `,
       });
     } else {
       setInfo(null);
