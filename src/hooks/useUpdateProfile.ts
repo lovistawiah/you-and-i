@@ -13,8 +13,6 @@ const useUpdateProfile = () => {
   const navigate = useNavigate();
   const [personInfo, setPersonInfo] = useState<IUser>();
 
-
-
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);

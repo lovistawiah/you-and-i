@@ -2,7 +2,7 @@ import { FormEvent, useContext, useEffect, useState } from "react";
 import { IUser, signUp } from "../account/user";
 import { addUser, clearUsers } from "../db/user";
 import { UserContext } from "../context/UserContext";
-
+import { useNavigate } from "react-router-dom";
 
 export type infoObj = { type: "error" | "success"; message: string } | null;
 
@@ -11,13 +11,14 @@ const useRegister = () => {
   const [spin, setSpin] = useState(false);
   const [isValid, setIsValid] = useState(true);
   const { setUser } = useContext(UserContext)
+  const navigate = useNavigate()
 
   const saveUserInfoAndNavigate = async (userObj: IUser) => {
     setSpin(false);
     await clearUsers()
     await addUser(userObj);
     setUser(userObj)
-    location.href = location.origin + "/update-profile";
+    navigate('/update-profile')
   };
 
   const errorLogger = ({ message }: { message: string }) => {
