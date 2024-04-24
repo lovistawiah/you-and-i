@@ -16,6 +16,7 @@ const UpdateProfile = () => {
     inputRegex,
     usernameInput,
   } = useUpdateProfile();
+  console.log(personInfo);
   if (!personInfo) return;
   return (
     <div>

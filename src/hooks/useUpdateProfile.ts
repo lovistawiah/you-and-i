@@ -1,7 +1,7 @@
 import { ChangeEvent, FormEvent, useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { IUser, updateUserInfo } from "../account/user.js";
-import { updateUser } from "../db/user";
+import { getUser, updateUser } from "../db/user";
 import { UserContext } from "../context/UserContext.js";
 import { infoObj } from "./useRegister.js";
 
@@ -22,6 +22,16 @@ const useUpdateProfile = () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const userData = await getUser()
+      if (userData) {
+        setPersonInfo(userData)
+      }
+    }
+    void fetchData()
+  }, [])
 
   useEffect(() => {
     const updateData = async () => {

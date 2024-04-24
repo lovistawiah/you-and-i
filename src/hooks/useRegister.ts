@@ -10,6 +10,8 @@ const useRegister = () => {
   const [info, setInfo] = useState<infoObj>(null);
   const [spin, setSpin] = useState(false);
   const [isValid, setIsValid] = useState(true);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setDataAdded] = useState(false)
   const { setUser } = useContext(UserContext)
   const navigate = useNavigate()
 
@@ -18,6 +20,7 @@ const useRegister = () => {
     await clearUsers()
     await addUser(userObj);
     setUser(userObj)
+    setDataAdded(true)
     navigate('/update-profile')
   };
 
