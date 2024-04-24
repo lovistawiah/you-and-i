@@ -111,6 +111,3 @@ const useUpdateProfile = () => {
 };
 
 export default useUpdateProfile;
-
-// TODO: let component render anytime indexDb is updated with any data.
-// TODO: get the contacts to update, chats and messages to update today.
