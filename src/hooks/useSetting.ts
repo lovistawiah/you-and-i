@@ -32,16 +32,13 @@ const useSetting = () => {
   }, [isPassValid]);
 
   useEffect(() => {
-    getUser()
-      .then((cursor) => {
-        if (cursor?.value) {
-          setUserInfo(cursor.value);
-        }
-      })
-      .catch((reason) => {
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-        return reason;
-      });
+    const fetchUserData = async () => {
+      const userData = await getUser()
+      if (userData) {
+        setUserInfo(userData)
+      }
+    }
+    void fetchUserData()
   }, []);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
