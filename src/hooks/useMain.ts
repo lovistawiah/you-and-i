@@ -1,4 +1,5 @@
 import { MouseEvent, useEffect, useState } from "react";
+import useUpdateDB from "./useUpdateDB";
 import { socket } from "../socket";
 import { getUser } from "../db/user";
 
@@ -9,6 +10,7 @@ const useMain = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [windowHeight, setWindowHeight] = useState(window.innerHeight);
   const [avatarUrl, setAvatarUrl] = useState<string | undefined>();
+  const { setUpdateDB } = useUpdateDB()
 
   const pageSelector = (e: MouseEvent<HTMLButtonElement>) => {
     setActivePage(+e.currentTarget.id);
@@ -52,6 +54,8 @@ const useMain = () => {
 
   useEffect(() => {
     void getUserData()
+    setUpdateDB(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return {
@@ -66,3 +70,5 @@ const useMain = () => {
 };
 
 export default useMain;
+//TODO: contacts should load when icon clicked not refreshed.
+//TODO: create chat and messages.
