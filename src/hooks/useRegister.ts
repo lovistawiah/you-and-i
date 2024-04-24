@@ -1,26 +1,25 @@
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { IUser, signUp } from "../account/user";
-import { addUser, clearUsers } from "../db/user";
+import { addToken, addUser } from "../db/user";
 import { UserContext } from "../context/UserContext";
 import { useNavigate } from "react-router-dom";
-
+import useUpdateDB from "./useUpdateDB";
 export type infoObj = { type: "error" | "success"; message: string } | null;
 
 const useRegister = () => {
   const [info, setInfo] = useState<infoObj>(null);
   const [spin, setSpin] = useState(false);
   const [isValid, setIsValid] = useState(true);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [_, setDataAdded] = useState(false)
+  const { setUpdateDB } = useUpdateDB()
   const { setUser } = useContext(UserContext)
   const navigate = useNavigate()
 
-  const saveUserInfoAndNavigate = async (userObj: IUser) => {
+  const saveUserInfoAndNavigate = async (userObj: IUser, token: string) => {
     setSpin(false);
-    await clearUsers()
     await addUser(userObj);
+    await addToken(token)
     setUser(userObj)
-    setDataAdded(true)
+    setUpdateDB(true)
     navigate('/update-profile')
   };
 
@@ -68,7 +67,7 @@ const useRegister = () => {
 
       if (!result) return;
       if ("userInfo" in result) {
-        await saveUserInfoAndNavigate(result.userInfo);
+        await saveUserInfoAndNavigate(result.userInfo, result.token);
       } else {
         errorLogger({ message: result.message });
       }

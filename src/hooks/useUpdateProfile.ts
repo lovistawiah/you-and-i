@@ -1,9 +1,10 @@
 import { ChangeEvent, FormEvent, useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { IUser, updateUserInfo } from "../account/user.js";
-import { getUser, updateUser } from "../db/user";
-import { UserContext } from "../context/UserContext.js";
-import { infoObj } from "./useRegister.js";
+import { IUser, updateUserInfo } from "../account/user";
+import { addToken, getUser, updateUser } from "../db/user";
+import { UserContext } from "../context/UserContext";
+import { infoObj } from "./useRegister";
+import useUpdateDb from './useUpdateDB'
 
 const useUpdateProfile = () => {
   const [windowWidth, setWindowWidth] = useState<number>(window.innerWidth);
@@ -11,6 +12,7 @@ const useUpdateProfile = () => {
   const [usernameInput, setUsernameInput] = useState("");
   const [info, setInfo] = useState<infoObj>(null);
   const navigate = useNavigate();
+  const { setUpdateDB } = useUpdateDb()
   const [personInfo, setPersonInfo] = useState<IUser>();
 
   useEffect(() => {
@@ -73,8 +75,9 @@ const useUpdateProfile = () => {
           ...personInfo,
           username: result.userInfo.username,
         });
-
-        location.href = location.origin + "/";
+        await addToken(result.token)
+        setUpdateDB(true)
+        navigate('/')
       } else {
         setInfo({
           type: 'success',
@@ -108,3 +111,6 @@ const useUpdateProfile = () => {
 };
 
 export default useUpdateProfile;
+
+// TODO: let component render anytime indexDb is updated with any data.
+// TODO: get the contacts to update, chats and messages to update today.

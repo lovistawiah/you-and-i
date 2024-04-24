@@ -15,6 +15,7 @@ export type SignUpParams = {
 
 export interface SignUpResponse {
   userInfo: IUser;
+  token: string;
   message?: string;
 }
 
@@ -74,7 +75,7 @@ async function signUp({
   password,
   confirmPassword,
 }: SignUpParams): Promise<
-  { userInfo: IUser; message?: string } | ServerError | undefined
+  { userInfo: IUser; message?: string, token: string } | ServerError | undefined
 > {
   try {
     const result = await axios.post<SignUpResponse>(
@@ -91,9 +92,10 @@ async function signUp({
       },
     );
     if (result.status === 200) {
-      const { userInfo } = result.data;
+      const { userInfo, token } = result.data;
       return {
         userInfo,
+        token
       };
     }
   } catch (err) {
