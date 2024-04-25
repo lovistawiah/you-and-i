@@ -18,12 +18,8 @@ export interface IChatInfo {
 
 const getChat = async () => {
   const db = await chatDb();
-  const tx = db.transaction('chat', 'readonly')
-  const store = tx.objectStore('chat')
-  const cursor = await store.openCursor()
-  if (cursor) {
-    return cursor.value as IChatInfo
-  }
+  const chats = await db.getAll('chat') as Chat[]
+  return chats.pop()
 };
 
 const clearChat = async () => {
@@ -31,8 +27,9 @@ const clearChat = async () => {
 };
 
 const addChat = async (value: Chat) => {
-  // using userId to add since userId is always available
-  return (await chatDb()).add("chat", value, value.userId);
+  await clearChat()
+  const db = await chatDb()
+  await db.add('chat', value, value.id)
 };
 
 const updateStatus = async (value: {
