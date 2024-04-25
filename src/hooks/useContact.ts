@@ -10,20 +10,17 @@ import {
 import { clearMessages } from "../db/messages";
 import { addChat, clearChat } from "../db/chat";
 
-
 const useContact = () => {
   const [searchInput, setSearchInput] = useState("");
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [contacts, setContacts] = useState<Contact[]>();
 
-  const getContactsFromServer = (data: Contact) => {
-    setContacts(contacts => {
-      return contacts ? [...contacts, data] : [data]
-    })
-  };
-
-
   useEffect(() => {
+    const getContactsFromServer = (data: Contact) => {
+      setContacts(contacts => {
+        return contacts ? [...contacts, data] : [data]
+      })
+    };
     const fetchData = async () => {
       try {
         socket.emit(chatEvents.contacts, {});
@@ -36,7 +33,7 @@ const useContact = () => {
     }
     void fetchData()
     return () => {
-      socket.removeListener(chatEvents.contacts, getContacts);
+      socket.removeListener(chatEvents.contacts, getContactsFromServer);
     };
   }, []);
 
@@ -45,7 +42,6 @@ const useContact = () => {
       if (contacts) {
         await addContact(contacts)
       }
-
     }
     void addContacts()
   }, [contacts])
