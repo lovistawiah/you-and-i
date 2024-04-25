@@ -9,11 +9,13 @@ import {
 } from "../db/contact";
 import { clearMessages } from "../db/messages";
 import { addChat, clearChat } from "../db/chat";
+import useUpdateDB from "./useUpdateDB"
 
 const useContact = () => {
   const [searchInput, setSearchInput] = useState("");
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [contacts, setContacts] = useState<Contact[]>();
+  const { setUpdateDB } = useUpdateDB()
 
   useEffect(() => {
     const getContactsFromServer = (data: Contact) => {
@@ -81,6 +83,7 @@ const useContact = () => {
     await clearMessages();
     await clearChat();
     await addChat(chatObj);
+    setUpdateDB(true)
   };
   useEffect(() => {
     const handleResize = () => {
