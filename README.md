@@ -1,43 +1,72 @@
 # You and I
 
-## Why this project?
+This react project aims to integrate the [Chat API](https://www.github.com/lovistawiah/chat-api)
+for real time messaging using end-to-end encryption method.
 
-I created this project to chat my girlfriend nearby. She does not have phone and communication is becoming a problem. I spend most of my day coding and indoor. She always complain not being available to her. I proposed this idea to her and she liked it.
+## Features
 
-## Technologies used
+### User
 
-### v1.0.0
+- Create account
+- Set/change bio.
+- Set/change username.
 
-- node
-- express
-- socket.io
-- json web token
-- html
-- css
-- icon8
+### Messages
 
-### v1.0.1
+- Send text messages.
+- Reply messages.
+- Delete sent messages within five minutes
+- Edit sent messages
+- Online/offline status.
 
-- node
-- express
-- json web token
-- socket.io
-- react js
-- tanstack react query
-- figma
+### Chats
 
-## Problems faced during development mode
+- search chats
+- User typing status.
 
-## What was really inspired me to start
+### Contacts
 
-I told a good old friend about this project. He has shown serious interest in the project from day one.
-He added valuable features that will help the project to grow.
+- Add new contacts.
+- search contacts.
 
-## Features and Versions of the project
+## Local Development
 
-### v1.0.0
+1. **Clone repo**
 
-- sign up and sign in an account
-- send and receive text messages
-- update account info (not profile pic)
-- search new users
+`clone using Web Url`
+
+```bash
+ git clone https://github.com/lovistawiah/you-and-i.git
+```
+
+`clone using GitHub CLI`
+
+```bash
+gh repo clone lovistawiah/you-and-i
+```
+
+2. **Change to project directory**
+
+```bash
+cd you-and-i
+```
+
+3. **Install dependencies**
+
+```bash
+npm i
+```
+
+4. **Run local server**
+
+```bash
+npm run server
+```
+
+5. **Visit web browser**
+
+Click on the link in the terminal
+
+6. **Other project commands**
+
+the **script** object in <em>package.json</em>
